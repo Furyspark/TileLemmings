@@ -1,0 +1,10 @@
+{
+	"sprites": [
+		{
+			"key": "lemming_fall",
+			"url": "assets/sprites/lemming/lemming_fall.png",
+			"frameWidth": 32,
+			"frameHeight": 32
+		}
+	]
+}

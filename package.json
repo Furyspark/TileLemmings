@@ -1,0 +1,15 @@
+{
+  "name": "Lem",
+  "version": "0.0.1",
+  "main": "index.html",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-concat": "^0.5.1"
+  },
+  "window": {
+  	"width": 800,
+  	"height": 600,
+  	"resizable": false
+  }
+}

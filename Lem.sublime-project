@@ -1,0 +1,31 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"build_systems":
+	[
+		{
+			"name": "Electron",
+			"working_dir": "${project_path}",
+			"cmd": ["electron", "."],
+		    "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+		    "shell": true
+		},
+		{
+			"name": "NodeJS",
+			"working_dir": "${project_path}",
+			"cmd": ["nw", "."],
+		    "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+		    "shell": true
+		},
+		{
+			"name": "Compile",
+			"working_dir": "${project_path",
+			"cmd": ["build.rb"],
+			"shell": true
+		}
+	]
+}
