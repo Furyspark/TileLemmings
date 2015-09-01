@@ -6,5 +6,11 @@
 			"frameWidth": 32,
 			"frameHeight": 32
 		}
+	],
+	"sounds": [
+		{
+			"key": "bgmCancan",
+			"url": "assets/audio/bgm/cancan.ogg"
+		}
 	]
 }

@@ -29,5 +29,12 @@ var bootState = {
 			curAsset = curList[a];
 			game.load.spritesheet(curAsset.key, curAsset.url, curAsset.frameWidth, curAsset.frameHeight);
 		}
+
+		// Load sounds
+		var a, curAsset, curList = assetList.sounds;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.audio(curAsset.key, curAsset.url);
+		}
 	}
 };

@@ -39,12 +39,22 @@ var bootState = {
 			curAsset = curList[a];
 			game.load.spritesheet(curAsset.key, curAsset.url, curAsset.frameWidth, curAsset.frameHeight);
 		}
+
+		// Load sounds
+		var a, curAsset, curList = assetList.sounds;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.audio(curAsset.key, curAsset.url);
+		}
 	}
 };
 var gameState = {
 	create: function() {
 		console.log("Game State started!");
 		var lem = new Lemming(game, 48, 48);
+
+		// Play music
+		game.sound.play("bgmCancan");
 	},
 
 	update: function() {
