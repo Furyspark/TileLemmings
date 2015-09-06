@@ -15,7 +15,7 @@
 			"file": "src/states/state_game.js",
 			"settings":
 			{
-				"buffer_size": 3002,
+				"buffer_size": 2565,
 				"line_ending": "Windows"
 			}
 		},
@@ -23,7 +23,23 @@
 			"file": "src/classes/prop.js",
 			"settings":
 			{
-				"buffer_size": 1693,
+				"buffer_size": 1992,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/gui.js",
+			"settings":
+			{
+				"buffer_size": 89,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/button.js",
+			"settings":
+			{
+				"buffer_size": 223,
 				"line_ending": "Windows"
 			}
 		},
@@ -39,7 +55,15 @@
 			"file": "src/classes/lemming.js",
 			"settings":
 			{
-				"buffer_size": 1174,
+				"buffer_size": 1258,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/gfx/sprite_atlases/lemming.json",
+			"settings":
+			{
+				"buffer_size": 44205,
 				"line_ending": "Windows"
 			}
 		},
@@ -47,7 +71,7 @@
 			"file": "assets/levels/level1.json",
 			"settings":
 			{
-				"buffer_size": 6029,
+				"buffer_size": 6051,
 				"line_ending": "Windows"
 			}
 		},
@@ -55,7 +79,7 @@
 			"file": "src/states/state_boot.js",
 			"settings":
 			{
-				"buffer_size": 1643,
+				"buffer_size": 1651,
 				"line_ending": "Windows"
 			}
 		},
@@ -123,7 +147,6 @@
 	[
 		"/D/Projects/Phaser/Lem",
 		"/D/Projects/Phaser/Lem/assets",
-		"/D/Projects/Phaser/Lem/assets/gfx/tilesets",
 		"/D/Projects/Phaser/Lem/lib",
 		"/D/Projects/Phaser/Lem/src",
 		"/D/Projects/Phaser/Lem/src/classes",
@@ -131,14 +154,15 @@
 	],
 	"file_history":
 	[
+		"/D/Projects/Phaser/Lem/sources.json",
+		"/C/Users/Tijmen/Desktop/lemming.json",
+		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/lemming.json",
 		"/D/Projects/Phaser/Lem/assets/asset_list.json",
 		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_classic.json",
 		"/D/Projects/Phaser/Lem/src/states/state_boot.js",
 		"/D/Projects/GMS/Workshop/TiledLoader/TiledLoader.gmx/datafiles/tilemaps/level1.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/lemming.json",
 		"/D/Projects/Phaser/Lem/src/classes/lemming.js",
 		"/D/Projects/Phaser/Lem/src/classes/prop.js",
-		"/D/Projects/Phaser/Lem/sources.json",
 		"/D/Projects/Phaser/Lem/src/states/state_game.js",
 		"/D/Projects/Phaser/Lem/src/classes/tile.js",
 		"/D/sandbox/New 3/[cypher] wet work girl (Ver.2.11)/Game.ini",
@@ -257,8 +281,7 @@
 		"/D/AHK/furyspark/Games/Test/inputtest.ahk",
 		"/D/Projects/AHK/AutoHotkey_L-master/source/hotkey.cpp",
 		"/D/Projects/AHK/AutoHotkey_L-master/source/hook.cpp",
-		"/D/Projects/Phaser/Meow/lib/states/bootstate.js",
-		"/D/AHK/furyspark/hooktest.ahk"
+		"/D/Projects/Phaser/Meow/lib/states/bootstate.js"
 	],
 	"find":
 	{
@@ -276,6 +299,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"audio",
+			".add",
+			"objectsDoors",
+			"members",
+			"lemmingsGroup",
+			"move",
 			"level",
 			"true",
 			"json",
@@ -381,15 +410,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3002,
+						"buffer_size": 2565,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2754,
-								2754
+								2462,
+								2462
 							]
 						],
 						"settings":
@@ -410,30 +439,88 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1693,
+						"buffer_size": 1992,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1693,
-								1693
+								1898,
+								1898
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
-						"translation.x": -0.0,
-						"translation.y": 210.0,
+						"translation.x": 0.0,
+						"translation.y": 300.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/gui.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 89,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								52,
+								52
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/classes/button.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 223,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								115,
+								115
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 4,
 					"file": "assets/config.json",
 					"semi_transient": false,
 					"settings":
@@ -458,24 +545,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 5,
 					"file": "src/classes/lemming.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1174,
+						"buffer_size": 1258,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1171,
-								1171
+								221,
+								221
 							]
 						],
 						"settings":
@@ -487,16 +574,45 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 6,
+					"file": "assets/gfx/sprite_atlases/lemming.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44205,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
 					"file": "assets/levels/level1.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6029,
+						"buffer_size": 6051,
 						"regions":
 						{
 						},
@@ -517,24 +633,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 8,
 					"file": "src/states/state_boot.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1643,
+						"buffer_size": 1651,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1604,
-								1604
+								967,
+								967
 							]
 						],
 						"settings":
@@ -543,14 +659,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 300.0,
+						"translation.y": 164.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 9,
 					"file": "assets/asset_list.json",
 					"semi_transient": false,
 					"settings":
@@ -575,7 +691,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
