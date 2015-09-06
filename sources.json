@@ -1,5 +1,6 @@
 [
 	"./src/classes/lemming.js",
+	"./src/classes/prop.js",
 	"./src/states/state_boot.js",
 	"./src/states/state_game.js",
 	"./src/game.js"

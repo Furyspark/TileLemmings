@@ -30,11 +30,39 @@ var bootState = {
 			game.load.spritesheet(curAsset.key, curAsset.url, curAsset.frameWidth, curAsset.frameHeight);
 		}
 
+		// Load sprite atlases
+		curList = assetList.sprite_atlases;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.atlasJSONHash(curAsset.key, curAsset.url, curAsset.atlasUrl);
+		}
+
+		// Load images
+		curList = assetList.images;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.image(curAsset.key, curAsset.url);
+		}
+
 		// Load sounds
-		var a, curAsset, curList = assetList.sounds;
+		curList = assetList.sounds;
 		for(a in curList) {
 			curAsset = curList[a];
 			game.load.audio(curAsset.key, curAsset.url);
+		}
+
+		// Load tilemaps
+		curList = assetList.tilemaps;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.tilemap(curAsset.key, curAsset.url, null, Phaser.Tilemap.TILED_JSON);
+		}
+
+		// Load JSON
+		curList = assetList.json;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.json(curAsset.key, curAsset.url);
 		}
 	}
 };

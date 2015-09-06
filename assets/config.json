@@ -1,0 +1,11 @@
+{
+	"props": {
+		"doors": {
+			"classic": {
+				"atlas": "props_classic",
+				"animName": "door",
+				"frames": 10
+			}
+		}
+	}
+}

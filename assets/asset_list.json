@@ -1,16 +1,52 @@
 {
 	"sprites": [
-		{
-			"key": "lemming_fall",
-			"url": "assets/sprites/lemming/lemming_fall.png",
-			"frameWidth": 32,
-			"frameHeight": 32
-		}
 	],
 	"sounds": [
 		{
 			"key": "bgmCancan",
 			"url": "assets/audio/bgm/cancan.ogg"
+		},
+		{
+			"key": "sndLetsGo",
+			"url": "assets/audio/sfx/sndLetsGo.wav"
+		},
+		{
+			"key": "sndDoor",
+			"url": "assets/audio/sfx/sndDoor.wav"
+		}
+	],
+	"sprite_atlases": [
+		{
+			"key": "lemming",
+			"url": "assets/gfx/sprite_atlases/lemming.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/lemming.json"
+		},
+		{
+			"key": "props_classic",
+			"url": "assets/gfx/sprite_atlases/props_classic.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_classic.json"
+		}
+	],
+	"images": [
+		{
+			"key": "tilesetIsland",
+			"url": "assets/gfx/tilesets/tilesetIsland.png"
+		},
+		{
+			"key": "tilesetPink",
+			"url": "assets/gfx/tilesets/tilesetPink.png"
+		},
+		{
+			"key": "tilesetPillar",
+			"url": "assets/gfx/tilesets/tilesetPillar.png"
+		}
+	],
+	"tilemaps": [
+	],
+	"json": [
+		{
+			"key": "config",
+			"url": "assets/config.json"
 		}
 	]
 }
