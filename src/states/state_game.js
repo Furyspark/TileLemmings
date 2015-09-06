@@ -3,11 +3,15 @@ var gameState = {
 	layers: {
 		tileLayer: null
 	},
+	bgm: null,
 
 	map: null,
 	tileLayer: null,
 	levelGroup: null,
-	objectsDoors: [],
+	lemmingsGroup: [],
+	doorsGroup: [],
+	exitsGroup: [],
+	trapsGroup: [],
 
 	preload: function() {
 		game.load.tilemap("level1", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
@@ -18,7 +22,7 @@ var gameState = {
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		// Set level stuff
 		this.levelTimer = new Phaser.Timer(game);
-		// Create level group
+		// Create groups
 		this.levelGroup = new Phaser.Group(game);
 		// this.levelGroup.scale.setTo(1.5);
 
@@ -30,43 +34,18 @@ var gameState = {
 		this.map.addTilesetImage("pillar", "tilesetPillar");
 		this.tileLayer = this.map.createLayer("tiles");
 		this.tileLayer.resizeWorld();
-
-		// Setup level map
-		// this.level = {
-		// 	data: [],
-		// 	width: this.map.width,
-		// 	height: this.map.height,
-		// 	tileWidth: this.map.tileWidth,
-		// 	tileHeight: this.map.tileHeight,
-		// 	getTileAt: function(x, y) {
-		// 		return this.data[(Math.floor(x / this.tileWidth) % this.map.width),
-		// 		Math.floor(Math.floor(y / this.tileHeight) / this.map.width)];
-		// 	},
-		// 	addTile: function(tile, type) {
-		// 		var obj = {};
-		// 		obj.tile = tile;
-		// 		obj.type = type;
-		// 		this.data.push(obj);
-		// 	}
-		// };
-		// console.log(this.tileLayer.layer.data);
-		// for(var a in this.tileLayer.tiles) {
-		// 	var tile = this.tileLayer.tiles[a];
-		// 	console.log(tile);
-		// 	// this.level.addTile(tile, 1);
-		// }
 		this.map.setCollisionBetween(1, 65000);
 
 		this.levelGroup.add(this.tileLayer);
 		// Set map collisions
-		
+
 		for(var a in this.map.objects.objects) {
 			var obj = this.map.objects.objects[a], newObj = null;
 			// Create door
 			if(obj.type == "door") {
 				var newObj = new Prop(game, this.levelGroup, (obj.x + (obj.width * 0.5)), obj.y);
-				newObj.setAsDoor("classic", 50, 500);
-				this.objectsDoors.push(newObj);
+				newObj.setAsDoor("classic", 50, 500, this.lemmingsGroup);
+				this.doorsGroup.push(newObj);
 			}
 		}
 
@@ -82,39 +61,50 @@ var gameState = {
 	},
 
 	update: function() {
-		for(var a in this.levelGroup.children) {
-			var obj = this.levelGroup.children[a];
-			// Object update
-			if(obj.hasOwnProperty("update")) {
-				obj.update();
-			}
-			// Collision
-			if(obj !== null && obj.objectType === "lemming") {
-				game.physics.arcade.collide(obj, this.tileLayer);
-			}
+		for(var a in this.lemmingsGroup) {
+			var obj = this.lemmingsGroup[a];
+			game.physics.arcade.collide(obj, this.tileLayer);
+			obj.updatePhysics();
 		}
 	},
 
 	render: function() {
-		var drawing = false;
-		for(var a in this.levelGroup.children) {
-			var obj = this.levelGroup.children[a];
-			if(typeof obj.render !== "undefined") {
-				obj.render();
-			}
-			if(obj.objectType == "lemming" && !drawing) {
-				drawing = true;
-				game.debug.bodyInfo(obj, 16, 24);
-			}
-			game.debug.body(obj);
-		}
+		// var drawing = false;
+		// for(var a in this.lemmingsGroup) {
+		// 	var obj = this.lemmingsGroup[a];
+		// 	if(typeof obj.render !== "undefined") {
+		// 		obj.render();
+		// 	}
+		// 	if(obj.objectType == "lemming" && !drawing) {
+		// 		drawing = true;
+		// 		game.debug.bodyInfo(obj, 16, 24);
+		// 	}
+		// 	game.debug.body(obj);
+		// }
 	},
 
 	openDoors: function() {
 		var snd = game.sound.play("sndDoor");
-		for(var a in this.objectsDoors) {
-			var obj = this.objectsDoors[a];
+		for(var a in this.doorsGroup) {
+			var obj = this.doorsGroup[a];
 			obj.openDoor();
+		}
+	},
+
+	playLevelBGM: function() {
+		var bgmKey = this.map.properties.bgm;
+		if(typeof bgmKey !== "undefined") {
+			this.playBGM(bgmKey);
+		}
+	},
+
+	playBGM: function(bgm) {
+		this.bgm = game.sound.play(bgm, 1, true);
+	},
+
+	stopBGM: function() {
+		if(this.bgm != null) {
+			this.bgm.stop();
 		}
 	}
 };

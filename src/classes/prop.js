@@ -3,6 +3,7 @@ var Prop = function(game, group, x, y) {
 	game.add.existing(this);
 	this.levelGroup = group;
 	this.levelGroup.add(this);
+	this.state = this.game.state.getCurrentState();
 
 	this.objectType = "prop";
 };
@@ -10,10 +11,11 @@ var Prop = function(game, group, x, y) {
 Prop.prototype = Object.create(Phaser.Sprite.prototype);
 Prop.prototype.constructor = Prop;
 
-Prop.prototype.setAsDoor = function(type, lemmings, rate) {
+Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
-
+	this.lemmingsGroup = lemmingsGroup;
+	
 	// Set configuration
 	var doorConfig = game.cache.getJSON("config").props.doors[type];
 	this.loadTexture(doorConfig.atlas);
@@ -44,7 +46,13 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate) {
 	this.openDoor = function() {
 		this.animations.getAnimation("opening").onComplete.addOnce(function() {
 			this.animations.play("open", 15);
-			this.opened();
+			// Create additional timer
+			var timer = game.time.create(true);
+			timer.add(500, function() {
+				this.opened();
+				this.state.playLevelBGM();
+			}, this);
+			timer.start();
 		}, this);
 		this.animations.play("opening", 15);
 	};
@@ -52,7 +60,8 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate) {
 		this.spawnTimer.loop(this.rate, function() {
 			if(this.lemmings > 0) {
 				this.lemmings--;
-				var lem = new Lemming(this.game, this.levelGroup, this.x, this.y + 10);
+				var lem = new Lemming(this.game, this.levelGroup, this.x, this.y + 30);
+				this.lemmingsGroup.push(lem);
 			}
 		}, this)
 		this.spawnTimer.start();

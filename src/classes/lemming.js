@@ -3,6 +3,7 @@ var Lemming = function(game, group, x, y) {
 	game.add.existing(this);
 	this.levelGroup = group;
 	this.levelGroup.add(this);
+	this.state = this.game.state.getCurrentState();
 
 	// Set anchor
 	this.anchor.setTo(0.5, 1);
@@ -12,9 +13,9 @@ var Lemming = function(game, group, x, y) {
 	this.body.setSize(16, 20);
 
 	// Set animations
-	this.AddAnim("fall", "Fall", 4);
-	this.AddAnim("move", "Move", 10);
-	this.AddAnim("mine", "Mine", 24);
+	this.addAnim("fall", "Fall", 4);
+	this.addAnim("move", "Move", 10);
+	this.addAnim("mine", "Mine", 24);
 	this.animations.play("fall", 15);
 	this.body.velocity.y = 100;
 
@@ -24,7 +25,7 @@ var Lemming = function(game, group, x, y) {
 Lemming.prototype = Object.create(Phaser.Sprite.prototype);
 Lemming.prototype.constructor = Lemming;
 
-Lemming.prototype.AddAnim = function(key, animName, numFrames) {
+Lemming.prototype.addAnim = function(key, animName, numFrames) {
 	var a, frames = [];
 	for(a = 0;a < numFrames;a += 1) {
 		var anim = "sprLemming_" + animName + "_" + a.toString() + ".png";
@@ -33,11 +34,11 @@ Lemming.prototype.AddAnim = function(key, animName, numFrames) {
 	this.animations.add(key, frames, 60, true);
 };
 
-Lemming.prototype.update = function() {
+Lemming.prototype.updatePhysics = function() {
 	if(this.body.onFloor()) {
 		this.animations.play("move", 15);
 		this.body.velocity.x = 50;
-		this.body.velocity.y = 0;
+		this.body.velocity.y = 5;
 	}
 	else {
 		this.animations.play("fall", 15);

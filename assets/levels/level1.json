@@ -57,7 +57,7 @@
  "orientation":"orthogonal",
  "properties":
     {
-
+     "bgm":"bgmCancan"
     },
  "renderorder":"right-down",
  "tileheight":16,
