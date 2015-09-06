@@ -1,4 +1,6 @@
 [
+	"./src/classes/gui.js",
+	"./src/classes/button.js",
 	"./src/classes/lemming.js",
 	"./src/classes/prop.js",
 	"./src/states/state_boot.js",
