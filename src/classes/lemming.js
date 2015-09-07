@@ -37,8 +37,8 @@ Lemming.prototype.addAnim = function(key, animName, numFrames) {
 Lemming.prototype.updatePhysics = function() {
 	if(this.body.onFloor()) {
 		this.animations.play("move", 15);
-		this.body.velocity.x = 50;
-		this.body.velocity.y = 5;
+		this.body.velocity.x = 30;
+		this.body.velocity.y = 1;
 	}
 	else {
 		this.animations.play("fall", 15);

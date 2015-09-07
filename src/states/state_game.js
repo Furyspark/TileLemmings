@@ -12,6 +12,7 @@ var gameState = {
 	doorsGroup: [],
 	exitsGroup: [],
 	trapsGroup: [],
+	guiGroup: null,
 
 	preload: function() {
 		game.load.tilemap("level1", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
@@ -25,6 +26,7 @@ var gameState = {
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
 		// this.levelGroup.scale.setTo(1.5);
+		this.guiGroup = new Phaser.Group(game);
 
 		// Set map
 		this.map = new Phaser.Tilemap(game, "level1");
@@ -48,6 +50,9 @@ var gameState = {
 				this.doorsGroup.push(newObj);
 			}
 		}
+
+		// Create GUI
+		this.createLevelGUI();
 
 		// Let's go... HRRRRN
 		var snd = game.sound.play("sndLetsGo");
@@ -105,6 +110,26 @@ var gameState = {
 	stopBGM: function() {
 		if(this.bgm != null) {
 			this.bgm.stop();
+		}
+	},
+
+	createLevelGUI: function() {
+		var btn = new GUI_Button(game, 20, 20);
+		btn.set({
+			released: "Btn_Basher_0.png",
+			pressed: "Btn_Basher_1.png"
+		}, function() {
+			this.state.deselectAllActions();
+		});
+		this.guiGroup.add(btn);
+	},
+
+	deselectAllActions: function() {
+		for(var a in this.guiGroup.children) {
+			var obj = this.guiGroup.children[a];
+			if(obj.subType == "action") {
+				obj.deselect();
+			}
 		}
 	}
 };

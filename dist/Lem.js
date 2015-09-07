@@ -1,4 +1,63 @@
-(function(Phaser) {var Lemming = function(game, group, x, y) {
+(function(Phaser) {var GUI = function(game, x, y) {
+	Phaser.Sprite.call(this, game, x, y);
+	game.add.existing(this);
+
+	// Set references
+	this.guiType = "undefined";
+	this.subType = "";
+	this.state = this.game.state.getCurrentState();
+};
+
+GUI.prototype = Object.create(Phaser.Sprite.prototype);
+GUI.prototype.constructor = GUI;
+var GUI_Button = function(game, x, y) {
+	GUI.call(this, game, x, y);
+
+	// Load base texture
+	this.loadTexture("gui");
+
+	// Initialization
+	this.guiType = "button";
+	this.subType = "";
+	this.callback = function() {};
+	this.pressed = false;
+	this.inputEnabled = true;
+
+	// Set on press action
+	this.events.onInputDown.add(function() {
+		this.select(true);
+	}, this);
+};
+
+GUI_Button.prototype = Object.create(GUI.prototype);
+GUI_Button.prototype.constructor = GUI_Button;
+
+GUI_Button.prototype.set = function(stateObject, callback, subType) {
+	this.callback = callback;
+	this.subType = subType;
+
+	this.animations.add("up", [stateObject.released], 15, false);
+	this.animations.add("down", [stateObject.pressed], 15, false);
+	this.animations.play("up");
+};
+
+GUI_Button.prototype.select = function(makeSound) {
+	makeSound = makeSound || false;
+
+	this.callback();
+
+	this.pressed = true;
+	this.animations.play("down");
+	if(makeSound) {
+		game.sound.play("sndUI_Click");
+	}
+};
+
+GUI_Button.prototype.deselect = function() {
+	this.pressed = false;
+	this.animations.play("up");
+};
+var Lemming = function(game, group, x, y) {
 	Phaser.Sprite.call(this, game, x, y, "lemming");
 	game.add.existing(this);
 	this.levelGroup = group;
@@ -37,8 +96,8 @@ Lemming.prototype.addAnim = function(key, animName, numFrames) {
 Lemming.prototype.updatePhysics = function() {
 	if(this.body.onFloor()) {
 		this.animations.play("move", 15);
-		this.body.velocity.x = 50;
-		this.body.velocity.y = 5;
+		this.body.velocity.x = 30;
+		this.body.velocity.y = 1;
 	}
 	else {
 		this.animations.play("fall", 15);
@@ -204,6 +263,7 @@ var gameState = {
 	doorsGroup: [],
 	exitsGroup: [],
 	trapsGroup: [],
+	guiGroup: null,
 
 	preload: function() {
 		game.load.tilemap("level1", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
@@ -217,6 +277,7 @@ var gameState = {
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
 		// this.levelGroup.scale.setTo(1.5);
+		this.guiGroup = new Phaser.Group(game);
 
 		// Set map
 		this.map = new Phaser.Tilemap(game, "level1");
@@ -240,6 +301,9 @@ var gameState = {
 				this.doorsGroup.push(newObj);
 			}
 		}
+
+		// Create GUI
+		this.createLevelGUI();
 
 		// Let's go... HRRRRN
 		var snd = game.sound.play("sndLetsGo");
@@ -297,6 +361,26 @@ var gameState = {
 	stopBGM: function() {
 		if(this.bgm != null) {
 			this.bgm.stop();
+		}
+	},
+
+	createLevelGUI: function() {
+		var btn = new GUI_Button(game, 20, 20);
+		btn.set({
+			released: "Btn_Basher_0.png",
+			pressed: "Btn_Basher_1.png"
+		}, function() {
+			this.state.deselectAllActions();
+		});
+		this.guiGroup.add(btn);
+	},
+
+	deselectAllActions: function() {
+		for(var a in this.guiGroup.children) {
+			var obj = this.guiGroup.children[a];
+			if(obj.subType == "action") {
+				obj.deselect();
+			}
 		}
 	}
 };

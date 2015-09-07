@@ -13,6 +13,10 @@
 		{
 			"key": "sndDoor",
 			"url": "assets/audio/sfx/sndDoor.wav"
+		},
+		{
+			"key": "sndUI_Click",
+			"url": "assets/audio/sfx/sndUI_Click.wav"
 		}
 	],
 	"sprite_atlases": [
@@ -25,6 +29,11 @@
 			"key": "props_classic",
 			"url": "assets/gfx/sprite_atlases/props_classic.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/props_classic.json"
+		},
+		{
+			"key": "gui",
+			"url": "assets/gfx/sprite_atlases/gui.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/gui.json"
 		}
 	],
 	"images": [

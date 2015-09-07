@@ -1,6 +1,12 @@
-var GUI = function(x, y) {
-	this.x = x;
-	this.y = y;
+var GUI = function(game, x, y) {
+	Phaser.Sprite.call(this, game, x, y);
+	game.add.existing(this);
+
+	// Set references
+	this.guiType = "undefined";
+	this.subType = "";
+	this.state = this.game.state.getCurrentState();
 };
 
+GUI.prototype = Object.create(Phaser.Sprite.prototype);
 GUI.prototype.constructor = GUI;
