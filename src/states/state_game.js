@@ -14,6 +14,28 @@ var gameState = {
 	trapsGroup: [],
 	guiGroup: null,
 
+	actions: {
+		climber: 0,
+		floater: 0,
+		exploder: 0,
+		blocker: 0,
+		builder: 0,
+		basher: 0,
+		miner: 0,
+		digger: 0
+	},
+	actionSelect: "",
+	actionButtons: {
+		climber: null,
+		floater: null,
+		exploder: null,
+		blocker: null,
+		builder: null,
+		basher: null,
+		miner: null,
+		digger: null
+	},
+
 	preload: function() {
 		game.load.tilemap("level1", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
 	},
@@ -114,14 +136,60 @@ var gameState = {
 	},
 
 	createLevelGUI: function() {
-		var btn = new GUI_Button(game, 20, 20);
-		btn.set({
-			released: "Btn_Basher_0.png",
-			pressed: "Btn_Basher_1.png"
-		}, function() {
-			this.state.deselectAllActions();
-		});
-		this.guiGroup.add(btn);
+		var actions = ["Climber", "Floater", "Exploder", "Blocker", "Builder", "Basher", "Miner", "Digger"];
+		var buttons = [];
+
+		// Create buttons
+		for(var a in actions) {
+			var action = actions[a];
+			var btn = new GUI_Button(game, this.guiGroup, 0, game.camera.y + game.camera.height);
+			buttons.push(btn);
+			btn.set({
+				released: "Btn_" + action + "_0.png",
+				pressed: "Btn_" + action + "_1.png"
+			}, function() {
+				console.log(action + " selected");
+			}, "action");
+
+			// Assign buttons
+			switch(action) {
+				case "Climber":
+				this.actionButtons.climber = btn;
+				break;
+				case "Floater":
+				this.actionButtons.floater = btn;
+				break;
+				case "Exploder":
+				this.actionButtons.exploder = btn;
+				break;
+				case "Blocker":
+				this.actionButtons.blocker = btn;
+				break;
+				case "Builder":
+				this.actionButtons.builder = btn;
+				break;
+				case "Basher":
+				this.actionButtons.basher = btn;
+				break;
+				case "Miner":
+				this.actionButtons.miner = btn;
+				break;
+				case "Digger":
+				this.actionButtons.digger = btn;
+				break;
+			}
+		}
+
+		// Align buttons
+		var alignX = 0;
+		for(var a in buttons) {
+			var btn = buttons[a];
+			btn.x = alignX;
+			alignX += btn.width;
+			btn.y -= btn.height;
+		}
+
+		this.expendAction("exploder");
 	},
 
 	deselectAllActions: function() {
@@ -131,5 +199,12 @@ var gameState = {
 				obj.deselect();
 			}
 		}
+	},
+
+	expendAction: function(action, amount) {
+		amount = amount || 1;
+		
+		this.actions[action] = Math.max(0, this.actions[action] - amount);
+		this.actionButtons[action].label.text = this.actions[action].toString();
 	}
 };

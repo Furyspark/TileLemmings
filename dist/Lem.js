@@ -1,6 +1,7 @@
-(function(Phaser) {var GUI = function(game, x, y) {
+(function(Phaser) {var GUI = function(game, group, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
+	group.add(this);
 
 	// Set references
 	this.guiType = "undefined";
@@ -10,8 +11,8 @@
 
 GUI.prototype = Object.create(Phaser.Sprite.prototype);
 GUI.prototype.constructor = GUI;
-var GUI_Button = function(game, x, y) {
-	GUI.call(this, game, x, y);
+var GUI_Button = function(game, group, x, y) {
+	GUI.call(this, game, group, x, y);
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -22,6 +23,20 @@ var GUI_Button = function(game, x, y) {
 	this.callback = function() {};
 	this.pressed = false;
 	this.inputEnabled = true;
+	this.label = game.add.text(0, 0, "", {
+		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
+	}, group);
+	this.label.stroke = "#000000";
+	this.label.strokeThickness = 3;
+	this.label.owner = this;
+	this.label.anchor.set(0.5);
+	this.label.reposition = function() {
+		this.x = this.owner.x + (this.owner.width / 2);
+		this.y = this.owner.y + 10;
+	};
+
+	this.label.text = "10";
+	this.label.reposition();
 
 	// Set on press action
 	this.events.onInputDown.add(function() {
@@ -41,8 +56,16 @@ GUI_Button.prototype.set = function(stateObject, callback, subType) {
 	this.animations.play("up");
 };
 
+GUI_Button.prototype.update = function() {
+	this.label.reposition();
+};
+
 GUI_Button.prototype.select = function(makeSound) {
 	makeSound = makeSound || false;
+
+	if(this.subType == "action") {
+		this.state.deselectAllActions();
+	}
 
 	this.callback();
 
@@ -265,6 +288,28 @@ var gameState = {
 	trapsGroup: [],
 	guiGroup: null,
 
+	actions: {
+		climber: 0,
+		floater: 0,
+		exploder: 10,
+		blocker: 0,
+		builder: 0,
+		basher: 0,
+		miner: 0,
+		digger: 0
+	},
+	actionSelect: "",
+	actionButtons: {
+		climber: null,
+		floater: null,
+		exploder: null,
+		blocker: null,
+		builder: null,
+		basher: null,
+		miner: null,
+		digger: null
+	},
+
 	preload: function() {
 		game.load.tilemap("level1", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
 	},
@@ -365,14 +410,60 @@ var gameState = {
 	},
 
 	createLevelGUI: function() {
-		var btn = new GUI_Button(game, 20, 20);
-		btn.set({
-			released: "Btn_Basher_0.png",
-			pressed: "Btn_Basher_1.png"
-		}, function() {
-			this.state.deselectAllActions();
-		});
-		this.guiGroup.add(btn);
+		var actions = ["Climber", "Floater", "Exploder", "Blocker", "Builder", "Basher", "Miner", "Digger"];
+		var buttons = [];
+
+		// Create buttons
+		for(var a in actions) {
+			var action = actions[a];
+			var btn = new GUI_Button(game, this.guiGroup, 0, game.camera.y + game.camera.height);
+			buttons.push(btn);
+			btn.set({
+				released: "Btn_" + action + "_0.png",
+				pressed: "Btn_" + action + "_1.png"
+			}, function() {
+				console.log(action + " selected");
+			}, "action");
+
+			// Assign buttons
+			switch(action) {
+				case "Climber":
+				this.actionButtons.climber = btn;
+				break;
+				case "Floater":
+				this.actionButtons.floater = btn;
+				break;
+				case "Exploder":
+				this.actionButtons.exploder = btn;
+				break;
+				case "Blocker":
+				this.actionButtons.blocker = btn;
+				break;
+				case "Builder":
+				this.actionButtons.builder = btn;
+				break;
+				case "Basher":
+				this.actionButtons.basher = btn;
+				break;
+				case "Miner":
+				this.actionButtons.miner = btn;
+				break;
+				case "Digger":
+				this.actionButtons.digger = btn;
+				break;
+			}
+		}
+
+		// Align buttons
+		var alignX = 0;
+		for(var a in buttons) {
+			var btn = buttons[a];
+			btn.x = alignX;
+			alignX += btn.width;
+			btn.y -= btn.height;
+		}
+
+		this.expendAction("exploder");
 	},
 
 	deselectAllActions: function() {
@@ -382,6 +473,45 @@ var gameState = {
 				obj.deselect();
 			}
 		}
+	},
+
+	expendAction: function(action) {
+		// switch(action) {
+		// 	case "climber":
+		// 	this.actions.climber = Math.max(0, this.actions.climber - 1);
+		// 	this.actionButtons.climber.label.text = this.actions.climber.toString();
+		// 	break;
+		// 	case "floater":
+		// 	this.actions.floater = Math.max(0, this.actions.floater - 1);
+		// 	this.actionButtons.floater.label.text = this.actions.floater.toString();
+		// 	break;
+		// 	case "exploder":
+		// 	this.actions.exploder = Math.max(0, this.actions.exploder - 1);
+		// 	this.actionButtons.exploder.label.text = this.actions.exploder.toString();
+		// 	break;
+		// 	case "blocker":
+		// 	this.actions.blocker = Math.max(0, this.actions.blocker - 1);
+		// 	this.actionButtons.blocker.label.text = this.actions.blocker.toString();
+		// 	break;
+		// 	case "builder":
+		// 	this.actions.builder = Math.max(0, this.actions.builder - 1);
+		// 	this.actionButtons.builder.label.text = this.actions.builder.toString();
+		// 	break;
+		// 	case "basher":
+		// 	this.actions.basher = Math.max(0, this.actions.basher - 1);
+		// 	this.actionButtons.basher.label.text = this.actions.basher.toString();
+		// 	break;
+		// 	case "miner":
+		// 	this.actions.miner = Math.max(0, this.actions.miner - 1);
+		// 	this.actionButtons.miner.label.text = this.actions.miner.toString();
+		// 	break;
+		// 	case "digger":
+		// 	this.actions.digger = Math.max(0, this.actions.digger - 1);
+		// 	this.actionButtons.digger.label.text = this.actions.digger.toString();
+		// 	break;
+		// }
+		this.actions[action] = Math.max(0, this.actions[action] - 1);
+		this.actionButtons[action].label.text = this.actions[action].toString();
 	}
 };
 var game = new Phaser.Game(

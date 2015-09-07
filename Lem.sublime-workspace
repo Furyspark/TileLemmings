@@ -15,7 +15,7 @@
 			"file": "src/states/state_game.js",
 			"settings":
 			{
-				"buffer_size": 3087,
+				"buffer_size": 4669,
 				"line_ending": "Windows"
 			}
 		},
@@ -31,7 +31,7 @@
 			"file": "src/classes/gui.js",
 			"settings":
 			{
-				"buffer_size": 308,
+				"buffer_size": 333,
 				"line_ending": "Windows"
 			}
 		},
@@ -39,7 +39,7 @@
 			"file": "src/classes/button.js",
 			"settings":
 			{
-				"buffer_size": 1068,
+				"buffer_size": 1638,
 				"line_ending": "Windows"
 			}
 		},
@@ -300,6 +300,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"climber",
+			" -",
+			"climber",
+			"Climber",
+			"climber",
+			"Climber",
+			"climber",
+			"Climber",
+			"climber",
+			"Exploder",
+			"exploder",
+			" =",
+			"Exploder",
+			"exploder",
+			"subType",
 			"sndUI_Select",
 			"up",
 			"constructor",
@@ -409,7 +424,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -418,15 +433,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3087,
+						"buffer_size": 4669,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2660,
-								2660
+								4449,
+								4449
 							]
 						],
 						"settings":
@@ -435,10 +450,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2385.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -454,12 +469,42 @@
 						"selection":
 						[
 							[
-								1898,
-								1898
+								1912,
+								1913
 							]
 						],
 						"settings":
 						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 120.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/gui.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 333,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								122,
+								122
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
@@ -470,61 +515,33 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/classes/gui.js",
+					"buffer": 3,
+					"file": "src/classes/button.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 308,
+						"buffer_size": 1638,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								166,
-								166
+								662,
+								662
 							]
 						],
 						"settings":
 						{
 							"open_with_edit": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/classes/button.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1068,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								958,
-								958
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -549,8 +566,8 @@
 							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.x": -0.0,
+						"translation.y": 90.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
@@ -598,8 +615,8 @@
 						"selection":
 						[
 							[
-								1100,
-								1100
+								1209,
+								1209
 							]
 						],
 						"settings":
@@ -611,7 +628,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{

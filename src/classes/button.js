@@ -1,5 +1,5 @@
-var GUI_Button = function(game, x, y) {
-	GUI.call(this, game, x, y);
+var GUI_Button = function(game, group, x, y) {
+	GUI.call(this, game, group, x, y);
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -10,6 +10,20 @@ var GUI_Button = function(game, x, y) {
 	this.callback = function() {};
 	this.pressed = false;
 	this.inputEnabled = true;
+	this.label = game.add.text(0, 0, "", {
+		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
+	}, group);
+	this.label.stroke = "#000000";
+	this.label.strokeThickness = 3;
+	this.label.owner = this;
+	this.label.anchor.set(0.5);
+	this.label.reposition = function() {
+		this.x = this.owner.x + (this.owner.width / 2);
+		this.y = this.owner.y + 10;
+	};
+
+	this.label.text = "0";
+	this.label.reposition();
 
 	// Set on press action
 	this.events.onInputDown.add(function() {
@@ -29,8 +43,16 @@ GUI_Button.prototype.set = function(stateObject, callback, subType) {
 	this.animations.play("up");
 };
 
+GUI_Button.prototype.update = function() {
+	this.label.reposition();
+};
+
 GUI_Button.prototype.select = function(makeSound) {
 	makeSound = makeSound || false;
+
+	if(this.subType == "action") {
+		this.state.deselectAllActions();
+	}
 
 	this.callback();
 
