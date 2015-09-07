@@ -1,4 +1,44 @@
-(function(Phaser) {var GUI = function(game, group, x, y) {
+(function(Phaser) {
+var Alarm = function(game, duration, callback, callbackContext) {
+	this.game = game;
+	this.duration = duration;
+	this.callback = callback;
+	this.callbackContext = callbackContext;
+
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
+	Object.defineProperty(this, "paused", {get() {
+		if(this.state.paused) {
+			return this.state.paused;
+		}
+		return false;
+	}});
+
+	this.addToGame();
+};
+
+Alarm.prototype.constructor = Alarm;
+
+Alarm.prototype.addToGame = function() {
+	// Add to alarms list
+	this.state.alarms.data.push(this);
+};
+
+Alarm.prototype.step = function() {
+	if(!this.paused) {
+		if(this.duration > 0) {
+			this.duration--;
+			if(this.duration <= 0) {
+				if(this.callbackContext) {
+					this.callback.call(this.callbackContext);
+				}
+				this.state.alarms.remove(this);
+			}
+		}
+	}
+};
+var GUI = function(game, group, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
 	group.add(this);
@@ -20,9 +60,11 @@ var GUI_Button = function(game, group, x, y) {
 	// Initialization
 	this.guiType = "button";
 	this.subType = "";
-	this.callback = function() {};
+	this.action = "";
 	this.pressed = false;
 	this.inputEnabled = true;
+
+	// Create label
 	this.label = game.add.text(0, 0, "", {
 		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
 	}, group);
@@ -35,7 +77,7 @@ var GUI_Button = function(game, group, x, y) {
 		this.y = this.owner.y + 10;
 	};
 
-	this.label.text = "10";
+	this.label.text = "";
 	this.label.reposition();
 
 	// Set on press action
@@ -47,8 +89,9 @@ var GUI_Button = function(game, group, x, y) {
 GUI_Button.prototype = Object.create(GUI.prototype);
 GUI_Button.prototype.constructor = GUI_Button;
 
-GUI_Button.prototype.set = function(stateObject, callback, subType) {
-	this.callback = callback;
+// Set button type and action
+GUI_Button.prototype.set = function(stateObject, action, subType) {
+	this.action = action;
 	this.subType = subType;
 
 	this.animations.add("up", [stateObject.released], 15, false);
@@ -67,7 +110,7 @@ GUI_Button.prototype.select = function(makeSound) {
 		this.state.deselectAllActions();
 	}
 
-	this.callback();
+	this.doAction();
 
 	this.pressed = true;
 	this.animations.play("down");
@@ -80,6 +123,19 @@ GUI_Button.prototype.deselect = function() {
 	this.pressed = false;
 	this.animations.play("up");
 };
+
+GUI_Button.prototype.doAction = function() {
+	switch(this.subType) {
+		case "action":
+		for(var a in this.state.actions.items) {
+			var item = this.state.actions.items[a];
+			if(item.name == this.action) {
+				this.state.actions.select = a;
+			}
+		}
+		break;
+	}
+};
 var Lemming = function(game, group, x, y) {
 	Phaser.Sprite.call(this, game, x, y, "lemming");
 	game.add.existing(this);
@@ -87,19 +143,70 @@ var Lemming = function(game, group, x, y) {
 	this.levelGroup.add(this);
 	this.state = this.game.state.getCurrentState();
 
+	this.action = {
+		name: "",
+		value: 0,
+		active: false,
+		clear: function() {
+			this.name = "";
+			this.value = 0;
+			this.active = false;
+		},
+		get idle() {
+			return (!this.active);
+		}
+	}
+
+	// Set input
+	this.inputEnabled = true;
+	this.events.onInputDown.add(function() {
+		this.setAction(this.state.actions.current.name);
+	}, this);
+
 	// Set anchor
 	this.anchor.setTo(0.5, 1);
 
 	// Set physics
-	game.physics.arcade.enable(this);
-	this.body.setSize(16, 20);
+	// game.physics.arcade.enable(this);
+	// this.body.setSize(16, 20);
+
+	this.dir = 1;
+	this.velocity = {
+		x: 0,
+		y: 0
+	};
+	this.tile = {
+		get width() {
+			return this.parent.state.map.tileWidth;
+		},
+		get height() {
+			return this.parent.state.map.tileHeight;
+		},
+		x: function(checkX) {
+			return Math.floor(checkX / this.width);
+		},
+		y: function(checkY) {
+			return Math.floor(checkY / this.height);
+		},
+		type: function(tileX, tileY) {
+			var index = (tileX % this.parent.tileLayer.width) + Math.floor(tileY * this.parent.tileLayer.width);
+			return this.parent.tileLayer.data[index];
+		}
+	};
+	this.tile.parent = this;
+	Object.defineProperty(this, "tileLayer", {get: function() {
+		return this.state.layers.tileLayer;
+	}});
 
 	// Set animations
 	this.addAnim("fall", "Fall", 4);
 	this.addAnim("move", "Move", 10);
 	this.addAnim("mine", "Mine", 24);
+	this.addAnim("build", "Build", 16);
+	this.addAnim("build_end", "BuildEnd", 10, false);
 	this.animations.play("fall", 15);
-	this.body.velocity.y = 100;
+	this.velocity.y = 1;
+	// this.body.velocity.y = 100;
 
 	this.objectType = "lemming";
 };
@@ -107,30 +214,132 @@ var Lemming = function(game, group, x, y) {
 Lemming.prototype = Object.create(Phaser.Sprite.prototype);
 Lemming.prototype.constructor = Lemming;
 
-Lemming.prototype.addAnim = function(key, animName, numFrames) {
+Lemming.prototype.onFloor = function() {
+	return (this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) === 1 ||
+		this.tile.type(this.tile.x(this.x), this.tile.y(this.y) - 1) === 1);
+};
+
+Lemming.prototype.turnAround = function() {
+	this.scale.x = -this.scale.x;
+	this.dir = -this.dir;
+	this.velocity.x = -this.velocity.x;
+	this.x += this.velocity.x;
+};
+
+Lemming.prototype.update = function() {
+	this.x += this.velocity.x;
+	this.y += this.velocity.y;
+
+	if(this.onFloor() && this.action.idle) {
+		this.velocity.x = 0.5;
+		if(this.dir === -1) {
+			this.velocity.x = -this.velocity.x;
+		}
+		this.velocity.y = 0;
+		// Align to floor
+		this.y = Math.floor(this.y / this.tile.height) * this.tile.height;
+		// Check walk up ramp
+		if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) === 1 &&
+			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 0) {
+			this.y -= this.tile.height;
+		}
+		// Check walk against wall
+		else if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) === 1 &&
+			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 1) {
+			// Turn around
+			this.turnAround();
+		}
+		// Play animation
+		this.animations.play("move", 15);
+	}
+	else if(!this.onFloor()) {
+		this.velocity.x = 0;
+		this.velocity.y = 1.5;
+		this.animations.play("fall", 15);
+	}
+};
+
+Lemming.prototype.addAnim = function(key, animName, numFrames, loop) {
+	if(loop === undefined) {
+		loop = true;
+	}
 	var a, frames = [];
 	for(a = 0;a < numFrames;a += 1) {
 		var anim = "sprLemming_" + animName + "_" + a.toString() + ".png";
 		frames.push(anim);
 	}
-	this.animations.add(key, frames, 60, true);
+	console.log(key + ":" + loop);
+	this.animations.add(key, frames, 60, loop);
 };
 
 Lemming.prototype.updatePhysics = function() {
 	if(this.body.onFloor()) {
-		this.animations.play("move", 15);
-		this.body.velocity.x = 30;
+		if(!this.action.active) {
+			this.animations.play("move", 15);
+			this.body.velocity.x = 30;
+		}
 		this.body.velocity.y = 1;
 	}
 	else {
+		this.action.clear();
 		this.animations.play("fall", 15);
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 100;
 	}
 };
 
-Lemming.prototype.render = function() {
-	
+Lemming.prototype.setAction = function(actionName) {
+	if(actionName != this.action.name) {
+		switch(actionName) {
+			// SET ACTION: Walk
+			case "walker":
+			if(this.onFloor()) {
+				this.action.name = "";
+				this.action.value = 0;
+				this.action.active = false;
+			}
+			break;
+			// SET ACTION: Build
+			case "builder":
+			// Requires the lemming to be on the floor
+			if(this.onFloor()) {
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 5;
+				this.animations.play("build", 15);
+				// Set timer
+				var timer = new Alarm(game, 120, function() {
+					this.proceedBuild();
+				}, this);
+				// Set velocity
+				this.velocity.x = 0;
+			}
+			break;
+		}
+	}
+};
+
+Lemming.prototype.proceedBuild = function() {
+	this.action.value--;
+	if(this.action.value === 0) {
+		// Stop building
+		this.animations.play("build_end", 10);
+		this.animations.currentAnim.onComplete.addOnce(function() {
+			this.setAction("walker");
+		}, this);
+	}
+	else {
+		var timer = new Alarm(game, 120, function() {
+			this.proceedBuild();
+		}, this);
+	}
+	// Build a step
+	this.x += (this.tile.width * this.dir);
+	this.y -= this.tile.height;
+	this.tileLayer.setType(this.tile.x(this.x), this.tile.y(this.y + (this.tile.height * 0.5)), 1);
 };
 var Prop = function(game, group, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
@@ -275,11 +484,28 @@ var bootState = {
 var gameState = {
 	map: null,
 	layers: {
-		tileLayer: null
+		tileLayer: {
+			data: [],
+			width: 1,
+			height: 1,
+			setType: function(x, y, type) {
+				var index = Math.floor((x % this.width) + (y * this.width));
+				this.data[index] = type;
+			},
+			logTiles: function() {
+				var str = "";
+				for(var a in this.data) {
+					str += this.data[a];
+					if(a % this.width == this.width-1) {
+						str += "\n";
+					}
+				}
+				console.log(str);
+			}
+		}
 	},
 	bgm: null,
 
-	map: null,
 	tileLayer: null,
 	levelGroup: null,
 	lemmingsGroup: [],
@@ -287,49 +513,169 @@ var gameState = {
 	exitsGroup: [],
 	trapsGroup: [],
 	guiGroup: null,
+	alarms: {
+		data: [],
+		remove: function(alarm) {
+			var found = false;
+			for(var a = 0;a < this.data.length && !found;a++) {
+				var curAlarm = this.data[a];
+				if(curAlarm == alarm) {
+					found = true;
+					this.data.splice(a, 1);
+				}
+			}
+			delete alarm;
+		}
+	},
 
 	actions: {
-		climber: 0,
-		floater: 0,
-		exploder: 10,
-		blocker: 0,
-		builder: 0,
-		basher: 0,
-		miner: 0,
-		digger: 0
-	},
-	actionSelect: "",
-	actionButtons: {
-		climber: null,
-		floater: null,
-		exploder: null,
-		blocker: null,
-		builder: null,
-		basher: null,
-		miner: null,
-		digger: null
+		items: [
+			{
+				name: "climber",
+				amount: 0,
+				button: null
+			},
+			{
+				name: "floater",
+				amount: 0,
+				button: null
+			},
+			{
+				name: "exploder",
+				amount: 0,
+				button: null
+			},
+			{
+				name: "blocker",
+				amount: 0,
+				button: null
+			},
+			{
+				name: "builder",
+				amount: 0,
+				button: null
+			},
+			{
+				name: "basher",
+				amount: 0,
+				button: null
+			},
+			{
+				name: "miner",
+				amount: 0,
+				button: null
+			},
+			{
+				name: "digger",
+				amount: 0,
+				button: null
+			}
+		],
+		select: -1,
+		get current() {
+			return this.items[this.select];
+		}
 	},
 
 	preload: function() {
-		game.load.tilemap("level1", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
+		// Preload map data
+		game.load.tilemap("level", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
 	},
 
 	create: function() {
-		// Set physics
-		game.physics.startSystem(Phaser.Physics.ARCADE);
-		// Set level stuff
-		this.levelTimer = new Phaser.Timer(game);
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
 		// this.levelGroup.scale.setTo(1.5);
 		this.guiGroup = new Phaser.Group(game);
+		
+		// Create GUI
+		this.createLevelGUI();
 
-		// Set map
-		this.map = new Phaser.Tilemap(game, "level1");
+		// Create map
+		this.map = new Phaser.Tilemap(game, "level");
+		// Set tile size
 		this.map.tileWidth = 16;
 		this.map.tileHeight = 16;
+
+		// Predetermine map files
+		var mapFiles = [];
+		if(this.map.properties.bgm) {
+			mapFiles.push({
+				url: "assets/audio/bgm/" + this.map.properties.bgm,
+				key: "bgm",
+				type: "sound"
+			});
+		}
+
+		// Set tile layers
+		for(var a in this.map.layers) {
+			var layer = this.map.layers[a];
+			if(layer.name === "tiles") {
+				for(var col in layer.data) {
+					this.layers.tileLayer.height = Math.max(this.layers.tileLayer.height, parseInt(col)+1);
+					var row = layer.data[col];
+					for(var c in row) {
+						this.layers.tileLayer.width = Math.max(this.layers.tileLayer.width, row.length);
+						var tile = row[c];
+						if(tile.index !== -1) {
+							this.layers.tileLayer.data.push(1);
+						}
+						else {
+							this.layers.tileLayer.data.push(0);
+						}
+					}
+				}
+			}
+		}
+
+		// Preload map files
+		if(mapFiles.length > 0) {
+			// Set load handler
+			game.load.onLoadComplete.addOnce(function() {
+				this.startLevel();
+			}, this);
+
+			// Load files
+			for(var a in mapFiles) {
+				var file = mapFiles[a];
+				switch(file.type) {
+					case "sound":
+					game.load.audio(file.key, file.url);
+					break;
+				}
+			}
+
+			// Start loading
+			game.load.start();
+		}
+		else {
+			// No files needed to be loaded: start level
+			this.startLevel();
+		}
+	},
+
+	initMap: function() {
+		// Place images
 		this.map.addTilesetImage("pink", "tilesetPink");
 		this.map.addTilesetImage("pillar", "tilesetPillar");
+
+		// Set up action count
+		for(var a in this.actions.items) {
+			var action = this.actions.items[a];
+			if(this.map.properties[action.name]) {
+				this.setActionAmount(action.name, parseInt(this.map.properties[action.name]));
+			}
+		}
+	},
+
+	startLevel: function() {
+		this.initMap();
+		// Set physics
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		// Set level stuff
+		// Create groups
+
+		// Create map layers
 		this.tileLayer = this.map.createLayer("tiles");
 		this.tileLayer.resizeWorld();
 		this.map.setCollisionBetween(1, 65000);
@@ -338,7 +684,7 @@ var gameState = {
 		// Set map collisions
 
 		for(var a in this.map.objects.objects) {
-			var obj = this.map.objects.objects[a], newObj = null;
+			var obj = this.map.objects.objects[a];
 			// Create door
 			if(obj.type == "door") {
 				var newObj = new Prop(game, this.levelGroup, (obj.x + (obj.width * 0.5)), obj.y);
@@ -346,9 +692,6 @@ var gameState = {
 				this.doorsGroup.push(newObj);
 			}
 		}
-
-		// Create GUI
-		this.createLevelGUI();
 
 		// Let's go... HRRRRN
 		var snd = game.sound.play("sndLetsGo");
@@ -362,10 +705,14 @@ var gameState = {
 	},
 
 	update: function() {
-		for(var a in this.lemmingsGroup) {
-			var obj = this.lemmingsGroup[a];
-			game.physics.arcade.collide(obj, this.tileLayer);
-			obj.updatePhysics();
+		// for(var a in this.lemmingsGroup) {
+		// 	var obj = this.lemmingsGroup[a];
+		// 	// game.physics.arcade.collide(obj, this.tileLayer);
+		// 	// obj.updatePhysics();
+		// }
+		for(var a in this.alarms.data) {
+			var alarm = this.alarms.data[a];
+			alarm.step();
 		}
 	},
 
@@ -393,10 +740,7 @@ var gameState = {
 	},
 
 	playLevelBGM: function() {
-		var bgmKey = this.map.properties.bgm;
-		if(typeof bgmKey !== "undefined") {
-			this.playBGM(bgmKey);
-		}
+		this.playBGM("bgm");
 	},
 
 	playBGM: function(bgm) {
@@ -404,54 +748,27 @@ var gameState = {
 	},
 
 	stopBGM: function() {
-		if(this.bgm != null) {
+		if(this.bgm !== null) {
 			this.bgm.stop();
 		}
 	},
 
 	createLevelGUI: function() {
-		var actions = ["Climber", "Floater", "Exploder", "Blocker", "Builder", "Basher", "Miner", "Digger"];
 		var buttons = [];
 
 		// Create buttons
-		for(var a in actions) {
-			var action = actions[a];
+		for(var a in this.actions.items) {
+			var action = this.actions.items[a];
+			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
 			var btn = new GUI_Button(game, this.guiGroup, 0, game.camera.y + game.camera.height);
 			buttons.push(btn);
 			btn.set({
-				released: "Btn_" + action + "_0.png",
-				pressed: "Btn_" + action + "_1.png"
-			}, function() {
-				console.log(action + " selected");
-			}, "action");
+				released: animPrefix + "0.png",
+				pressed: animPrefix + "1.png"
+			}, action.name, "action");
 
 			// Assign buttons
-			switch(action) {
-				case "Climber":
-				this.actionButtons.climber = btn;
-				break;
-				case "Floater":
-				this.actionButtons.floater = btn;
-				break;
-				case "Exploder":
-				this.actionButtons.exploder = btn;
-				break;
-				case "Blocker":
-				this.actionButtons.blocker = btn;
-				break;
-				case "Builder":
-				this.actionButtons.builder = btn;
-				break;
-				case "Basher":
-				this.actionButtons.basher = btn;
-				break;
-				case "Miner":
-				this.actionButtons.miner = btn;
-				break;
-				case "Digger":
-				this.actionButtons.digger = btn;
-				break;
-			}
+			action.btn = btn;
 		}
 
 		// Align buttons
@@ -462,8 +779,6 @@ var gameState = {
 			alignX += btn.width;
 			btn.y -= btn.height;
 		}
-
-		this.expendAction("exploder");
 	},
 
 	deselectAllActions: function() {
@@ -475,43 +790,35 @@ var gameState = {
 		}
 	},
 
-	expendAction: function(action) {
-		// switch(action) {
-		// 	case "climber":
-		// 	this.actions.climber = Math.max(0, this.actions.climber - 1);
-		// 	this.actionButtons.climber.label.text = this.actions.climber.toString();
-		// 	break;
-		// 	case "floater":
-		// 	this.actions.floater = Math.max(0, this.actions.floater - 1);
-		// 	this.actionButtons.floater.label.text = this.actions.floater.toString();
-		// 	break;
-		// 	case "exploder":
-		// 	this.actions.exploder = Math.max(0, this.actions.exploder - 1);
-		// 	this.actionButtons.exploder.label.text = this.actions.exploder.toString();
-		// 	break;
-		// 	case "blocker":
-		// 	this.actions.blocker = Math.max(0, this.actions.blocker - 1);
-		// 	this.actionButtons.blocker.label.text = this.actions.blocker.toString();
-		// 	break;
-		// 	case "builder":
-		// 	this.actions.builder = Math.max(0, this.actions.builder - 1);
-		// 	this.actionButtons.builder.label.text = this.actions.builder.toString();
-		// 	break;
-		// 	case "basher":
-		// 	this.actions.basher = Math.max(0, this.actions.basher - 1);
-		// 	this.actionButtons.basher.label.text = this.actions.basher.toString();
-		// 	break;
-		// 	case "miner":
-		// 	this.actions.miner = Math.max(0, this.actions.miner - 1);
-		// 	this.actionButtons.miner.label.text = this.actions.miner.toString();
-		// 	break;
-		// 	case "digger":
-		// 	this.actions.digger = Math.max(0, this.actions.digger - 1);
-		// 	this.actionButtons.digger.label.text = this.actions.digger.toString();
-		// 	break;
-		// }
-		this.actions[action] = Math.max(0, this.actions[action] - 1);
-		this.actionButtons[action].label.text = this.actions[action].toString();
+	expendAction: function(action, amount) {
+		amount = amount || 1;
+
+		this.setActionAmount(action, this.getActionAmount(action) - amount);
+	},
+
+	getActionAmount: function(actionName) {
+		for(var a in this.actions.items) {
+			var action = this.actions.items[a];
+			if(action.name == actionName) {
+				return action.amount;
+			}
+		}
+		return -1;
+	},
+
+	setActionAmount: function(actionName, amount) {
+		amount = amount || 0;
+
+		for(var a in this.actions.items) {
+			var action = this.actions.items[a];
+			if(action.name == actionName) {
+				action.amount = Math.max(0, amount);
+				action.btn.label.text = action.amount.toString();
+				if(action.amount === 0) {
+					action.btn.label.text = "";
+				}
+			}
+		}
 	}
 };
 var game = new Phaser.Game(
@@ -524,4 +831,5 @@ var game = new Phaser.Game(
 game.state.add("boot", bootState);
 game.state.add("game", gameState);
 
-game.state.start("boot");})(Phaser);
+game.state.start("boot");
+})(Phaser);

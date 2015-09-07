@@ -6,9 +6,9 @@ module.exports = function(grunt) {
 
 		concat: {
 			options: {
-				banner: "(function(Phaser) {",
+				banner: "(function(Phaser) {\n",
 				separator: "\n",
-				footer: "})(Phaser);"
+				footer: "\n})(Phaser);"
 			},
 			dist: {
 				src: sources,

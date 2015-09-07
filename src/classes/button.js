@@ -7,9 +7,11 @@ var GUI_Button = function(game, group, x, y) {
 	// Initialization
 	this.guiType = "button";
 	this.subType = "";
-	this.callback = function() {};
+	this.action = "";
 	this.pressed = false;
 	this.inputEnabled = true;
+
+	// Create label
 	this.label = game.add.text(0, 0, "", {
 		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
 	}, group);
@@ -22,7 +24,7 @@ var GUI_Button = function(game, group, x, y) {
 		this.y = this.owner.y + 10;
 	};
 
-	this.label.text = "0";
+	this.label.text = "";
 	this.label.reposition();
 
 	// Set on press action
@@ -34,8 +36,9 @@ var GUI_Button = function(game, group, x, y) {
 GUI_Button.prototype = Object.create(GUI.prototype);
 GUI_Button.prototype.constructor = GUI_Button;
 
-GUI_Button.prototype.set = function(stateObject, callback, subType) {
-	this.callback = callback;
+// Set button type and action
+GUI_Button.prototype.set = function(stateObject, action, subType) {
+	this.action = action;
 	this.subType = subType;
 
 	this.animations.add("up", [stateObject.released], 15, false);
@@ -54,7 +57,7 @@ GUI_Button.prototype.select = function(makeSound) {
 		this.state.deselectAllActions();
 	}
 
-	this.callback();
+	this.doAction();
 
 	this.pressed = true;
 	this.animations.play("down");
@@ -66,4 +69,17 @@ GUI_Button.prototype.select = function(makeSound) {
 GUI_Button.prototype.deselect = function() {
 	this.pressed = false;
 	this.animations.play("up");
+};
+
+GUI_Button.prototype.doAction = function() {
+	switch(this.subType) {
+		case "action":
+		for(var a in this.state.actions.items) {
+			var item = this.state.actions.items[a];
+			if(item.name == this.action) {
+				this.state.actions.select = a;
+			}
+		}
+		break;
+	}
 };

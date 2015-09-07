@@ -3,10 +3,6 @@
 	],
 	"sounds": [
 		{
-			"key": "bgmCancan",
-			"url": "assets/audio/bgm/cancan.ogg"
-		},
-		{
 			"key": "sndLetsGo",
 			"url": "assets/audio/sfx/sndLetsGo.wav"
 		},
@@ -17,6 +13,18 @@
 		{
 			"key": "sndUI_Click",
 			"url": "assets/audio/sfx/sndUI_Click.wav"
+		},
+		{
+			"key": "sndAction",
+			"url": "assets/audio/sfx/sndAction.wav"
+		},
+		{
+			"key": "sndBuildEnding",
+			"url": "assets/audio/sfx/sndBuildEnding.wav"
+		},
+		{
+			"key": "sndChink",
+			"url": "assets/audio/sfx/sndChink.wav"
 		}
 	],
 	"sprite_atlases": [
@@ -34,6 +42,11 @@
 			"key": "gui",
 			"url": "assets/gfx/sprite_atlases/gui.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/gui.json"
+		},
+		{
+			"key": "misc",
+			"url": "assets/gfx/sprite_atlases/misc.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/misc.json"
 		}
 	],
 	"images": [
