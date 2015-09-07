@@ -1,9 +1,10 @@
-var Prop = function(game, group, x, y) {
+var Prop = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
-	this.levelGroup = group;
-	this.levelGroup.add(this);
-	this.state = this.game.state.getCurrentState();
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
+	this.state.levelGroup.add(this);
 
 	this.objectType = "prop";
 };
@@ -60,7 +61,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 		this.spawnTimer.loop(this.rate, function() {
 			if(this.lemmings > 0) {
 				this.lemmings--;
-				var lem = new Lemming(this.game, this.levelGroup, this.x, this.y + 30);
+				var lem = new Lemming(this.game, this.x, this.y + 30);
 				this.lemmingsGroup.push(lem);
 			}
 		}, this)

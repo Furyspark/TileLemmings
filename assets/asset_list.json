@@ -61,6 +61,14 @@
 		{
 			"key": "tilesetPillar",
 			"url": "assets/gfx/tilesets/tilesetPillar.png"
+		},
+		{
+			"key": "tilesetPlaceables",
+			"url": "assets/gfx/tilesets/tilesetPlaceables.png"
+		},
+		{
+			"key": "tilesetMiscTiles2",
+			"url": "assets/gfx/tilesets/tilesetMiscTiles2.png"
 		}
 	],
 	"tilemaps": [

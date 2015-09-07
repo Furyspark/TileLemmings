@@ -136,12 +136,90 @@ GUI_Button.prototype.doAction = function() {
 		break;
 	}
 };
-var Lemming = function(game, group, x, y) {
+var Cursor = function(game, x, y, owner) {
+	Phaser.Sprite.call(this, game, x, y, "misc");
+	this.game.add.existing(this);
+	this.owner = owner;
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}})
+	this.state.levelGroup.add(this);
+
+	this.anchor.setTo(0.5, 0.5);
+	this.animations.add("hover", ["sprCursor_Open.png"]);
+	this.animations.play("hover");
+};
+
+Cursor.prototype = Object.create(Phaser.Sprite.prototype);
+Cursor.prototype.constructor = Cursor;
+
+Cursor.prototype.reposition = function() {
+	this.x = this.owner.left + ((this.owner.right - this.owner.left) * 0.5);
+	this.y = this.owner.top + ((this.owner.bottom - this.owner.top) * 0.5);
+};
+
+Cursor.prototype.destroy = function() {
+	for(var a in this.state.levelGroup.children) {
+		var obj = this.state.levelGroup.children[a];
+		if(obj === this) {
+			this.state.levelGroup.removeChild(this);
+		}
+	}
+	this.kill();
+};
+var Tile = function(game, x, y, key, cropping) {
+	Phaser.Image.call(this, game, x, y, key);
+	this.game = game;
+	this.game.add.existing(this);
+
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
+	this.tile = {
+		get x() {
+			return Math.floor(this.owner.x / this.owner.state.map.tilewidth);
+		},
+		get y() {
+			return Math.floor(this.owner.y / this.owner.state.map.tileheight);
+		}
+	};
+	this.tile.owner = this;
+	// Add to scale group
+	this.state.levelGroup.add(this);
+
+	// Crop
+	this.crop(cropping, false);
+};
+
+Tile.prototype = Object.create(Phaser.Image.prototype);
+Tile.prototype.constructor = Tile;
+
+Tile.prototype.destroy = function(removeCol) {
+	if(removeCol == undefined) {
+		removeCol = true;
+	}
+
+	var layer = this.state.layers.primitiveLayer;
+	for(var a in layer.data) {
+		var tile = layer.data[a];
+		if(tile === this) {
+			// Remove collision flag
+			if(removeCol) {
+				this.state.layers.tileLayer.setType(this.tile.x, this.tile.y, 0);
+			}
+			// Delete self
+			layer.data[a] = null;
+			this.kill();
+		}
+	}
+};
+var Lemming = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y, "lemming");
 	game.add.existing(this);
-	this.levelGroup = group;
-	this.levelGroup.add(this);
-	this.state = this.game.state.getCurrentState();
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
+	this.state.levelGroup.add(this);
 
 	this.action = {
 		name: "",
@@ -158,29 +236,41 @@ var Lemming = function(game, group, x, y) {
 	}
 
 	// Set input
-	this.inputEnabled = true;
-	this.events.onInputDown.add(function() {
-		this.setAction(this.state.actions.current.name);
-	}, this);
+	// this.inputEnabled = true;
+	// this.events.onInputDown.add(function() {
+	// 	this.setAction(this.state.actions.current.name);
+	// }, this);
 
 	// Set anchor
 	this.anchor.setTo(0.5, 1);
-
-	// Set physics
-	// game.physics.arcade.enable(this);
-	// this.body.setSize(16, 20);
 
 	this.dir = 1;
 	this.velocity = {
 		x: 0,
 		y: 0
 	};
+	this.bbox = {
+		get left() {
+			return this.owner.x - Math.abs(this.owner.offsetX);
+		},
+		get top() {
+			return this.owner.y - Math.abs(this.owner.offsetY);
+		},
+		get right() {
+			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+		},
+		get bottom() {
+			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+		},
+		owner: null
+	};
+	this.bbox.owner = this;
 	this.tile = {
 		get width() {
-			return this.parent.state.map.tileWidth;
+			return this.parent.state.map.tilewidth;
 		},
 		get height() {
-			return this.parent.state.map.tileHeight;
+			return this.parent.state.map.tileheight;
 		},
 		x: function(checkX) {
 			return Math.floor(checkX / this.width);
@@ -189,7 +279,7 @@ var Lemming = function(game, group, x, y) {
 			return Math.floor(checkY / this.height);
 		},
 		type: function(tileX, tileY) {
-			var index = (tileX % this.parent.tileLayer.width) + Math.floor(tileY * this.parent.tileLayer.width);
+			var index = (tileX % this.parent.tileLayer.width) + (tileY * this.parent.tileLayer.width);
 			return this.parent.tileLayer.data[index];
 		}
 	};
@@ -206,17 +296,51 @@ var Lemming = function(game, group, x, y) {
 	this.addAnim("build_end", "BuildEnd", 10, false);
 	this.animations.play("fall", 15);
 	this.velocity.y = 1;
-	// this.body.velocity.y = 100;
 
 	this.objectType = "lemming";
+
+	this.cursor = {
+		selected: false,
+		sprite: null
+	};
 };
 
 Lemming.prototype = Object.create(Phaser.Sprite.prototype);
 Lemming.prototype.constructor = Lemming;
 
+Lemming.prototype.mouseOver = function() {
+	var cursor = this.state.getWorldCursor();
+	return (cursor.x >= this.bbox.left &&
+		cursor.x <= this.bbox.right &&
+		cursor.y >= this.bbox.top &&
+		cursor.y <= this.bbox.bottom);
+};
+
+Lemming.prototype.cursorDeselect = function() {
+	if(this.cursor.selected) {
+		this.cursor.selected = false;
+		this.state.lemmingSelected = null;
+		if(this.cursor.sprite != null) {
+			this.cursor.sprite.destroy();
+			this.cursor.sprite = null;
+		}
+	}
+};
+
+Lemming.prototype.cursorSelect = function() {
+	if(!this.cursor.selected) {
+		this.cursor.selected = true;
+		this.state.lemmingSelected = this;
+		if(this.cursor.sprite == null) {
+			this.cursor.sprite = new Cursor(game, this.x, this.y, this);
+			this.cursor.sprite.reposition();
+		}
+	}
+};
+
 Lemming.prototype.onFloor = function() {
-	return (this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) === 1 ||
-		this.tile.type(this.tile.x(this.x), this.tile.y(this.y) - 1) === 1);
+	return (this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) > 0 ||
+		this.tile.type(this.tile.x(this.x), this.tile.y(this.y) - 1) > 0);
 };
 
 Lemming.prototype.turnAround = function() {
@@ -239,13 +363,13 @@ Lemming.prototype.update = function() {
 		// Align to floor
 		this.y = Math.floor(this.y / this.tile.height) * this.tile.height;
 		// Check walk up ramp
-		if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) === 1 &&
+		if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
 			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 0) {
 			this.y -= this.tile.height;
 		}
 		// Check walk against wall
-		else if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) === 1 &&
-			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 1) {
+		else if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
+			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) > 0) {
 			// Turn around
 			this.turnAround();
 		}
@@ -268,7 +392,6 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, loop) {
 		var anim = "sprLemming_" + animName + "_" + a.toString() + ".png";
 		frames.push(anim);
 	}
-	console.log(key + ":" + loop);
 	this.animations.add(key, frames, 60, loop);
 };
 
@@ -339,14 +462,20 @@ Lemming.prototype.proceedBuild = function() {
 	// Build a step
 	this.x += (this.tile.width * this.dir);
 	this.y -= this.tile.height;
-	this.tileLayer.setType(this.tile.x(this.x), this.tile.y(this.y + (this.tile.height * 0.5)), 1);
+	var locChange = {
+		x: this.tile.x(this.x),
+		y: this.tile.y(this.y + (this.tile.height * 0.5))
+	};
+	// this.tileLayer.setType(locChange.x, locChange.y, 1);
+	this.state.layers.primitiveLayer.placeTile(locChange.x, locChange.y, "tilesetPlaceables", new Phaser.Rectangle(32, 16, this.tile.width, this.tile.height), 1);
 };
-var Prop = function(game, group, x, y) {
+var Prop = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
-	this.levelGroup = group;
-	this.levelGroup.add(this);
-	this.state = this.game.state.getCurrentState();
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
+	this.state.levelGroup.add(this);
 
 	this.objectType = "prop";
 };
@@ -403,7 +532,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 		this.spawnTimer.loop(this.rate, function() {
 			if(this.lemmings > 0) {
 				this.lemmings--;
-				var lem = new Lemming(this.game, this.levelGroup, this.x, this.y + 30);
+				var lem = new Lemming(this.game, this.x, this.y + 30);
 				this.lemmingsGroup.push(lem);
 			}
 		}, this)
@@ -483,28 +612,61 @@ var bootState = {
 };
 var gameState = {
 	map: null,
+	zoom: 1.5,
 	layers: {
 		tileLayer: {
 			data: [],
-			width: 1,
-			height: 1,
+			state: null,
 			setType: function(x, y, type) {
-				var index = Math.floor((x % this.width) + (y * this.width));
+				var index = Math.floor((x % this.state.map.width) + (y * this.state.map.width));
 				this.data[index] = type;
 			},
 			logTiles: function() {
 				var str = "";
 				for(var a in this.data) {
 					str += this.data[a];
-					if(a % this.width == this.width-1) {
+					if(a % this.state.map.width == this.state.map.width-1) {
 						str += "\n";
 					}
 				}
 				console.log(str);
 			}
+		},
+		primitiveLayer: {
+			data: [],
+			state: null,
+			getTile: function(tileX, tileY) {
+				return this.data[this.getIndex(tileX, tileY)];
+			},
+			getIndex: function(tileX, tileY) {
+				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.height));
+			},
+			removeTile: function(tileX, tileY) {
+				var testTile = this.getTile(tileX, tileY);
+				if(testTile != null) {
+					testTile.destroy();
+				}
+			},
+			placeTile: function(tileX, tileY, imageKey, cutout, tileType) {
+
+				var tempTile = new Tile(game,
+					(tileX * this.state.map.tilewidth),
+					(tileY * this.state.map.tileheight),
+					imageKey,
+					cutout);
+				this.replaceTile(tileX, tileY, tempTile);
+				if(tileType != undefined) {
+					this.state.layers.tileLayer.setType(tileX, tileY, tileType);
+				}
+			},
+			replaceTile: function(tileX, tileY, newTile) {
+				this.removeTile(tileX, tileY);
+				this.data[this.getIndex(tileX, tileY)] = newTile;
+			}
 		}
 	},
 	bgm: null,
+	lemmingSelected: null,
 
 	tileLayer: null,
 	levelGroup: null,
@@ -579,23 +741,41 @@ var gameState = {
 
 	preload: function() {
 		// Preload map data
-		game.load.tilemap("level", "assets/levels/level1.json", null, Phaser.Tilemap.TILED_JSON);
+		game.load.json("level", "assets/levels/level1.json");
 	},
 
 	create: function() {
+		this.layers.tileLayer.state = this;
+		this.layers.primitiveLayer.state = this;
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
-		// this.levelGroup.scale.setTo(1.5);
+		this.levelGroup.scale.setTo(this.zoom);
 		this.guiGroup = new Phaser.Group(game);
 		
 		// Create GUI
 		this.createLevelGUI();
 
+		// Create camera config
+		this.cam = {
+			scrolling: false,
+			gameCamera: game.camera
+		};
+
 		// Create map
-		this.map = new Phaser.Tilemap(game, "level");
-		// Set tile size
-		this.map.tileWidth = 16;
-		this.map.tileHeight = 16;
+		this.map = game.cache.getJSON("level");
+		Object.defineProperty(this.map, "totalwidth", {get() {
+			return this.width * this.tilewidth;
+		}})
+		Object.defineProperty(this.map, "totalheight", {get() {
+			return this.height * this.tileheight;
+		}});
+		this.layers.tileLayer.width = this.map.width;
+		this.layers.tileLayer.height = this.map.height;
+
+		// Adjust camera bounds
+		game.world.bounds.setTo(0, 0, this.map.totalwidth * this.zoom, this.map.totalheight * this.zoom);
+		game.camera.bounds.setTo(0, 0, game.world.bounds.width, game.world.bounds.height);
+		game.camera.setPosition(0, 0);
 
 		// Predetermine map files
 		var mapFiles = [];
@@ -608,22 +788,23 @@ var gameState = {
 		}
 
 		// Set tile layers
+		this.map.objects = [];
 		for(var a in this.map.layers) {
 			var layer = this.map.layers[a];
 			if(layer.name === "tiles") {
-				for(var col in layer.data) {
-					this.layers.tileLayer.height = Math.max(this.layers.tileLayer.height, parseInt(col)+1);
-					var row = layer.data[col];
-					for(var c in row) {
-						this.layers.tileLayer.width = Math.max(this.layers.tileLayer.width, row.length);
-						var tile = row[c];
-						if(tile.index !== -1) {
-							this.layers.tileLayer.data.push(1);
-						}
-						else {
-							this.layers.tileLayer.data.push(0);
-						}
+				for(var b in layer.data) {
+					var gid = layer.data[b];
+					if(gid === 0) {
+						this.layers.tileLayer.data.push(0);
 					}
+					else {
+						this.layers.tileLayer.data.push(1);
+					}
+				}
+			}
+			else if(layer.name === "objects") {
+				for(var b in layer.objects) {
+					this.map.objects.push(layer.objects[b]);
 				}
 			}
 		}
@@ -655,9 +836,57 @@ var gameState = {
 	},
 
 	initMap: function() {
+		// Describe function(s)
+		this.map.getTileset = function(gid) {
+			for(var a in this.tilesets) {
+				var tileset = this.tilesets[a];
+				if(gid >= tileset.firstgid && gid < tileset.firstgid + tileset.tilecount) {
+					return tileset;
+				}
+			}
+			return null;
+		};
 		// Place images
-		this.map.addTilesetImage("pink", "tilesetPink");
-		this.map.addTilesetImage("pillar", "tilesetPillar");
+		this.map.tilesetRefs = {
+			pink: "tilesetPink",
+			pillar: "tilesetPillar"
+		};
+
+		// Create tiles
+		for(var a in this.map.layers) {
+			var layer = this.map.layers[a];
+			for(var b in layer.data) {
+				var gid = layer.data[b];
+				if(gid > 0) {
+					var tileset = this.map.getTileset(gid);
+					var baseGid = gid - tileset.firstgid;
+					var placeAt = {
+						tile: {
+							x: (b % this.map.width),
+							y: Math.floor(b / this.map.width)
+						},
+						raw: {
+							x: (b % this.map.width) * this.map.tilewidth,
+							y: Math.floor(b / this.map.width) * this.map.tileheight
+						}
+					};
+					tileset.cols = Math.floor(tileset.imagewidth / (tileset.tilewidth + tileset.spacing));
+					tileset.rows = Math.floor(tileset.imageheight / (tileset.tileheight + tileset.spacing));
+					var cutout = new Phaser.Rectangle(
+						tileset.margin + ((tileset.tilewidth + tileset.spacing) * (baseGid % tileset.cols)),
+						tileset.margin + ((tileset.tileheight + tileset.spacing) * Math.floor(baseGid / tileset.cols)),
+						tileset.tilewidth,
+						tileset.tileheight
+					);
+					var tile = new Tile(game, placeAt.raw.x, placeAt.raw.y, this.map.tilesetRefs[tileset.name], cutout);
+					this.layers.primitiveLayer.data.push(tile);
+				}
+				else {
+					this.layers.primitiveLayer.data.push(null);
+				}
+			}
+		}
+		this.layers.primitiveLayer.getTile(10, 25).destroy();
 
 		// Set up action count
 		for(var a in this.actions.items) {
@@ -668,26 +897,35 @@ var gameState = {
 		}
 	},
 
+	enableUserInteraction: function() {
+		// Add action assignment possibility
+		game.input.activePointer.leftButton.onDown.add(function() {
+			if(this.lemmingSelected != null && this.actions.current && this.actions.current.amount > 0) {
+				this.lemmingSelected.setAction(this.actions.current.name);
+			}
+		}, this);
+		// Add right-mouse scrolling possibility
+		game.input.activePointer.leftButton.onDown.add(function() {
+			console.log("MEW");
+		}, this);
+	},
+
 	startLevel: function() {
 		this.initMap();
-		// Set physics
-		game.physics.startSystem(Phaser.Physics.ARCADE);
+		this.enableUserInteraction();
 		// Set level stuff
 		// Create groups
 
 		// Create map layers
-		this.tileLayer = this.map.createLayer("tiles");
-		this.tileLayer.resizeWorld();
-		this.map.setCollisionBetween(1, 65000);
+		// this.tileLayer = this.map.createLayer("tiles");
+		// this.tileLayer.resizeWorld();
 
-		this.levelGroup.add(this.tileLayer);
-		// Set map collisions
-
-		for(var a in this.map.objects.objects) {
-			var obj = this.map.objects.objects[a];
+		// Create objects
+		for(var a in this.map.objects) {
+			var obj = this.map.objects[a];
 			// Create door
 			if(obj.type == "door") {
-				var newObj = new Prop(game, this.levelGroup, (obj.x + (obj.width * 0.5)), obj.y);
+				var newObj = new Prop(game, (obj.x + (obj.width * 0.5)), obj.y);
 				newObj.setAsDoor("classic", 50, 500, this.lemmingsGroup);
 				this.doorsGroup.push(newObj);
 			}
@@ -704,15 +942,60 @@ var gameState = {
 		}, this);
 	},
 
+	getWorldCursor: function() {
+		return {
+			x: this.game.input.activePointer.worldX / this.zoom,
+			y: this.game.input.activePointer.worldY / this.zoom
+		};
+	},
+
+	zoomTo: function(factor) {
+		this.zoom = factor;
+		this.levelGroup.scale.setTo(factor);
+	},
+
 	update: function() {
-		// for(var a in this.lemmingsGroup) {
-		// 	var obj = this.lemmingsGroup[a];
-		// 	// game.physics.arcade.collide(obj, this.tileLayer);
-		// 	// obj.updatePhysics();
-		// }
-		for(var a in this.alarms.data) {
+		// Determine lemmings under mouse cursor
+		var lemmingSelect = {
+			data: [],
+			removeBy: function(callback) {
+				for(var a = this.data.length-1;a >= 0;a--) {
+					var lem = this.data[a];
+					if(callback.call(lem)) {
+						this.data.splice(a, 1);
+					}
+				}
+			}
+		};
+		for(var a = 0;a < this.lemmingsGroup.length;a++) {
+			var obj = this.lemmingsGroup[a];
+			obj.cursorDeselect();
+			if(obj.mouseOver()) {
+				lemmingSelect.data.push(obj);
+			}
+		}
+		// Callback for checking the right lemming
+		lemmingSelect.removeBy(this.lemmingSelectableCallback);
+		if(lemmingSelect.data.length > 0) {
+			lemmingSelect.data[0].cursorSelect();
+		}
+		delete lemmingSelect;
+
+		// Handle alarms
+		for(var a = 0;a < this.alarms.data.length;a++) {
 			var alarm = this.alarms.data[a];
 			alarm.step();
+		}
+
+		// Scroll
+		if(this.cam.scrolling) {
+			var worldCursor = this.getWorldCursor();
+			var camPos = {
+				x: game.camera.x + (game.camera.width * 0.5),
+				y: game.camera.y + (game.camera.height * 0.5)
+			};
+			console.log(worldCursor);
+			console.log(camPos);
 		}
 	},
 
@@ -729,6 +1012,10 @@ var gameState = {
 		// 	}
 		// 	game.debug.body(obj);
 		// }
+	},
+
+	lemmingSelectableCallback: function() {
+		return false;
 	},
 
 	openDoors: function() {
