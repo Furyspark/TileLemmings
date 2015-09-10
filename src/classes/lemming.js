@@ -6,6 +6,8 @@ var Lemming = function(game, x, y) {
 	}});
 	this.state.levelGroup.add(this);
 
+	this.animationProperties = {};
+
 	this.action = {
 		name: "",
 		value: 0,
@@ -17,7 +19,8 @@ var Lemming = function(game, x, y) {
 		},
 		get idle() {
 			return (!this.active);
-		}
+		},
+		alarm: null
 	}
 
 	// Set input
@@ -64,8 +67,7 @@ var Lemming = function(game, x, y) {
 			return Math.floor(checkY / this.height);
 		},
 		type: function(tileX, tileY) {
-			var index = (tileX % this.parent.tileLayer.width) + (tileY * this.parent.tileLayer.width);
-			return this.parent.tileLayer.data[index];
+			return this.parent.state.layers.tileLayer.getTileType(tileX, tileY);
 		}
 	};
 	this.tile.parent = this;
@@ -74,12 +76,14 @@ var Lemming = function(game, x, y) {
 	}});
 
 	// Set animations
-	this.addAnim("fall", "Fall", 4);
-	this.addAnim("move", "Move", 10);
-	this.addAnim("mine", "Mine", 24);
-	this.addAnim("build", "Build", 16);
-	this.addAnim("build_end", "BuildEnd", 10, false);
-	this.animations.play("fall", 15);
+	this.addAnim("fall", "Fall", 4, {x: 0, y: 0});
+	this.addAnim("move", "Move", 10, {x: 0, y: 0});
+	this.addAnim("mine", "Mine", 24, {x: 0, y: 8});
+	this.addAnim("build", "Build", 16, {x: 0, y: 0});
+	this.addAnim("build_end", "BuildEnd", 10, {x: 0, y: 0}, false);
+	this.addAnim("bash", "Bash", 32, {x: 0, y: 0});
+	this.addAnim("dig", "Dig", 8, {x: 0, y: 4});
+	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
 	this.objectType = "lemming";
@@ -159,16 +163,32 @@ Lemming.prototype.update = function() {
 			this.turnAround();
 		}
 		// Play animation
-		this.animations.play("move", 15);
+		this.playAnim("move", 15);
+	}
+	// Bashing
+	else if(this.onFloor() && this.action.name === "basher" && !this.action.idle) {
+		// Remove tile in front of lemming
+		var alarm = new Alarm(this.game, 30, function() {
+			this.setAction("walker");
+		}, this);
+		if(this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) ||
+			this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == 1 ||
+			this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == 1) {
+			alarm.cancel();
+		}
 	}
 	else if(!this.onFloor()) {
 		this.velocity.x = 0;
 		this.velocity.y = 1.5;
-		this.animations.play("fall", 15);
+		this.playAnim("fall", 15);
+		this.clearAction();
 	}
 };
 
-Lemming.prototype.addAnim = function(key, animName, numFrames, loop) {
+Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
+	if(!offsets) {
+		offsets = {x: 0, y: 0};
+	}
 	if(loop === undefined) {
 		loop = true;
 	}
@@ -178,21 +198,25 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, loop) {
 		frames.push(anim);
 	}
 	this.animations.add(key, frames, 60, loop);
+	this.animationProperties[key] = {
+		offset: offsets
+	};
 };
 
-Lemming.prototype.updatePhysics = function() {
-	if(this.body.onFloor()) {
-		if(!this.action.active) {
-			this.animations.play("move", 15);
-			this.body.velocity.x = 30;
-		}
-		this.body.velocity.y = 1;
-	}
-	else {
-		this.action.clear();
-		this.animations.play("fall", 15);
-		this.body.velocity.x = 0;
-		this.body.velocity.y = 100;
+Lemming.prototype.playAnim = function(key, frameRate) {
+	this.animations.play(key, frameRate);
+	this.anchor.setTo(
+		0.5 - (this.animationProperties[key].offset.x / this.width),
+		1 - (this.animationProperties[key].offset.y / this.height)
+	);
+};
+
+Lemming.prototype.clearAction = function() {
+	this.action.name = "";
+	this.action.value = 0;
+	this.action.active = false;
+	if(this.action.alarm) {
+		this.action.alarm.cancel();
 	}
 };
 
@@ -202,28 +226,79 @@ Lemming.prototype.setAction = function(actionName) {
 			// SET ACTION: Walk
 			case "walker":
 			if(this.onFloor()) {
-				this.action.name = "";
-				this.action.value = 0;
-				this.action.active = false;
+				this.clearAction();
 			}
 			break;
 			// SET ACTION: Build
 			case "builder":
-			// Requires the lemming to be on the floor
 			if(this.onFloor()) {
+				this.clearAction();
 				this.state.expendAction(actionName, 1);
 				game.sound.play("sndAction");
 				// Set action
 				this.action.name = actionName;
 				this.action.active = true;
 				this.action.value = 5;
-				this.animations.play("build", 15);
+				this.playAnim("build", 15);
 				// Set timer
-				var timer = new Alarm(game, 120, function() {
+				this.action.alarm = new Alarm(game, 120, function() {
 					this.proceedBuild();
 				}, this);
 				// Set velocity
 				this.velocity.x = 0;
+			}
+			break;
+			// SET ACTION: Basher
+			case "basher":
+			if(this.onFloor()) {
+				this.clearAction();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 0;
+				this.playAnim("bash", 15);
+				// Set velocity
+				this.velocity.x = 0.2 * this.dir;
+			}
+			break;
+			// SET ACTION: Digger
+			case "digger":
+			if(this.onFloor()) {
+				this.clearAction();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 0;
+				this.playAnim("dig", 15);
+				// Set velocity
+				this.velocity.x = 0;
+				// Set alarm
+				this.action.alarm = new Alarm(this.game, 120, function() {
+					this.proceedDig();
+				}, this);
+			}
+			break;
+			// SET ACTION: Miner
+			case "miner":
+			if(this.onFloor()) {
+				this.clearAction();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 0;
+				this.playAnim("mine", 15);
+				// Set velocity
+				this.velocity.x = 0;
+				// Set alarm
+				this.action.alarm = new Alarm(this.game, 150, function() {
+					this.proceedMine();
+				}, this);
 			}
 			break;
 		}
@@ -231,26 +306,51 @@ Lemming.prototype.setAction = function(actionName) {
 };
 
 Lemming.prototype.proceedBuild = function() {
-	this.action.value--;
-	if(this.action.value === 0) {
-		// Stop building
-		this.animations.play("build_end", 10);
-		this.animations.currentAnim.onComplete.addOnce(function() {
-			this.setAction("walker");
+	if(this.action.name == "builder" && !this.action.idle) {
+		this.action.value--;
+		if(this.action.value === 0) {
+			// Stop building
+			this.playAnim("build_end", 10);
+			this.animations.currentAnim.onComplete.addOnce(function() {
+				this.setAction("walker");
+			}, this);
+		}
+		else {
+			this.action.alarm = new Alarm(game, 120, function() {
+				this.proceedBuild();
+			}, this);
+		}
+		// Build a step
+		this.x += (this.tile.width * this.dir);
+		this.y -= this.tile.height;
+		var locChange = {
+			x: this.tile.x(this.x),
+			y: this.tile.y(this.y + (this.tile.height * 0.5))
+		};
+		this.state.layers.primitiveLayer.placeTile(locChange.x, locChange.y, "tilesetPlaceables", new Phaser.Rectangle(32, 16, this.tile.width, this.tile.height), 1);
+	}
+};
+
+Lemming.prototype.proceedDig = function() {
+	if(this.action.name == "digger" && !this.action.idle) {
+		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		this.y += this.tile.height;
+		// Set up new alarm
+		this.action.alarm = new Alarm(this.game, 120, function() {
+			this.proceedDig();
 		}, this);
 	}
-	else {
-		var timer = new Alarm(game, 120, function() {
-			this.proceedBuild();
+};
+
+Lemming.prototype.proceedMine = function() {
+	if(this.action.name == "miner" && !this.action.idle) {
+		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
+		this.x += (this.tile.width * this.dir);
+		this.y += this.tile.height;
+		// Set up new alarm
+		this.action.alarm = new Alarm(this.game, 150, function() {
+			this.proceedMine();
 		}, this);
 	}
-	// Build a step
-	this.x += (this.tile.width * this.dir);
-	this.y -= this.tile.height;
-	var locChange = {
-		x: this.tile.x(this.x),
-		y: this.tile.y(this.y + (this.tile.height * 0.5))
-	};
-	// this.tileLayer.setType(locChange.x, locChange.y, 1);
-	this.state.layers.primitiveLayer.placeTile(locChange.x, locChange.y, "tilesetPlaceables", new Phaser.Rectangle(32, 16, this.tile.width, this.tile.height), 1);
 };

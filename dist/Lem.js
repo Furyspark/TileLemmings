@@ -1,4 +1,49 @@
 (function(Phaser) {
+var Camera = function(game, state) {
+	this.game = game;
+	this.state = state;
+
+	this.scrolling = false;
+	Object.defineProperty(this, "gameCamera", {get() {
+		return this.game.camera;
+	}});
+
+	Object.defineProperties(this, {
+		"width": {
+			get() {
+				return this.gameCamera.width / this.state.zoom;
+			}
+		},
+		"height": {
+			get() {
+				return this.gameCamera.height / this.state.zoom;
+			}
+		},
+		"x": {
+			get() {
+				return this.gameCamera.x / this.state.zoom;
+			}
+		},
+		"y": {
+			get() {
+				return this.gameCamera.y / this.state.zoom;
+			}
+		}
+	});
+};
+
+Camera.prototype.constructor = Camera;
+
+Camera.prototype.move = function(hor, ver) {
+	this.gameCamera.x += hor;
+	this.gameCamera.y += ver;
+	// Move UI
+	for(var a = 0;a < this.state.guiGroup.length;a++) {
+		var uiNode = this.state.guiGroup[a];
+		uiNode.x = this.gameCamera.x + uiNode.guiAlign.x;
+		uiNode.y = this.gameCamera.y + uiNode.guiAlign.y;
+	}
+};
 var Alarm = function(game, duration, callback, callbackContext) {
 	this.game = game;
 	this.duration = duration;
@@ -38,10 +83,13 @@ Alarm.prototype.step = function() {
 		}
 	}
 };
-var GUI = function(game, group, x, y) {
+
+Alarm.prototype.cancel = function() {
+	this.state.alarms.remove(this);
+};
+var GUI = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
-	group.add(this);
 
 	// Set references
 	this.guiType = "undefined";
@@ -51,8 +99,8 @@ var GUI = function(game, group, x, y) {
 
 GUI.prototype = Object.create(Phaser.Sprite.prototype);
 GUI.prototype.constructor = GUI;
-var GUI_Button = function(game, group, x, y) {
-	GUI.call(this, game, group, x, y);
+var GUI_Button = function(game, x, y) {
+	GUI.call(this, game, x, y);
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -67,7 +115,7 @@ var GUI_Button = function(game, group, x, y) {
 	// Create label
 	this.label = game.add.text(0, 0, "", {
 		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
-	}, group);
+	});
 	this.label.stroke = "#000000";
 	this.label.strokeThickness = 3;
 	this.label.owner = this;
@@ -76,6 +124,24 @@ var GUI_Button = function(game, group, x, y) {
 		this.x = this.owner.x + (this.owner.width / 2);
 		this.y = this.owner.y + 10;
 	};
+
+	// Create bounding box(for cursor position checking)
+	this.bbox = {
+		get left() {
+			return this.owner.x - Math.abs(this.owner.offsetX);
+		},
+		get top() {
+			return this.owner.y - Math.abs(this.owner.offsetY);
+		},
+		get right() {
+			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+		},
+		get bottom() {
+			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+		},
+		owner: null
+	};
+	this.bbox.owner = this;
 
 	this.label.text = "";
 	this.label.reposition();
@@ -88,6 +154,16 @@ var GUI_Button = function(game, group, x, y) {
 
 GUI_Button.prototype = Object.create(GUI.prototype);
 GUI_Button.prototype.constructor = GUI_Button;
+
+GUI_Button.prototype.mouseOver = function() {
+	var cursor = this.state.getWorldCursor();
+	cursor.x = cursor.x * this.state.zoom;
+	cursor.y = cursor.y * this.state.zoom;
+	return (cursor.x >= this.bbox.left &&
+		cursor.x <= this.bbox.right &&
+		cursor.y >= this.bbox.top &&
+		cursor.y <= this.bbox.bottom);
+};
 
 // Set button type and action
 GUI_Button.prototype.set = function(stateObject, action, subType) {
@@ -221,6 +297,8 @@ var Lemming = function(game, x, y) {
 	}});
 	this.state.levelGroup.add(this);
 
+	this.animationProperties = {};
+
 	this.action = {
 		name: "",
 		value: 0,
@@ -232,7 +310,8 @@ var Lemming = function(game, x, y) {
 		},
 		get idle() {
 			return (!this.active);
-		}
+		},
+		alarm: null
 	}
 
 	// Set input
@@ -279,8 +358,7 @@ var Lemming = function(game, x, y) {
 			return Math.floor(checkY / this.height);
 		},
 		type: function(tileX, tileY) {
-			var index = (tileX % this.parent.tileLayer.width) + (tileY * this.parent.tileLayer.width);
-			return this.parent.tileLayer.data[index];
+			return this.parent.state.layers.tileLayer.getTileType(tileX, tileY);
 		}
 	};
 	this.tile.parent = this;
@@ -289,12 +367,14 @@ var Lemming = function(game, x, y) {
 	}});
 
 	// Set animations
-	this.addAnim("fall", "Fall", 4);
-	this.addAnim("move", "Move", 10);
-	this.addAnim("mine", "Mine", 24);
-	this.addAnim("build", "Build", 16);
-	this.addAnim("build_end", "BuildEnd", 10, false);
-	this.animations.play("fall", 15);
+	this.addAnim("fall", "Fall", 4, {x: 0, y: 0});
+	this.addAnim("move", "Move", 10, {x: 0, y: 0});
+	this.addAnim("mine", "Mine", 24, {x: 0, y: 8});
+	this.addAnim("build", "Build", 16, {x: 0, y: 0});
+	this.addAnim("build_end", "BuildEnd", 10, {x: 0, y: 0}, false);
+	this.addAnim("bash", "Bash", 32, {x: 0, y: 0});
+	this.addAnim("dig", "Dig", 8, {x: 0, y: 4});
+	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
 	this.objectType = "lemming";
@@ -374,16 +454,32 @@ Lemming.prototype.update = function() {
 			this.turnAround();
 		}
 		// Play animation
-		this.animations.play("move", 15);
+		this.playAnim("move", 15);
+	}
+	// Bashing
+	else if(this.onFloor() && this.action.name === "basher" && !this.action.idle) {
+		// Remove tile in front of lemming
+		var alarm = new Alarm(this.game, 30, function() {
+			this.setAction("walker");
+		}, this);
+		if(this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) ||
+			this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == 1 ||
+			this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == 1) {
+			alarm.cancel();
+		}
 	}
 	else if(!this.onFloor()) {
 		this.velocity.x = 0;
 		this.velocity.y = 1.5;
-		this.animations.play("fall", 15);
+		this.playAnim("fall", 15);
+		this.clearAction();
 	}
 };
 
-Lemming.prototype.addAnim = function(key, animName, numFrames, loop) {
+Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
+	if(!offsets) {
+		offsets = {x: 0, y: 0};
+	}
 	if(loop === undefined) {
 		loop = true;
 	}
@@ -393,21 +489,25 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, loop) {
 		frames.push(anim);
 	}
 	this.animations.add(key, frames, 60, loop);
+	this.animationProperties[key] = {
+		offset: offsets
+	};
 };
 
-Lemming.prototype.updatePhysics = function() {
-	if(this.body.onFloor()) {
-		if(!this.action.active) {
-			this.animations.play("move", 15);
-			this.body.velocity.x = 30;
-		}
-		this.body.velocity.y = 1;
-	}
-	else {
-		this.action.clear();
-		this.animations.play("fall", 15);
-		this.body.velocity.x = 0;
-		this.body.velocity.y = 100;
+Lemming.prototype.playAnim = function(key, frameRate) {
+	this.animations.play(key, frameRate);
+	this.anchor.setTo(
+		0.5 - (this.animationProperties[key].offset.x / this.width),
+		1 - (this.animationProperties[key].offset.y / this.height)
+	);
+};
+
+Lemming.prototype.clearAction = function() {
+	this.action.name = "";
+	this.action.value = 0;
+	this.action.active = false;
+	if(this.action.alarm) {
+		this.action.alarm.cancel();
 	}
 };
 
@@ -417,28 +517,79 @@ Lemming.prototype.setAction = function(actionName) {
 			// SET ACTION: Walk
 			case "walker":
 			if(this.onFloor()) {
-				this.action.name = "";
-				this.action.value = 0;
-				this.action.active = false;
+				this.clearAction();
 			}
 			break;
 			// SET ACTION: Build
 			case "builder":
-			// Requires the lemming to be on the floor
 			if(this.onFloor()) {
+				this.clearAction();
 				this.state.expendAction(actionName, 1);
 				game.sound.play("sndAction");
 				// Set action
 				this.action.name = actionName;
 				this.action.active = true;
 				this.action.value = 5;
-				this.animations.play("build", 15);
+				this.playAnim("build", 15);
 				// Set timer
-				var timer = new Alarm(game, 120, function() {
+				this.action.alarm = new Alarm(game, 120, function() {
 					this.proceedBuild();
 				}, this);
 				// Set velocity
 				this.velocity.x = 0;
+			}
+			break;
+			// SET ACTION: Basher
+			case "basher":
+			if(this.onFloor()) {
+				this.clearAction();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 0;
+				this.playAnim("bash", 15);
+				// Set velocity
+				this.velocity.x = 0.2 * this.dir;
+			}
+			break;
+			// SET ACTION: Digger
+			case "digger":
+			if(this.onFloor()) {
+				this.clearAction();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 0;
+				this.playAnim("dig", 15);
+				// Set velocity
+				this.velocity.x = 0;
+				// Set alarm
+				this.action.alarm = new Alarm(this.game, 120, function() {
+					this.proceedDig();
+				}, this);
+			}
+			break;
+			// SET ACTION: Miner
+			case "miner":
+			if(this.onFloor()) {
+				this.clearAction();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 0;
+				this.playAnim("mine", 15);
+				// Set velocity
+				this.velocity.x = 0;
+				// Set alarm
+				this.action.alarm = new Alarm(this.game, 150, function() {
+					this.proceedMine();
+				}, this);
 			}
 			break;
 		}
@@ -446,28 +597,53 @@ Lemming.prototype.setAction = function(actionName) {
 };
 
 Lemming.prototype.proceedBuild = function() {
-	this.action.value--;
-	if(this.action.value === 0) {
-		// Stop building
-		this.animations.play("build_end", 10);
-		this.animations.currentAnim.onComplete.addOnce(function() {
-			this.setAction("walker");
+	if(this.action.name == "builder" && !this.action.idle) {
+		this.action.value--;
+		if(this.action.value === 0) {
+			// Stop building
+			this.playAnim("build_end", 10);
+			this.animations.currentAnim.onComplete.addOnce(function() {
+				this.setAction("walker");
+			}, this);
+		}
+		else {
+			this.action.alarm = new Alarm(game, 120, function() {
+				this.proceedBuild();
+			}, this);
+		}
+		// Build a step
+		this.x += (this.tile.width * this.dir);
+		this.y -= this.tile.height;
+		var locChange = {
+			x: this.tile.x(this.x),
+			y: this.tile.y(this.y + (this.tile.height * 0.5))
+		};
+		this.state.layers.primitiveLayer.placeTile(locChange.x, locChange.y, "tilesetPlaceables", new Phaser.Rectangle(32, 16, this.tile.width, this.tile.height), 1);
+	}
+};
+
+Lemming.prototype.proceedDig = function() {
+	if(this.action.name == "digger" && !this.action.idle) {
+		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		this.y += this.tile.height;
+		// Set up new alarm
+		this.action.alarm = new Alarm(this.game, 120, function() {
+			this.proceedDig();
 		}, this);
 	}
-	else {
-		var timer = new Alarm(game, 120, function() {
-			this.proceedBuild();
+};
+
+Lemming.prototype.proceedMine = function() {
+	if(this.action.name == "miner" && !this.action.idle) {
+		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
+		this.x += (this.tile.width * this.dir);
+		this.y += this.tile.height;
+		// Set up new alarm
+		this.action.alarm = new Alarm(this.game, 150, function() {
+			this.proceedMine();
 		}, this);
 	}
-	// Build a step
-	this.x += (this.tile.width * this.dir);
-	this.y -= this.tile.height;
-	var locChange = {
-		x: this.tile.x(this.x),
-		y: this.tile.y(this.y + (this.tile.height * 0.5))
-	};
-	// this.tileLayer.setType(locChange.x, locChange.y, 1);
-	this.state.layers.primitiveLayer.placeTile(locChange.x, locChange.y, "tilesetPlaceables", new Phaser.Rectangle(32, 16, this.tile.width, this.tile.height), 1);
 };
 var Prop = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
@@ -612,14 +788,13 @@ var bootState = {
 };
 var gameState = {
 	map: null,
-	zoom: 1.5,
+	zoom: 1,
 	layers: {
 		tileLayer: {
 			data: [],
 			state: null,
-			setType: function(x, y, type) {
-				var index = Math.floor((x % this.state.map.width) + (y * this.state.map.width));
-				this.data[index] = type;
+			setType: function(tileX, tileY, type) {
+				this.data[this.getIndex(tileX, tileY)] = type;
 			},
 			logTiles: function() {
 				var str = "";
@@ -630,6 +805,16 @@ var gameState = {
 					}
 				}
 				console.log(str);
+			},
+			getIndex: function(tileX, tileY) {
+				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
+			},
+			getTileType: function(tileX, tileY) {
+				if(tileX < 0 || tileX > this.state.map.width ||
+					tileY < 0 || tileY > this.state.map.height) {
+					return 0;
+				}
+				return this.data[this.getIndex(tileX, tileY)];
 			}
 		},
 		primitiveLayer: {
@@ -639,16 +824,17 @@ var gameState = {
 				return this.data[this.getIndex(tileX, tileY)];
 			},
 			getIndex: function(tileX, tileY) {
-				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.height));
+				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
 			},
 			removeTile: function(tileX, tileY) {
 				var testTile = this.getTile(tileX, tileY);
 				if(testTile != null) {
 					testTile.destroy();
+					return true;
 				}
+				return false;
 			},
 			placeTile: function(tileX, tileY, imageKey, cutout, tileType) {
-
 				var tempTile = new Tile(game,
 					(tileX * this.state.map.tilewidth),
 					(tileY * this.state.map.tileheight),
@@ -657,7 +843,9 @@ var gameState = {
 				this.replaceTile(tileX, tileY, tempTile);
 				if(tileType != undefined) {
 					this.state.layers.tileLayer.setType(tileX, tileY, tileType);
+					return true;
 				}
+				return false;
 			},
 			replaceTile: function(tileX, tileY, newTile) {
 				this.removeTile(tileX, tileY);
@@ -668,13 +856,18 @@ var gameState = {
 	bgm: null,
 	lemmingSelected: null,
 
+	scrollOrigin: {
+		x: 0,
+		y: 0
+	},
+
 	tileLayer: null,
 	levelGroup: null,
 	lemmingsGroup: [],
 	doorsGroup: [],
 	exitsGroup: [],
 	trapsGroup: [],
-	guiGroup: null,
+	guiGroup: [],
 	alarms: {
 		data: [],
 		remove: function(alarm) {
@@ -749,17 +942,12 @@ var gameState = {
 		this.layers.primitiveLayer.state = this;
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
-		this.levelGroup.scale.setTo(this.zoom);
-		this.guiGroup = new Phaser.Group(game);
 		
 		// Create GUI
 		this.createLevelGUI();
 
 		// Create camera config
-		this.cam = {
-			scrolling: false,
-			gameCamera: game.camera
-		};
+		this.cam = new Camera(this.game, this);
 
 		// Create map
 		this.map = game.cache.getJSON("level");
@@ -771,11 +959,6 @@ var gameState = {
 		}});
 		this.layers.tileLayer.width = this.map.width;
 		this.layers.tileLayer.height = this.map.height;
-
-		// Adjust camera bounds
-		game.world.bounds.setTo(0, 0, this.map.totalwidth * this.zoom, this.map.totalheight * this.zoom);
-		game.camera.bounds.setTo(0, 0, game.world.bounds.width, game.world.bounds.height);
-		game.camera.setPosition(0, 0);
 
 		// Predetermine map files
 		var mapFiles = [];
@@ -836,6 +1019,10 @@ var gameState = {
 	},
 
 	initMap: function() {
+		// Resize map
+		this.game.world.width = this.map.totalwidth;
+		this.game.world.height = this.map.totalheight;
+
 		// Describe function(s)
 		this.map.getTileset = function(gid) {
 			for(var a in this.tilesets) {
@@ -886,7 +1073,6 @@ var gameState = {
 				}
 			}
 		}
-		this.layers.primitiveLayer.getTile(10, 25).destroy();
 
 		// Set up action count
 		for(var a in this.actions.items) {
@@ -898,6 +1084,16 @@ var gameState = {
 	},
 
 	enableUserInteraction: function() {
+		// Create keys
+		this.keyboard = {
+			left: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+			right: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+			up: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+			down: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+		};
+
+
+		game.input.mouse.capture = true;
 		// Add action assignment possibility
 		game.input.activePointer.leftButton.onDown.add(function() {
 			if(this.lemmingSelected != null && this.actions.current && this.actions.current.amount > 0) {
@@ -905,14 +1101,19 @@ var gameState = {
 			}
 		}, this);
 		// Add right-mouse scrolling possibility
-		game.input.activePointer.leftButton.onDown.add(function() {
-			console.log("MEW");
+		game.input.activePointer.rightButton.onDown.add(function() {
+			this.cam.scrolling = true;
+			this.scrollOrigin = this.getScreenCursor();
+		}, this);
+		game.input.activePointer.rightButton.onUp.add(function() {
+			this.cam.scrolling = false;
 		}, this);
 	},
 
 	startLevel: function() {
 		this.initMap();
 		this.enableUserInteraction();
+		this.zoomTo(2);
 		// Set level stuff
 		// Create groups
 
@@ -949,9 +1150,18 @@ var gameState = {
 		};
 	},
 
+	getScreenCursor: function() {
+		var worldCursor = this.getWorldCursor();
+		return {
+			x: worldCursor.x - this.cam.x,
+			y: worldCursor.y - this.cam.y
+		};
+	},
+
 	zoomTo: function(factor) {
 		this.zoom = factor;
 		this.levelGroup.scale.setTo(factor);
+		this.game.camera.bounds.setTo(0, 0, Math.floor(this.map.totalwidth * this.zoom), Math.floor(this.map.totalheight * this.zoom));
 	},
 
 	update: function() {
@@ -961,7 +1171,7 @@ var gameState = {
 			removeBy: function(callback) {
 				for(var a = this.data.length-1;a >= 0;a--) {
 					var lem = this.data[a];
-					if(callback.call(lem)) {
+					if(!callback.call(lem)) {
 						this.data.splice(a, 1);
 					}
 				}
@@ -976,7 +1186,7 @@ var gameState = {
 		}
 		// Callback for checking the right lemming
 		lemmingSelect.removeBy(this.lemmingSelectableCallback);
-		if(lemmingSelect.data.length > 0) {
+		if(!this.cursorOverGUI() && lemmingSelect.data.length > 0) {
 			lemmingSelect.data[0].cursorSelect();
 		}
 		delete lemmingSelect;
@@ -989,33 +1199,52 @@ var gameState = {
 
 		// Scroll
 		if(this.cam.scrolling) {
-			var worldCursor = this.getWorldCursor();
-			var camPos = {
-				x: game.camera.x + (game.camera.width * 0.5),
-				y: game.camera.y + (game.camera.height * 0.5)
+			// var worldCursor = this.getWorldCursor();
+			// var camPos = {
+			// 	x: this.cam.x + (this.cam.width * 0.5),
+			// 	y: this.cam.y + (this.cam.height * 0.5)
+			// };
+			// worldCursor.x = (worldCursor.x - this.cam.x) - (this.cam.width * 0.5);
+			// worldCursor.y = (worldCursor.y - this.cam.y) - (this.cam.height * 0.5);
+			// var moveRel = {
+			// 	x: (worldCursor.x) / 10,
+			// 	y: (worldCursor.y) / 10
+			// };
+			// this.cam.move(moveRel.x, moveRel.y);
+
+			var originRel = this.getScreenCursor();
+			var moveRel = {
+				x: (this.scrollOrigin.x - originRel.x),
+				y: (this.scrollOrigin.y - originRel.y)
 			};
-			console.log(worldCursor);
-			console.log(camPos);
+			this.scrollOrigin = this.getScreenCursor();
+			this.cam.move(moveRel.x, moveRel.y);
 		}
 	},
 
 	render: function() {
-		// var drawing = false;
-		// for(var a in this.lemmingsGroup) {
-		// 	var obj = this.lemmingsGroup[a];
-		// 	if(typeof obj.render !== "undefined") {
-		// 		obj.render();
-		// 	}
-		// 	if(obj.objectType == "lemming" && !drawing) {
-		// 		drawing = true;
-		// 		game.debug.bodyInfo(obj, 16, 24);
-		// 	}
-		// 	game.debug.body(obj);
-		// }
+		
+	},
+
+	cursorOverGUI: function() {
+		for(var a = 0;a < this.guiGroup.length;a++) {
+			var uiNode = this.guiGroup[a];
+			if(uiNode.mouseOver()) {
+				return true;
+			}
+		}
+		return false;
 	},
 
 	lemmingSelectableCallback: function() {
-		return false;
+		// Cursors left and right
+		if(this.state.keyboard.left.isDown && this.dir != -1) {
+			return false;
+		}
+		if(this.state.keyboard.right.isDown && this.dir != 1) {
+			return false;
+		}
+		return true;
 	},
 
 	openDoors: function() {
@@ -1047,7 +1276,8 @@ var gameState = {
 		for(var a in this.actions.items) {
 			var action = this.actions.items[a];
 			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
-			var btn = new GUI_Button(game, this.guiGroup, 0, game.camera.y + game.camera.height);
+			var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+			this.guiGroup.push(btn);
 			buttons.push(btn);
 			btn.set({
 				released: animPrefix + "0.png",
@@ -1065,12 +1295,16 @@ var gameState = {
 			btn.x = alignX;
 			alignX += btn.width;
 			btn.y -= btn.height;
+			btn.guiAlign = {
+				x: btn.x - game.camera.x,
+				y: btn.y - game.camera.y
+			};
 		}
 	},
 
 	deselectAllActions: function() {
-		for(var a in this.guiGroup.children) {
-			var obj = this.guiGroup.children[a];
+		for(var a = 0;a < this.guiGroup.length;a++) {
+			var obj = this.guiGroup[a];
 			if(obj.subType == "action") {
 				obj.deselect();
 			}

@@ -1,5 +1,5 @@
-var GUI_Button = function(game, group, x, y) {
-	GUI.call(this, game, group, x, y);
+var GUI_Button = function(game, x, y) {
+	GUI.call(this, game, x, y);
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -14,7 +14,7 @@ var GUI_Button = function(game, group, x, y) {
 	// Create label
 	this.label = game.add.text(0, 0, "", {
 		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
-	}, group);
+	});
 	this.label.stroke = "#000000";
 	this.label.strokeThickness = 3;
 	this.label.owner = this;
@@ -23,6 +23,24 @@ var GUI_Button = function(game, group, x, y) {
 		this.x = this.owner.x + (this.owner.width / 2);
 		this.y = this.owner.y + 10;
 	};
+
+	// Create bounding box(for cursor position checking)
+	this.bbox = {
+		get left() {
+			return this.owner.x - Math.abs(this.owner.offsetX);
+		},
+		get top() {
+			return this.owner.y - Math.abs(this.owner.offsetY);
+		},
+		get right() {
+			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+		},
+		get bottom() {
+			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+		},
+		owner: null
+	};
+	this.bbox.owner = this;
 
 	this.label.text = "";
 	this.label.reposition();
@@ -35,6 +53,16 @@ var GUI_Button = function(game, group, x, y) {
 
 GUI_Button.prototype = Object.create(GUI.prototype);
 GUI_Button.prototype.constructor = GUI_Button;
+
+GUI_Button.prototype.mouseOver = function() {
+	var cursor = this.state.getWorldCursor();
+	cursor.x = cursor.x * this.state.zoom;
+	cursor.y = cursor.y * this.state.zoom;
+	return (cursor.x >= this.bbox.left &&
+		cursor.x <= this.bbox.right &&
+		cursor.y >= this.bbox.top &&
+		cursor.y <= this.bbox.bottom);
+};
 
 // Set button type and action
 GUI_Button.prototype.set = function(stateObject, action, subType) {

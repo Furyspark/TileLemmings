@@ -2,5 +2,5 @@ cmd = "grunt"
 pid = spawn(cmd)
 Process.wait(pid)
 
-cmd = "nw ."
+cmd = "electron ."
 spawn(cmd)

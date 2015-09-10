@@ -1,13 +1,12 @@
 var gameState = {
 	map: null,
-	zoom: 1.5,
+	zoom: 1,
 	layers: {
 		tileLayer: {
 			data: [],
 			state: null,
-			setType: function(x, y, type) {
-				var index = Math.floor((x % this.state.map.width) + (y * this.state.map.width));
-				this.data[index] = type;
+			setType: function(tileX, tileY, type) {
+				this.data[this.getIndex(tileX, tileY)] = type;
 			},
 			logTiles: function() {
 				var str = "";
@@ -18,6 +17,16 @@ var gameState = {
 					}
 				}
 				console.log(str);
+			},
+			getIndex: function(tileX, tileY) {
+				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
+			},
+			getTileType: function(tileX, tileY) {
+				if(tileX < 0 || tileX > this.state.map.width ||
+					tileY < 0 || tileY > this.state.map.height) {
+					return 0;
+				}
+				return this.data[this.getIndex(tileX, tileY)];
 			}
 		},
 		primitiveLayer: {
@@ -27,16 +36,17 @@ var gameState = {
 				return this.data[this.getIndex(tileX, tileY)];
 			},
 			getIndex: function(tileX, tileY) {
-				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.height));
+				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
 			},
 			removeTile: function(tileX, tileY) {
 				var testTile = this.getTile(tileX, tileY);
 				if(testTile != null) {
 					testTile.destroy();
+					return true;
 				}
+				return false;
 			},
 			placeTile: function(tileX, tileY, imageKey, cutout, tileType) {
-
 				var tempTile = new Tile(game,
 					(tileX * this.state.map.tilewidth),
 					(tileY * this.state.map.tileheight),
@@ -45,7 +55,9 @@ var gameState = {
 				this.replaceTile(tileX, tileY, tempTile);
 				if(tileType != undefined) {
 					this.state.layers.tileLayer.setType(tileX, tileY, tileType);
+					return true;
 				}
+				return false;
 			},
 			replaceTile: function(tileX, tileY, newTile) {
 				this.removeTile(tileX, tileY);
@@ -56,13 +68,18 @@ var gameState = {
 	bgm: null,
 	lemmingSelected: null,
 
+	scrollOrigin: {
+		x: 0,
+		y: 0
+	},
+
 	tileLayer: null,
 	levelGroup: null,
 	lemmingsGroup: [],
 	doorsGroup: [],
 	exitsGroup: [],
 	trapsGroup: [],
-	guiGroup: null,
+	guiGroup: [],
 	alarms: {
 		data: [],
 		remove: function(alarm) {
@@ -137,17 +154,12 @@ var gameState = {
 		this.layers.primitiveLayer.state = this;
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
-		this.levelGroup.scale.setTo(this.zoom);
-		this.guiGroup = new Phaser.Group(game);
 		
 		// Create GUI
 		this.createLevelGUI();
 
 		// Create camera config
-		this.cam = {
-			scrolling: false,
-			gameCamera: game.camera
-		};
+		this.cam = new Camera(this.game, this);
 
 		// Create map
 		this.map = game.cache.getJSON("level");
@@ -159,11 +171,6 @@ var gameState = {
 		}});
 		this.layers.tileLayer.width = this.map.width;
 		this.layers.tileLayer.height = this.map.height;
-
-		// Adjust camera bounds
-		game.world.bounds.setTo(0, 0, this.map.totalwidth * this.zoom, this.map.totalheight * this.zoom);
-		game.camera.bounds.setTo(0, 0, game.world.bounds.width, game.world.bounds.height);
-		game.camera.setPosition(0, 0);
 
 		// Predetermine map files
 		var mapFiles = [];
@@ -224,6 +231,10 @@ var gameState = {
 	},
 
 	initMap: function() {
+		// Resize map
+		this.game.world.width = this.map.totalwidth;
+		this.game.world.height = this.map.totalheight;
+
 		// Describe function(s)
 		this.map.getTileset = function(gid) {
 			for(var a in this.tilesets) {
@@ -274,7 +285,6 @@ var gameState = {
 				}
 			}
 		}
-		this.layers.primitiveLayer.getTile(10, 25).destroy();
 
 		// Set up action count
 		for(var a in this.actions.items) {
@@ -286,6 +296,16 @@ var gameState = {
 	},
 
 	enableUserInteraction: function() {
+		// Create keys
+		this.keyboard = {
+			left: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+			right: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+			up: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+			down: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+		};
+
+
+		game.input.mouse.capture = true;
 		// Add action assignment possibility
 		game.input.activePointer.leftButton.onDown.add(function() {
 			if(this.lemmingSelected != null && this.actions.current && this.actions.current.amount > 0) {
@@ -294,13 +314,18 @@ var gameState = {
 		}, this);
 		// Add right-mouse scrolling possibility
 		game.input.activePointer.rightButton.onDown.add(function() {
-			console.log("MEW");
+			this.cam.scrolling = true;
+			this.scrollOrigin = this.getScreenCursor();
+		}, this);
+		game.input.activePointer.rightButton.onUp.add(function() {
+			this.cam.scrolling = false;
 		}, this);
 	},
 
 	startLevel: function() {
 		this.initMap();
 		this.enableUserInteraction();
+		this.zoomTo(2);
 		// Set level stuff
 		// Create groups
 
@@ -337,9 +362,18 @@ var gameState = {
 		};
 	},
 
+	getScreenCursor: function() {
+		var worldCursor = this.getWorldCursor();
+		return {
+			x: worldCursor.x - this.cam.x,
+			y: worldCursor.y - this.cam.y
+		};
+	},
+
 	zoomTo: function(factor) {
 		this.zoom = factor;
 		this.levelGroup.scale.setTo(factor);
+		this.game.camera.bounds.setTo(0, 0, Math.floor(this.map.totalwidth * this.zoom), Math.floor(this.map.totalheight * this.zoom));
 	},
 
 	update: function() {
@@ -349,7 +383,7 @@ var gameState = {
 			removeBy: function(callback) {
 				for(var a = this.data.length-1;a >= 0;a--) {
 					var lem = this.data[a];
-					if(callback.call(lem)) {
+					if(!callback.call(lem)) {
 						this.data.splice(a, 1);
 					}
 				}
@@ -364,7 +398,7 @@ var gameState = {
 		}
 		// Callback for checking the right lemming
 		lemmingSelect.removeBy(this.lemmingSelectableCallback);
-		if(lemmingSelect.data.length > 0) {
+		if(!this.cursorOverGUI() && lemmingSelect.data.length > 0) {
 			lemmingSelect.data[0].cursorSelect();
 		}
 		delete lemmingSelect;
@@ -377,33 +411,52 @@ var gameState = {
 
 		// Scroll
 		if(this.cam.scrolling) {
-			var worldCursor = this.getWorldCursor();
-			var camPos = {
-				x: game.camera.x + (game.camera.width * 0.5),
-				y: game.camera.y + (game.camera.height * 0.5)
+			// var worldCursor = this.getWorldCursor();
+			// var camPos = {
+			// 	x: this.cam.x + (this.cam.width * 0.5),
+			// 	y: this.cam.y + (this.cam.height * 0.5)
+			// };
+			// worldCursor.x = (worldCursor.x - this.cam.x) - (this.cam.width * 0.5);
+			// worldCursor.y = (worldCursor.y - this.cam.y) - (this.cam.height * 0.5);
+			// var moveRel = {
+			// 	x: (worldCursor.x) / 10,
+			// 	y: (worldCursor.y) / 10
+			// };
+			// this.cam.move(moveRel.x, moveRel.y);
+
+			var originRel = this.getScreenCursor();
+			var moveRel = {
+				x: (this.scrollOrigin.x - originRel.x),
+				y: (this.scrollOrigin.y - originRel.y)
 			};
-			console.log(worldCursor);
-			console.log(camPos);
+			this.scrollOrigin = this.getScreenCursor();
+			this.cam.move(moveRel.x, moveRel.y);
 		}
 	},
 
 	render: function() {
-		// var drawing = false;
-		// for(var a in this.lemmingsGroup) {
-		// 	var obj = this.lemmingsGroup[a];
-		// 	if(typeof obj.render !== "undefined") {
-		// 		obj.render();
-		// 	}
-		// 	if(obj.objectType == "lemming" && !drawing) {
-		// 		drawing = true;
-		// 		game.debug.bodyInfo(obj, 16, 24);
-		// 	}
-		// 	game.debug.body(obj);
-		// }
+		
+	},
+
+	cursorOverGUI: function() {
+		for(var a = 0;a < this.guiGroup.length;a++) {
+			var uiNode = this.guiGroup[a];
+			if(uiNode.mouseOver()) {
+				return true;
+			}
+		}
+		return false;
 	},
 
 	lemmingSelectableCallback: function() {
-		return false;
+		// Cursors left and right
+		if(this.state.keyboard.left.isDown && this.dir != -1) {
+			return false;
+		}
+		if(this.state.keyboard.right.isDown && this.dir != 1) {
+			return false;
+		}
+		return true;
 	},
 
 	openDoors: function() {
@@ -435,7 +488,8 @@ var gameState = {
 		for(var a in this.actions.items) {
 			var action = this.actions.items[a];
 			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
-			var btn = new GUI_Button(game, this.guiGroup, 0, game.camera.y + game.camera.height);
+			var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+			this.guiGroup.push(btn);
 			buttons.push(btn);
 			btn.set({
 				released: animPrefix + "0.png",
@@ -453,12 +507,16 @@ var gameState = {
 			btn.x = alignX;
 			alignX += btn.width;
 			btn.y -= btn.height;
+			btn.guiAlign = {
+				x: btn.x - game.camera.x,
+				y: btn.y - game.camera.y
+			};
 		}
 	},
 
 	deselectAllActions: function() {
-		for(var a in this.guiGroup.children) {
-			var obj = this.guiGroup.children[a];
+		for(var a = 0;a < this.guiGroup.length;a++) {
+			var obj = this.guiGroup[a];
 			if(obj.subType == "action") {
 				obj.deselect();
 			}

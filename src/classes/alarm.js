@@ -37,3 +37,7 @@ Alarm.prototype.step = function() {
 		}
 	}
 };
+
+Alarm.prototype.cancel = function() {
+	this.state.alarms.remove(this);
+};

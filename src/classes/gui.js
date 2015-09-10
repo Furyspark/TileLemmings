@@ -1,7 +1,6 @@
-var GUI = function(game, group, x, y) {
+var GUI = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
-	group.add(this);
 
 	// Set references
 	this.guiType = "undefined";
