@@ -6,8 +6,10 @@ var Lemming = function(game, x, y) {
 	}});
 	this.state.levelGroup.add(this);
 
+	this.dead = false;
 	this.animationProperties = {};
 
+	// Set up action
 	this.action = {
 		name: "",
 		value: 0,
@@ -23,11 +25,23 @@ var Lemming = function(game, x, y) {
 		alarm: null
 	}
 
-	// Set input
-	// this.inputEnabled = true;
-	// this.events.onInputDown.add(function() {
-	// 	this.setAction(this.state.actions.current.name);
-	// }, this);
+	// Set up sub action
+	this.subaction = {
+		name: "",
+		value: 0,
+		active: false,
+		clear: function() {
+			this.name = "";
+			this.value = 0;
+			this.active = false;
+		}
+		get idle() {
+			return (!this.active);
+		}
+		alarm: null
+	}
+
+	this.gameLabel = null;
 
 	// Set anchor
 	this.anchor.setTo(0.5, 1);
@@ -37,18 +51,31 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	};
+	this.fallDist = 0;
 	this.bbox = {
+		// get left() {
+		// 	return this.owner.x - Math.abs(this.owner.offsetX);
+		// },
+		// get top() {
+		// 	return this.owner.y - Math.abs(this.owner.offsetY);
+		// },
+		// get right() {
+		// 	return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+		// },
+		// get bottom() {
+		// 	return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+		// },
 		get left() {
-			return this.owner.x - Math.abs(this.owner.offsetX);
+			return this.owner.x - 4;
 		},
 		get top() {
-			return this.owner.y - Math.abs(this.owner.offsetY);
+			return this.owner.y - 16;
 		},
 		get right() {
-			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+			return this.owner.x + 4;
 		},
 		get bottom() {
-			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+			return this.owner.y;
 		},
 		owner: null
 	};
@@ -83,6 +110,9 @@ var Lemming = function(game, x, y) {
 	this.addAnim("build_end", "BuildEnd", 10, {x: 0, y: 0}, false);
 	this.addAnim("bash", "Bash", 32, {x: 0, y: 0});
 	this.addAnim("dig", "Dig", 8, {x: 0, y: 4});
+	this.addAnim("splat", "FallDeath", 16, {x: 0, y: 0}, false);
+	this.addAnim("block", "Block", 16, {x: 0, y: 0});
+	this.addAnim("explode", "Explode", 16, {x: 0, y: 0}, false);
 	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
@@ -93,6 +123,9 @@ var Lemming = function(game, x, y) {
 		sprite: null
 	};
 };
+
+Lemming.DEATHTYPE_OUT_OF_ROOM = 0;
+Lemming.DEATHTYPE_FALL = 1;
 
 Lemming.prototype = Object.create(Phaser.Sprite.prototype);
 Lemming.prototype.constructor = Lemming;
@@ -143,45 +176,72 @@ Lemming.prototype.update = function() {
 	this.x += this.velocity.x;
 	this.y += this.velocity.y;
 
-	if(this.onFloor() && this.action.idle) {
-		this.velocity.x = 0.5;
-		if(this.dir === -1) {
-			this.velocity.x = -this.velocity.x;
+	if(!this.dead) {
+		if(this.onFloor() && this.action.idle) {
+			// Fall death
+			if(this.fallDist >= this.state.map.properties.falldist) {
+				this.die(Lemming.DEATHTYPE_FALL);
+			}
+			else {
+				this.fallDist = 0;
+				// Adjust velocity
+				this.velocity.x = 0.5;
+				if(this.dir === -1) {
+					this.velocity.x = -this.velocity.x;
+				}
+				this.velocity.y = 0;
+				// Align to floor
+				this.y = Math.floor(this.y / this.tile.height) * this.tile.height;
+				// Check walk up ramp
+				if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
+					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 0) {
+					this.y -= this.tile.height;
+				}
+				// Check walk against wall
+				else if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
+					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) > 0) {
+					// Turn around
+					this.turnAround();
+				}
+				// Play animation
+				this.playAnim("move", 15);
+			}
 		}
-		this.velocity.y = 0;
-		// Align to floor
-		this.y = Math.floor(this.y / this.tile.height) * this.tile.height;
-		// Check walk up ramp
-		if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
-			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 0) {
-			this.y -= this.tile.height;
+		// Bashing
+		else if(this.onFloor() && this.action.name === "basher" && !this.action.idle) {
+			// Remove tile in front of lemming
+			var alarm = new Alarm(this.game, 30, function() {
+				this.setAction("walker");
+			}, this);
+			if(this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) ||
+				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == 1 ||
+				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == 1) {
+				alarm.cancel();
+			}
 		}
-		// Check walk against wall
-		else if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
-			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) > 0) {
-			// Turn around
-			this.turnAround();
+		else if(!this.onFloor()) {
+			this.velocity.x = 0;
+			this.velocity.y = 1.5;
+			this.playAnim("fall", 15);
+			this.clearAction();
+			this.fallDist += Math.abs(this.velocity.y);
 		}
-		// Play animation
-		this.playAnim("move", 15);
-	}
-	// Bashing
-	else if(this.onFloor() && this.action.name === "basher" && !this.action.idle) {
-		// Remove tile in front of lemming
-		var alarm = new Alarm(this.game, 30, function() {
-			this.setAction("walker");
-		}, this);
-		if(this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) ||
-			this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == 1 ||
-			this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == 1) {
-			alarm.cancel();
+
+		// Detect blockers
+		if(this.action.name !== "blocker") {
+			var objs = this.detectByAction(this.x + this.velocity.x, this.y - 1, "blocker");
+			for(var a = 0;a < objs.length;a++) {
+				var obj = objs[a];
+				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
+					this.turnAround();
+				}
+			}
 		}
-	}
-	else if(!this.onFloor()) {
-		this.velocity.x = 0;
-		this.velocity.y = 1.5;
-		this.playAnim("fall", 15);
-		this.clearAction();
+
+		// Die outside room
+		if(this.isOutsideLevel()) {
+			this.die(Lemming.DEATHTYPE_OUT_OF_ROOM);
+		}
 	}
 };
 
@@ -212,6 +272,19 @@ Lemming.prototype.playAnim = function(key, frameRate) {
 };
 
 Lemming.prototype.clearAction = function() {
+	// Remove lemming from action group
+	var group = this.state.lemmingsGroup[this.action.name];
+	if(group) {
+		var done = false;
+		for(var a = 0;a < group.length && !done;a++) {
+			var obj = group[a];
+			if(obj === this) {
+				group.splice(a, 1);
+				done = true;
+			}
+		}
+	}
+	// Clear action
 	this.action.name = "";
 	this.action.value = 0;
 	this.action.active = false;
@@ -221,6 +294,7 @@ Lemming.prototype.clearAction = function() {
 };
 
 Lemming.prototype.setAction = function(actionName) {
+	// Normal actions
 	if(actionName != this.action.name) {
 		switch(actionName) {
 			// SET ACTION: Walk
@@ -240,12 +314,14 @@ Lemming.prototype.setAction = function(actionName) {
 				this.action.active = true;
 				this.action.value = 5;
 				this.playAnim("build", 15);
+				// Set velocity
+				this.velocity.x = 0;
+				// Add to list of builders
+				this.state.lemmingsGroup[actionName].push(this);
 				// Set timer
 				this.action.alarm = new Alarm(game, 120, function() {
 					this.proceedBuild();
 				}, this);
-				// Set velocity
-				this.velocity.x = 0;
 			}
 			break;
 			// SET ACTION: Basher
@@ -261,6 +337,8 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("bash", 15);
 				// Set velocity
 				this.velocity.x = 0.2 * this.dir;
+				// Add to list of bashers
+				this.state.lemmingsGroup[actionName].push(this);
 			}
 			break;
 			// SET ACTION: Digger
@@ -276,6 +354,8 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("dig", 15);
 				// Set velocity
 				this.velocity.x = 0;
+				// Add to list of diggers
+				this.state.lemmingsGroup[actionName].push(this);
 				// Set alarm
 				this.action.alarm = new Alarm(this.game, 120, function() {
 					this.proceedDig();
@@ -295,9 +375,51 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("mine", 15);
 				// Set velocity
 				this.velocity.x = 0;
+				// Add to list of miners
+				this.state.lemmingsGroup[actionName].push(this);
 				// Set alarm
 				this.action.alarm = new Alarm(this.game, 150, function() {
 					this.proceedMine();
+				}, this);
+			}
+			break;
+			// SET ACTION: Blocker
+			case "blocker":
+			if(this.onFloor()) {
+				this.clearAction();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.action.name = actionName;
+				this.action.active = true;
+				this.action.value = 0;
+				this.playAnim("block", 15);
+				// Set velocity
+				this.velocity.x = 0;
+				// Add to list of blockers
+				this.state.lemmingsGroup[actionName].push(this);
+			}
+			break;
+		}
+	}
+	// Sub action
+	if(this.subaction.name != "") {
+		switch(actionName) {
+			// SET SUBACTION: Exploder
+			case "exploder":
+			if(this.onFloor()) {
+				this.subaction.clear();
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				// Set action
+				this.subaction.name = actionName;
+				this.action.active = true;
+				this.action.value = 5;
+				// Create label
+				this.gameLabel = new GameLabel(this.game, this.x, this.y, "5");
+				// Create alarm
+				this.subaction.alarm = new Alarm(this.game, 60, function() {
+					this.proceedExplode();
 				}, this);
 			}
 			break;
@@ -367,4 +489,89 @@ Lemming.prototype.proceedMine = function() {
 			this.proceedMine();
 		}, this);
 	}
+};
+
+Lemming.prototype.proceedExplode = function() {
+	if(this.subaction.name == "exploder" && !this.subaction.idle) {
+		this.subaction.value = -1;
+		if(this.subaction.value <= 0) {
+			this.gameLabel.remove();
+			this.gameLabel = null;
+			this.game.sound.play("sndOhNo");
+			this.playAnim("explode", 15);
+			this.animations.currentAnim.onComplete.addOnce(function() {
+				this.explode();
+			}, this);
+		}
+		else {
+			this.gameLabel.text = this.subaction.value.toString();
+			this.subaction.alarm = new Alarm(this.game, 60, function() {
+				this.proceedExplode();
+			}, this);
+		}
+	}
+};
+
+Lemming.prototype.explode = function(radius) {
+	radius = radius || 1;
+	game.sound.play("sndPop");
+};
+
+Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {
+	var group = this.state.lemmingsGroup[actionName];
+	var result = [];
+	if(group) {
+		for(var a = 0;a < group.length;a++) {
+			var obj = group[a];
+			if(xCheck >= obj.bbox.left && xCheck <= obj.bbox.right &&
+				yCheck >= obj.bbox.top && yCheck <= obj.bbox.bottom) {
+				result.push(obj);
+			}
+		}
+	}
+	return result;
+};
+
+Lemming.prototype.isOutsideLevel = function() {
+	return (this.x < 0 || this.x > this.state.map.totalwidth ||
+		this.y < 0 || this.y > this.state.map.totalheight);
+};
+
+Lemming.prototype.die = function(deathType) {
+	this.dead = true;
+	this.velocity.x = 0;
+	this.velocity.y = 0;
+	switch(deathType) {
+		// DEATH ACTION: Out of room
+		case Lemming.DEATHTYPE_OUT_OF_ROOM:
+		this.game.sound.play("sndDie");
+		this.remove();
+		break;
+		// DEATH ACTION: Fall death
+		case Lemming.DEATHTYPE_FALL:
+		this.game.sound.play("sndSplat");
+		this.playAnim("splat", 15);
+		this.animations.currentAnim.onComplete.addOnce(function() {
+			this.remove();
+		}, this);
+		break;
+	}
+};
+
+Lemming.prototype.remove = function() {
+	// Remove label
+	if(this.gameLabel) {
+		this.gameLabel.remove();
+	}
+	// Remove from state's group
+	var done = false;
+	for(var a = 0;a < this.state.lemmingsGroup.all.length && !done;a++) {
+		var lem = this.state.lemmingsGroup.all[a];
+		if(lem === this) {
+			this.state.lemmingsGroup.all.splice(a, 1);
+			done = true;
+		}
+	}
+	// Kill self
+	this.destroy();
 };

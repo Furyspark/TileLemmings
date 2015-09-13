@@ -25,6 +25,22 @@
 		{
 			"key": "sndChink",
 			"url": "assets/audio/sfx/sndChink.wav"
+		},
+		{
+			"key": "sndDie",
+			"url": "assets/audio/sfx/sndDie.wav"
+		},
+		{
+			"key": "sndSplat",
+			"url": "assets/audio/sfx/sndLemmingDeath_Fall.wav"
+		},
+		{
+			"key": "sndPop",
+			"url": "assets/audio/sfx/sndLemmingDeath_Explode.wav"
+		},
+		{
+			"key": "sndOhNo",
+			"url": "assets/audio/sfx/sndOhNo.wav"
 		}
 	],
 	"sprite_atlases": [

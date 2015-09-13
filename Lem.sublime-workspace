@@ -16,22 +16,6 @@
 	"buffers":
 	[
 		{
-			"file": "src/game.js",
-			"settings":
-			{
-				"buffer_size": 165,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/classes/alarm.js",
-			"settings":
-			{
-				"buffer_size": 837,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "index.html",
 			"settings":
 			{
@@ -48,26 +32,42 @@
 			}
 		},
 		{
-			"file": "assets/levels/level1.json",
-			"settings":
-			{
-				"buffer_size": 6092,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/classes/button.js",
-			"settings":
-			{
-				"buffer_size": 1932,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "src/classes/lemming.js",
 			"settings":
 			{
-				"buffer_size": 6506,
+				"buffer_size": 15333,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/gamelabel.js",
+			"settings":
+			{
+				"buffer_size": 632,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/alarm.js",
+			"settings":
+			{
+				"buffer_size": 912,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/gfx/sprite_atlases/lemming.json",
+			"settings":
+			{
+				"buffer_size": 44605,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/states/state_game.js",
+			"settings":
+			{
+				"buffer_size": 14084,
 				"line_ending": "Windows"
 			}
 		},
@@ -88,34 +88,18 @@
 			}
 		},
 		{
-			"file": "src/states/state_game.js",
+			"file": "src/classes/camera.js",
 			"settings":
 			{
-				"buffer_size": 11693,
+				"buffer_size": 912,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "main.js",
+			"file": "src/classes/button.js",
 			"settings":
 			{
-				"buffer_size": 1367,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "build.rb",
-			"settings":
-			{
-				"buffer_size": 79,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "assets/asset_list.json",
-			"settings":
-			{
-				"buffer_size": 1614,
+				"buffer_size": 2698,
 				"line_ending": "Windows"
 			}
 		},
@@ -185,17 +169,37 @@
 	],
 	"file_history":
 	[
-		"/D/Projects/Phaser/Lem/package.json",
-		"/D/Projects/Phaser/Lem/main.js",
+		"/C/Users/Tijmen/Desktop/nginx.conf",
+		"/D/Projects/Phaser/Lem/assets/asset_list.json",
 		"/D/Projects/Phaser/Lem/sources.json",
+		"/C/Program Files/OpenVPN/log/furyspark.log",
+		"/C/Users/Tijmen/Desktop/WindowsTunnel.bat",
+		"/C/Users/Tijmen/Desktop/snerpface.ovpn",
+		"/C/Program Files/OpenVPN/config/furyspark.ovpn",
+		"/C/Users/Tijmen/Desktop/furyspark.ovpn",
+		"/C/Users/Tijmen/Downloads/OpenVPN Status.txt",
+		"/C/Users/Tijmen/Desktop/kronk.ovpn",
+		"/C/Users/Tijmen/Desktop/server.conf",
+		"/C/Users/Tijmen/Desktop/yarrvpn.conf",
+		"/C/Users/Tijmen/Desktop/build-key.sh",
+		"/C/Users/Tijmen/Desktop/easyrsa",
+		"/C/Users/Tijmen/Desktop/furyspark.conf",
+		"/C/Users/Tijmen/Desktop/easyrsa/README-Windows.txt",
+		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/lemming.json",
+		"/D/Projects/Phaser/Lem/src/classes/alarm.js",
+		"/D/Projects/Phaser/Lem/assets/levels/level1.json",
+		"/D/Projects/Phaser/Lem/build.rb",
+		"/D/Projects/Phaser/Lem/main.js",
+		"/D/Projects/Phaser/Lem/src/game.js",
+		"/D/Projects/Phaser/Lem/src/classes/gui.js",
+		"/D/Projects/Phaser/Lem/src/classes/button.js",
+		"/D/Projects/Phaser/Lem/package.json",
 		"/D/Projects/Phaser/Lem/src/classes/input.js",
 		"/D/Projects/Phaser/Lem/src/classes/prop.js",
 		"/D/Projects/Phaser/Lem/src/states/state_game.js",
 		"/D/Projects/Phaser/Lem/Gruntfile.js",
 		"/D/Projects/Phaser/Lem/src/classes/timer.js",
-		"/D/Projects/Phaser/Lem/assets/asset_list.json",
 		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/misc.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/lemming.json",
 		"/D/Projects/Phaser/Lem/src/states/state_boot.js",
 		"/C/Users/Tijmen/Desktop/extip.txt",
 		"/D/Projects/Phaser/Lem/lib/classes/lemming.js",
@@ -204,7 +208,6 @@
 		"/D/Projects/Phaser/Lem/lib/game_data.js",
 		"/D/Projects/Phaser/Lem/window_handler.js",
 		"/D/Projects/Phaser/Lem/index.html",
-		"/D/Projects/Phaser/Lem/build.rb",
 		"/D/Projects/Phaser/Lem/dist/Lem.js",
 		"/D/Projects/Phaser/Lem/Lem.sublime-project",
 		"/D/Games/Dungeon Crawl/settings/init.txt",
@@ -293,19 +296,7 @@
 		"/C/Users/Tijmen/Desktop/xpadder/WoW.xpadder",
 		"/D/AHK/furyspark/Games/Platform/Rogue Legacy.ahk",
 		"/C/Users/Tijmen/Documents/SavedGames/RogueLegacy/RogueLegacyStorageContainer/AllPlayers/Profile1/RogueLegacyPlayer.rcdat",
-		"/D/AHK/furyspark/Games/Platform/Rogue Legacy.json",
-		"/D/AHK/furyspark/Games/Emulation_Genesis/Kid Chameleon.ahk",
-		"/C/Users/Tijmen/Desktop/server.properties",
-		"/C/Users/Tijmen/Desktop/ftbserver/ServerStart.sh",
-		"/D/AHK/furyspark/Games/FPS/Duke Nukem 3D.ahk",
-		"/D/AHK/furyspark/ProfileCreator - Copy.ahk",
-		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
-		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
-		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/D/AHK/dev/Engine_Load.ahk",
-		"/D/AHK/dev/Engine_Postload.ahk",
-		"/C/Users/Tijmen/Desktop/vac soundcard stereo.bat",
-		"/C/Users/Tijmen/Desktop/vac soundcard.bat"
+		"/D/AHK/furyspark/Games/Platform/Rogue Legacy.json"
 	],
 	"find":
 	{
@@ -313,9 +304,10 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 90.0,
 		"where_history":
 		[
+			""
 		]
 	},
 	"find_state":
@@ -323,6 +315,63 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"php",
+			"user",
+			"root",
+			"sndLemmingDeath_Explode",
+			"\"\");",
+			"blockers",
+			"group",
+			"lemmingsGroup",
+			"levelGroup",
+			"route",
+			"gen-req",
+			"client",
+			"true",
+			"currentAnim",
+			"sndDie",
+			"Splat",
+			"kill",
+			"destroy",
+			"sndChink",
+			"animations.play",
+			"proceedDig",
+			"digger",
+			"destroy",
+			"bash",
+			"Bash",
+			"32",
+			"basher",
+			"null",
+			"primitiveLayer",
+			"index",
+			"left",
+			"up",
+			"left",
+			"LEFT",
+			"UP",
+			"LEFT",
+			"false",
+			"true",
+			"false",
+			"16",
+			"Build",
+			"build",
+			"placeTile",
+			"removeTile",
+			"replaceTile",
+			"removeTile",
+			"guiGroup",
+			"width",
+			"guiGroup",
+			"camPos",
+			"this",
+			"zoom",
+			"this",
+			"zoom",
+			"this",
+			"zoom",
+			"world.",
 			"camera.",
 			"600",
 			"zoom",
@@ -393,32 +442,7 @@
 			"UInt",
 			"keyinput",
 			"UInt",
-			"mouseinput",
-			"canvas",
-			"[",
-			"GetKeyChar",
-			"*",
-			"joy",
-			"Stereo",
-			"return",
-			"Woof_Up",
-			"return",
-			"*",
-			"origin",
-			"keyValue",
-			"vkba",
-			"return",
-			"a",
-			"Woof_Up",
-			"left",
-			"*",
-			"SendInput {blind}{vkff}",
-			"}\n",
-			"*$",
-			"Input",
-			"Realtime",
-			"shiftUsed",
-			"Stereo"
+			"mouseinput"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -442,186 +466,11 @@
 	"groups":
 	[
 		{
-			"selected": 9,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/game.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 165,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								52,
-								52
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/classes/alarm.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 837,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								780,
-								780
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "index.html",
 					"semi_transient": false,
 					"settings":
@@ -705,11 +554,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 1,
 					"file": "src/classes/prop.js",
 					"semi_transient": false,
 					"settings":
@@ -721,8 +570,8 @@
 						"selection":
 						[
 							[
-								1847,
-								1847
+								1004,
+								1004
 							]
 						],
 						"settings":
@@ -731,19 +580,136 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 239.0,
+						"translation.y": 112.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/lemming.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15333,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13877,
+								13877
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6822.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/classes/gamelabel.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 632,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								438,
+								438
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "assets/levels/level1.json",
+					"file": "src/classes/alarm.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6092,
+						"buffer_size": 912,
 						"regions":
 						{
 						},
@@ -756,120 +722,60 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 600.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "src/classes/button.js",
+					"file": "assets/gfx/sprite_atlases/lemming.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1932,
+						"buffer_size": 44605,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1663,
-								1663
+								26977,
+								26984
 							]
 						],
 						"settings":
 						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 180.0,
+						"translation.y": 15681.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "src/classes/lemming.js",
+					"file": "src/states/state_game.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6506,
+						"buffer_size": 14084,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5667,
-								5667
+								3287,
+								3287
 							]
 						],
 						"settings":
@@ -937,10 +843,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2654.0,
+						"translation.y": 392.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -963,13 +869,14 @@
 						"settings":
 						{
 							"open_with_edit": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -998,186 +905,70 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 9,
-					"file": "src/states/state_game.js",
+					"file": "src/classes/camera.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11693,
+						"buffer_size": 912,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8144,
-								8144
+								906,
+								906
 							]
 						],
 						"settings":
 						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
+							"open_with_edit": true,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 4639.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "main.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1367,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1055,
-								1055
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
 						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "build.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 79,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								65,
-								65
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "assets/asset_list.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1614,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1413,
-								1413
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 390.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 10,
+					"file": "src/classes/button.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2698,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1484,
+								1484
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 196.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
 					"file": "src/classes/tile.js",
 					"semi_transient": false,
 					"settings":
@@ -1195,7 +986,8 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1209,7 +1001,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 22.0
 	},
 	"input":
 	{
@@ -1250,7 +1042,7 @@
 	"project": "Lem.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":

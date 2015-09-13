@@ -75,7 +75,9 @@ var gameState = {
 
 	tileLayer: null,
 	levelGroup: null,
-	lemmingsGroup: [],
+	lemmingsGroup: {
+		all: []
+	},
 	doorsGroup: [],
 	exitsGroup: [],
 	trapsGroup: [],
@@ -154,6 +156,10 @@ var gameState = {
 		this.layers.primitiveLayer.state = this;
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
+		for(var a = 0;a < this.actions.items.length;a++) {
+			var act = this.actions.items[a];
+			this.lemmingsGroup[act.name] = [];
+		}
 		
 		// Create GUI
 		this.createLevelGUI();
@@ -293,6 +299,11 @@ var gameState = {
 				this.setActionAmount(action.name, parseInt(this.map.properties[action.name]));
 			}
 		}
+
+		// Set misc map properties
+		if(!this.map.properties.falldist) {
+			this.map.properties.falldist = (9 * this.map.tileheight);
+		}
 	},
 
 	enableUserInteraction: function() {
@@ -339,7 +350,7 @@ var gameState = {
 			// Create door
 			if(obj.type == "door") {
 				var newObj = new Prop(game, (obj.x + (obj.width * 0.5)), obj.y);
-				newObj.setAsDoor("classic", 50, 500, this.lemmingsGroup);
+				newObj.setAsDoor("classic", 50, 500, this.lemmingsGroup.all);
 				this.doorsGroup.push(newObj);
 			}
 		}
@@ -389,8 +400,8 @@ var gameState = {
 				}
 			}
 		};
-		for(var a = 0;a < this.lemmingsGroup.length;a++) {
-			var obj = this.lemmingsGroup[a];
+		for(var a = 0;a < this.lemmingsGroup.all.length;a++) {
+			var obj = this.lemmingsGroup.all[a];
 			obj.cursorDeselect();
 			if(obj.mouseOver()) {
 				lemmingSelect.data.push(obj);
@@ -552,5 +563,32 @@ var gameState = {
 				}
 			}
 		}
+	},
+
+	instancePosition: function(xCheck, yCheck, instanceTypeCheck) {
+		var arrayCheck = [];
+		switch(instanceTypeCheck) {
+			case "lemming":
+			arrayCheck = this.lemmingsGroup.all;
+			break;
+			case "door":
+			arrayCheck = this.doorsGroup;
+			break;
+			case "exit":
+			arrayCheck = this.exitsGroup;
+			break;
+			case "trap":
+			arrayCheck = this.trapsGroup;
+			break;
+		}
+		var result = [];
+		for(var a = 0;a < arrayCheck.length;a++) {
+			var obj = arrayCheck[a];
+			if(xCheck >= obj.bbox.left && xCheck <= obj.bbox.right &&
+				yCheck >= obj.bbox.top && yCheck <= obj.bbox.bottom) {
+				result.push(obj);
+			}
+		}
+		return result;
 	}
 };
