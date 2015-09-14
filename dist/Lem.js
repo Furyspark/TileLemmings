@@ -366,6 +366,7 @@ var Lemming = function(game, x, y) {
 	this.state.levelGroup.add(this);
 
 	this.dead = false;
+	this.active = true;
 	this.animationProperties = {};
 
 	// Set up action
@@ -472,6 +473,7 @@ var Lemming = function(game, x, y) {
 	this.addAnim("splat", "FallDeath", 16, {x: 0, y: 0}, false);
 	this.addAnim("block", "Block", 16, {x: 0, y: 0});
 	this.addAnim("explode", "Explode", 16, {x: 0, y: 0}, false);
+	this.addAnim("exit", "Exit", 8, {x: 0, y: 0}, false);
 	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
@@ -535,7 +537,7 @@ Lemming.prototype.update = function() {
 	this.x += this.velocity.x;
 	this.y += this.velocity.y;
 
-	if(!this.dead) {
+	if(!this.dead && this.active) {
 		if(this.onFloor() && this.action.idle) {
 			// Fall death
 			if(this.fallDist >= this.state.map.properties.falldist) {
@@ -573,7 +575,7 @@ Lemming.prototype.update = function() {
 				this.setAction("walker");
 			}, this);
 			var bashResult = this.state.map.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1));
-			if(bashResult === 0 ||
+			if(bashResult === 1 ||
 				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == 1 ||
 				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == 1) {
 				alarm.cancel();
@@ -599,6 +601,25 @@ Lemming.prototype.update = function() {
 				var obj = objs[a];
 				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
 					this.turnAround();
+				}
+			}
+		}
+
+		// Check for exits
+		if(this.onFloor() && this.active) {
+			var checkDone = false;
+			for(var a = 0;a < this.state.exitsGroup.length && !checkDone;a++) {
+				var exitProp = this.state.exitsGroup[a];
+				if(exitProp.inPosition(this.x, this.y)) {
+					this.checkDone = true;
+					this.active = false;
+					this.playAnim("exit", 15);
+					game.sound.play("sndYippie");
+					this.velocity.x = 0;
+					this.velocity.y = 0;
+					this.animations.currentAnim.onComplete.addOnce(function() {
+						this.remove();
+					}, this);
 				}
 			}
 		}
@@ -984,6 +1005,7 @@ Lemming.prototype.remove = function() {
 			done = true;
 		}
 	}
+	this.active = false;
 	// Kill self
 	this.destroy();
 };
@@ -1004,7 +1026,9 @@ Prop.prototype.constructor = Prop;
 Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
+	this.state.doorsGroup.push(this);
 	this.lemmingsGroup = lemmingsGroup;
+	this.anchor.setTo(0.5, 0);
 	
 	// Set configuration
 	var doorConfig = game.cache.getJSON("config").props.doors[type];
@@ -1056,9 +1080,58 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 		}, this)
 		this.spawnTimer.start();
 	};
+};
 
-	// Set anchor
-	this.anchor.setTo(0.5, 0);
+Prop.prototype.setAsExit = function(type) {
+	this.objectType = "exit";
+	this.state.exitsGroup.push(this);
+	this.anchor.setTo(0.5, 1);
+
+	// Set configuration
+	var propConfig = game.cache.getJSON("config").props.exits[type];
+	this.loadTexture(propConfig.atlas);
+	var a, idleFrames = [];
+	for(a = 0;a < propConfig.frames;a++) {
+		var anim = propConfig.animName + a.toString() + ".png";
+		idleFrames.push(anim);
+	}
+
+	// Set animation
+	this.animations.add("idle", idleFrames, 15, true);
+	this.animations.play("idle", 15);
+
+	// Set bounding box
+	this.bbox = {
+		base: {
+			left: propConfig.bbox.left,
+			right: propConfig.bbox.right,
+			top: propConfig.bbox.top,
+			bottom: propConfig.bbox.bottom
+		},
+		get left() {
+			return this.owner.x + this.base.left;
+		},
+		get right() {
+			return this.owner.x + this.base.right;
+		},
+		get top() {
+			return this.owner.y + this.base.top;
+		},
+		get bottom() {
+			return this.owner.y + this.base.bottom;
+		},
+
+		owner: this
+	};
+
+	// Set functions
+	this.inPosition = function(xCheck, yCheck) {
+		if(xCheck >= this.bbox.left && xCheck <= this.bbox.right &&
+			yCheck >= this.bbox.top && yCheck <= this.bbox.bottom) {
+			return true;
+		}
+		return false;
+	};
 };
 var bootState = {
 	preload: function() {
@@ -1233,6 +1306,12 @@ var gameState = {
 		}
 	},
 
+	victoryState: {
+		total: 0,
+		saved: 0,
+		need: 0
+	},
+
 	actions: {
 		items: [
 			{
@@ -1340,6 +1419,7 @@ var gameState = {
 
 		// Predetermine map files
 		var mapFiles = [];
+		// Load Background Music
 		if(this.map.properties.bgm) {
 			mapFiles.push({
 				url: "assets/audio/bgm/" + this.map.properties.bgm,
@@ -1347,10 +1427,21 @@ var gameState = {
 				type: "sound"
 			});
 		}
+		// Load Background
 		if(this.map.properties.bg) {
 			mapFiles.push({
 				url: "assets/gfx/backgrounds/" + this.map.properties.bg,
 				key: "bg",
+				type: "image"
+			});
+		}
+		// Load tilesets
+		for(var a = 0;a < this.map.tilesets.length;a++) {
+			var tileset = this.map.tilesets[a];
+			var url = "assets/levels/" + tileset.image;
+			mapFiles.push({
+				url: url,
+				key: tileset.name,
 				type: "image"
 			});
 		}
@@ -1447,11 +1538,6 @@ var gameState = {
 			}
 			return null;
 		};
-		// Place images
-		this.map.tilesetRefs = {
-			pink: "tilesetPink",
-			pillar: "tilesetPillar"
-		};
 
 		// Create tiles
 		for(var a in this.map.layers) {
@@ -1479,7 +1565,7 @@ var gameState = {
 						tileset.tilewidth,
 						tileset.tileheight
 					);
-					var tile = new Tile(game, placeAt.raw.x, placeAt.raw.y, this.map.tilesetRefs[tileset.name], cutout);
+					var tile = new Tile(game, placeAt.raw.x, placeAt.raw.y, tileset.name, cutout);
 					this.layers.primitiveLayer.data.push(tile);
 				}
 				else {
@@ -1497,6 +1583,11 @@ var gameState = {
 		}
 
 		// Set misc map properties
+		// PROPERTY: Save need count
+		if(this.map.properties.need) {
+			this.victoryState.need = this.map.properties.need;
+		}
+		// PROPERTY: Fall distance
 		if(!this.map.properties.falldist) {
 			this.map.properties.falldist = (9 * this.map.tileheight);
 		}
@@ -1560,11 +1651,39 @@ var gameState = {
 		// Create objects
 		for(var a in this.map.objects) {
 			var obj = this.map.objects[a];
+			var objProps = obj.properties;
 			// Create door
-			if(obj.type == "door") {
-				var newObj = new Prop(game, (obj.x + (obj.width * 0.5)), obj.y);
-				newObj.setAsDoor("classic", 50, 500, this.lemmingsGroup.all);
-				this.doorsGroup.push(newObj);
+			if(obj.type === "door") {
+				var newObj = new Prop(this.game, (obj.x + (obj.width * 0.5)), obj.y);
+				var doorValue = 0;
+				var doorType = "classic";
+				var doorRate = 500;
+				if(objProps) {
+					if(objProps.value) {
+						doorValue = parseInt(objProps.value);
+					}
+					if(objProps.type) {
+						doorType = objProps.type;
+					}
+					if(objProps.rate) {
+						doorRate = parseInt(objProps.rate);
+					}
+				}
+				// Add to total lemming count
+				this.victoryState.total += doorValue;
+				// Create object
+				newObj.setAsDoor(doorType, doorValue, doorRate, this.lemmingsGroup.all);
+			}
+			// Create exit
+			else if(obj.type === "exit") {
+				var newObj = new Prop(this.game, obj.x + (obj.width * 0.5), obj.y + obj.height);
+				var exitType = "classic";
+				if(objProps) {
+					if(objProps.type) {
+						exitType = objProps.type;
+					}
+				}
+				newObj.setAsExit(exitType);
 			}
 		}
 

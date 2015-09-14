@@ -673,8 +673,8 @@
 						"selection":
 						[
 							[
-								9069,
-								9069
+								16363,
+								16363
 							]
 						],
 						"settings":
@@ -742,7 +742,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 6150.0,
+						"translation.y": 8219.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -827,7 +827,8 @@
 								"bh_regex_content"
 							],
 							"open_with_edit": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

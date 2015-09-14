@@ -41,6 +41,10 @@
 		{
 			"key": "sndOhNo",
 			"url": "assets/audio/sfx/sndOhNo.wav"
+		},
+		{
+			"key": "sndYippie",
+			"url": "assets/audio/sfx/sndYippie.wav"
 		}
 	],
 	"sprite_atlases": [

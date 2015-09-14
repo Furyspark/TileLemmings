@@ -15,7 +15,9 @@ Prop.prototype.constructor = Prop;
 Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
+	this.state.doorsGroup.push(this);
 	this.lemmingsGroup = lemmingsGroup;
+	this.anchor.setTo(0.5, 0);
 	
 	// Set configuration
 	var doorConfig = game.cache.getJSON("config").props.doors[type];
@@ -67,7 +69,56 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 		}, this)
 		this.spawnTimer.start();
 	};
+};
 
-	// Set anchor
-	this.anchor.setTo(0.5, 0);
+Prop.prototype.setAsExit = function(type) {
+	this.objectType = "exit";
+	this.state.exitsGroup.push(this);
+	this.anchor.setTo(0.5, 1);
+
+	// Set configuration
+	var propConfig = game.cache.getJSON("config").props.exits[type];
+	this.loadTexture(propConfig.atlas);
+	var a, idleFrames = [];
+	for(a = 0;a < propConfig.frames;a++) {
+		var anim = propConfig.animName + a.toString() + ".png";
+		idleFrames.push(anim);
+	}
+
+	// Set animation
+	this.animations.add("idle", idleFrames, 15, true);
+	this.animations.play("idle", 15);
+
+	// Set bounding box
+	this.bbox = {
+		base: {
+			left: propConfig.bbox.left,
+			right: propConfig.bbox.right,
+			top: propConfig.bbox.top,
+			bottom: propConfig.bbox.bottom
+		},
+		get left() {
+			return this.owner.x + this.base.left;
+		},
+		get right() {
+			return this.owner.x + this.base.right;
+		},
+		get top() {
+			return this.owner.y + this.base.top;
+		},
+		get bottom() {
+			return this.owner.y + this.base.bottom;
+		},
+
+		owner: this
+	};
+
+	// Set functions
+	this.inPosition = function(xCheck, yCheck) {
+		if(xCheck >= this.bbox.left && xCheck <= this.bbox.right &&
+			yCheck >= this.bbox.top && yCheck <= this.bbox.bottom) {
+			return true;
+		}
+		return false;
+	};
 };

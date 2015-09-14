@@ -22,7 +22,8 @@
                  "name":"",
                  "properties":
                     {
-
+                     "rate":"2000",
+                     "value":"20"
                     },
                  "rotation":0,
                  "type":"door",
@@ -58,13 +59,14 @@
  "properties":
     {
      "basher":"5",
-     "bg":"bgCave.png",
+     "bg":"bgSky.png",
      "bgm":"sports.ogg",
      "blocker":"2",
      "builder":"20",
      "digger":"5",
      "exploder":"5",
-     "miner":"5"
+     "miner":"5",
+     "need":"10"
     },
  "renderorder":"right-down",
  "tileheight":16,

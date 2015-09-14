@@ -7,6 +7,7 @@ var Lemming = function(game, x, y) {
 	this.state.levelGroup.add(this);
 
 	this.dead = false;
+	this.active = true;
 	this.animationProperties = {};
 
 	// Set up action
@@ -113,6 +114,7 @@ var Lemming = function(game, x, y) {
 	this.addAnim("splat", "FallDeath", 16, {x: 0, y: 0}, false);
 	this.addAnim("block", "Block", 16, {x: 0, y: 0});
 	this.addAnim("explode", "Explode", 16, {x: 0, y: 0}, false);
+	this.addAnim("exit", "Exit", 8, {x: 0, y: 0}, false);
 	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
@@ -176,7 +178,7 @@ Lemming.prototype.update = function() {
 	this.x += this.velocity.x;
 	this.y += this.velocity.y;
 
-	if(!this.dead) {
+	if(!this.dead && this.active) {
 		if(this.onFloor() && this.action.idle) {
 			// Fall death
 			if(this.fallDist >= this.state.map.properties.falldist) {
@@ -214,7 +216,7 @@ Lemming.prototype.update = function() {
 				this.setAction("walker");
 			}, this);
 			var bashResult = this.state.map.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1));
-			if(bashResult === 0 ||
+			if(bashResult === 1 ||
 				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == 1 ||
 				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == 1) {
 				alarm.cancel();
@@ -240,6 +242,25 @@ Lemming.prototype.update = function() {
 				var obj = objs[a];
 				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
 					this.turnAround();
+				}
+			}
+		}
+
+		// Check for exits
+		if(this.onFloor() && this.active) {
+			var checkDone = false;
+			for(var a = 0;a < this.state.exitsGroup.length && !checkDone;a++) {
+				var exitProp = this.state.exitsGroup[a];
+				if(exitProp.inPosition(this.x, this.y)) {
+					this.checkDone = true;
+					this.active = false;
+					this.playAnim("exit", 15);
+					game.sound.play("sndYippie");
+					this.velocity.x = 0;
+					this.velocity.y = 0;
+					this.animations.currentAnim.onComplete.addOnce(function() {
+						this.remove();
+					}, this);
 				}
 			}
 		}
@@ -625,6 +646,7 @@ Lemming.prototype.remove = function() {
 			done = true;
 		}
 	}
+	this.active = false;
 	// Kill self
 	this.destroy();
 };
