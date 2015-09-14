@@ -34,12 +34,12 @@ var Lemming = function(game, x, y) {
 			this.name = "";
 			this.value = 0;
 			this.active = false;
-		}
+		},
 		get idle() {
 			return (!this.active);
-		}
+		},
 		alarm: null
-	}
+	},
 
 	this.gameLabel = null;
 
@@ -213,10 +213,16 @@ Lemming.prototype.update = function() {
 			var alarm = new Alarm(this.game, 30, function() {
 				this.setAction("walker");
 			}, this);
-			if(this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) ||
+			var bashResult = this.state.map.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1));
+			if(bashResult === 0 ||
 				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == 1 ||
 				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == 1) {
 				alarm.cancel();
+			}
+			else if(bashResult === 2) {
+				alarm.cancel;
+				this.game.sound.play("sndChink");
+				this.clearAction();
 			}
 		}
 		else if(!this.onFloor()) {
@@ -295,7 +301,7 @@ Lemming.prototype.clearAction = function() {
 
 Lemming.prototype.setAction = function(actionName) {
 	// Normal actions
-	if(actionName != this.action.name) {
+	if(actionName != this.action.name && (this.action.name !== "blocker" || (this.action.idle && actionName === "blocker"))) {
 		switch(actionName) {
 			// SET ACTION: Walk
 			case "walker":
@@ -403,25 +409,23 @@ Lemming.prototype.setAction = function(actionName) {
 		}
 	}
 	// Sub action
-	if(this.subaction.name != "") {
+	if(this.subaction.name != actionName) {
 		switch(actionName) {
 			// SET SUBACTION: Exploder
 			case "exploder":
-			if(this.onFloor()) {
-				this.subaction.clear();
-				this.state.expendAction(actionName, 1);
-				game.sound.play("sndAction");
-				// Set action
-				this.subaction.name = actionName;
-				this.action.active = true;
-				this.action.value = 5;
-				// Create label
-				this.gameLabel = new GameLabel(this.game, this.x, this.y, "5");
-				// Create alarm
-				this.subaction.alarm = new Alarm(this.game, 60, function() {
-					this.proceedExplode();
-				}, this);
-			}
+			this.subaction.clear();
+			this.state.expendAction(actionName, 1);
+			game.sound.play("sndAction");
+			// Set action
+			this.subaction.name = actionName;
+			this.subaction.active = true;
+			this.subaction.value = 5;
+			// Create label
+			this.gameLabel = new GameLabel(this.game, this, this.x, this.y, {x: 0, y: -((this.bbox.bottom - this.bbox.top) + 8)}, "5");
+			// Create alarm
+			this.subaction.alarm = new Alarm(this.game, 60, function() {
+				this.proceedExplode();
+			}, this);
 			break;
 		}
 	}
@@ -469,39 +473,64 @@ Lemming.prototype.proceedBuild = function() {
 
 Lemming.prototype.proceedDig = function() {
 	if(this.action.name == "digger" && !this.action.idle) {
-		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
-		this.y += this.tile.height;
-		// Set up new alarm
-		this.action.alarm = new Alarm(this.game, 120, function() {
-			this.proceedDig();
-		}, this);
+		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		if(result === 2) {
+			this.game.sound.play("sndChink");
+			this.clearAction();
+		}
+		else {
+			this.y += this.tile.height;
+			// Set up new alarm
+			this.action.alarm = new Alarm(this.game, 120, function() {
+				this.proceedDig();
+			}, this);
+		}
 	}
 };
 
 Lemming.prototype.proceedMine = function() {
 	if(this.action.name == "miner" && !this.action.idle) {
-		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
-		this.state.layers.primitiveLayer.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
-		this.x += (this.tile.width * this.dir);
-		this.y += this.tile.height;
-		// Set up new alarm
-		this.action.alarm = new Alarm(this.game, 150, function() {
-			this.proceedMine();
-		}, this);
+		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		if(result === 2) {
+			game.sound.play("sndChink");
+			this.clearAction();
+		}
+		else {
+			result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
+			if(result === 2) {
+				game.sound.play("sndChink");
+				this.clearAction();
+			}
+			else {
+				this.x += (this.tile.width * this.dir);
+				this.y += this.tile.height;
+				// Set up new alarm
+				this.action.alarm = new Alarm(this.game, 150, function() {
+					this.proceedMine();
+				}, this);
+			}
+		}
 	}
 };
 
 Lemming.prototype.proceedExplode = function() {
-	if(this.subaction.name == "exploder" && !this.subaction.idle) {
-		this.subaction.value = -1;
+	if(this.subaction.name === "exploder" && !this.subaction.idle) {
+		this.subaction.value--;
 		if(this.subaction.value <= 0) {
 			this.gameLabel.remove();
 			this.gameLabel = null;
-			this.game.sound.play("sndOhNo");
-			this.playAnim("explode", 15);
-			this.animations.currentAnim.onComplete.addOnce(function() {
+			if(this.onFloor()) {
+				this.game.sound.play("sndOhNo");
+				this.dead = true;
+				this.playAnim("explode", 15);
+				this.velocity.x = 0;
+				this.animations.currentAnim.onComplete.addOnce(function() {
+					this.explode();
+				}, this);
+			}
+			else {
 				this.explode();
-			}, this);
+			}
 		}
 		else {
 			this.gameLabel.text = this.subaction.value.toString();
@@ -512,9 +541,33 @@ Lemming.prototype.proceedExplode = function() {
 	}
 };
 
-Lemming.prototype.explode = function(radius) {
-	radius = radius || 1;
+Lemming.prototype.explode = function() {
 	game.sound.play("sndPop");
+	// Get radius
+	// var tilesInRadius = [];
+	// var d = 3 - (2 * radius);
+	// var a = 0;
+	// var b = radius;
+
+	// if(d < 0) {
+	// 	d = d + (4 * a) + 6;
+	// }
+	// else {
+	// 	while(b > a) {
+	// 		d = d + 4 * (a - b) + 10;
+	// 		b--;
+	// 	}
+	// }
+	// Remove 3x3 tiles
+	for(var a = -1;a <= 1;a++) {
+		for(var b = -1;b <= 1;b++) {
+			var xCheck = this.tile.x(this.x) + a;
+			var yCheck = this.tile.y(this.y - (this.tile.height * 0.5)) + b;
+			this.state.map.removeTile(xCheck, yCheck);
+		}
+	}
+	// Remove self
+	this.remove();
 };
 
 Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {

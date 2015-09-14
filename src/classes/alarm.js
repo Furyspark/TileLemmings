@@ -30,7 +30,7 @@ Alarm.prototype.step = function() {
 			this.duration--;
 			if(this.duration <= 0) {
 				if(this.callbackContext) {
-					this.callback.call(this.callbackContext);
+					this.fire();
 				}
 				this.state.alarms.remove(this);
 			}
@@ -40,4 +40,8 @@ Alarm.prototype.step = function() {
 
 Alarm.prototype.cancel = function() {
 	this.state.alarms.remove(this);
+};
+
+Alarm.prototype.fire = function() {
+	this.callback.call(this.callbackContext);
 };

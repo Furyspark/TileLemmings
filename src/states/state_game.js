@@ -6,7 +6,12 @@ var gameState = {
 			data: [],
 			state: null,
 			setType: function(tileX, tileY, type) {
+				if(tileX < 0 || tileX > this.state.map.width ||
+					tileY < 0 || tileY > this.state.map.height) {
+					return false;
+				}
 				this.data[this.getIndex(tileX, tileY)] = type;
+				return true;
 			},
 			logTiles: function() {
 				var str = "";
@@ -169,12 +174,36 @@ var gameState = {
 
 		// Create map
 		this.map = game.cache.getJSON("level");
+		this.map.owner = this;
 		Object.defineProperty(this.map, "totalwidth", {get() {
 			return this.width * this.tilewidth;
 		}})
 		Object.defineProperty(this.map, "totalheight", {get() {
 			return this.height * this.tileheight;
 		}});
+		// Add tile functions to map
+		this.map.removeTile = function(tileX, tileY, force) {
+			// This function attempts to remove a tile
+			// Return values:    0 if success
+			//                   1 if no tile exists there
+			//                   2 if hit steel
+			if(typeof force === "undefined") {
+				force = false;
+			}
+			// Don't break steel, unless forced
+			if(force || this.owner.layers.tileLayer.getTileType(tileX, tileY) !== 2) {
+				this.owner.layers.primitiveLayer.removeTile(tileX, tileY);
+				var test = this.owner.layers.tileLayer.setType(tileX, tileY, 0);
+				if(!test) {
+					return 1;
+				}
+			}
+			else if(this.owner.layers.tileLayer.getTileType(tileX, tileY) === 2) {
+				return 2;
+			}
+			return 0;
+		};
+		// Set map size
 		this.layers.tileLayer.width = this.map.width;
 		this.layers.tileLayer.height = this.map.height;
 
@@ -188,18 +217,44 @@ var gameState = {
 			});
 		}
 
+		// Determine tile properties
+		tileProps = {};
+		for(var a = 0;a < this.map.tilesets.length;a++) {
+			var tileset = this.map.tilesets[a];
+			var testTileProps = tileset.tileproperties;
+			if(testTileProps) {
+				for(var b = tileset.firstgid;b < tileset.firstgid + tileset.tilecount;b++) {
+					var baseGID = b - tileset.firstgid;
+					var testProp = testTileProps[baseGID.toString()];
+					if(testProp) {
+						tileProps[b.toString()] = testProp;
+					}
+				}
+			}
+		}
+
 		// Set tile layers
 		this.map.objects = [];
-		for(var a in this.map.layers) {
+		for(var a = 0;a < this.map.layers.length;a++) {
 			var layer = this.map.layers[a];
 			if(layer.name === "tiles") {
-				for(var b in layer.data) {
+				for(var b = 0;b < layer.data.length;b++) {
 					var gid = layer.data[b];
 					if(gid === 0) {
 						this.layers.tileLayer.data.push(0);
 					}
 					else {
-						this.layers.tileLayer.data.push(1);
+						var props = tileProps[gid.toString()];
+						if(props) {
+							var tileType = 1;
+							if(props.tileType) {
+								tileType = parseInt(props.tileType);
+							}
+							this.layers.tileLayer.data.push(tileType);
+						}
+						else {
+							this.layers.tileLayer.data.push(1);
+						}
 					}
 				}
 			}
@@ -341,8 +396,6 @@ var gameState = {
 		// Create groups
 
 		// Create map layers
-		// this.tileLayer = this.map.createLayer("tiles");
-		// this.tileLayer.resizeWorld();
 
 		// Create objects
 		for(var a in this.map.objects) {
@@ -465,6 +518,11 @@ var gameState = {
 			return false;
 		}
 		if(this.state.keyboard.right.isDown && this.dir != 1) {
+			return false;
+		}
+		if(this.dead ||
+			this.action.name == this.state.actions.current.name ||
+			this.subaction.name == this.state.actions.current.name) {
 			return false;
 		}
 		return true;
