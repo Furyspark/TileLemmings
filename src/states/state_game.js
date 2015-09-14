@@ -70,6 +70,7 @@ var gameState = {
 			}
 		}
 	},
+	background: null,
 	bgm: null,
 	lemmingSelected: null,
 
@@ -216,6 +217,13 @@ var gameState = {
 				type: "sound"
 			});
 		}
+		if(this.map.properties.bg) {
+			mapFiles.push({
+				url: "assets/gfx/backgrounds/" + this.map.properties.bg,
+				key: "bg",
+				type: "image"
+			});
+		}
 
 		// Determine tile properties
 		tileProps = {};
@@ -278,6 +286,9 @@ var gameState = {
 				switch(file.type) {
 					case "sound":
 					game.load.audio(file.key, file.url);
+					break;
+					case "image":
+					game.load.image(file.key, file.url);
 					break;
 				}
 			}
@@ -358,6 +369,25 @@ var gameState = {
 		// Set misc map properties
 		if(!this.map.properties.falldist) {
 			this.map.properties.falldist = (9 * this.map.tileheight);
+		}
+
+		// Create background
+		if(game.cache.checkImageKey("bg")) {
+			this.background = new Background(this.game, "bg");
+		}
+
+		// Set (z-)order of display objects
+		// Bring backgrounds objects to top first, ending with foreground objects
+		if(this.background) {
+			this.world.bringToTop(this.background);
+		}
+		this.world.bringToTop(this.levelGroup);
+		for(var a = 0;a < this.guiGroup.length;a++) {
+			var elem = this.guiGroup[a];
+			this.world.bringToTop(elem);
+			if(elem.label) {
+				this.world.bringToTop(elem.label);
+			}
 		}
 	},
 
@@ -521,8 +551,8 @@ var gameState = {
 			return false;
 		}
 		if(this.dead ||
-			this.action.name == this.state.actions.current.name ||
-			this.subaction.name == this.state.actions.current.name) {
+			(this.state.actions.select >= 0 && (this.action.name == this.state.actions.current.name ||
+			this.subaction.name == this.state.actions.current.name))) {
 			return false;
 		}
 		return true;

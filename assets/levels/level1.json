@@ -58,6 +58,7 @@
  "properties":
     {
      "basher":"5",
+     "bg":"bgCave.png",
      "bgm":"cancan.ogg",
      "blocker":"2",
      "builder":"20",
