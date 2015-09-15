@@ -49,6 +49,10 @@
 		{
 			"key": "sndLightning",
 			"url": "assets/audio/sfx/sndLightning.wav"
+		},
+		{
+			"key": "sndDoor_Cave",
+			"url": "assets/audio/sfx/sndDoor_Cave.wav"
 		}
 	],
 	"sprite_atlases": [

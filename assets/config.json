@@ -14,7 +14,7 @@
 				"animName": "door",
 				"frames": 7,
 				"sound": {
-					"open": "sndLightning"
+					"open": "sndDoor_Cave"
 				}
 			}
 		},

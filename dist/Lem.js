@@ -393,6 +393,12 @@ var Lemming = function(game, x, y) {
 		alarm: null
 	},
 
+	// Set up attributes
+	this.attributes = {
+		floater: false,
+		climber: false
+	};
+
 	this.gameLabel = null;
 
 	// Set anchor
@@ -465,8 +471,19 @@ var Lemming = function(game, x, y) {
 	this.addAnim("block", "Block", 16, {x: 0, y: 0});
 	this.addAnim("explode", "Explode", 16, {x: 0, y: 0}, false);
 	this.addAnim("exit", "Exit", 8, {x: 0, y: 0}, false);
+	this.addAnim("float", "Float", 4, {x: 0, y: 0});
+	this.addAnim("float_start", "Float_Start", 4, {x: 0, y: 0}, false);
+	this.addAnim("climb", "Climb", 8, {x: 0, y: 0});
+	this.addAnim("climb_end", "Climb_End", 8, {x: 0, y: 0}, false);
 	this.playAnim("fall", 15);
 	this.velocity.y = 1;
+
+	// Set animation end callbacks
+	// Climb end
+	this.animations.getAnimation("climb_end").onComplete.add(function() {
+		this.clearAction();
+		this.x += (1 * this.dir);
+	}, this);
 
 	this.objectType = "lemming";
 
@@ -514,7 +531,7 @@ Lemming.prototype.cursorSelect = function() {
 
 Lemming.prototype.onFloor = function() {
 	return (this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) > 0 ||
-		this.tile.type(this.tile.x(this.x), this.tile.y(this.y) - 1) > 0);
+		this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0);
 };
 
 Lemming.prototype.turnAround = function() {
@@ -529,6 +546,7 @@ Lemming.prototype.update = function() {
 	this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
 
 	if(!this.dead && this.active && this.state.speedManager.effectiveSpeed > 0) {
+		// Walk
 		if(this.onFloor() && this.action.idle) {
 			// Fall death
 			if(this.fallDist >= this.state.map.properties.falldist) {
@@ -544,6 +562,8 @@ Lemming.prototype.update = function() {
 				this.velocity.y = 0;
 				// Align to floor
 				this.y = Math.floor(this.y / this.tile.height) * this.tile.height;
+				// Play animation
+				this.playAnim("move", 15);
 				// Check walk up ramp
 				if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
 					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 0) {
@@ -553,10 +573,26 @@ Lemming.prototype.update = function() {
 				else if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
 					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) > 0) {
 					// Turn around
-					this.turnAround();
+					if(!this.attributes.climber) {
+						this.turnAround();
+					}
+					// Start climbing
+					else {
+						this.action.name = "climber";
+						this.action.active = true;
+						this.action.value = 0;
+						this.playAnim("climb", 15);
+						this.velocity.x = 0;
+						this.velocity.y = -0.5;
+						// Align to wall
+						if(this.dir === 1) {
+							this.x = (this.tile.x(this.x) * this.tile.width) - 1;
+						}
+						else if(this.dir === -1) {
+							this.x = (this.tile.x(this.x) * this.tile.width) + (this.tile.width);
+						}
+					}
 				}
-				// Play animation
-				this.playAnim("move", 15);
 			}
 		}
 		// Bashing
@@ -577,17 +613,64 @@ Lemming.prototype.update = function() {
 				this.clearAction();
 			}
 		}
-		else if(!this.onFloor()) {
+		// Fall
+		else if(!this.onFloor() && !(this.action.name === "climber" && !this.action.idle)) {
 			this.velocity.x = 0;
-			this.velocity.y = 1.5;
-			this.playAnim("fall", 15);
 			this.clearAction();
-			this.fallDist += Math.abs(this.velocity.y) * this.state.speedManager.effectiveSpeed;
+			// Float
+			if(this.attributes.floater) {
+				this.fallDist = 0;
+				if(this.animations.currentAnim.name !== "float" && this.animations.currentAnim.name !== "float_start") {
+					this.velocity.y = 1.5;
+					this.playAnim("float_start", 15);
+					this.animations.currentAnim.onComplete.addOnce(function() {
+						this.playAnim("float", 15);
+					}, this);
+				}
+				else if(this.animations.currentAnim.name === "float") {
+					this.velocity.y = 0.75;
+				}
+			}
+			// Fall
+			else {
+				this.velocity.y = 1.5;
+				this.playAnim("fall", 15);
+				this.fallDist += Math.abs(this.velocity.y) * this.state.speedManager.effectiveSpeed;
+			}
+		}
+		// Climb
+		else if(this.action.name === "climber" && !this.action.idle) {
+			var wallTileType = this.tile.type(this.tile.x(this.x + (1 * this.dir)), this.tile.y(this.y));
+			var ceilCheckDepth = Math.ceil(Math.abs(this.velocity.y) + 1) * this.state.speedManager.effectiveSpeed;
+			var ceilTileType = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - ceilCheckDepth));
+			// Hit ceiling
+			if(ceilTileType !== 0) {
+				this.velocity.y = 0;
+				this.x -= (1 * this.dir);
+				this.y = (this.tile.y(this.y + ceilCheckDepth) * this.tile.height) + 1;
+				this.clearAction();
+				this.turnAround();
+			}
+			// Reached top of the cliff
+			else if(wallTileType === 0) {
+				this.velocity.y = 0;
+				this.playAnim("climb_end", 15);
+			}
 		}
 
 		// Detect blockers
 		if(this.action.name !== "blocker") {
-			var objs = this.detectByAction(this.x + (this.velocity.x * this.state.speedManager.effectiveSpeed), this.y - 1, "blocker");
+			var distCheck = Math.ceil(Math.abs(this.velocity.x) * this.state.speedManager.effectiveSpeed);
+			var objs = [];
+			while(distCheck > 0) {
+				var group = this.detectByAction(this.x + (distCheck * this.dir), this.y - 1, "blocker");
+				for(var a = 0;a < group.length;a++) {
+					if(objs.indexOf(group[a]) === -1) {
+						objs.push(group[a]);
+					}
+				}
+				distCheck--;
+			}
 			for(var a = 0;a < objs.length;a++) {
 				var obj = objs[a];
 				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
@@ -781,6 +864,22 @@ Lemming.prototype.setAction = function(actionName) {
 				this.velocity.x = 0;
 				// Add to list of blockers
 				this.state.lemmingsGroup[actionName].push(this);
+			}
+			break;
+			// SET ACTION: Floater
+			case "floater":
+			if(!this.attributes.floater) {
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				this.attributes.floater = true;
+			}
+			break;
+			// SET ACTION: Climber
+			case "climber":
+			if(!this.attributes.climber) {
+				this.state.expendAction(actionName, 1);
+				game.sound.play("sndAction");
+				this.attributes.climber = true;
 			}
 			break;
 		}
@@ -1874,10 +1973,17 @@ var gameState = {
 		if((this.state.keyboard.right.isDown || this.state.keyboard.e.isDown) && this.dir != 1) {
 			return false;
 		}
-		if(this.dead ||
-			(this.state.actions.select >= 0 && (this.action.name == this.state.actions.current.name ||
-			this.subaction.name == this.state.actions.current.name))) {
+		if(this.dead || !this.active) {
 			return false;
+		}
+		if(this.state.actions.select >= 0) {
+			if(this.action.name == this.state.actions.current.name ||
+			this.subaction.name == this.state.actions.current.name) {
+				return false;
+			}
+			if(typeof this.attributes[this.state.actions.current.name] !== "undefined" && this.attributes[this.state.actions.current.name]) {
+				return false;
+			}
 		}
 		return true;
 	},

@@ -657,10 +657,17 @@ var gameState = {
 		if((this.state.keyboard.right.isDown || this.state.keyboard.e.isDown) && this.dir != 1) {
 			return false;
 		}
-		if(this.dead ||
-			(this.state.actions.select >= 0 && (this.action.name == this.state.actions.current.name ||
-			this.subaction.name == this.state.actions.current.name))) {
+		if(this.dead || !this.active) {
 			return false;
+		}
+		if(this.state.actions.select >= 0) {
+			if(this.action.name == this.state.actions.current.name ||
+			this.subaction.name == this.state.actions.current.name) {
+				return false;
+			}
+			if(typeof this.attributes[this.state.actions.current.name] !== "undefined" && this.attributes[this.state.actions.current.name]) {
+				return false;
+			}
 		}
 		return true;
 	},
