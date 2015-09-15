@@ -34,7 +34,7 @@ var bootState = {
 		curList = assetList.sprite_atlases;
 		for(a in curList) {
 			curAsset = curList[a];
-			game.load.atlasJSONHash(curAsset.key, curAsset.url, curAsset.atlasUrl);
+			game.load.atlasJSONArray(curAsset.key, curAsset.url, curAsset.atlasUrl);
 		}
 
 		// Load images

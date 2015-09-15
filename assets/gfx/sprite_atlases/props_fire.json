@@ -1,0 +1,52 @@
+{
+"frames": [
+	{
+		"filename": "exit0.png",
+		"frame": {"x":89, "y":0, "w":88, "h":104},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":92,"h":206},
+		"sourceSize": {"w":92,"h":206}
+	},
+	{
+		"filename": "exit1.png",
+		"frame": {"x":178, "y":0, "w":88, "h":104},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":92,"h":206},
+		"sourceSize": {"w":92,"h":206}
+	},
+	{
+		"filename": "exit2.png",
+		"frame": {"x":89, "y":105, "w":88, "h":104},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":92,"h":206},
+		"sourceSize": {"w":92,"h":206}
+	},
+	{
+		"filename": "exit3.png",
+		"frame": {"x":178, "y":105, "w":88, "h":104},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":92,"h":206},
+		"sourceSize": {"w":92,"h":206}
+	},
+	{
+		"filename": "exit4.png",
+		"frame": {"x":0, "y":105, "w":88, "h":104},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":92,"h":206},
+		"sourceSize": {"w":92,"h":206}
+	},
+	{
+		"filename": "exit5.png",
+		"frame": {"x":0, "y":0, "w":88, "h":104},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":92,"h":206},
+		"sourceSize": {"w":92,"h":206}
+	}
+
+],
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 267, "h": 210},
+	"scale": "1"
+}
+}

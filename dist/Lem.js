@@ -226,8 +226,8 @@ Cursor.prototype = Object.create(Phaser.Sprite.prototype);
 Cursor.prototype.constructor = Cursor;
 
 Cursor.prototype.reposition = function() {
-	this.x = this.owner.left + ((this.owner.right - this.owner.left) * 0.5);
-	this.y = this.owner.top + ((this.owner.bottom - this.owner.top) * 0.5);
+	this.x = this.owner.x;
+	this.y = this.owner.y - 8;
 };
 
 Cursor.prototype.destroy = function() {
@@ -402,7 +402,7 @@ var Lemming = function(game, x, y) {
 	this.gameLabel = null;
 
 	// Set anchor
-	this.anchor.setTo(0.5, 1);
+	this.anchor.setTo(0.5, 0.5);
 
 	this.dir = 1;
 	this.velocity = {
@@ -728,10 +728,10 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 
 Lemming.prototype.playAnim = function(key, frameRate) {
 	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
-	this.anchor.setTo(
-		0.5 - (this.animationProperties[key].offset.x / this.width),
-		1 - (this.animationProperties[key].offset.y / this.height)
-	);
+	// this.anchor.setTo(
+	// 	0.5 - (this.animationProperties[key].offset.x / this.width),
+	// 	1 - (this.animationProperties[key].offset.y / this.height)
+	// );
 	if(this.state.speedManager.effectiveSpeed === 0) {
 		this.animations.stop();
 	}
@@ -1112,6 +1112,7 @@ var Prop = function(game, x, y) {
 		return this.game.state.getCurrentState();
 	}});
 	this.state.levelGroup.add(this);
+	this.anchor.setTo(0.5, 0.5);
 
 	this.objectType = "prop";
 };
@@ -1131,7 +1132,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	this.objectType = "door";
 	this.state.doorsGroup.push(this);
 	this.lemmingsGroup = lemmingsGroup;
-	this.anchor.setTo(0.5, 0);
 	this.type = type;
 	
 	// Set configuration
@@ -1197,7 +1197,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 Prop.prototype.setAsExit = function(type) {
 	this.objectType = "exit";
 	this.state.exitsGroup.push(this);
-	this.anchor.setTo(0.5, 1);
 	this.type = type;
 
 	// Set configuration
@@ -1282,7 +1281,7 @@ var bootState = {
 		curList = assetList.sprite_atlases;
 		for(a in curList) {
 			curAsset = curList[a];
-			game.load.atlasJSONHash(curAsset.key, curAsset.url, curAsset.atlasUrl);
+			game.load.atlasJSONArray(curAsset.key, curAsset.url, curAsset.atlasUrl);
 		}
 
 		// Load images

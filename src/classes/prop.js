@@ -5,6 +5,7 @@ var Prop = function(game, x, y) {
 		return this.game.state.getCurrentState();
 	}});
 	this.state.levelGroup.add(this);
+	this.anchor.setTo(0.5, 0.5);
 
 	this.objectType = "prop";
 };
@@ -24,7 +25,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	this.objectType = "door";
 	this.state.doorsGroup.push(this);
 	this.lemmingsGroup = lemmingsGroup;
-	this.anchor.setTo(0.5, 0);
 	this.type = type;
 	
 	// Set configuration
@@ -90,7 +90,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 Prop.prototype.setAsExit = function(type) {
 	this.objectType = "exit";
 	this.state.exitsGroup.push(this);
-	this.anchor.setTo(0.5, 1);
 	this.type = type;
 
 	// Set configuration

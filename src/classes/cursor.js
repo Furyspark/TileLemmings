@@ -16,8 +16,8 @@ Cursor.prototype = Object.create(Phaser.Sprite.prototype);
 Cursor.prototype.constructor = Cursor;
 
 Cursor.prototype.reposition = function() {
-	this.x = this.owner.left + ((this.owner.right - this.owner.left) * 0.5);
-	this.y = this.owner.top + ((this.owner.bottom - this.owner.top) * 0.5);
+	this.x = this.owner.x;
+	this.y = this.owner.y - 8;
 };
 
 Cursor.prototype.destroy = function() {

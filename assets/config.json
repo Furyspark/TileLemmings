@@ -16,6 +16,62 @@
 				"sound": {
 					"open": "sndDoor_Cave"
 				}
+			},
+			"circus": {
+				"atlas": "props_circus",
+				"animName": "door",
+				"frames": 9,
+				"sound": {
+					"open": "sndDoor"
+				}
+			},
+			"crystal": {
+				"atlas": "props_crystal",
+				"animName": "door",
+				"frames": 10,
+				"sound": {
+					"open": "sndDoor"
+				}
+			},
+			"egypt": {
+				"atlas": "props_egypt",
+				"animName": "door",
+				"frames": 9,
+				"sound": {
+					"open": "sndDoor"
+				}
+			},
+			"medieval": {
+				"atlas": "props_medieval",
+				"animName": "door",
+				"frames": 9,
+				"sound": {
+					"open": "sndDoor"
+				}
+			},
+			"polar": {
+				"atlas": "props_polar",
+				"animName": "door",
+				"frames": 9,
+				"sound": {
+					"open": "sndDoor"
+				}
+			},
+			"space": {
+				"atlas": "props_space",
+				"animName": "door",
+				"frames": 9,
+				"sound": {
+					"open": "sndDoor"
+				}
+			},
+			"sports": {
+				"atlas": "props_sports",
+				"animName": "door",
+				"frames": 9,
+				"sound": {
+					"open": "sndDoor"
+				}
 			}
 		},
 		"exits": {
@@ -37,6 +93,146 @@
 				"atlas": "props_cave",
 				"animName": "exit",
 				"frames": 1,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"circus": {
+				"atlas": "props_circus",
+				"animName": "exit",
+				"frames": 6,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"crystal": {
+				"atlas": "props_cave",
+				"animName": "exit",
+				"frames": 6,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"dirt": {
+				"atlas": "props_dirt",
+				"animName": "exit",
+				"frames": 6,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"egypt": {
+				"atlas": "props_egypt",
+				"animName": "exit",
+				"frames": 6,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"fire": {
+				"atlas": "props_fire",
+				"animName": "exit",
+				"frames": 6,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"medieval": {
+				"atlas": "props_medieval",
+				"animName": "exit",
+				"frames": 1,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"pink": {
+				"atlas": "props_pink",
+				"animName": "exit",
+				"frames": 6,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"polar": {
+				"atlas": "props_polar",
+				"animName": "exit",
+				"frames": 6,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"space": {
+				"atlas": "props_space",
+				"animName": "exit",
+				"frames": 8,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"sports": {
+				"atlas": "props_sports",
+				"animName": "exit",
+				"frames": 6,
 				"bbox": {
 					"left": -4,
 					"right": 4,

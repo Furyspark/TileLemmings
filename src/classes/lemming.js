@@ -51,7 +51,7 @@ var Lemming = function(game, x, y) {
 	this.gameLabel = null;
 
 	// Set anchor
-	this.anchor.setTo(0.5, 1);
+	this.anchor.setTo(0.5, 0.5);
 
 	this.dir = 1;
 	this.velocity = {
@@ -377,10 +377,10 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 
 Lemming.prototype.playAnim = function(key, frameRate) {
 	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
-	this.anchor.setTo(
-		0.5 - (this.animationProperties[key].offset.x / this.width),
-		1 - (this.animationProperties[key].offset.y / this.height)
-	);
+	// this.anchor.setTo(
+	// 	0.5 - (this.animationProperties[key].offset.x / this.width),
+	// 	1 - (this.animationProperties[key].offset.y / this.height)
+	// );
 	if(this.state.speedManager.effectiveSpeed === 0) {
 		this.animations.stop();
 	}

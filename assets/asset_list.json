@@ -80,6 +80,56 @@
 			"key": "misc",
 			"url": "assets/gfx/sprite_atlases/misc.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/misc.json"
+		},
+		{
+			"key": "props_circus",
+			"url": "assets/gfx/sprite_atlases/props_circus.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_circus.json"
+		},
+		{
+			"key": "props_dirt",
+			"url": "assets/gfx/sprite_atlases/props_dirt.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_dirt.json"
+		},
+		{
+			"key": "props_crystal",
+			"url": "assets/gfx/sprite_atlases/props_crystal.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_crystal.json"
+		},
+		{
+			"key": "props_egypt",
+			"url": "assets/gfx/sprite_atlases/props_egypt.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_egypt.json"
+		},
+		{
+			"key": "props_fire",
+			"url": "assets/gfx/sprite_atlases/props_fire.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_fire.json"
+		},
+		{
+			"key": "props_medieval",
+			"url": "assets/gfx/sprite_atlases/props_medieval.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_medieval.json"
+		},
+		{
+			"key": "props_pink",
+			"url": "assets/gfx/sprite_atlases/props_pink.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_pink.json"
+		},
+		{
+			"key": "props_polar",
+			"url": "assets/gfx/sprite_atlases/props_polar.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_polar.json"
+		},
+		{
+			"key": "props_space",
+			"url": "assets/gfx/sprite_atlases/props_space.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_space.json"
+		},
+		{
+			"key": "props_sports",
+			"url": "assets/gfx/sprite_atlases/props_sports.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_sports.json"
 		}
 	],
 	"images": [
