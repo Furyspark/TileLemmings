@@ -45,6 +45,10 @@
 		{
 			"key": "sndYippie",
 			"url": "assets/audio/sfx/sndYippie.wav"
+		},
+		{
+			"key": "sndLightning",
+			"url": "assets/audio/sfx/sndLightning.wav"
 		}
 	],
 	"sprite_atlases": [
@@ -57,6 +61,11 @@
 			"key": "props_classic",
 			"url": "assets/gfx/sprite_atlases/props_classic.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/props_classic.json"
+		},
+		{
+			"key": "props_cave",
+			"url": "assets/gfx/sprite_atlases/props_cave.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_cave.json"
 		},
 		{
 			"key": "gui",

@@ -4,7 +4,18 @@
 			"classic": {
 				"atlas": "props_classic",
 				"animName": "door",
-				"frames": 10
+				"frames": 10,
+				"sound": {
+					"open": "sndDoor"
+				}
+			},
+			"cave": {
+				"atlas": "props_cave",
+				"animName": "door",
+				"frames": 7,
+				"sound": {
+					"open": "sndLightning"
+				}
 			}
 		},
 		"exits": {
@@ -17,6 +28,23 @@
 					"right": 4,
 					"top": -8,
 					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
+				}
+			},
+			"cave": {
+				"atlas": "props_cave",
+				"animName": "exit",
+				"frames": 1,
+				"bbox": {
+					"left": -4,
+					"right": 4,
+					"top": -8,
+					"bottom": 0
+				},
+				"sound": {
+					"exit": "sndYippie"
 				}
 			}
 		}

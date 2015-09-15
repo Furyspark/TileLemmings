@@ -22,7 +22,8 @@
                  "name":"",
                  "properties":
                     {
-                     "rate":"2000",
+                     "rate":"50",
+                     "type":"cave",
                      "value":"20"
                     },
                  "rotation":0,
@@ -38,7 +39,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "type":"cave"
                     },
                  "rotation":0,
                  "type":"exit",
@@ -59,8 +60,8 @@
  "properties":
     {
      "basher":"5",
-     "bg":"bgSky.png",
-     "bgm":"sports.ogg",
+     "bg":"bgCave.png",
+     "bgm":"cave.ogg",
      "blocker":"2",
      "builder":"20",
      "digger":"5",

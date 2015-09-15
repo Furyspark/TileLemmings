@@ -54,18 +54,18 @@ var Lemming = function(game, x, y) {
 	};
 	this.fallDist = 0;
 	this.bbox = {
-		// get left() {
-		// 	return this.owner.x - Math.abs(this.owner.offsetX);
-		// },
-		// get top() {
-		// 	return this.owner.y - Math.abs(this.owner.offsetY);
-		// },
-		// get right() {
-		// 	return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
-		// },
-		// get bottom() {
-		// 	return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
-		// },
+		get spriteLeft() {
+			return this.owner.x - Math.abs(this.owner.offsetX);
+		},
+		get spriteTop() {
+			return this.owner.y - Math.abs(this.owner.offsetY);
+		},
+		get spriteRight() {
+			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+		},
+		get spriteBottom() {
+			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+		},
 		get left() {
 			return this.owner.x - 4;
 		},
@@ -78,9 +78,8 @@ var Lemming = function(game, x, y) {
 		get bottom() {
 			return this.owner.y;
 		},
-		owner: null
+		owner: this
 	};
-	this.bbox.owner = this;
 	this.tile = {
 		get width() {
 			return this.parent.state.map.tilewidth;
@@ -134,10 +133,10 @@ Lemming.prototype.constructor = Lemming;
 
 Lemming.prototype.mouseOver = function() {
 	var cursor = this.state.getWorldCursor();
-	return (cursor.x >= this.bbox.left &&
-		cursor.x <= this.bbox.right &&
-		cursor.y >= this.bbox.top &&
-		cursor.y <= this.bbox.bottom);
+	return (cursor.x >= this.bbox.spriteLeft &&
+		cursor.x <= this.bbox.spriteRight &&
+		cursor.y >= this.bbox.spriteTop &&
+		cursor.y <= this.bbox.spriteBottom);
 };
 
 Lemming.prototype.cursorDeselect = function() {
@@ -175,10 +174,10 @@ Lemming.prototype.turnAround = function() {
 };
 
 Lemming.prototype.update = function() {
-	this.x += this.velocity.x;
-	this.y += this.velocity.y;
+	this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
+	this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
 
-	if(!this.dead && this.active) {
+	if(!this.dead && this.active && this.state.speedManager.effectiveSpeed > 0) {
 		if(this.onFloor() && this.action.idle) {
 			// Fall death
 			if(this.fallDist >= this.state.map.properties.falldist) {
@@ -232,12 +231,12 @@ Lemming.prototype.update = function() {
 			this.velocity.y = 1.5;
 			this.playAnim("fall", 15);
 			this.clearAction();
-			this.fallDist += Math.abs(this.velocity.y);
+			this.fallDist += Math.abs(this.velocity.y) * this.state.speedManager.effectiveSpeed;
 		}
 
 		// Detect blockers
 		if(this.action.name !== "blocker") {
-			var objs = this.detectByAction(this.x + this.velocity.x, this.y - 1, "blocker");
+			var objs = this.detectByAction(this.x + (this.velocity.x * this.state.speedManager.effectiveSpeed), this.y - 1, "blocker");
 			for(var a = 0;a < objs.length;a++) {
 				var obj = objs[a];
 				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
@@ -255,7 +254,10 @@ Lemming.prototype.update = function() {
 					this.checkDone = true;
 					this.active = false;
 					this.playAnim("exit", 15);
-					game.sound.play("sndYippie");
+					var sndKey = this.game.cache.getJSON("config").props.exits[exitProp.type].sound.exit;
+					if(sndKey) {
+						game.sound.play(sndKey);
+					}
 					this.velocity.x = 0;
 					this.velocity.y = 0;
 					this.animations.currentAnim.onComplete.addOnce(function() {
@@ -291,11 +293,14 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 };
 
 Lemming.prototype.playAnim = function(key, frameRate) {
-	this.animations.play(key, frameRate);
+	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
 	this.anchor.setTo(
 		0.5 - (this.animationProperties[key].offset.x / this.width),
 		1 - (this.animationProperties[key].offset.y / this.height)
 	);
+	if(this.state.speedManager.effectiveSpeed === 0) {
+		this.animations.stop();
+	}
 };
 
 Lemming.prototype.clearAction = function() {

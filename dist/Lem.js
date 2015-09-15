@@ -53,12 +53,6 @@ var Alarm = function(game, duration, callback, callbackContext) {
 	Object.defineProperty(this, "state", {get() {
 		return this.game.state.getCurrentState();
 	}});
-	Object.defineProperty(this, "paused", {get() {
-		if(this.state.paused) {
-			return this.state.paused;
-		}
-		return false;
-	}});
 
 	this.addToGame();
 };
@@ -71,15 +65,13 @@ Alarm.prototype.addToGame = function() {
 };
 
 Alarm.prototype.step = function() {
-	if(!this.paused) {
-		if(this.duration > 0) {
-			this.duration--;
-			if(this.duration <= 0) {
-				if(this.callbackContext) {
-					this.fire();
-				}
-				this.state.alarms.remove(this);
+	if(this.state.speedManager.effectiveSpeed > 0 && this.duration > 0) {
+		this.duration -= this.state.speedManager.effectiveSpeed;
+		if(this.duration <= 0) {
+			if(this.callbackContext) {
+				this.fire();
 			}
+			this.state.alarms.remove(this);
 		}
 	}
 };
@@ -413,18 +405,18 @@ var Lemming = function(game, x, y) {
 	};
 	this.fallDist = 0;
 	this.bbox = {
-		// get left() {
-		// 	return this.owner.x - Math.abs(this.owner.offsetX);
-		// },
-		// get top() {
-		// 	return this.owner.y - Math.abs(this.owner.offsetY);
-		// },
-		// get right() {
-		// 	return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
-		// },
-		// get bottom() {
-		// 	return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
-		// },
+		get spriteLeft() {
+			return this.owner.x - Math.abs(this.owner.offsetX);
+		},
+		get spriteTop() {
+			return this.owner.y - Math.abs(this.owner.offsetY);
+		},
+		get spriteRight() {
+			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+		},
+		get spriteBottom() {
+			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+		},
 		get left() {
 			return this.owner.x - 4;
 		},
@@ -437,9 +429,8 @@ var Lemming = function(game, x, y) {
 		get bottom() {
 			return this.owner.y;
 		},
-		owner: null
+		owner: this
 	};
-	this.bbox.owner = this;
 	this.tile = {
 		get width() {
 			return this.parent.state.map.tilewidth;
@@ -493,10 +484,10 @@ Lemming.prototype.constructor = Lemming;
 
 Lemming.prototype.mouseOver = function() {
 	var cursor = this.state.getWorldCursor();
-	return (cursor.x >= this.bbox.left &&
-		cursor.x <= this.bbox.right &&
-		cursor.y >= this.bbox.top &&
-		cursor.y <= this.bbox.bottom);
+	return (cursor.x >= this.bbox.spriteLeft &&
+		cursor.x <= this.bbox.spriteRight &&
+		cursor.y >= this.bbox.spriteTop &&
+		cursor.y <= this.bbox.spriteBottom);
 };
 
 Lemming.prototype.cursorDeselect = function() {
@@ -534,10 +525,10 @@ Lemming.prototype.turnAround = function() {
 };
 
 Lemming.prototype.update = function() {
-	this.x += this.velocity.x;
-	this.y += this.velocity.y;
+	this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
+	this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
 
-	if(!this.dead && this.active) {
+	if(!this.dead && this.active && this.state.speedManager.effectiveSpeed > 0) {
 		if(this.onFloor() && this.action.idle) {
 			// Fall death
 			if(this.fallDist >= this.state.map.properties.falldist) {
@@ -591,12 +582,12 @@ Lemming.prototype.update = function() {
 			this.velocity.y = 1.5;
 			this.playAnim("fall", 15);
 			this.clearAction();
-			this.fallDist += Math.abs(this.velocity.y);
+			this.fallDist += Math.abs(this.velocity.y) * this.state.speedManager.effectiveSpeed;
 		}
 
 		// Detect blockers
 		if(this.action.name !== "blocker") {
-			var objs = this.detectByAction(this.x + this.velocity.x, this.y - 1, "blocker");
+			var objs = this.detectByAction(this.x + (this.velocity.x * this.state.speedManager.effectiveSpeed), this.y - 1, "blocker");
 			for(var a = 0;a < objs.length;a++) {
 				var obj = objs[a];
 				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
@@ -614,7 +605,10 @@ Lemming.prototype.update = function() {
 					this.checkDone = true;
 					this.active = false;
 					this.playAnim("exit", 15);
-					game.sound.play("sndYippie");
+					var sndKey = this.game.cache.getJSON("config").props.exits[exitProp.type].sound.exit;
+					if(sndKey) {
+						game.sound.play(sndKey);
+					}
 					this.velocity.x = 0;
 					this.velocity.y = 0;
 					this.animations.currentAnim.onComplete.addOnce(function() {
@@ -650,11 +644,14 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 };
 
 Lemming.prototype.playAnim = function(key, frameRate) {
-	this.animations.play(key, frameRate);
+	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
 	this.anchor.setTo(
 		0.5 - (this.animationProperties[key].offset.x / this.width),
 		1 - (this.animationProperties[key].offset.y / this.height)
 	);
+	if(this.state.speedManager.effectiveSpeed === 0) {
+		this.animations.stop();
+	}
 };
 
 Lemming.prototype.clearAction = function() {
@@ -1023,12 +1020,20 @@ var Prop = function(game, x, y) {
 Prop.prototype = Object.create(Phaser.Sprite.prototype);
 Prop.prototype.constructor = Prop;
 
+Prop.prototype.playAnim = function(key, frameRate) {
+	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
+	if(this.state.speedManager.effectiveSpeed === 0) {
+		this.animations.stop();
+	}
+};
+
 Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
 	this.state.doorsGroup.push(this);
 	this.lemmingsGroup = lemmingsGroup;
 	this.anchor.setTo(0.5, 0);
+	this.type = type;
 	
 	// Set configuration
 	var doorConfig = game.cache.getJSON("config").props.doors[type];
@@ -1046,7 +1051,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	}
 
 	// Set class variables
-	this.spawnTimer = game.time.create(false);
 	this.lemmings = lemmings;
 	this.rate = Math.max(10, rate);
 
@@ -1054,31 +1058,40 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	this.animations.add("opening", openingFrames, 15, false);
 	this.animations.add("idle", idleFrames, 15, false);
 	this.animations.add("open", openFrames, 15, false);
-	this.animations.play("idle", 15);
+	this.playAnim("idle", 15);
 
 	// Set functions
 	this.openDoor = function() {
+		// Play sound
+		if(this.state.doorsGroup[0] === this) {
+			game.sound.play(doorConfig.sound.open);
+		}
+		// Set event
 		this.animations.getAnimation("opening").onComplete.addOnce(function() {
-			this.animations.play("open", 15);
-			// Create additional timer
-			var timer = game.time.create(true);
-			timer.add(500, function() {
+			this.playAnim("open", 15);
+			var alarm = new Alarm(this.game, 30, function() {
 				this.opened();
 				this.state.playLevelBGM();
 			}, this);
-			timer.start();
 		}, this);
-		this.animations.play("opening", 15);
+		// Play animation
+		this.playAnim("opening", 15);
 	};
 	this.opened = function() {
-		this.spawnTimer.loop(this.rate, function() {
-			if(this.lemmings > 0) {
-				this.lemmings--;
-				var lem = new Lemming(this.game, this.x, this.y + 30);
-				this.lemmingsGroup.push(lem);
+		this.spawnLemming(true);
+	};
+	this.spawnLemming = function(recurring) {
+		if(typeof recurring === "undefined") {
+			var recurring = true;
+		}
+		if(this.lemmings > 0) {
+			this.lemmings--;
+			var lem = new Lemming(this.game, this.x, this.y + 30);
+			this.lemmingsGroup.push(lem);
+			if(recurring) {
+				var alarm = new Alarm(this.game, this.rate, this.spawnLemming, this);
 			}
-		}, this)
-		this.spawnTimer.start();
+		}
 	};
 };
 
@@ -1086,6 +1099,7 @@ Prop.prototype.setAsExit = function(type) {
 	this.objectType = "exit";
 	this.state.exitsGroup.push(this);
 	this.anchor.setTo(0.5, 1);
+	this.type = type;
 
 	// Set configuration
 	var propConfig = game.cache.getJSON("config").props.exits[type];
@@ -1098,7 +1112,7 @@ Prop.prototype.setAsExit = function(type) {
 
 	// Set animation
 	this.animations.add("idle", idleFrames, 15, true);
-	this.animations.play("idle", 15);
+	this.playAnim("idle", 15);
 
 	// Set bounding box
 	this.bbox = {
@@ -1311,6 +1325,49 @@ var gameState = {
 		saved: 0,
 		need: 0
 	},
+	speedManager: {
+		owner: null,
+		speed: 1,
+		paused: false,
+		get effectiveSpeed() {
+			if(this.paused) {
+				return 0;
+			}
+			return this.speed;
+		},
+		pause: function() {
+			this.paused = true;
+			this.refresh();
+		},
+		unpause: function() {
+			this.paused = false;
+			this.refresh();
+		},
+		refresh: function() {
+			// Update objects
+			for(var a = 0;a < this.owner.levelGroup.children.length;a++) {
+				var obj = this.owner.levelGroup.children[a];
+				if(obj) {
+					// Update animations
+					if(obj.animations) {
+						if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
+							var prevFrame = obj.animations.currentAnim.frame;
+							obj.animations.play(obj.animations.name, 15);
+							obj.animations.currentAnim.setFrame(prevFrame, true);
+							obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
+						}
+						else {
+							obj.animations.stop();
+						}
+					}
+				}
+			}
+		},
+		setSpeed: function(multiplier) {
+			this.speed = multiplier;
+			this.refresh();
+		}
+	},
 
 	actions: {
 		items: [
@@ -1369,6 +1426,7 @@ var gameState = {
 	create: function() {
 		this.layers.tileLayer.state = this;
 		this.layers.primitiveLayer.state = this;
+		this.speedManager.owner = this;
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
 		for(var a = 0;a < this.actions.items.length;a++) {
@@ -1619,8 +1677,24 @@ var gameState = {
 			right: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
 			up: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
 			down: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+			space: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+			p: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
+			f: this.game.input.keyboard.addKey(Phaser.Keyboard.F),
+			q: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+			e: this.game.input.keyboard.addKey(Phaser.Keyboard.E)
 		};
 
+		// Set pause functionality
+		this.keyboard.p.onDown.add(function() {
+			this.pauseGame();
+		}, this);
+		this.keyboard.space.onDown.add(function() {
+			this.pauseGame();
+		}, this);
+		// Set fast-forward functionality
+		this.keyboard.f.onDown.add(function() {
+			this.fastForward();
+		}, this);
 
 		game.input.mouse.capture = true;
 		// Add action assignment possibility
@@ -1657,7 +1731,7 @@ var gameState = {
 				var newObj = new Prop(this.game, (obj.x + (obj.width * 0.5)), obj.y);
 				var doorValue = 0;
 				var doorType = "classic";
-				var doorRate = 500;
+				var doorRate = 50;
 				if(objProps) {
 					if(objProps.value) {
 						doorValue = parseInt(objProps.value);
@@ -1689,13 +1763,27 @@ var gameState = {
 
 		// Let's go... HRRRRN
 		var snd = game.sound.play("sndLetsGo");
-		snd.onStop.addOnce(function() {
-			var timer = game.time.create(true);
-			timer.add(500, function() {
-				this.openDoors();
-			}, this);
-			timer.start();
+		var alarm = new Alarm(this.game, 90, function() {
+			this.openDoors();
 		}, this);
+	},
+
+	pauseGame: function() {
+		if(!this.speedManager.paused) {
+			this.speedManager.pause();
+		}
+		else {
+			this.speedManager.unpause();
+		}
+	},
+
+	fastForward: function() {
+		if(this.speedManager.speed > 1) {
+			this.speedManager.setSpeed(1);
+		}
+		else {
+			this.speedManager.setSpeed(3);
+		}
 	},
 
 	getWorldCursor: function() {
@@ -1754,19 +1842,6 @@ var gameState = {
 
 		// Scroll
 		if(this.cam.scrolling) {
-			// var worldCursor = this.getWorldCursor();
-			// var camPos = {
-			// 	x: this.cam.x + (this.cam.width * 0.5),
-			// 	y: this.cam.y + (this.cam.height * 0.5)
-			// };
-			// worldCursor.x = (worldCursor.x - this.cam.x) - (this.cam.width * 0.5);
-			// worldCursor.y = (worldCursor.y - this.cam.y) - (this.cam.height * 0.5);
-			// var moveRel = {
-			// 	x: (worldCursor.x) / 10,
-			// 	y: (worldCursor.y) / 10
-			// };
-			// this.cam.move(moveRel.x, moveRel.y);
-
 			var originRel = this.getScreenCursor();
 			var moveRel = {
 				x: (this.scrollOrigin.x - originRel.x),
@@ -1793,10 +1868,10 @@ var gameState = {
 
 	lemmingSelectableCallback: function() {
 		// Cursors left and right
-		if(this.state.keyboard.left.isDown && this.dir != -1) {
+		if((this.state.keyboard.left.isDown || this.state.keyboard.q.isDown) && this.dir != -1) {
 			return false;
 		}
-		if(this.state.keyboard.right.isDown && this.dir != 1) {
+		if((this.state.keyboard.right.isDown || this.state.keyboard.e.isDown) && this.dir != 1) {
 			return false;
 		}
 		if(this.dead ||
@@ -1808,8 +1883,7 @@ var gameState = {
 	},
 
 	openDoors: function() {
-		var snd = game.sound.play("sndDoor");
-		for(var a in this.doorsGroup) {
+		for(var a = 0;a < this.doorsGroup.length;a++) {
 			var obj = this.doorsGroup[a];
 			obj.openDoor();
 		}

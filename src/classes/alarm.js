@@ -7,12 +7,6 @@ var Alarm = function(game, duration, callback, callbackContext) {
 	Object.defineProperty(this, "state", {get() {
 		return this.game.state.getCurrentState();
 	}});
-	Object.defineProperty(this, "paused", {get() {
-		if(this.state.paused) {
-			return this.state.paused;
-		}
-		return false;
-	}});
 
 	this.addToGame();
 };
@@ -25,15 +19,13 @@ Alarm.prototype.addToGame = function() {
 };
 
 Alarm.prototype.step = function() {
-	if(!this.paused) {
-		if(this.duration > 0) {
-			this.duration--;
-			if(this.duration <= 0) {
-				if(this.callbackContext) {
-					this.fire();
-				}
-				this.state.alarms.remove(this);
+	if(this.state.speedManager.effectiveSpeed > 0 && this.duration > 0) {
+		this.duration -= this.state.speedManager.effectiveSpeed;
+		if(this.duration <= 0) {
+			if(this.callbackContext) {
+				this.fire();
 			}
+			this.state.alarms.remove(this);
 		}
 	}
 };

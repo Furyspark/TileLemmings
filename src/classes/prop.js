@@ -12,12 +12,20 @@ var Prop = function(game, x, y) {
 Prop.prototype = Object.create(Phaser.Sprite.prototype);
 Prop.prototype.constructor = Prop;
 
+Prop.prototype.playAnim = function(key, frameRate) {
+	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
+	if(this.state.speedManager.effectiveSpeed === 0) {
+		this.animations.stop();
+	}
+};
+
 Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
 	this.state.doorsGroup.push(this);
 	this.lemmingsGroup = lemmingsGroup;
 	this.anchor.setTo(0.5, 0);
+	this.type = type;
 	
 	// Set configuration
 	var doorConfig = game.cache.getJSON("config").props.doors[type];
@@ -35,7 +43,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	}
 
 	// Set class variables
-	this.spawnTimer = game.time.create(false);
 	this.lemmings = lemmings;
 	this.rate = Math.max(10, rate);
 
@@ -43,31 +50,40 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	this.animations.add("opening", openingFrames, 15, false);
 	this.animations.add("idle", idleFrames, 15, false);
 	this.animations.add("open", openFrames, 15, false);
-	this.animations.play("idle", 15);
+	this.playAnim("idle", 15);
 
 	// Set functions
 	this.openDoor = function() {
+		// Play sound
+		if(this.state.doorsGroup[0] === this) {
+			game.sound.play(doorConfig.sound.open);
+		}
+		// Set event
 		this.animations.getAnimation("opening").onComplete.addOnce(function() {
-			this.animations.play("open", 15);
-			// Create additional timer
-			var timer = game.time.create(true);
-			timer.add(500, function() {
+			this.playAnim("open", 15);
+			var alarm = new Alarm(this.game, 30, function() {
 				this.opened();
 				this.state.playLevelBGM();
 			}, this);
-			timer.start();
 		}, this);
-		this.animations.play("opening", 15);
+		// Play animation
+		this.playAnim("opening", 15);
 	};
 	this.opened = function() {
-		this.spawnTimer.loop(this.rate, function() {
-			if(this.lemmings > 0) {
-				this.lemmings--;
-				var lem = new Lemming(this.game, this.x, this.y + 30);
-				this.lemmingsGroup.push(lem);
+		this.spawnLemming(true);
+	};
+	this.spawnLemming = function(recurring) {
+		if(typeof recurring === "undefined") {
+			var recurring = true;
+		}
+		if(this.lemmings > 0) {
+			this.lemmings--;
+			var lem = new Lemming(this.game, this.x, this.y + 30);
+			this.lemmingsGroup.push(lem);
+			if(recurring) {
+				var alarm = new Alarm(this.game, this.rate, this.spawnLemming, this);
 			}
-		}, this)
-		this.spawnTimer.start();
+		}
 	};
 };
 
@@ -75,6 +91,7 @@ Prop.prototype.setAsExit = function(type) {
 	this.objectType = "exit";
 	this.state.exitsGroup.push(this);
 	this.anchor.setTo(0.5, 1);
+	this.type = type;
 
 	// Set configuration
 	var propConfig = game.cache.getJSON("config").props.exits[type];
@@ -87,7 +104,7 @@ Prop.prototype.setAsExit = function(type) {
 
 	// Set animation
 	this.animations.add("idle", idleFrames, 15, true);
-	this.animations.play("idle", 15);
+	this.playAnim("idle", 15);
 
 	// Set bounding box
 	this.bbox = {

@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"save",
+				"needSave"
+			],
+			[
 				"Single",
 				"SingleInstance [force|ignore|off]"
 			]
@@ -36,14 +40,6 @@
 			}
 		},
 		{
-			"file": "src/states/state_game.js",
-			"settings":
-			{
-				"buffer_size": 16633,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "src/classes/background.js",
 			"settings":
 			{
@@ -52,10 +48,18 @@
 			}
 		},
 		{
+			"file": "src/states/state_game.js",
+			"settings":
+			{
+				"buffer_size": 17731,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "assets/levels/level1.json",
 			"settings":
 			{
-				"buffer_size": 8188,
+				"buffer_size": 8274,
 				"line_ending": "Windows"
 			}
 		},
@@ -71,7 +75,15 @@
 			"file": "src/classes/prop.js",
 			"settings":
 			{
-				"buffer_size": 1996,
+				"buffer_size": 3209,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/config.json",
+			"settings":
+			{
+				"buffer_size": 324,
 				"line_ending": "Windows"
 			}
 		},
@@ -79,7 +91,15 @@
 			"file": "src/classes/lemming.js",
 			"settings":
 			{
-				"buffer_size": 16484,
+				"buffer_size": 17134,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/gfx/sprite_atlases/lemming.json",
+			"settings":
+			{
+				"buffer_size": 44605,
 				"line_ending": "Windows"
 			}
 		},
@@ -149,13 +169,17 @@
 	],
 	"file_history":
 	[
+		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_classic.json",
+		"/D/Projects/Phaser/Lem/assets/asset_list.json",
+		"/D/Projects/Phaser/Lem/assets/config.json",
+		"/D/wamp/www/stream_old/config/stream.json",
+		"/C/Users/Tijmen/AppData/Roaming/Factorio/mods/mod-list.json",
 		"/D/music workshop/convert_mp3_to_ogg.bat",
 		"/D/Projects/Phaser/Lem/sources.json",
 		"/D/Projects/Phaser/Lem/.git/config",
 		"/D/Projects/Phaser/Lem/src/states/state_game.js",
 		"/D/Projects/Phaser/Lem/Gruntfile.js",
 		"/D/Projects/Phaser/Lem/src/classes/timer.js",
-		"/D/Projects/Phaser/Lem/assets/asset_list.json",
 		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/misc.json",
 		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/lemming.json",
 		"/D/Projects/Phaser/Lem/src/states/state_boot.js",
@@ -273,7 +297,7 @@
 	],
 	"find":
 	{
-		"height": 43.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -287,6 +311,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"this.state",
+			"exit",
+			"\");",
+			"500",
+			"Explode",
+			"explode",
+			"sndOhNo",
+			"doorsGroup",
+			"exitConfig",
+			"tilesetRefs",
 			"Callback",
 			"background",
 			"mapFiles",
@@ -394,7 +428,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -481,7 +515,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
@@ -569,7 +603,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -657,99 +691,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "src/states/state_game.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 16633,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								16363,
-								16363
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 8219.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "src/classes/background.js",
 					"semi_transient": false,
 					"settings":
@@ -834,7 +780,95 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/states/state_game.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17731,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11306,
+								11306
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5993.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -843,7 +877,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8188,
+						"buffer_size": 8274,
 						"regions":
 						{
 						},
@@ -920,10 +954,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1242.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -1008,10 +1042,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 774.0,
+						"translation.y": 627.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -1020,15 +1054,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1996,
+						"buffer_size": 3209,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								2060,
+								2060
 							]
 						],
 						"settings":
@@ -1096,95 +1130,36 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 616.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 8,
-					"file": "src/classes/lemming.js",
+					"file": "assets/config.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16484,
+						"buffer_size": 324,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5946,
-								5946
+								286,
+								286
 							]
 						],
 						"settings":
 						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 8117.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
@@ -1192,6 +1167,123 @@
 				},
 				{
 					"buffer": 9,
+					"file": "src/classes/lemming.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17134,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7237,
+								7237
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3265.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "assets/gfx/sprite_atlases/lemming.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44605,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25232,
+								25236
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 14869.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
 					"file": "src/classes/gamelabel.js",
 					"semi_transient": false,
 					"settings":
@@ -1275,7 +1367,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
