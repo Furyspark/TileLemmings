@@ -542,10 +542,10 @@ Lemming.prototype.turnAround = function() {
 };
 
 Lemming.prototype.update = function() {
-	this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
-	this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
-
 	if(!this.dead && this.active && this.state.speedManager.effectiveSpeed > 0) {
+		this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
+		this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
+
 		// Walk
 		if(this.onFloor() && this.action.idle) {
 			// Fall death
@@ -761,7 +761,7 @@ Lemming.prototype.clearAction = function() {
 
 Lemming.prototype.setAction = function(actionName) {
 	// Normal actions
-	if(actionName != this.action.name && (this.action.name !== "blocker" || (this.action.idle && actionName === "blocker"))) {
+	if(actionName != this.action.name && (this.action.name !== "blocker" || (this.action.idle && actionName === "blocker")) && !this.dead && this.active) {
 		switch(actionName) {
 			// SET ACTION: Walk
 			case "walker":
@@ -908,7 +908,7 @@ Lemming.prototype.setAction = function(actionName) {
 };
 
 Lemming.prototype.proceedBuild = function() {
-	if(this.action.name == "builder" && !this.action.idle) {
+	if(this.action.name == "builder" && !this.action.idle && !this.dead && this.active) {
 		this.action.value--;
 		if(this.action.value === 0) {
 			// Stop building
@@ -948,7 +948,7 @@ Lemming.prototype.proceedBuild = function() {
 };
 
 Lemming.prototype.proceedDig = function() {
-	if(this.action.name == "digger" && !this.action.idle) {
+	if(this.action.name == "digger" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
 		if(result === 2) {
 			this.game.sound.play("sndChink");
@@ -965,7 +965,7 @@ Lemming.prototype.proceedDig = function() {
 };
 
 Lemming.prototype.proceedMine = function() {
-	if(this.action.name == "miner" && !this.action.idle) {
+	if(this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
 		if(result === 2) {
 			game.sound.play("sndChink");
@@ -990,7 +990,7 @@ Lemming.prototype.proceedMine = function() {
 };
 
 Lemming.prototype.proceedExplode = function() {
-	if(this.subaction.name === "exploder" && !this.subaction.idle) {
+	if(this.subaction.name === "exploder" && !this.subaction.idle && !this.dead && this.active) {
 		this.subaction.value--;
 		if(this.subaction.value <= 0) {
 			this.gameLabel.remove();
@@ -1019,21 +1019,6 @@ Lemming.prototype.proceedExplode = function() {
 
 Lemming.prototype.explode = function() {
 	game.sound.play("sndPop");
-	// Get radius
-	// var tilesInRadius = [];
-	// var d = 3 - (2 * radius);
-	// var a = 0;
-	// var b = radius;
-
-	// if(d < 0) {
-	// 	d = d + (4 * a) + 6;
-	// }
-	// else {
-	// 	while(b > a) {
-	// 		d = d + 4 * (a - b) + 10;
-	// 		b--;
-	// 	}
-	// }
 	// Remove 3x3 tiles
 	for(var a = -1;a <= 1;a++) {
 		for(var b = -1;b <= 1;b++) {
@@ -1067,9 +1052,21 @@ Lemming.prototype.isOutsideLevel = function() {
 };
 
 Lemming.prototype.die = function(deathType) {
+	// Set states
 	this.dead = true;
 	this.velocity.x = 0;
 	this.velocity.y = 0;
+
+	// Clear actions
+	this.clearAction();
+	this.subaction.name = "";
+	this.subaction.active = false;
+	this.subaction.value = 0;
+	if(this.subaction.alarm) {
+		this.subaction.alarm.cancel;
+	}
+
+	// Die
 	switch(deathType) {
 		// DEATH ACTION: Out of room
 		case Lemming.DEATHTYPE_OUT_OF_ROOM:
@@ -1574,10 +1571,10 @@ var gameState = {
 		this.layers.tileLayer.height = this.map.height;
 
 		// Predetermine map files
-		var mapFiles = [];
+		this.mapFiles = [];
 		// Load Background Music
 		if(this.map.properties.bgm) {
-			mapFiles.push({
+			this.mapFiles.push({
 				url: "assets/audio/bgm/" + this.map.properties.bgm,
 				key: "bgm",
 				type: "sound"
@@ -1585,7 +1582,7 @@ var gameState = {
 		}
 		// Load Background
 		if(this.map.properties.bg) {
-			mapFiles.push({
+			this.mapFiles.push({
 				url: "assets/gfx/backgrounds/" + this.map.properties.bg,
 				key: "bg",
 				type: "image"
@@ -1595,7 +1592,7 @@ var gameState = {
 		for(var a = 0;a < this.map.tilesets.length;a++) {
 			var tileset = this.map.tilesets[a];
 			var url = "assets/levels/" + tileset.image;
-			mapFiles.push({
+			this.mapFiles.push({
 				url: url,
 				key: tileset.name,
 				type: "image"
@@ -1651,15 +1648,15 @@ var gameState = {
 		}
 
 		// Preload map files
-		if(mapFiles.length > 0) {
+		if(this.mapFiles.length > 0) {
 			// Set load handler
 			game.load.onLoadComplete.addOnce(function() {
 				this.startLevel();
 			}, this);
 
 			// Load files
-			for(var a in mapFiles) {
-				var file = mapFiles[a];
+			for(var a in this.mapFiles) {
+				var file = this.mapFiles[a];
 				switch(file.type) {
 					case "sound":
 					game.load.audio(file.key, file.url);
@@ -1948,6 +1945,23 @@ var gameState = {
 			this.scrollOrigin = this.getScreenCursor();
 			this.cam.move(moveRel.x, moveRel.y);
 		}
+	},
+
+	goToState: function(stateKey) {
+		// Unload level assets
+		for(var a = 0;a < this.mapFiles.length;a++) {
+			var mapFile = this.mapFiles[a];
+			switch(mapFile.type) {
+				case "image":
+				this.game.cache.removeImage(mapFile.key, true);
+				break;
+				case "sound":
+				this.game.cache.removeSound(mapFile.key);
+				break;
+			}
+		}
+		// Go to state
+		this.game.state.start(stateKey);
 	},
 
 	render: function() {

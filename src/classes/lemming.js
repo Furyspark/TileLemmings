@@ -191,10 +191,10 @@ Lemming.prototype.turnAround = function() {
 };
 
 Lemming.prototype.update = function() {
-	this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
-	this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
-
 	if(!this.dead && this.active && this.state.speedManager.effectiveSpeed > 0) {
+		this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
+		this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
+
 		// Walk
 		if(this.onFloor() && this.action.idle) {
 			// Fall death
@@ -410,7 +410,7 @@ Lemming.prototype.clearAction = function() {
 
 Lemming.prototype.setAction = function(actionName) {
 	// Normal actions
-	if(actionName != this.action.name && (this.action.name !== "blocker" || (this.action.idle && actionName === "blocker"))) {
+	if(actionName != this.action.name && (this.action.name !== "blocker" || (this.action.idle && actionName === "blocker")) && !this.dead && this.active) {
 		switch(actionName) {
 			// SET ACTION: Walk
 			case "walker":
@@ -557,7 +557,7 @@ Lemming.prototype.setAction = function(actionName) {
 };
 
 Lemming.prototype.proceedBuild = function() {
-	if(this.action.name == "builder" && !this.action.idle) {
+	if(this.action.name == "builder" && !this.action.idle && !this.dead && this.active) {
 		this.action.value--;
 		if(this.action.value === 0) {
 			// Stop building
@@ -597,7 +597,7 @@ Lemming.prototype.proceedBuild = function() {
 };
 
 Lemming.prototype.proceedDig = function() {
-	if(this.action.name == "digger" && !this.action.idle) {
+	if(this.action.name == "digger" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
 		if(result === 2) {
 			this.game.sound.play("sndChink");
@@ -614,7 +614,7 @@ Lemming.prototype.proceedDig = function() {
 };
 
 Lemming.prototype.proceedMine = function() {
-	if(this.action.name == "miner" && !this.action.idle) {
+	if(this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
 		if(result === 2) {
 			game.sound.play("sndChink");
@@ -639,7 +639,7 @@ Lemming.prototype.proceedMine = function() {
 };
 
 Lemming.prototype.proceedExplode = function() {
-	if(this.subaction.name === "exploder" && !this.subaction.idle) {
+	if(this.subaction.name === "exploder" && !this.subaction.idle && !this.dead && this.active) {
 		this.subaction.value--;
 		if(this.subaction.value <= 0) {
 			this.gameLabel.remove();
@@ -668,21 +668,6 @@ Lemming.prototype.proceedExplode = function() {
 
 Lemming.prototype.explode = function() {
 	game.sound.play("sndPop");
-	// Get radius
-	// var tilesInRadius = [];
-	// var d = 3 - (2 * radius);
-	// var a = 0;
-	// var b = radius;
-
-	// if(d < 0) {
-	// 	d = d + (4 * a) + 6;
-	// }
-	// else {
-	// 	while(b > a) {
-	// 		d = d + 4 * (a - b) + 10;
-	// 		b--;
-	// 	}
-	// }
 	// Remove 3x3 tiles
 	for(var a = -1;a <= 1;a++) {
 		for(var b = -1;b <= 1;b++) {
@@ -716,9 +701,21 @@ Lemming.prototype.isOutsideLevel = function() {
 };
 
 Lemming.prototype.die = function(deathType) {
+	// Set states
 	this.dead = true;
 	this.velocity.x = 0;
 	this.velocity.y = 0;
+
+	// Clear actions
+	this.clearAction();
+	this.subaction.name = "";
+	this.subaction.active = false;
+	this.subaction.value = 0;
+	if(this.subaction.alarm) {
+		this.subaction.alarm.cancel;
+	}
+
+	// Die
 	switch(deathType) {
 		// DEATH ACTION: Out of room
 		case Lemming.DEATHTYPE_OUT_OF_ROOM:

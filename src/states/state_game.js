@@ -259,10 +259,10 @@ var gameState = {
 		this.layers.tileLayer.height = this.map.height;
 
 		// Predetermine map files
-		var mapFiles = [];
+		this.mapFiles = [];
 		// Load Background Music
 		if(this.map.properties.bgm) {
-			mapFiles.push({
+			this.mapFiles.push({
 				url: "assets/audio/bgm/" + this.map.properties.bgm,
 				key: "bgm",
 				type: "sound"
@@ -270,7 +270,7 @@ var gameState = {
 		}
 		// Load Background
 		if(this.map.properties.bg) {
-			mapFiles.push({
+			this.mapFiles.push({
 				url: "assets/gfx/backgrounds/" + this.map.properties.bg,
 				key: "bg",
 				type: "image"
@@ -280,7 +280,7 @@ var gameState = {
 		for(var a = 0;a < this.map.tilesets.length;a++) {
 			var tileset = this.map.tilesets[a];
 			var url = "assets/levels/" + tileset.image;
-			mapFiles.push({
+			this.mapFiles.push({
 				url: url,
 				key: tileset.name,
 				type: "image"
@@ -336,15 +336,15 @@ var gameState = {
 		}
 
 		// Preload map files
-		if(mapFiles.length > 0) {
+		if(this.mapFiles.length > 0) {
 			// Set load handler
 			game.load.onLoadComplete.addOnce(function() {
 				this.startLevel();
 			}, this);
 
 			// Load files
-			for(var a in mapFiles) {
-				var file = mapFiles[a];
+			for(var a in this.mapFiles) {
+				var file = this.mapFiles[a];
 				switch(file.type) {
 					case "sound":
 					game.load.audio(file.key, file.url);
@@ -633,6 +633,23 @@ var gameState = {
 			this.scrollOrigin = this.getScreenCursor();
 			this.cam.move(moveRel.x, moveRel.y);
 		}
+	},
+
+	goToState: function(stateKey) {
+		// Unload level assets
+		for(var a = 0;a < this.mapFiles.length;a++) {
+			var mapFile = this.mapFiles[a];
+			switch(mapFile.type) {
+				case "image":
+				this.game.cache.removeImage(mapFile.key, true);
+				break;
+				case "sound":
+				this.game.cache.removeSound(mapFile.key);
+				break;
+			}
+		}
+		// Go to state
+		this.game.state.start(stateKey);
 	},
 
 	render: function() {
