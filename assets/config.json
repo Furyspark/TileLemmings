@@ -12,7 +12,7 @@
 			"cave": {
 				"atlas": "props_cave",
 				"animName": "door",
-				"frames": 7,
+				"frames": 9,
 				"sound": {
 					"open": "sndDoor_Cave"
 				}
