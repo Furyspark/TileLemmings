@@ -1,5 +1,10 @@
 var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
+	this.game = game;
+
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
 
 	// Load base texture
 	this.loadTexture("gui");

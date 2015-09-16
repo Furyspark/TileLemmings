@@ -4,10 +4,6 @@
 		"selected_items":
 		[
 			[
-				"save",
-				"needSave"
-			],
-			[
 				"Single",
 				"SingleInstance [force|ignore|off]"
 			]
@@ -16,50 +12,26 @@
 	"buffers":
 	[
 		{
-			"file": "src/game.js",
+			"file": "src/states/state_menu.js",
 			"settings":
 			{
-				"buffer_size": 165,
+				"buffer_size": 2411,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/classes/alarm.js",
+			"file": "assets/levels.json",
 			"settings":
 			{
-				"buffer_size": 891,
+				"buffer_size": 203,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "index.html",
+			"file": "src/classes/mainmenuButton.js",
 			"settings":
 			{
-				"buffer_size": 372,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/classes/background.js",
-			"settings":
-			{
-				"buffer_size": 700,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "assets/levels/level1.json",
-			"settings":
-			{
-				"buffer_size": 8732,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/classes/button.js",
-			"settings":
-			{
-				"buffer_size": 2698,
+				"buffer_size": 3305,
 				"line_ending": "Windows"
 			}
 		},
@@ -67,7 +39,26 @@
 			"file": "src/states/state_game.js",
 			"settings":
 			{
-				"buffer_size": 19774,
+				"buffer_size": 19931,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/states/state_boot.js",
+			"settings":
+			{
+				"buffer_size": 1652,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "{ \"height\":30,\n \"layers\":[\n        {\n         \"data\":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 578, 577, 577, 577, 577, 579, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 585, 586, 587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 577, 577, 577, 577, 577, 577, 603, 604, 577, 577, 577, 577, 603, 604, 577, 577, 605, 606, 577, 605, 606, 577, 577, 577, 577, 577, 577, 577, 577, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 577, 577, 577, 577, 577, 577, 611, 612, 577, 577, 577, 577, 611, 612, 577, 577, 613, 614, 577, 613, 614, 577, 577, 577, 577, 601, 602, 577, 577, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 577, 577, 577, 577, 577, 577, 577, 577, 577, 603, 604, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 609, 610, 577, 577, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 577, 577, 577, 577, 577, 577, 577, 577, 577, 611, 612, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 577, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],\n         \"height\":30,\n         \"name\":\"tiles\",\n         \"opacity\":1,\n         \"type\":\"tilelayer\",\n         \"visible\":true,\n         \"width\":40,\n         \"x\":0,\n         \"y\":0\n        }, \n        {\n         \"draworder\":\"topdown\",\n         \"height\":30,\n         \"name\":\"objects\",\n         \"objects\":[\n                {\n                 \"height\":64,\n                 \"id\":1,\n                 \"name\":\"\",\n                 \"properties\":\n                    {\n                     \"rate\":\"50\",\n                     \"type\":\"medieval\",\n                     \"value\":\"20\"\n                    },\n                 \"rotation\":0,\n                 \"type\":\"door\",\n                 \"visible\":true,\n                 \"width\":64,\n                 \"x\":64,\n                 \"y\":96\n                }, \n                {\n                 \"height\":64,\n                 \"id\":2,\n                 \"name\":\"\",\n                 \"properties\":\n                    {\n                     \"type\":\"medieval\"\n                    },\n                 \"rotation\":0,\n                 \"type\":\"exit\",\n                 \"visible\":true,\n                 \"width\":64,\n                 \"x\":432,\n                 \"y\":192\n                }],\n         \"opacity\":1,\n         \"type\":\"objectgroup\",\n         \"visible\":true,\n         \"width\":40,\n         \"x\":0,\n         \"y\":0\n        }],\n \"nextobjectid\":3,\n \"orientation\":\"orthogonal\",\n \"properties\":\n    {\n     \"basher\":\"5\",\n     \"bg\":\"bgDarkSky.png\",\n     \"bgm\":\"medieval.ogg\",\n     \"blocker\":\"2\",\n     \"builder\":\"20\",\n     \"climber\":\"5\",\n     \"digger\":\"5\",\n     \"exploder\":\"5\",\n     \"floater\":\"5\",\n     \"miner\":\"5\",\n     \"need\":\"10\"\n    },\n \"renderorder\":\"right-down\",\n \"tileheight\":16,\n \"tilesets\":[\n        {\n         \"firstgid\":1,\n         \"image\":\"..\\/gfx\\/tilesets\\/tilesetPillar.png\",\n         \"imageheight\":320,\n         \"imagewidth\":400,\n         \"margin\":2,\n         \"name\":\"pillar\",\n         \"properties\":\n            {\n\n            },\n         \"spacing\":4,\n         \"tilecount\":320,\n         \"tileheight\":16,\n         \"tilewidth\":16\n        }, \n        {\n         \"firstgid\":321,\n         \"image\":\"..\\/gfx\\/tilesets\\/tilesetPink.png\",\n         \"imageheight\":320,\n         \"imagewidth\":240,\n         \"margin\":2,\n         \"name\":\"pink\",\n         \"properties\":\n            {\n\n            },\n         \"spacing\":4,\n         \"tilecount\":192,\n         \"tileheight\":16,\n         \"tileproperties\":\n            {\n             \"52\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"53\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"54\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"55\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"56\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"64\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"65\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"66\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"67\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"68\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"76\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"77\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"79\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"80\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"88\":\n                {\n                 \"tileType\":\"2\"\n                },\n             \"89\":\n                {\n                 \"tileType\":\"2\"\n                }\n            },\n         \"tilewidth\":16\n        }, \n        {\n         \"firstgid\":513,\n         \"image\":\"..\\/gfx\\/tilesets\\/tilesetSports.png\",\n         \"imageheight\":160,\n         \"imagewidth\":160,\n         \"margin\":2,\n         \"name\":\"tilesetSports\",\n         \"properties\":\n            {\n\n            },\n         \"spacing\":4,\n         \"tilecount\":64,\n         \"tileheight\":16,\n         \"tilewidth\":16\n        }, \n        {\n         \"firstgid\":577,\n         \"image\":\"..\\/gfx\\/tilesets\\/tilesetMedieval.png\",\n         \"imageheight\":120,\n         \"imagewidth\":160,\n         \"margin\":2,\n         \"name\":\"tilesetMedieval\",\n         \"properties\":\n            {\n\n            },\n         \"spacing\":4,\n         \"tilecount\":48,\n         \"tileheight\":16,\n         \"tilewidth\":16\n        }],\n \"tilewidth\":16,\n \"version\":1,\n \"width\":40\n}",
+			"file": "assets/levels/level1.json",
+			"file_size": 8888,
+			"file_write_time": 130868667104352737,
+			"settings":
+			{
+				"buffer_size": 8678,
 				"line_ending": "Windows"
 			}
 		},
@@ -80,34 +71,10 @@
 			}
 		},
 		{
-			"file": "assets/config.json",
-			"settings":
-			{
-				"buffer_size": 3954,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "assets/asset_list.json",
-			"settings":
-			{
-				"buffer_size": 3810,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "src/classes/lemming.js",
 			"settings":
 			{
 				"buffer_size": 20688,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/classes/cursor.js",
-			"settings":
-			{
-				"buffer_size": 815,
 				"line_ending": "Windows"
 			}
 		},
@@ -127,14 +94,10 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 104.0,
-		"last_filter": "install",
+		"height": 73.0,
+		"last_filter": "remove pack",
 		"selected_items":
 		[
-			[
-				"install",
-				"Package Control: Install Package"
-			],
 			[
 				"remove pack",
 				"Package Control: Remove Package"
@@ -152,7 +115,7 @@
 				"Set Syntax: AutoHotkey"
 			]
 		],
-		"width": 416.0
+		"width": 637.0
 	},
 	"console":
 	{
@@ -181,34 +144,23 @@
 	],
 	"file_history":
 	[
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_cave.json",
-		"/D/Projects/Phaser/Lem/src/states/state_boot.js",
-		"/D/Projects/Phaser/Lem/assets/config.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_circus.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_sports.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_space.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_polar.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_medieval.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_egypt.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_crystal.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/sprites.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/lemming.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/misc.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/gui.json",
-		"/C/Users/Tijmen/Desktop/lemming/sprites.json",
-		"/C/Users/Tijmen/Desktop/lemming/sprites.js",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/props_classic.json",
-		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/sprites.js",
-		"/C/Users/Tijmen/Desktop/kw.txt",
 		"/D/Projects/Phaser/Lem/assets/asset_list.json",
-		"/D/wamp/www/stream_old/config/stream.json",
-		"/C/Users/Tijmen/AppData/Roaming/Factorio/mods/mod-list.json",
-		"/D/music workshop/convert_mp3_to_ogg.bat",
 		"/D/Projects/Phaser/Lem/sources.json",
-		"/D/Projects/Phaser/Lem/.git/config",
+		"/D/Projects/Phaser/Lem/src/classes/button.js",
+		"/C/Users/Tijmen/Desktop/sprites/mainmenu/sprites.json",
+		"/D/Projects/Phaser/Lem/assets/levels/fun/level1.json",
+		"/D/Projects/Phaser/Lem/src/states/state_boot.js",
+		"/D/Projects/Phaser/Lem/src/classes/alarm.js",
+		"/D/Projects/Phaser/Lem/index.html",
 		"/D/Projects/Phaser/Lem/src/states/state_game.js",
+		"/D/Projects/Phaser/Lem/src/classes/background.js",
+		"/D/Projects/Phaser/Lem/src/game.js",
+		"/D/music workshop/convert_mp3_to_ogg.bat",
+		"/D/Projects/Phaser/Lem/.git/config",
 		"/D/Projects/Phaser/Lem/Gruntfile.js",
 		"/D/Projects/Phaser/Lem/src/classes/timer.js",
+		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/misc.json",
+		"/D/Projects/Phaser/Lem/assets/gfx/sprite_atlases/lemming.json",
 		"/C/Users/Tijmen/Desktop/extip.txt",
 		"/D/Projects/Phaser/Lem/lib/classes/lemming.js",
 		"/D/Projects/Phaser/Lem/lib/game.js",
@@ -217,7 +169,6 @@
 		"/D/Projects/Phaser/Lem/window_handler.js",
 		"/D/Projects/Phaser/Lem/main.js",
 		"/D/Projects/Phaser/Lem/package.json",
-		"/D/Projects/Phaser/Lem/index.html",
 		"/D/Projects/Phaser/Lem/build.rb",
 		"/D/Projects/Phaser/Lem/dist/Lem.js",
 		"/D/Projects/Phaser/Lem/Lem.sublime-project",
@@ -308,11 +259,22 @@
 		"/D/AHK/furyspark/Games/Platform/Rogue Legacy.ahk",
 		"/C/Users/Tijmen/Documents/SavedGames/RogueLegacy/RogueLegacyStorageContainer/AllPlayers/Profile1/RogueLegacyPlayer.rcdat",
 		"/D/AHK/furyspark/Games/Platform/Rogue Legacy.json",
-		"/D/AHK/furyspark/Games/Emulation_Genesis/Kid Chameleon.ahk"
+		"/D/AHK/furyspark/Games/Emulation_Genesis/Kid Chameleon.ahk",
+		"/C/Users/Tijmen/Desktop/server.properties",
+		"/C/Users/Tijmen/Desktop/ftbserver/ServerStart.sh",
+		"/D/AHK/furyspark/Games/FPS/Duke Nukem 3D.ahk",
+		"/D/AHK/furyspark/ProfileCreator - Copy.ahk",
+		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/D/AHK/dev/Engine_Load.ahk",
+		"/D/AHK/dev/Engine_Postload.ahk",
+		"/C/Users/Tijmen/Desktop/vac soundcard stereo.bat",
+		"/C/Users/Tijmen/Desktop/vac soundcard.bat"
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 43.0
 	},
 	"find_in_files":
 	{
@@ -326,62 +288,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			".speed",
-			"new Alarm",
-			".die",
-			"mapFiles",
-			"props_cave",
-			"exit",
-			"props_cave",
-			"cave",
-			"props_circus",
-			"door",
-			"props_circus",
-			"props_classic",
-			"cursor",
+			"60",
+			"index",
+			"levelFolder",
+			"resref",
+			"config",
+			"top",
 			"anchor",
-			"currentAnim",
-			"mountain",
-			"Float_Start",
-			"float_start",
-			"float",
-			"floater",
-			"action",
-			"sndLightning",
-			"left",
-			"down",
-			"DOWN",
-			"openDoors",
-			"blocker",
-			"delay",
-			"currentAnim",
-			"frame",
-			"animations",
-			"this.fallDist",
-			"openDoor",
-			"openDoors",
-			"misc",
-			"sndYippie",
-			"sndDoor",
-			"door",
-			"classic",
-			"cave",
-			"openDoor",
-			"time",
-			"playAnim",
-			"velocity.",
-			"currentAnim",
-			"cursor",
-			"this.state",
-			"exit",
-			"\");",
-			"500",
-			"Explode",
-			"explode",
-			"sndOhNo",
-			"doorsGroup",
-			"exitConfig",
-			"tilesetRefs",
+			"button",
+			"makeSound",
+			"props_sports",
+			"game",
+			"tilesetMiscTiles2",
+			"tilesets",
+			"scroll",
+			"console",
 			"Callback",
 			"background",
 			"mapFiles",
@@ -453,7 +374,19 @@
 			"*",
 			"origin",
 			"keyValue",
-			"vkba"
+			"vkba",
+			"return",
+			"a",
+			"Woof_Up",
+			"left",
+			"*",
+			"SendInput {blind}{vkff}",
+			"}\n",
+			"*$",
+			"Input",
+			"Realtime",
+			"shiftUsed",
+			"Stereo"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -477,24 +410,24 @@
 	"groups":
 	[
 		{
-			"selected": 10,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/game.js",
+					"file": "src/states/state_menu.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 165,
+						"buffer_size": 2411,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								165,
-								165
+								1968,
+								1968
 							]
 						],
 						"settings":
@@ -502,86 +435,87 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
 								"bh_regex_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
 								"bh_round_close",
-								"bh_round_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
+								"bh_round_content"
 							],
+							"open_with_edit": true,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 874.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/classes/alarm.js",
+					"file": "assets/levels.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 891,
+						"buffer_size": 203,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								609,
-								609
+								183,
+								183
 							]
 						],
 						"settings":
@@ -589,11 +523,6 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
@@ -604,11 +533,11 @@
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -619,122 +548,39 @@
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
 								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 372,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_regex_content"
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
 							],
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -744,20 +590,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "src/classes/background.js",
+					"buffer": 2,
+					"file": "src/classes/mainmenuButton.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 700,
+						"buffer_size": 3305,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								700,
-								700
+								3285,
+								3285
 							]
 						],
 						"settings":
@@ -765,11 +611,6 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
@@ -780,11 +621,11 @@
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -795,58 +636,63 @@
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
 								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_regex_content"
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
 							],
 							"open_with_edit": true,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1836.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "assets/levels/level1.json",
+					"buffer": 3,
+					"file": "src/states/state_game.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8732,
+						"buffer_size": 19931,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4873,
-								4848
+								14377,
+								14260
 							]
 						],
 						"settings":
@@ -854,11 +700,6 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
@@ -869,11 +710,11 @@
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -884,58 +725,62 @@
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
 								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_regex_content"
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
 							],
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 9984.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "src/classes/button.js",
+					"buffer": 4,
+					"file": "src/states/state_boot.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2698,
+						"buffer_size": 1652,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								596,
+								596
 							]
 						],
 						"settings":
@@ -943,11 +788,6 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
@@ -958,11 +798,11 @@
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -973,57 +813,62 @@
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
 								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_regex_content"
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
 							],
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 627.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "src/states/state_game.js",
+					"buffer": 5,
+					"file": "assets/levels/level1.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 19774,
+						"buffer_size": 8678,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								15889,
-								15897
+								8335,
+								8335
 							]
 						],
 						"settings":
@@ -1031,11 +876,6 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
@@ -1046,11 +886,11 @@
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -1061,44 +901,50 @@
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
 								"bh_angle",
 								"bh_angle_center",
 								"bh_angle_open",
 								"bh_angle_close",
 								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_regex_content"
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
 							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8499.0,
+						"translation.y": 3024.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 6,
 					"file": "src/classes/prop.js",
 					"semi_transient": false,
 					"settings":
@@ -1110,8 +956,8 @@
 						"selection":
 						[
 							[
-								2542,
-								2542
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1179,72 +1025,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 588.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "assets/config.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3954,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								451,
-								451
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
 						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "assets/asset_list.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3810,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2958,
-								2958
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 433.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 7,
 					"file": "src/classes/lemming.js",
 					"semi_transient": false,
 					"settings":
@@ -1256,8 +1044,8 @@
 						"selection":
 						[
 							[
-								4716,
-								4722
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1325,43 +1113,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2255.0,
+						"translation.y": 8117.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "src/classes/cursor.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 815,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								586,
-								586
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
+					"buffer": 8,
 					"file": "src/classes/gamelabel.js",
 					"semi_transient": false,
 					"settings":
@@ -1445,7 +1204,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]

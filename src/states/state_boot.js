@@ -19,7 +19,7 @@ var bootState = {
 
 		// Add callback for Finish Loading
 		game.load.onLoadComplete.addOnce(function() {
-			game.state.start("game");
+			game.state.start("menu");
 		}, this);
 
 

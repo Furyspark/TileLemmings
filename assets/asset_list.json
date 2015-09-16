@@ -130,6 +130,11 @@
 			"key": "props_sports",
 			"url": "assets/gfx/sprite_atlases/props_sports.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/props_sports.json"
+		},
+		{
+			"key": "mainmenu",
+			"url": "assets/gfx/sprite_atlases/mainmenu.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/mainmenu.json"
 		}
 	],
 	"images": [
@@ -152,6 +157,10 @@
 		{
 			"key": "tilesetMiscTiles2",
 			"url": "assets/gfx/tilesets/tilesetMiscTiles2.png"
+		},
+		{
+			"key": "bgMainMenu",
+			"url": "assets/gfx/backgrounds/bgMainMenu.png"
 		}
 	],
 	"tilemaps": [
@@ -160,6 +169,10 @@
 		{
 			"key": "config",
 			"url": "assets/config.json"
+		},
+		{
+			"key": "levelList",
+			"url": "assets/levels.json"
 		}
 	]
 }

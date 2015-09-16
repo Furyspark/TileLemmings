@@ -1,0 +1,15 @@
+{
+	"difficulties": [
+		{
+			"resref": "fun",
+			"name": "Fun",
+			"baseUrl": "assets/levels/fun/",
+			"levels": [
+				{
+					"filename": "level1.json",
+					"name": "Medieval Kineval"
+				}
+			]
+		}
+	]
+}

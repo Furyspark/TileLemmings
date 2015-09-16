@@ -23,7 +23,7 @@
                  "properties":
                     {
                      "rate":"50",
-                     "type":"cave",
+                     "type":"medieval",
                      "value":"20"
                     },
                  "rotation":0,
@@ -76,7 +76,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"..\/gfx\/tilesets\/tilesetPillar.png",
+         "image":"..\/..\/gfx\/tilesets\/tilesetPillar.png",
          "imageheight":320,
          "imagewidth":400,
          "margin":2,
@@ -92,7 +92,7 @@
         }, 
         {
          "firstgid":321,
-         "image":"..\/gfx\/tilesets\/tilesetPink.png",
+         "image":"..\/..\/gfx\/tilesets\/tilesetPink.png",
          "imageheight":320,
          "imagewidth":240,
          "margin":2,
@@ -175,7 +175,7 @@
         }, 
         {
          "firstgid":513,
-         "image":"..\/gfx\/tilesets\/tilesetSports.png",
+         "image":"..\/..\/gfx\/tilesets\/tilesetSports.png",
          "imageheight":160,
          "imagewidth":160,
          "margin":2,
@@ -191,7 +191,7 @@
         }, 
         {
          "firstgid":577,
-         "image":"..\/..\/..\/..\/GMS\/Workshop\/TiledLoader\/TiledLoader.gmx\/datafiles\/gfx\/tilesetMedieval.png",
+         "image":"..\/..\/gfx\/tilesets\/tilesetMedieval.png",
          "imageheight":120,
          "imagewidth":160,
          "margin":2,

@@ -1,0 +1,24 @@
+{
+"frames": [
+	{
+		"filename": "btnGray_Down.png",
+		"frame": {"x":0, "y":0, "w":80, "h":30},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":80,"h":30},
+		"sourceSize": {"w":80,"h":30}
+	},
+	{
+		"filename": "btnGray_Up.png",
+		"frame": {"x":0, "y":32, "w":80, "h":30},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":80,"h":30},
+		"sourceSize": {"w":80,"h":30}
+	}
+
+],
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 128, "h": 64},
+	"scale": "1"
+}
+}

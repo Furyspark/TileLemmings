@@ -201,9 +201,13 @@ var gameState = {
 		}
 	},
 
+	init: function(levelUrl) {
+		this.levelUrl = levelUrl;
+	},
+
 	preload: function() {
 		// Preload map data
-		game.load.json("level", "assets/levels/level1.json");
+		game.load.json("level", this.levelUrl);
 	},
 
 	create: function() {
@@ -277,9 +281,10 @@ var gameState = {
 			});
 		}
 		// Load tilesets
+		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelUrl)[1]
 		for(var a = 0;a < this.map.tilesets.length;a++) {
 			var tileset = this.map.tilesets[a];
-			var url = "assets/levels/" + tileset.image;
+			var url = levelPath + tileset.image;
 			this.mapFiles.push({
 				url: url,
 				key: tileset.name,
@@ -626,9 +631,10 @@ var gameState = {
 		// Scroll
 		if(this.cam.scrolling) {
 			var originRel = this.getScreenCursor();
+			var speedFactor = 2;
 			var moveRel = {
-				x: (this.scrollOrigin.x - originRel.x),
-				y: (this.scrollOrigin.y - originRel.y)
+				x: (this.scrollOrigin.x - originRel.x) * speedFactor,
+				y: (this.scrollOrigin.y - originRel.y) * speedFactor
 			};
 			this.scrollOrigin = this.getScreenCursor();
 			this.cam.move(moveRel.x, moveRel.y);

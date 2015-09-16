@@ -97,6 +97,11 @@ GUI.prototype = Object.create(Phaser.Sprite.prototype);
 GUI.prototype.constructor = GUI;
 var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
+	this.game = game;
+
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -207,6 +212,137 @@ GUI_Button.prototype.doAction = function() {
 		}
 		break;
 	}
+};
+var GUI_MainMenuButton = function(game, x, y, imageKey) {
+	GUI.call(this, game, x, y);
+	this.game = game;
+
+	Object.defineProperty(this, "state", {get() {
+		return this.game.state.getCurrentState();
+	}});
+
+	// Load base texture
+	this.loadTexture(imageKey);
+
+	// Initialization
+	this.guiType = "button";
+	this.pressed = false;
+	this.inputEnabled = true;
+	this.callback = function() {
+		return false;
+	};
+	this.callbackContext = this;
+
+	// Create label
+	this.label = game.add.text(0, 0, "", {
+		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle", wordWrap: true
+	});
+	this.label.stroke = "#000000";
+	this.label.strokeThickness = 3;
+	this.label.owner = this;
+	this.label.reposition = function() {
+		this.x = this.owner.x;
+		this.y = this.owner.y;
+	};
+
+	// Create bounding box(for cursor position checking)
+	this.bbox = {
+		get left() {
+			return this.owner.x - Math.abs(this.owner.offsetX);
+		},
+		get top() {
+			return this.owner.y - Math.abs(this.owner.offsetY);
+		},
+		get right() {
+			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
+		},
+		get bottom() {
+			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
+		},
+		get width() {
+			return this.right - this.left;
+		},
+		get height() {
+			return this.bottom - this.top;
+		},
+		owner: null
+	};
+	this.bbox.owner = this;
+
+	Object.defineProperty(this, "labelText", {get() {
+		return this.label.text;
+	}, set(val) {
+		this.label.text = val;
+	}});
+
+	this.label.text = "";
+	this.label.reposition();
+
+	// Set on press action
+	this.events.onInputDown.add(function() {
+		this.select(true);
+	}, this);
+	this.events.onInputUp.add(function() {
+		if(this.pressed) {
+			this.callback.call(this.callbackContext);
+		}
+	}, this);
+};
+
+GUI_MainMenuButton.prototype = Object.create(GUI.prototype);
+GUI_MainMenuButton.prototype.constructor = GUI_Button;
+
+GUI_MainMenuButton.prototype.mouseOver = function() {
+	var cursor = {
+		x: this.game.input.activePointer.worldX,
+		y: this.game.input.activePointer.worldY
+	};
+	cursor.x = cursor.x;
+	cursor.y = cursor.y;
+	return (cursor.x >= this.bbox.left &&
+		cursor.x <= this.bbox.right &&
+		cursor.y >= this.bbox.top &&
+		cursor.y <= this.bbox.bottom);
+};
+
+// Set button type and action
+GUI_MainMenuButton.prototype.set = function(stateObject, callback, callbackContext) {
+	this.callback = callback;
+	this.callbackContext = callbackContext;
+
+	this.animations.add("up", [stateObject.released], 15, false);
+	this.animations.add("down", [stateObject.pressed], 15, false);
+	this.animations.play("up");
+};
+
+GUI_MainMenuButton.prototype.resize = function(width, height) {
+	this.width = width;
+	this.height = height;
+	this.label.reposition();
+	this.label.setTextBounds(0, 0, this.width, this.height);
+};
+
+GUI_MainMenuButton.prototype.update = function() {
+	this.label.reposition();
+	if(this.pressed && (!this.mouseOver() || !this.game.input.activePointer.isDown)) {
+		this.pressed = false;
+		this.animations.play("up");
+	}
+};
+
+GUI_MainMenuButton.prototype.select = function() {
+	this.pressed = true;
+	this.animations.play("down");
+};
+
+GUI_MainMenuButton.prototype.deselect = function() {
+	this.pressed = false;
+	this.animations.play("up");
+};
+
+GUI_MainMenuButton.prototype.remove = function() {
+	this.label.destroy();
+	this.destroy();
 };
 var Cursor = function(game, x, y, owner) {
 	Phaser.Sprite.call(this, game, x, y, "misc");
@@ -1263,7 +1399,7 @@ var bootState = {
 
 		// Add callback for Finish Loading
 		game.load.onLoadComplete.addOnce(function() {
-			game.state.start("game");
+			game.state.start("menu");
 		}, this);
 
 
@@ -1307,6 +1443,97 @@ var bootState = {
 		for(a in curList) {
 			curAsset = curList[a];
 			game.load.json(curAsset.key, curAsset.url);
+		}
+	}
+};
+var menuState = {
+	background: null,
+	guiGroup: [],
+
+	create: function() {
+		this.background = new Background(this.game, "bgMainMenu");
+
+		this.setupMainMenu();
+	},
+
+	setupMainMenu: function() {
+		this.clearGUIGroup();
+
+		// Add button(s)
+		var levelList = this.game.cache.getJSON("levelList").difficulties;
+		for(var a = 0;a < levelList.length;a++) {
+			var levelFolder = levelList[a];
+			var btn = new GUI_MainMenuButton(this.game, 80, 60, "mainmenu");
+			btn.set({
+				pressed: "btnGray_Down.png",
+				released: "btnGray_Up.png"
+			}, function() {
+				this.state.setupLevelList(this.params.difficulty.index);
+			}, btn);
+			btn.params = {
+				difficulty: {
+					resref: levelFolder.resref,
+					name: levelFolder.name,
+					index: a
+				}
+			};
+			btn.resize(160, 60);
+			btn.label.text = btn.params.difficulty.name;
+			this.guiGroup.push(btn);
+		}
+	},
+
+	setupLevelList: function(index) {
+		this.clearGUIGroup();
+
+		var levelFolder = this.game.cache.getJSON("levelList").difficulties[index];
+		var btnProps = {
+			basePos: {
+				x: 40,
+				y: 30
+			},
+			width: 160,
+			height: 60,
+			spacing: 20
+		};
+		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		console.log(btnProps.cols);
+		// Create level buttons
+		for(var a = 0;a < levelFolder.levels.length;a++) {
+			var level = levelFolder.levels[a];
+			var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
+			var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
+			var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
+			btn.resize(btnProps.width, btnProps.height);
+			btn.label.text = level.name;
+			btn.params = {
+				url: levelFolder.baseUrl + level.filename
+			};
+			btn.set({
+				pressed: "btnGray_Down.png",
+				released: "btnGray_Up.png"
+			}, function() {
+				this.game.state.start("game", true, false, this.params.url);
+			}, btn);
+			this.guiGroup.push(btn);
+		}
+
+		// Create back button
+		var btn = new GUI_MainMenuButton(this.game, 4, 4, "mainmenu");
+		btn.resize(40, 24);
+		btn.label.text = "Back";
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			this.state.setupMainMenu();
+		}, btn);
+		this.guiGroup.push(btn);
+	},
+
+	clearGUIGroup: function() {
+		while(this.guiGroup.length > 0) {
+			this.guiGroup.shift().remove();
 		}
 	}
 };
@@ -1513,9 +1740,13 @@ var gameState = {
 		}
 	},
 
+	init: function(levelUrl) {
+		this.levelUrl = levelUrl;
+	},
+
 	preload: function() {
 		// Preload map data
-		game.load.json("level", "assets/levels/level1.json");
+		game.load.json("level", this.levelUrl);
 	},
 
 	create: function() {
@@ -1589,9 +1820,10 @@ var gameState = {
 			});
 		}
 		// Load tilesets
+		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelUrl)[1]
 		for(var a = 0;a < this.map.tilesets.length;a++) {
 			var tileset = this.map.tilesets[a];
-			var url = "assets/levels/" + tileset.image;
+			var url = levelPath + tileset.image;
 			this.mapFiles.push({
 				url: url,
 				key: tileset.name,
@@ -1938,9 +2170,10 @@ var gameState = {
 		// Scroll
 		if(this.cam.scrolling) {
 			var originRel = this.getScreenCursor();
+			var speedFactor = 2;
 			var moveRel = {
-				x: (this.scrollOrigin.x - originRel.x),
-				y: (this.scrollOrigin.y - originRel.y)
+				x: (this.scrollOrigin.x - originRel.x) * speedFactor,
+				y: (this.scrollOrigin.y - originRel.y) * speedFactor
 			};
 			this.scrollOrigin = this.getScreenCursor();
 			this.cam.move(moveRel.x, moveRel.y);
@@ -2130,6 +2363,7 @@ var game = new Phaser.Game(
 );
 
 game.state.add("boot", bootState);
+game.state.add("menu", menuState);
 game.state.add("game", gameState);
 
 game.state.start("boot");
