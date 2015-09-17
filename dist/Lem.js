@@ -99,9 +99,11 @@ var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
 	this.game = game;
 
-	Object.defineProperty(this, "state", {get() {
-		return this.game.state.getCurrentState();
-	}});
+	Object.defineProperty(this, "state", {
+		get() {
+			return this.game.state.getCurrentState();
+		}
+	});
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -115,7 +117,9 @@ var GUI_Button = function(game, x, y) {
 
 	// Create label
 	this.label = game.add.text(0, 0, "", {
-		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
+		font: "bold 12px Arial",
+		fill: "#ffffff",
+		boundsAlignH: "center"
 	});
 	this.label.stroke = "#000000";
 	this.label.strokeThickness = 3;
@@ -183,15 +187,18 @@ GUI_Button.prototype.update = function() {
 GUI_Button.prototype.select = function(makeSound) {
 	makeSound = makeSound || false;
 
-	if(this.subType == "action") {
+	if (this.subType == "action") {
 		this.state.deselectAllActions();
+
+		this.doAction();
+
+		this.pressed = true;
+		this.animations.play("down");
+	} else {
+		this.doAction();
 	}
 
-	this.doAction();
-
-	this.pressed = true;
-	this.animations.play("down");
-	if(makeSound) {
+	if (makeSound) {
 		game.sound.play("sndUI_Click");
 	}
 };
@@ -201,16 +208,36 @@ GUI_Button.prototype.deselect = function() {
 	this.animations.play("up");
 };
 
+GUI_Button.prototype.visualPress = function() {
+	this.pressed = true;
+	this.animations.play("down");
+};
+
+GUI_Button.prototype.visualRelease = function() {
+	this.pressed = false;
+	this.animations.play("up");
+};
+
 GUI_Button.prototype.doAction = function() {
-	switch(this.subType) {
+	switch (this.subType) {
 		case "action":
-		for(var a in this.state.actions.items) {
-			var item = this.state.actions.items[a];
-			if(item.name == this.action) {
-				this.state.actions.select = a;
+			for (var a in this.state.actions.items) {
+				var item = this.state.actions.items[a];
+				if (item.name == this.action) {
+					this.state.actions.select = a;
+				}
 			}
-		}
-		break;
+			break;
+		case "misc":
+			switch (this.action) {
+				case "pause":
+					this.state.pauseGame();
+					break;
+				case "fastForward":
+					this.state.fastForward();
+					break;
+			}
+			break;
 	}
 };
 var GUI_MainMenuButton = function(game, x, y, imageKey) {
@@ -1052,12 +1079,11 @@ Lemming.prototype.setAction = function(actionName) {
 
 Lemming.prototype.proceedBuild = function() {
 	if(this.action.name == "builder" && !this.action.idle && !this.dead && this.active) {
-		this.action.value--;
 		if(this.action.value === 0) {
 			// Stop building
 			this.playAnim("build_end", 10);
 			this.animations.currentAnim.onComplete.addOnce(function() {
-				this.setAction("walker");
+				this.clearAction();
 			}, this);
 		}
 		else {
@@ -1087,6 +1113,7 @@ Lemming.prototype.proceedBuild = function() {
 				this.turnAround();
 			}
 		}
+		this.action.value--;
 	}
 };
 
@@ -1820,6 +1847,8 @@ var gameState = {
 			}
 			return this.speed;
 		},
+		pauseButton: null,
+		fastForwardButton: null,
 		pause: function() {
 			this.paused = true;
 			this.refresh();
@@ -2262,18 +2291,26 @@ var gameState = {
 	pauseGame: function() {
 		if(!this.speedManager.paused) {
 			this.speedManager.pause();
+			// Press pause GUI button
+			this.speedManager.pauseButton.visualPress();
 		}
 		else {
 			this.speedManager.unpause();
+			// Release pause GUI button
+			this.speedManager.pauseButton.visualRelease();
 		}
 	},
 
 	fastForward: function() {
 		if(this.speedManager.speed > 1) {
 			this.speedManager.setSpeed(1);
+			// Press fast forward GUI button
+			this.speedManager.fastForwardButton.visualRelease();
 		}
 		else {
 			this.speedManager.setSpeed(3);
+			// Release fast forward GUI button
+			this.speedManager.fastForwardButton.visualPress();
 		}
 	},
 
@@ -2469,7 +2506,7 @@ var gameState = {
 	createLevelGUI: function() {
 		var buttons = [];
 
-		// Create buttons
+		// Create action buttons
 		for(var a in this.actions.items) {
 			var action = this.actions.items[a];
 			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
@@ -2484,6 +2521,26 @@ var gameState = {
 			// Assign buttons
 			action.btn = btn;
 		}
+
+		// Create pause button
+		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		this.guiGroup.push(btn);
+		buttons.push(btn);
+		btn.set({
+			released: "Btn_Pause_0.png",
+			pressed: "Btn_Pause_1.png"
+		}, "pause", "misc");
+		this.speedManager.pauseButton = btn;
+
+		// Create fast forward button
+		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		this.guiGroup.push(btn);
+		buttons.push(btn);
+		btn.set({
+			released: "Btn_FastForward_0.png",
+			pressed: "Btn_FastForward_1.png"
+		}, "fastForward", "misc");
+		this.speedManager.fastForwardButton = btn;
 
 		// Align buttons
 		var alignX = 0;
@@ -2502,7 +2559,7 @@ var gameState = {
 	deselectAllActions: function() {
 		for(var a = 0;a < this.guiGroup.length;a++) {
 			var obj = this.guiGroup[a];
-			if(obj.subType == "action") {
+			if(obj.subType === "action") {
 				obj.deselect();
 			}
 		}

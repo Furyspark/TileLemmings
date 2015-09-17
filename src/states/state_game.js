@@ -120,6 +120,8 @@ var gameState = {
 			}
 			return this.speed;
 		},
+		pauseButton: null,
+		fastForwardButton: null,
 		pause: function() {
 			this.paused = true;
 			this.refresh();
@@ -562,18 +564,26 @@ var gameState = {
 	pauseGame: function() {
 		if(!this.speedManager.paused) {
 			this.speedManager.pause();
+			// Press pause GUI button
+			this.speedManager.pauseButton.visualPress();
 		}
 		else {
 			this.speedManager.unpause();
+			// Release pause GUI button
+			this.speedManager.pauseButton.visualRelease();
 		}
 	},
 
 	fastForward: function() {
 		if(this.speedManager.speed > 1) {
 			this.speedManager.setSpeed(1);
+			// Press fast forward GUI button
+			this.speedManager.fastForwardButton.visualRelease();
 		}
 		else {
 			this.speedManager.setSpeed(3);
+			// Release fast forward GUI button
+			this.speedManager.fastForwardButton.visualPress();
 		}
 	},
 
@@ -769,7 +779,7 @@ var gameState = {
 	createLevelGUI: function() {
 		var buttons = [];
 
-		// Create buttons
+		// Create action buttons
 		for(var a in this.actions.items) {
 			var action = this.actions.items[a];
 			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
@@ -784,6 +794,26 @@ var gameState = {
 			// Assign buttons
 			action.btn = btn;
 		}
+
+		// Create pause button
+		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		this.guiGroup.push(btn);
+		buttons.push(btn);
+		btn.set({
+			released: "Btn_Pause_0.png",
+			pressed: "Btn_Pause_1.png"
+		}, "pause", "misc");
+		this.speedManager.pauseButton = btn;
+
+		// Create fast forward button
+		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		this.guiGroup.push(btn);
+		buttons.push(btn);
+		btn.set({
+			released: "Btn_FastForward_0.png",
+			pressed: "Btn_FastForward_1.png"
+		}, "fastForward", "misc");
+		this.speedManager.fastForwardButton = btn;
 
 		// Align buttons
 		var alignX = 0;
@@ -802,7 +832,7 @@ var gameState = {
 	deselectAllActions: function() {
 		for(var a = 0;a < this.guiGroup.length;a++) {
 			var obj = this.guiGroup[a];
-			if(obj.subType == "action") {
+			if(obj.subType === "action") {
 				obj.deselect();
 			}
 		}

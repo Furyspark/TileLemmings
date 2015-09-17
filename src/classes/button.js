@@ -2,9 +2,11 @@ var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
 	this.game = game;
 
-	Object.defineProperty(this, "state", {get() {
-		return this.game.state.getCurrentState();
-	}});
+	Object.defineProperty(this, "state", {
+		get() {
+			return this.game.state.getCurrentState();
+		}
+	});
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -18,7 +20,9 @@ var GUI_Button = function(game, x, y) {
 
 	// Create label
 	this.label = game.add.text(0, 0, "", {
-		font: "bold 12px Arial", fill: "#ffffff", boundsAlignH: "center"
+		font: "bold 12px Arial",
+		fill: "#ffffff",
+		boundsAlignH: "center"
 	});
 	this.label.stroke = "#000000";
 	this.label.strokeThickness = 3;
@@ -86,15 +90,18 @@ GUI_Button.prototype.update = function() {
 GUI_Button.prototype.select = function(makeSound) {
 	makeSound = makeSound || false;
 
-	if(this.subType == "action") {
+	if (this.subType == "action") {
 		this.state.deselectAllActions();
+
+		this.doAction();
+
+		this.pressed = true;
+		this.animations.play("down");
+	} else {
+		this.doAction();
 	}
 
-	this.doAction();
-
-	this.pressed = true;
-	this.animations.play("down");
-	if(makeSound) {
+	if (makeSound) {
 		game.sound.play("sndUI_Click");
 	}
 };
@@ -104,15 +111,35 @@ GUI_Button.prototype.deselect = function() {
 	this.animations.play("up");
 };
 
+GUI_Button.prototype.visualPress = function() {
+	this.pressed = true;
+	this.animations.play("down");
+};
+
+GUI_Button.prototype.visualRelease = function() {
+	this.pressed = false;
+	this.animations.play("up");
+};
+
 GUI_Button.prototype.doAction = function() {
-	switch(this.subType) {
+	switch (this.subType) {
 		case "action":
-		for(var a in this.state.actions.items) {
-			var item = this.state.actions.items[a];
-			if(item.name == this.action) {
-				this.state.actions.select = a;
+			for (var a in this.state.actions.items) {
+				var item = this.state.actions.items[a];
+				if (item.name == this.action) {
+					this.state.actions.select = a;
+				}
 			}
-		}
-		break;
+			break;
+		case "misc":
+			switch (this.action) {
+				case "pause":
+					this.state.pauseGame();
+					break;
+				case "fastForward":
+					this.state.fastForward();
+					break;
+			}
+			break;
 	}
 };
