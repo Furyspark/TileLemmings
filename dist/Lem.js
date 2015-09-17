@@ -1493,6 +1493,7 @@ var menuState = {
 	setupLevelList: function(index) {
 		this.clearGUIGroup();
 
+		this.levelList = [];
 		var levelFolder = this.game.cache.getJSON("levelList").difficulties[index];
 		var btnProps = {
 			basePos: {
@@ -1519,8 +1520,12 @@ var menuState = {
 				pressed: "btnGray_Down.png",
 				released: "btnGray_Up.png"
 			}, function() {
-				this.game.state.start("intermission", true, false, levelFolder, level, false);
+				this.game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
 			}, btn);
+			btn.params = {
+				levelFolder: levelFolder,
+				level: level
+			}
 			this.guiGroup.push(btn);
 		}
 

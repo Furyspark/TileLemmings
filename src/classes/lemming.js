@@ -565,12 +565,11 @@ Lemming.prototype.setAction = function(actionName) {
 
 Lemming.prototype.proceedBuild = function() {
 	if(this.action.name == "builder" && !this.action.idle && !this.dead && this.active) {
-		this.action.value--;
 		if(this.action.value === 0) {
 			// Stop building
 			this.playAnim("build_end", 10);
 			this.animations.currentAnim.onComplete.addOnce(function() {
-				this.setAction("walker");
+				this.clearAction();
 			}, this);
 		}
 		else {
@@ -600,6 +599,7 @@ Lemming.prototype.proceedBuild = function() {
 				this.turnAround();
 			}
 		}
+		this.action.value--;
 	}
 };
 
