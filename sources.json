@@ -12,6 +12,7 @@
 	"./src/classes/prop.js",
 	"./src/states/state_boot.js",
 	"./src/states/state_menu.js",
+	"./src/states/state_intermission.js",
 	"./src/states/state_game.js",
 	"./src/game.js"
 ]

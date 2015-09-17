@@ -8,6 +8,10 @@
 				{
 					"filename": "level1.json",
 					"name": "Medieval Kineval"
+				},
+				{
+					"filename": "level2.json",
+					"name": "Thunder Struck"
 				}
 			]
 		}

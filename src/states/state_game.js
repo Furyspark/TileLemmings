@@ -106,7 +106,9 @@ var gameState = {
 	victoryState: {
 		total: 0,
 		saved: 0,
-		need: 0
+		need: 0,
+		gameStarted: false,
+		gameEnded: false
 	},
 	speedManager: {
 		owner: null,
@@ -201,13 +203,14 @@ var gameState = {
 		}
 	},
 
-	init: function(levelUrl) {
-		this.levelUrl = levelUrl;
+	init: function(levelFolder, levelObj) {
+		this.levelFolder = levelFolder;
+		this.levelObj = levelObj;
 	},
 
 	preload: function() {
 		// Preload map data
-		game.load.json("level", this.levelUrl);
+		game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
 	},
 
 	create: function() {
@@ -281,7 +284,7 @@ var gameState = {
 			});
 		}
 		// Load tilesets
-		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelUrl)[1]
+		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelFolder.baseUrl + this.levelObj.filename)[1]
 		for(var a = 0;a < this.map.tilesets.length;a++) {
 			var tileset = this.map.tilesets[a];
 			var url = levelPath + tileset.image;
@@ -639,9 +642,31 @@ var gameState = {
 			this.scrollOrigin = this.getScreenCursor();
 			this.cam.move(moveRel.x, moveRel.y);
 		}
+
+		// Test for victory/defeat
+		if(this.victoryState.gameStarted && !this.victoryState.gameEnded) {
+			var allDoorsEmpty = true;
+			for(var a = 0;a < this.doorsGroup.length && allDoorsEmpty;a++) {
+				var door = this.doorsGroup[a];
+				if(door.lemmings > 0) {
+					allDoorsEmpty = false;
+				}
+			}
+			if(allDoorsEmpty && this.lemmingsGroup.all.length === 0) {
+				this.victoryState.gameEnded = true;
+				if(this.victoryState.saved >= this.victoryState.need) {
+					// Victory
+					this.goToNextLevel();
+				}
+				else {
+					// Defeat
+					this.retryLevel();
+				}
+			}
+		}
 	},
 
-	goToState: function(stateKey) {
+	clearState: function() {
 		// Unload level assets
 		for(var a = 0;a < this.mapFiles.length;a++) {
 			var mapFile = this.mapFiles[a];
@@ -654,8 +679,33 @@ var gameState = {
 				break;
 			}
 		}
-		// Go to state
-		this.game.state.start(stateKey);
+	},
+
+	goToNextLevel: function() {
+		var levelIndex = this.getLevelIndex();
+		this.clearState();
+		if(this.levelFolder.levels.length > levelIndex) {
+			var newLevel = this.levelFolder.levels[levelIndex+1];
+			this.game.state.start("intermission", true, false, this.levelFolder, newLevel, false);
+		}
+		else {
+			this.game.state.start("menu");
+		}
+	},
+
+	retryLevel: function() {
+		this.clearState();
+		this.game.state.start("intermission", true, false, this.levelFolder, this.levelObj, true);
+	},
+
+	getLevelIndex: function() {
+		for(var a = 0;a < this.levelFolder.levels.length;a++) {
+			var level = this.levelFolder.levels[a];
+			if(level === this.levelobj) {
+				return a;
+			}
+		}
+		return -1;
 	},
 
 	render: function() {

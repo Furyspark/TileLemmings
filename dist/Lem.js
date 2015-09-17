@@ -493,6 +493,10 @@ var Lemming = function(game, x, y) {
 	}});
 	this.state.levelGroup.add(this);
 
+	// Set game started state
+	this.state.victoryState.gameStarted = true;
+
+	// Set base stats
 	this.dead = false;
 	this.active = true;
 	this.animationProperties = {};
@@ -807,9 +811,11 @@ Lemming.prototype.update = function() {
 				}
 				distCheck--;
 			}
-			for(var a = 0;a < objs.length;a++) {
+			var turnedAround = false;
+			for(var a = 0;a < objs.length && !turnedAround;a++) {
 				var obj = objs[a];
-				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
+				if((obj.bbox.left > this.x && this.dir === 1) || (obj.bbox.right < this.x && this.dir === -1)) {
+					turnedAround = true;
 					this.turnAround();
 				}
 			}
@@ -831,6 +837,7 @@ Lemming.prototype.update = function() {
 					this.velocity.x = 0;
 					this.velocity.y = 0;
 					this.animations.currentAnim.onComplete.addOnce(function() {
+						this.state.victoryState.saved++;
 						this.remove();
 					}, this);
 				}
@@ -1497,7 +1504,6 @@ var menuState = {
 			spacing: 20
 		};
 		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
-		console.log(btnProps.cols);
 		// Create level buttons
 		for(var a = 0;a < levelFolder.levels.length;a++) {
 			var level = levelFolder.levels[a];
@@ -1513,7 +1519,7 @@ var menuState = {
 				pressed: "btnGray_Down.png",
 				released: "btnGray_Up.png"
 			}, function() {
-				this.game.state.start("game", true, false, this.params.url);
+				this.game.state.start("intermission", true, false, levelFolder, level, false);
 			}, btn);
 			this.guiGroup.push(btn);
 		}
@@ -1535,6 +1541,156 @@ var menuState = {
 		while(this.guiGroup.length > 0) {
 			this.guiGroup.shift().remove();
 		}
+	}
+};
+var intermissionState = {
+	levelFolder: null,
+	levelObj: null,
+	background: null,
+
+	map: null,
+	minimap: null,
+
+	init: function(levelFolder, levelObj, retry) {
+		this.levelFolder = levelFolder;
+		this.levelObj = levelObj;
+	},
+
+	preload: function() {
+		game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
+	},
+
+	create: function() {
+		this.background = new Background(this.game, "bgMainMenu");
+
+		// Init bitmap data
+		if(!game.cache.checkBitmapDataKey("previewTileNormal")) {
+			normalBmd = this.game.add.bitmapData(8, 8);
+			normalBmd.fill(0, 255, 0, 1);
+			game.cache.addBitmapData("previewTileNormal", normalBmd);
+		}
+		if(!game.cache.checkBitmapDataKey("previewTileSteel")) {
+			steelBmd = this.game.add.bitmapData(8, 8);
+			steelBmd.fill(127, 127, 127, 1);
+			game.cache.addBitmapData("previewTileSteel", steelBmd);
+		}
+		if(!game.cache.checkBitmapDataKey("previewBG")) {
+			steelBmd = this.game.add.bitmapData(8, 8);
+			steelBmd.fill(0, 0, 0, 1);
+			game.cache.addBitmapData("previewBG", steelBmd);
+		}
+
+		this.initMapPreview();
+
+		this.game.input.onTap.addOnce(function() {
+			this.game.state.start("game", true, false, this.levelFolder, this.levelObj);
+		}, this);
+	},
+
+	initMapPreview: function() {
+		this.minimap = new Phaser.Group(this.game);
+
+		this.map = this.game.cache.getJSON("level");
+
+		var tilesetRefs = [null];
+		// Pre-parse tilesets
+		for(var a = 0;a < this.map.tilesets.length;a++) {
+			var tileset = this.map.tilesets[a];
+			for(var b = tileset.firstgid;b < tileset.firstgid + tileset.tilecount;b++) {
+				tilesetRefs[b] = tileset;
+			}
+		}
+
+		// Set up tile layer
+		this.map.tileLayer = [];
+		var lemmingCount = 0;
+		for(var a = 0;a < this.map.layers.length;a++) {
+			var layer = this.map.layers[a];
+			// Add to tile layer
+			if(layer.type === "tilelayer") {
+				for(var b = 0;b < layer.data.length;b++) {
+					var gid = layer.data[b];
+					var tileType = 0;
+					if(gid > 0) {
+						tileType = 1;
+						var tileset = tilesetRefs[gid];
+						if(tileset.tileproperties) {
+							var basegid = gid - tileset.firstgid;
+							if(tileset.tileproperties[basegid]) {
+								if(tileset.tileproperties[basegid].tileType) {
+									tileType = parseInt(tileset.tileproperties[basegid].tileType);
+								}
+							}
+						}
+					}
+					this.map.tileLayer.push(tileType);
+				}
+			}
+			// Add to lemming count
+			else if(layer.type === "objectgroup") {
+				for(var b = 0;b < layer.objects.length;b++) {
+					var obj = layer.objects[b];
+					if(obj.type === "door") {
+						if(obj.properties && obj.properties.value) {
+							lemmingCount += parseInt(obj.properties.value);
+						}
+					}
+				}
+			}
+		}
+
+		// Create preview
+		this.map.primitiveLayer = [];
+		var gfx = game.add.image(0, 0, game.cache.getBitmapData("previewBG"));
+		gfx.width = (8 * this.map.width);
+		gfx.height = (8 * this.map.height);
+		this.minimap.add(gfx);
+		for(var a = 0;a < this.map.tileLayer.length;a++) {
+			var tileType = this.map.tileLayer[a];
+			if(tileType > 0) {
+				// Determine position
+				var place = {
+					xTile: (a % this.map.width),
+					yTile: Math.floor(a / this.map.width)
+				};
+				place.xPos = place.xTile * 8;
+				place.yPos = place.yTile * 8;
+
+				var bmd = "previewTileNormal";
+				if(tileType === 2) {
+					bmd = "previewTileSteel";
+				}
+				var gfx = game.add.image(place.xPos, place.yPos, game.cache.getBitmapData(bmd));
+				this.map.primitiveLayer.push(gfx);
+				this.minimap.add(gfx);
+				gfx.bringToTop();
+			}
+		}
+		this.minimap.width = Math.max(240, Math.min(480, this.map.width * 4));
+		this.minimap.height = Math.max(180, Math.min(480, this.map.height * 4));
+		this.minimap.x = (this.game.stage.width - 30) - this.minimap.width;
+		this.minimap.y = 30;
+
+		this.levelNameText = this.game.add.text(120, 10, this.levelObj.name, {
+			font: "bold 20pt Arial",
+			fill: "#FFFFFF",
+			boundsAlignH: "center",
+			stroke: "#000000",
+			strokeThickness: 3
+		});
+		this.levelNameText.setTextBounds(0, 0, 240, 40);
+
+		var newStyle = {
+			font: "12pt Arial",
+			fill: "#FFFFFF",
+			stroke: "#000000",
+			strokeThickness: 3
+		};
+		this.saveText = this.game.add.text(120, 70, lemmingCount.toString() + " lemmings\n" + ((this.map.properties.need / lemmingCount) * 100) + "% to be saved", newStyle);
+		this.saveText.setTextBounds(0, 0, 240, 80);
+
+		// Free memory
+		this.game.cache.removeJSON("level");
 	}
 };
 var gameState = {
@@ -1645,7 +1801,9 @@ var gameState = {
 	victoryState: {
 		total: 0,
 		saved: 0,
-		need: 0
+		need: 0,
+		gameStarted: false,
+		gameEnded: false
 	},
 	speedManager: {
 		owner: null,
@@ -1740,13 +1898,14 @@ var gameState = {
 		}
 	},
 
-	init: function(levelUrl) {
-		this.levelUrl = levelUrl;
+	init: function(levelFolder, levelObj) {
+		this.levelFolder = levelFolder;
+		this.levelObj = levelObj;
 	},
 
 	preload: function() {
 		// Preload map data
-		game.load.json("level", this.levelUrl);
+		game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
 	},
 
 	create: function() {
@@ -1820,7 +1979,7 @@ var gameState = {
 			});
 		}
 		// Load tilesets
-		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelUrl)[1]
+		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelFolder.baseUrl + this.levelObj.filename)[1]
 		for(var a = 0;a < this.map.tilesets.length;a++) {
 			var tileset = this.map.tilesets[a];
 			var url = levelPath + tileset.image;
@@ -2178,9 +2337,31 @@ var gameState = {
 			this.scrollOrigin = this.getScreenCursor();
 			this.cam.move(moveRel.x, moveRel.y);
 		}
+
+		// Test for victory/defeat
+		if(this.victoryState.gameStarted && !this.victoryState.gameEnded) {
+			var allDoorsEmpty = true;
+			for(var a = 0;a < this.doorsGroup.length && allDoorsEmpty;a++) {
+				var door = this.doorsGroup[a];
+				if(door.lemmings > 0) {
+					allDoorsEmpty = false;
+				}
+			}
+			if(allDoorsEmpty && this.lemmingsGroup.all.length === 0) {
+				this.victoryState.gameEnded = true;
+				if(this.victoryState.saved >= this.victoryState.need) {
+					// Victory
+					this.goToNextLevel();
+				}
+				else {
+					// Defeat
+					this.retryLevel();
+				}
+			}
+		}
 	},
 
-	goToState: function(stateKey) {
+	clearState: function() {
 		// Unload level assets
 		for(var a = 0;a < this.mapFiles.length;a++) {
 			var mapFile = this.mapFiles[a];
@@ -2193,8 +2374,33 @@ var gameState = {
 				break;
 			}
 		}
-		// Go to state
-		this.game.state.start(stateKey);
+	},
+
+	goToNextLevel: function() {
+		var levelIndex = this.getLevelIndex();
+		this.clearState();
+		if(this.levelFolder.levels.length > levelIndex) {
+			var newLevel = this.levelFolder.levels[levelIndex+1];
+			this.game.state.start("intermission", true, false, this.levelFolder, newLevel, false);
+		}
+		else {
+			this.game.state.start("menu");
+		}
+	},
+
+	retryLevel: function() {
+		this.clearState();
+		this.game.state.start("intermission", true, false, this.levelFolder, this.levelObj, true);
+	},
+
+	getLevelIndex: function() {
+		for(var a = 0;a < this.levelFolder.levels.length;a++) {
+			var level = this.levelFolder.levels[a];
+			if(level === this.levelobj) {
+				return a;
+			}
+		}
+		return -1;
 	},
 
 	render: function() {
@@ -2364,6 +2570,7 @@ var game = new Phaser.Game(
 
 game.state.add("boot", bootState);
 game.state.add("menu", menuState);
+game.state.add("intermission", intermissionState);
 game.state.add("game", gameState);
 
 game.state.start("boot");

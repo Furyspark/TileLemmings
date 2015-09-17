@@ -49,7 +49,6 @@ var menuState = {
 			spacing: 20
 		};
 		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
-		console.log(btnProps.cols);
 		// Create level buttons
 		for(var a = 0;a < levelFolder.levels.length;a++) {
 			var level = levelFolder.levels[a];
@@ -65,7 +64,7 @@ var menuState = {
 				pressed: "btnGray_Down.png",
 				released: "btnGray_Up.png"
 			}, function() {
-				this.game.state.start("game", true, false, this.params.url);
+				this.game.state.start("intermission", true, false, levelFolder, level, false);
 			}, btn);
 			this.guiGroup.push(btn);
 		}

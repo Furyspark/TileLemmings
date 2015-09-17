@@ -6,6 +6,10 @@ var Lemming = function(game, x, y) {
 	}});
 	this.state.levelGroup.add(this);
 
+	// Set game started state
+	this.state.victoryState.gameStarted = true;
+
+	// Set base stats
 	this.dead = false;
 	this.active = true;
 	this.animationProperties = {};
@@ -320,9 +324,11 @@ Lemming.prototype.update = function() {
 				}
 				distCheck--;
 			}
-			for(var a = 0;a < objs.length;a++) {
+			var turnedAround = false;
+			for(var a = 0;a < objs.length && !turnedAround;a++) {
 				var obj = objs[a];
-				if((obj.bbox.left > this.x && this.dir == 1) || (obj.bbox.right < this.x && this.dir == -1)) {
+				if((obj.bbox.left > this.x && this.dir === 1) || (obj.bbox.right < this.x && this.dir === -1)) {
+					turnedAround = true;
 					this.turnAround();
 				}
 			}
@@ -344,6 +350,7 @@ Lemming.prototype.update = function() {
 					this.velocity.x = 0;
 					this.velocity.y = 0;
 					this.animations.currentAnim.onComplete.addOnce(function() {
+						this.state.victoryState.saved++;
 						this.remove();
 					}, this);
 				}
