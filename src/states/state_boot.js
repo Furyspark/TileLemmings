@@ -1,5 +1,6 @@
 var bootState = {
 	preload: function() {
+		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 		this.loadAssetList("./assets/asset_list.json");
 	},
 
