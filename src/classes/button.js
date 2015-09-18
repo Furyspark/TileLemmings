@@ -17,6 +17,10 @@ var GUI_Button = function(game, x, y) {
 	this.action = "";
 	this.pressed = false;
 	this.inputEnabled = true;
+	this.doubleTap = {
+		enabled: false,
+		time: 0
+	}
 
 	// Create label
 	this.label = game.add.text(0, 0, "", {
@@ -55,12 +59,19 @@ var GUI_Button = function(game, x, y) {
 
 	// Set on press action
 	this.events.onInputDown.add(function() {
-		this.select(true);
+		if(this.doubleTap.enabled && this.doubleTap.time === 0) {
+			this.doubleTap.time = GUI_Button.DOUBLETAP_TIME;
+		}
+		else if(!this.doubleTap.enabled || this.doubleTap.time > 0) {
+			this.select(true);
+		}
 	}, this);
 };
 
 GUI_Button.prototype = Object.create(GUI.prototype);
 GUI_Button.prototype.constructor = GUI_Button;
+
+GUI_Button.DOUBLETAP_TIME = 15;
 
 GUI_Button.prototype.mouseOver = function() {
 	var cursor = this.state.getWorldCursor();
@@ -83,10 +94,16 @@ GUI_Button.prototype.set = function(stateObject, action, subType) {
 };
 
 GUI_Button.prototype.update = function() {
+	// Reposition label
 	this.label.reposition();
+	// Update double tap time
+	if(this.doubleTap.enabled && this.doubleTap.time > 0) {
+		this.doubleTap.time = Math.max(0, this.doubleTap.time - 1);
+	}
 };
 
 GUI_Button.prototype.select = function(makeSound) {
+	this.doubleTap.time = 0;
 	makeSound = makeSound || false;
 
 	if (this.subType == "action") {
@@ -137,6 +154,11 @@ GUI_Button.prototype.doAction = function() {
 					break;
 				case "fastForward":
 					this.state.fastForward();
+					break;
+				case "nuke":
+					this.enabled = true;
+					this.animations.play("down");
+					this.state.nuke();
 					break;
 			}
 			break;

@@ -209,6 +209,7 @@ var gameState = {
 			gameStarted: false,
 			gameEnded: false
 		};
+		this.nukeStarted = false;
 	},
 
 	preload: function() {
@@ -584,6 +585,38 @@ var gameState = {
 		}
 	},
 
+	nuke: function() {
+		// Start nuke
+		if(!this.nukeStarted) {
+			this.game.sound.play("sndOhNo");
+			this.nukeStarted = true;
+			this.nuke();
+			// Set lemming count of all doors to 0
+			for(var a = 0;a < this.doorsGroup.length;a++) {
+				var door = this.doorsGroup[a];
+				door.lemmings = 0;
+			}
+			this.victoryState.gameStarted = true;
+		}
+		// Proceed nuke
+		else {
+			var searchComplete = false;
+			for(var a = 0;a < this.lemmingsGroup.all.length && !searchComplete;a++) {
+				var lem = this.lemmingsGroup.all[a];
+				if(lem.subaction.name !== "exploder") {
+					lem.setExploder();
+					searchComplete = true;
+				}
+			}
+			// Set nuke alarm
+			if(searchComplete) {
+				var alarm = new Alarm(this.game, 10, function() {
+					this.nuke();
+				}, this);
+			}
+		}
+	},
+
 	getWorldCursor: function() {
 		return {
 			x: this.game.input.activePointer.worldX / this.zoom,
@@ -712,6 +745,11 @@ var gameState = {
 
 		// Stop the music
 		this.stopBGM();
+
+		// Stop the alarms
+		while(this.alarms.length > 0) {
+			this.alarms[0].cancel();
+		}
 	},
 
 	goToNextLevel: function() {
@@ -839,6 +877,17 @@ var gameState = {
 			pressed: "Btn_FastForward_1.png"
 		}, "fastForward", "misc");
 		this.speedManager.fastForwardButton = btn;
+
+		// Create nuke button
+		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		this.guiGroup.push(btn);
+		buttons.push(btn);
+		btn.set({
+			released: "Btn_Nuke_0.png",
+			pressed: "Btn_Nuke_1.png"
+		}, "nuke", "misc");
+		btn.doubleTap.enabled = true;
+		this.guiGroup.push(btn);
 
 		// Align buttons
 		var alignX = 0;
