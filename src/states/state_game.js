@@ -423,6 +423,14 @@ var gameState = {
 			}
 		}
 
+		// Set up build tile rectangle
+		var tileX = 2;
+		var tileY = 1;
+		var tileWidth = 16;
+		var tileHeight = 16;
+		var tileSpacing = 4;
+		this.buildTileRect = new Phaser.Rectangle(2 + ((tileWidth + tileSpacing) * tileX), 2 + ((tileHeight + tileSpacing) * tileY), tileWidth, tileHeight);
+
 		// Set up action count
 		for(var a in this.actions.items) {
 			var action = this.actions.items[a];

@@ -603,40 +603,44 @@ Lemming.prototype.setExploder = function() {
 
 Lemming.prototype.proceedBuild = function() {
 	if (this.action.name == "builder" && !this.action.idle && !this.dead && this.active) {
-		if (this.action.value === 0) {
-			// Stop building
-			this.playAnim("build_end", 10);
-			this.animations.currentAnim.onComplete.addOnce(function() {
-				this.clearAction();
-			}, this);
-		} else {
-			var moveTo = {
-				x: this.x + (this.tile.width * this.dir),
-				y: (this.y - this.tile.height)
-			};
-			var locChange = {
-				x: this.x + (this.tile.width * this.dir),
-				y: this.y - 1
-			};
-			// See whether we can build a step
-			if (this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1)) == 0 &&
-				this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y)) == 0) {
-				// Build a step
-				this.x = moveTo.x;
-				this.y = moveTo.y;
-				this.state.layers.primitiveLayer.placeTile(this.tile.x(locChange.x), this.tile.y(locChange.y), "tilesetPlaceables", new Phaser.Rectangle(32, 16, this.tile.width, this.tile.height), 1);
-				// Set alarm
+		this.action.value--;
+		if (this.action.value < 2) {
+			this.game.sound.play("sndBuildEnding");
+		}
+		var moveTo = {
+			x: this.x + (this.tile.width * this.dir),
+			y: (this.y - this.tile.height)
+		};
+		var locChange = {
+			x: this.x + (this.tile.width * this.dir),
+			y: this.y - 1
+		};
+		// See whether we can build a step
+		if (this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1)) == 0 &&
+			this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y)) == 0) {
+			// Build a step
+			this.x = moveTo.x;
+			this.y = moveTo.y;
+			this.state.layers.primitiveLayer.placeTile(this.tile.x(locChange.x), this.tile.y(locChange.y), "tilesetPlaceables", this.state.buildTileRect, 1);
+			// Set alarm
+			if (this.action.value === 0) {
+				// Stop building
+				this.playAnim("build_end", 10);
+				this.animations.currentAnim.onComplete.addOnce(function() {
+					this.clearAction();
+				}, this);
+			}
+			else {
 				this.action.alarm = new Alarm(game, 120, function() {
 					this.proceedBuild();
 				}, this);
 			}
-			// Otherwise turn around and stop building
-			else {
-				this.setAction("walker");
-				this.turnAround();
-			}
 		}
-		this.action.value--;
+		// Otherwise turn around and stop building
+		else {
+			this.setAction("walker");
+			this.turnAround();
+		}
 	}
 };
 
