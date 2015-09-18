@@ -525,6 +525,7 @@ var Lemming = function(game, x, y) {
 
 	// Set base stats
 	this.dead = false;
+	this.markedForRemoval = false;
 	this.active = true;
 	this.animationProperties = {};
 
@@ -865,7 +866,7 @@ Lemming.prototype.update = function() {
 					this.velocity.y = 0;
 					this.animations.currentAnim.onComplete.addOnce(function() {
 						this.state.victoryState.saved++;
-						this.remove();
+						this.markedForRemoval = true;
 					}, this);
 				}
 			}
@@ -875,6 +876,10 @@ Lemming.prototype.update = function() {
 		if(this.isOutsideLevel()) {
 			this.die(Lemming.DEATHTYPE_OUT_OF_ROOM);
 		}
+	}
+
+	if(this.markedForRemoval) {
+		this.remove();
 	}
 };
 
@@ -1198,7 +1203,7 @@ Lemming.prototype.explode = function() {
 		}
 	}
 	// Remove self
-	this.remove();
+	this.markedForRemoval = true;
 };
 
 Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {
@@ -1241,14 +1246,14 @@ Lemming.prototype.die = function(deathType) {
 		// DEATH ACTION: Out of room
 		case Lemming.DEATHTYPE_OUT_OF_ROOM:
 		this.game.sound.play("sndDie");
-		this.remove();
+		this.markedForRemoval = true;
 		break;
 		// DEATH ACTION: Fall death
 		case Lemming.DEATHTYPE_FALL:
 		this.game.sound.play("sndSplat");
 		this.playAnim("splat", 15);
 		this.animations.currentAnim.onComplete.addOnce(function() {
-			this.remove();
+			this.markedForRemoval = true;
 		}, this);
 		break;
 	}
@@ -2438,7 +2443,7 @@ var gameState = {
 	getLevelIndex: function() {
 		for(var a = 0;a < this.levelFolder.levels.length;a++) {
 			var level = this.levelFolder.levels[a];
-			if(level === this.levelobj) {
+			if(level === this.levelObj) {
 				return a;
 			}
 		}

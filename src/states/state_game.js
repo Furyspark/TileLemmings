@@ -711,7 +711,7 @@ var gameState = {
 	getLevelIndex: function() {
 		for(var a = 0;a < this.levelFolder.levels.length;a++) {
 			var level = this.levelFolder.levels[a];
-			if(level === this.levelobj) {
+			if(level === this.levelObj) {
 				return a;
 			}
 		}
