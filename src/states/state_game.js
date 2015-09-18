@@ -103,13 +103,6 @@ var gameState = {
 		}
 	},
 
-	victoryState: {
-		total: 0,
-		saved: 0,
-		need: 0,
-		gameStarted: false,
-		gameEnded: false
-	},
 	speedManager: {
 		owner: null,
 		speed: 1,
@@ -208,6 +201,14 @@ var gameState = {
 	init: function(levelFolder, levelObj) {
 		this.levelFolder = levelFolder;
 		this.levelObj = levelObj;
+
+		this.victoryState = {
+			total: 0,
+			saved: 0,
+			need: 0,
+			gameStarted: false,
+			gameEnded: false
+		};
 	},
 
 	preload: function() {
@@ -221,10 +222,6 @@ var gameState = {
 		this.speedManager.owner = this;
 		// Create groups
 		this.levelGroup = new Phaser.Group(game);
-		for(var a = 0;a < this.actions.items.length;a++) {
-			var act = this.actions.items[a];
-			this.lemmingsGroup[act.name] = [];
-		}
 		
 		// Create GUI
 		this.createLevelGUI();
@@ -677,26 +674,54 @@ var gameState = {
 	},
 
 	clearState: function() {
-		// Unload level assets
-		for(var a = 0;a < this.mapFiles.length;a++) {
-			var mapFile = this.mapFiles[a];
-			switch(mapFile.type) {
-				case "image":
-				this.game.cache.removeImage(mapFile.key, true);
-				break;
-				case "sound":
-				this.game.cache.removeSound(mapFile.key);
-				break;
+		// Remove all game objects
+		this.levelGroup.removeAll(false, false);
+		this.levelGroup.destroy();
+		// Determine all groups to have their children destroyed
+		var removeGroups = [
+			this.lemmingsGroup.all,
+			this.doorsGroup,
+			this.exitsGroup,
+			this.trapsGroup,
+			this.guiGroup,
+			this.layers.primitiveLayer.data
+		];
+
+		// Remove all GUI objects
+		for(var a = 0;a < removeGroups.length;a++) {
+			var remGrp = removeGroups[a];
+			while(remGrp.length > 0) {
+				var gobj = remGrp.shift();
+				if(gobj) {
+					if(typeof gobj.remove !== "undefined") {
+						gobj.remove();
+					}
+					else {
+						gobj.destroy();
+					}
+				}
 			}
 		}
+
+		// Clear tile layer
+		this.layers.tileLayer.data = [];
+
+		// Reset speed manager
+		this.speedManager.paused = false;
+		this.speedManager.speed = 1;
+
+		// Stop the music
+		this.stopBGM();
 	},
 
 	goToNextLevel: function() {
-		var levelIndex = this.getLevelIndex();
+		// Clear state
 		this.clearState();
-		if(this.levelFolder.levels.length > levelIndex) {
+		// Get current level
+		var levelIndex = this.getLevelIndex();
+		if(this.levelFolder.levels.length > levelIndex+1) {
 			var newLevel = this.levelFolder.levels[levelIndex+1];
-			this.game.state.start("intermission", true, false, this.levelFolder, newLevel, false);
+			this.game.state.start("intermission", true, false, this.levelFolder, newLevel, false, this.mapFiles);
 		}
 		else {
 			this.game.state.start("menu");
@@ -705,7 +730,7 @@ var gameState = {
 
 	retryLevel: function() {
 		this.clearState();
-		this.game.state.start("intermission", true, false, this.levelFolder, this.levelObj, true);
+		this.game.state.start("intermission", true, false, this.levelFolder, this.levelObj, true, this.mapFiles);
 	},
 
 	getLevelIndex: function() {

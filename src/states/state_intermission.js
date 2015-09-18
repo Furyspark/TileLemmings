@@ -2,11 +2,20 @@ var intermissionState = {
 	levelFolder: null,
 	levelObj: null,
 	background: null,
+	labels: [],
 
 	map: null,
 	minimap: null,
 
-	init: function(levelFolder, levelObj, retry) {
+	init: function(levelFolder, levelObj, retry, mapFiles) {
+		// Set default parameters
+		if(typeof retry === "undefined") {
+			retry = false;
+		}
+		if(typeof mapFiles === "undefined") {
+			mapFiles = [];
+		}
+		this.clearMapFiles(mapFiles);
 		this.levelFolder = levelFolder;
 		this.levelObj = levelObj;
 	},
@@ -38,8 +47,32 @@ var intermissionState = {
 		this.initMapPreview();
 
 		this.game.input.onTap.addOnce(function() {
+			this.clearState();
 			this.game.state.start("game", true, false, this.levelFolder, this.levelObj);
 		}, this);
+	},
+
+	clearState: function() {
+		while(this.minimap.children.length > 0) {
+			var gobj = this.minimap.children[0];
+			this.minimap.removeChildAt(0);
+			if(gobj.remove) {
+				gobj.remove();
+			}
+			else {
+				gobj.destroy();
+			}
+		}
+		this.minimap.destroy();
+		while(this.labels.length > 0) {
+			var gobj = this.labels.shift();
+			if(gobj.remove) {
+				gobj.remove();
+			}
+			else {
+				gobj.destroy();
+			}
+		}
 	},
 
 	initMapPreview: function() {
@@ -126,14 +159,15 @@ var intermissionState = {
 		this.minimap.x = (this.game.stage.width - 30) - this.minimap.width;
 		this.minimap.y = 30;
 
-		this.levelNameText = this.game.add.text(120, 10, this.levelObj.name, {
+		var txt = this.game.add.text(120, 10, this.levelObj.name, {
 			font: "bold 20pt Arial",
 			fill: "#FFFFFF",
 			boundsAlignH: "center",
 			stroke: "#000000",
 			strokeThickness: 3
 		});
-		this.levelNameText.setTextBounds(0, 0, 240, 40);
+		txt.setTextBounds(0, 0, 240, 40);
+		this.labels.push(txt);
 
 		var newStyle = {
 			font: "12pt Arial",
@@ -141,10 +175,26 @@ var intermissionState = {
 			stroke: "#000000",
 			strokeThickness: 3
 		};
-		this.saveText = this.game.add.text(120, 70, lemmingCount.toString() + " lemmings\n" + ((this.map.properties.need / lemmingCount) * 100) + "% to be saved", newStyle);
-		this.saveText.setTextBounds(0, 0, 240, 80);
+		txt = this.game.add.text(120, 70, lemmingCount.toString() + " lemmings\n" + ((this.map.properties.need / lemmingCount) * 100) + "% to be saved", newStyle);
+		txt.setTextBounds(0, 0, 240, 80);
+		this.labels.push(txt);
 
 		// Free memory
 		this.game.cache.removeJSON("level");
+	},
+
+	clearMapFiles: function(mapFiles) {
+		// Remove map files
+		for(var a = 0;a < mapFiles.length;a++) {
+			var mapFile = mapFiles[a];
+			switch(mapFile.type) {
+				case "image":
+					this.game.cache.removeImage(mapFile.key, true);
+					break;
+				case "sound":
+					this.game.cache.removeSound(mapFile.key);
+					break;
+			}
+		}
 	}
 };

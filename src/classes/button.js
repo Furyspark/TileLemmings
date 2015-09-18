@@ -51,7 +51,6 @@ var GUI_Button = function(game, x, y) {
 	};
 	this.bbox.owner = this;
 
-	this.label.text = "";
 	this.label.reposition();
 
 	// Set on press action
@@ -142,4 +141,9 @@ GUI_Button.prototype.doAction = function() {
 			}
 			break;
 	}
+};
+
+GUI_Button.prototype.remove = function() {
+	this.label.destroy();
+	this.destroy();
 };

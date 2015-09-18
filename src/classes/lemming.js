@@ -314,7 +314,7 @@ Lemming.prototype.update = function() {
 
 		// Detect blockers
 		if(this.action.name !== "blocker") {
-			var distCheck = Math.ceil(Math.abs(this.velocity.x) * this.state.speedManager.effectiveSpeed);
+			var distCheck = Math.ceil((Math.abs(this.velocity.x) * this.state.speedManager.effectiveSpeed) + 1);
 			var objs = [];
 			while(distCheck > 0) {
 				var group = this.detectByAction(this.x + (distCheck * this.dir), this.y - 1, "blocker");
@@ -399,18 +399,6 @@ Lemming.prototype.playAnim = function(key, frameRate) {
 };
 
 Lemming.prototype.clearAction = function() {
-	// Remove lemming from action group
-	var group = this.state.lemmingsGroup[this.action.name];
-	if(group) {
-		var done = false;
-		for(var a = 0;a < group.length && !done;a++) {
-			var obj = group[a];
-			if(obj === this) {
-				group.splice(a, 1);
-				done = true;
-			}
-		}
-	}
 	// Clear action
 	this.action.name = "";
 	this.action.value = 0;
@@ -443,8 +431,6 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("build", 15);
 				// Set velocity
 				this.velocity.x = 0;
-				// Add to list of builders
-				this.state.lemmingsGroup[actionName].push(this);
 				// Set timer
 				this.action.alarm = new Alarm(game, 120, function() {
 					this.proceedBuild();
@@ -464,8 +450,6 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("bash", 15);
 				// Set velocity
 				this.velocity.x = 0.2 * this.dir;
-				// Add to list of bashers
-				this.state.lemmingsGroup[actionName].push(this);
 			}
 			break;
 			// SET ACTION: Digger
@@ -481,8 +465,6 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("dig", 15);
 				// Set velocity
 				this.velocity.x = 0;
-				// Add to list of diggers
-				this.state.lemmingsGroup[actionName].push(this);
 				// Set alarm
 				this.action.alarm = new Alarm(this.game, 120, function() {
 					this.proceedDig();
@@ -502,8 +484,6 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("mine", 15);
 				// Set velocity
 				this.velocity.x = 0;
-				// Add to list of miners
-				this.state.lemmingsGroup[actionName].push(this);
 				// Set alarm
 				this.action.alarm = new Alarm(this.game, 150, function() {
 					this.proceedMine();
@@ -523,8 +503,6 @@ Lemming.prototype.setAction = function(actionName) {
 				this.playAnim("block", 15);
 				// Set velocity
 				this.velocity.x = 0;
-				// Add to list of blockers
-				this.state.lemmingsGroup[actionName].push(this);
 			}
 			break;
 			// SET ACTION: Floater
@@ -693,13 +671,14 @@ Lemming.prototype.explode = function() {
 };
 
 Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {
-	var group = this.state.lemmingsGroup[actionName];
+	var group = this.state.lemmingsGroup.all;
 	var result = [];
 	if(group) {
 		for(var a = 0;a < group.length;a++) {
 			var obj = group[a];
 			if(xCheck >= obj.bbox.left && xCheck <= obj.bbox.right &&
-				yCheck >= obj.bbox.top && yCheck <= obj.bbox.bottom) {
+				yCheck >= obj.bbox.top && yCheck <= obj.bbox.bottom &&
+				obj.action.name == actionName && !obj.action.idle) {
 				result.push(obj);
 			}
 		}
