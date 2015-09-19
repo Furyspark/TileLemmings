@@ -128,6 +128,9 @@ var gameState = {
 				if(tileType === 2) {
 					key = "steel";
 				}
+				else if(tileType === 3) {
+					key = "water";
+				}
 				var tempTile = game.add.image(tileX * 16, tileY * 16, "minimap", key + ".png");
 				this.replaceTile(tileX, tileY, tempTile);
 			},
@@ -255,8 +258,6 @@ var gameState = {
 					if(obj.animations) {
 						if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
 							var prevFrame = obj.animations.currentAnim.frame;
-							obj.animations.play(obj.animations.name, 15);
-							obj.animations.currentAnim.setFrame(prevFrame, true);
 							obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
 						}
 						else {
@@ -374,7 +375,7 @@ var gameState = {
 				force = false;
 			}
 			// Don't break steel, unless forced
-			if(force || this.owner.layers.tileLayer.getTileType(tileX, tileY) !== 2) {
+			if(force || this.owner.layers.tileLayer.getTileType(tileX, tileY) === 1) {
 				this.owner.layers.primitiveLayer.removeTile(tileX, tileY);
 				var test = this.owner.layers.tileLayer.setType(tileX, tileY, 0);
 				if(!test) {
@@ -687,6 +688,21 @@ var gameState = {
 					}
 				}
 				newObj.setAsExit(exitType);
+			}
+			// Create trap
+			else if(obj.type === "trap") {
+				var newObj = new Prop(this.game, obj.x, obj.y);
+				var trapType = "water";
+				if(objProps && objProps.type) {
+					trapType = objProps.type;
+				}
+				newObj.setAsTrap(trapType);
+				if(newObj.repeating) {
+					newObj.tileScale.setTo(
+						obj.width / 16,
+						obj.height / 16
+						);
+				}
 			}
 		}
 

@@ -1,5 +1,5 @@
 var Prop = function(game, x, y) {
-	Phaser.Sprite.call(this, game, x, y);
+	Phaser.TileSprite.call(this, game, x, y);
 	game.add.existing(this);
 	Object.defineProperty(this, "state", {get() {
 		return this.game.state.getCurrentState();
@@ -8,10 +8,25 @@ var Prop = function(game, x, y) {
 	this.anchor.setTo(0.5, 0.5);
 
 	this.objectType = "prop";
+	this.type = "";
 };
 
 Prop.prototype = Object.create(Phaser.Sprite.prototype);
 Prop.prototype.constructor = Prop;
+
+Prop.prototype.update = function() {
+	// Update traps
+	if(this.type === "trap") {
+		// Detect lemmings
+		var checkGroup = this.state.lemmingsGroup.all;
+		for(var a = 0;a < checkGroup;a++) {
+			var lem = checkGroup[a];
+			if(!lem.dead && lem.active && this.instant) {
+				lem.die(Lemming[this.deathType]);
+			}
+		}
+	}
+};
 
 Prop.prototype.playAnim = function(key, frameRate) {
 	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
@@ -137,4 +152,65 @@ Prop.prototype.setAsExit = function(type) {
 		}
 		return false;
 	};
+};
+
+Prop.prototype.setAsTrap = function(type) {
+	this.objectType = "trap";
+	this.state.trapsGroup.push(this);
+	this.type = type;
+
+	// Set configuration
+	var propConfig = game.cache.getJSON("config").props.traps[type];
+	this.loadTexture(propConfig.atlas);
+	var a, idleFrames = [];
+	for(a = 0;a < propConfig.animations.idle.frames.length;a++) {
+		idleFrames.push(propConfig.animations.idle.frames[a]);
+	}
+
+	// Set animation(s)
+	this.animations.add("idle", idleFrames, 15, true);
+	this.playAnim("idle", 15);
+
+	// Set bounding box
+	this.bbox = {
+		base: {
+			left: propConfig.bbox.left,
+			right: propConfig.bbox.right,
+			top: propConfig.bbox.top,
+			bottom: propConfig.bbox.bottom
+		},
+		get left() {
+			return this.owner.x + this.base.left;
+		},
+		get right() {
+			return this.owner.x + this.base.right;
+		},
+		get top() {
+			return this.owner.y + this.base.top;
+		},
+		get bottom() {
+			return this.owner.y + this.base.bottom;
+		},
+
+		owner: this
+	};
+
+	// Set anchor
+	if(propConfig.anchor) {
+		this.anchor.setTo(propConfig.anchor.x, propConfig.anchor.y);
+	}
+
+	// Set trap properties
+	this.instant = true;
+	if(!propConfig.instant) {
+		this.instant = false;
+	}
+	this.deathType = "DEATHTYPE_DROWN";
+	if(propConfig.death_type) {
+		this.deathType = propConfig.death_type;
+	}
+	this.repeating = false;
+	if(propConfig.repeating) {
+		this.repeating = true;
+	}
 };

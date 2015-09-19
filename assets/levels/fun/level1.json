@@ -55,7 +55,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "properties":
     {
@@ -88,6 +88,29 @@
          "spacing":4,
          "tilecount":48,
          "tileheight":16,
+         "tilewidth":16
+        }, 
+        {
+         "firstgid":49,
+         "image":"..\/..\/gfx\/tilesets\/tilesetPlaceables.png",
+         "imageheight":120,
+         "imagewidth":160,
+         "margin":2,
+         "name":"tilesetPlaceables",
+         "properties":
+            {
+
+            },
+         "spacing":4,
+         "tilecount":48,
+         "tileheight":16,
+         "tileproperties":
+            {
+             "22":
+                {
+                 "tileType":"3"
+                }
+            },
          "tilewidth":16
         }],
  "tilewidth":16,

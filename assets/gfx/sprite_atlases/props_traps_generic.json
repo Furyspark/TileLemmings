@@ -1,0 +1,80 @@
+{
+"frames": [
+	{
+		"filename": "water_000.png",
+		"frame": {"x":17, "y":0, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_001.png",
+		"frame": {"x":34, "y":0, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_002.png",
+		"frame": {"x":17, "y":51, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_003.png",
+		"frame": {"x":17, "y":34, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_004.png",
+		"frame": {"x":17, "y":17, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_005.png",
+		"frame": {"x":34, "y":17, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_006.png",
+		"frame": {"x":0, "y":51, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_007.png",
+		"frame": {"x":0, "y":34, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_008.png",
+		"frame": {"x":0, "y":17, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water_009.png",
+		"frame": {"x":0, "y":0, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	}
+
+],
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 51, "h": 68},
+	"scale": "1"
+}
+}

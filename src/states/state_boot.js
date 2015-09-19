@@ -11,6 +11,11 @@ var bootState = {
 		// Load game
 		this.loadGame();
 
+		// Initialize global game properties
+		this.game.tiles = {
+			solidTileTypes: [1, 2]
+		}
+
 		// List file loaded
 		game.load.onFileComplete.addOnce(function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
 			if(fileKey === "assetList" && success) {

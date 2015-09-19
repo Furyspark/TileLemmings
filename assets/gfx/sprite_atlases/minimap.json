@@ -16,13 +16,20 @@
 	},
 	{
 		"filename": "steel.png",
-		"frame": {"x":17, "y":184, "w":16, "h":16},
+		"frame": {"x":33, "y":151, "w":16, "h":16},
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
 		"sourceSize": {"w":16,"h":16}
 	},
 	{
 		"filename": "tile.png",
+		"frame": {"x":17, "y":184, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "water.png",
 		"frame": {"x":0, "y":184, "w":16, "h":16},
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},

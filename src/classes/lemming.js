@@ -178,6 +178,10 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	}, false);
+	this.addAnim("drown", "Drown", 16, {
+		x: 0,
+		y: 0
+	}, false);
 	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
@@ -198,6 +202,7 @@ var Lemming = function(game, x, y) {
 
 Lemming.DEATHTYPE_OUT_OF_ROOM = 0;
 Lemming.DEATHTYPE_FALL = 1;
+Lemming.DEATHTYPE_DROWN = 2;
 
 Lemming.prototype = Object.create(Phaser.Sprite.prototype);
 Lemming.prototype.constructor = Lemming;
@@ -233,8 +238,12 @@ Lemming.prototype.cursorSelect = function() {
 };
 
 Lemming.prototype.onFloor = function() {
-	return (this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) > 0 ||
-		this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0);
+	var checks = [
+		this.tile.type(this.tile.x(this.x), this.tile.y(this.y)),
+		this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1))
+	];
+	return (game.tiles.solidTileTypes.indexOf(checks[0]) !== -1 ||
+		game.tiles.solidTileTypes.indexOf(checks[1]) !== -1);
 };
 
 Lemming.prototype.turnAround = function() {
@@ -267,13 +276,13 @@ Lemming.prototype.update = function() {
 				// Play animation
 				this.playAnim("move", 15);
 				// Check walk up ramp
-				if (this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
-					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 0) {
+				if (game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1))) !== -1 &&
+					game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height))) === -1) {
 					this.y -= this.tile.height;
 				}
 				// Check walk against wall
-				else if (this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
-					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) > 0) {
+				else if (game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1))) !== -1 &&
+					game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height))) !== -1) {
 					// Turn around
 					if (!this.attributes.climber) {
 						this.turnAround();
@@ -343,7 +352,7 @@ Lemming.prototype.update = function() {
 			var ceilCheckDepth = Math.ceil(Math.abs(this.velocity.y) + 1) * this.state.speedManager.effectiveSpeed;
 			var ceilTileType = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - ceilCheckDepth));
 			// Hit ceiling
-			if (ceilTileType !== 0) {
+			if (game.tiles.solidTileTypes.indexOf(ceilTileType) !== -1) {
 				this.velocity.y = 0;
 				this.x -= (1 * this.dir);
 				this.y = (this.tile.y(this.y + ceilCheckDepth) * this.tile.height) + 1;
@@ -351,7 +360,7 @@ Lemming.prototype.update = function() {
 				this.turnAround();
 			}
 			// Reached top of the cliff
-			else if (wallTileType === 0) {
+			else if (game.tiles.solidTileTypes.indexOf(wallTileType) === -1) {
 				this.velocity.y = 0;
 				this.playAnim("climb_end", 15);
 			}
@@ -406,6 +415,11 @@ Lemming.prototype.update = function() {
 		// Die outside room
 		if (this.isOutsideLevel()) {
 			this.die(Lemming.DEATHTYPE_OUT_OF_ROOM);
+		}
+
+		// Drown
+		if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) === 3) {
+			this.die(Lemming.DEATHTYPE_DROWN);
 		}
 	}
 
@@ -616,8 +630,8 @@ Lemming.prototype.proceedBuild = function() {
 			y: this.y - 1
 		};
 		// See whether we can build a step
-		if (this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1)) == 0 &&
-			this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y)) == 0) {
+		if (this.game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1))) === -1 &&
+			this.game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y))) === -1) {
 			// Build a step
 			this.x = moveTo.x;
 			this.y = moveTo.y;
@@ -629,8 +643,7 @@ Lemming.prototype.proceedBuild = function() {
 				this.animations.currentAnim.onComplete.addOnce(function() {
 					this.clearAction();
 				}, this);
-			}
-			else {
+			} else {
 				this.action.alarm = new Alarm(game, 120, function() {
 					this.proceedBuild();
 				}, this);
@@ -770,6 +783,13 @@ Lemming.prototype.die = function(deathType) {
 		case Lemming.DEATHTYPE_FALL:
 			this.game.sound.play("sndSplat");
 			this.playAnim("splat", 15);
+			this.animations.currentAnim.onComplete.addOnce(function() {
+				this.markedForRemoval = true;
+			}, this);
+			break;
+		case Lemming.DEATHTYPE_DROWN:
+			this.game.sound.play("sndDrown");
+			this.playAnim("drown", 15);
 			this.animations.currentAnim.onComplete.addOnce(function() {
 				this.markedForRemoval = true;
 			}, this);

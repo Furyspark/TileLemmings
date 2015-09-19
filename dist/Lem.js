@@ -727,6 +727,10 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	}, false);
+	this.addAnim("drown", "Drown", 16, {
+		x: 0,
+		y: 0
+	}, false);
 	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
@@ -747,6 +751,7 @@ var Lemming = function(game, x, y) {
 
 Lemming.DEATHTYPE_OUT_OF_ROOM = 0;
 Lemming.DEATHTYPE_FALL = 1;
+Lemming.DEATHTYPE_DROWN = 2;
 
 Lemming.prototype = Object.create(Phaser.Sprite.prototype);
 Lemming.prototype.constructor = Lemming;
@@ -782,8 +787,12 @@ Lemming.prototype.cursorSelect = function() {
 };
 
 Lemming.prototype.onFloor = function() {
-	return (this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) > 0 ||
-		this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0);
+	var checks = [
+		this.tile.type(this.tile.x(this.x), this.tile.y(this.y)),
+		this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1))
+	];
+	return (game.tiles.solidTileTypes.indexOf(checks[0]) !== -1 ||
+		game.tiles.solidTileTypes.indexOf(checks[1]) !== -1);
 };
 
 Lemming.prototype.turnAround = function() {
@@ -816,13 +825,13 @@ Lemming.prototype.update = function() {
 				// Play animation
 				this.playAnim("move", 15);
 				// Check walk up ramp
-				if (this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
-					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) === 0) {
+				if (game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1))) !== -1 &&
+					game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height))) === -1) {
 					this.y -= this.tile.height;
 				}
 				// Check walk against wall
-				else if (this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) > 0 &&
-					this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height)) > 0) {
+				else if (game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1))) !== -1 &&
+					game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height))) !== -1) {
 					// Turn around
 					if (!this.attributes.climber) {
 						this.turnAround();
@@ -892,7 +901,7 @@ Lemming.prototype.update = function() {
 			var ceilCheckDepth = Math.ceil(Math.abs(this.velocity.y) + 1) * this.state.speedManager.effectiveSpeed;
 			var ceilTileType = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - ceilCheckDepth));
 			// Hit ceiling
-			if (ceilTileType !== 0) {
+			if (game.tiles.solidTileTypes.indexOf(ceilTileType) !== -1) {
 				this.velocity.y = 0;
 				this.x -= (1 * this.dir);
 				this.y = (this.tile.y(this.y + ceilCheckDepth) * this.tile.height) + 1;
@@ -900,7 +909,7 @@ Lemming.prototype.update = function() {
 				this.turnAround();
 			}
 			// Reached top of the cliff
-			else if (wallTileType === 0) {
+			else if (game.tiles.solidTileTypes.indexOf(wallTileType) === -1) {
 				this.velocity.y = 0;
 				this.playAnim("climb_end", 15);
 			}
@@ -955,6 +964,11 @@ Lemming.prototype.update = function() {
 		// Die outside room
 		if (this.isOutsideLevel()) {
 			this.die(Lemming.DEATHTYPE_OUT_OF_ROOM);
+		}
+
+		// Drown
+		if(this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) === 3) {
+			this.die(Lemming.DEATHTYPE_DROWN);
 		}
 	}
 
@@ -1165,8 +1179,8 @@ Lemming.prototype.proceedBuild = function() {
 			y: this.y - 1
 		};
 		// See whether we can build a step
-		if (this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1)) == 0 &&
-			this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y)) == 0) {
+		if (this.game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1))) === -1 &&
+			this.game.tiles.solidTileTypes.indexOf(this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y))) === -1) {
 			// Build a step
 			this.x = moveTo.x;
 			this.y = moveTo.y;
@@ -1178,8 +1192,7 @@ Lemming.prototype.proceedBuild = function() {
 				this.animations.currentAnim.onComplete.addOnce(function() {
 					this.clearAction();
 				}, this);
-			}
-			else {
+			} else {
 				this.action.alarm = new Alarm(game, 120, function() {
 					this.proceedBuild();
 				}, this);
@@ -1323,6 +1336,13 @@ Lemming.prototype.die = function(deathType) {
 				this.markedForRemoval = true;
 			}, this);
 			break;
+		case Lemming.DEATHTYPE_DROWN:
+			this.game.sound.play("sndDrown");
+			this.playAnim("drown", 15);
+			this.animations.currentAnim.onComplete.addOnce(function() {
+				this.markedForRemoval = true;
+			}, this);
+			break;
 	}
 };
 
@@ -1345,7 +1365,7 @@ Lemming.prototype.remove = function() {
 	this.destroy();
 };
 var Prop = function(game, x, y) {
-	Phaser.Sprite.call(this, game, x, y);
+	Phaser.TileSprite.call(this, game, x, y);
 	game.add.existing(this);
 	Object.defineProperty(this, "state", {get() {
 		return this.game.state.getCurrentState();
@@ -1354,10 +1374,25 @@ var Prop = function(game, x, y) {
 	this.anchor.setTo(0.5, 0.5);
 
 	this.objectType = "prop";
+	this.type = "";
 };
 
 Prop.prototype = Object.create(Phaser.Sprite.prototype);
 Prop.prototype.constructor = Prop;
+
+Prop.prototype.update = function() {
+	// Update traps
+	if(this.type === "trap") {
+		// Detect lemmings
+		var checkGroup = this.state.lemmingsGroup.all;
+		for(var a = 0;a < checkGroup;a++) {
+			var lem = checkGroup[a];
+			if(!lem.dead && lem.active && this.instant) {
+				lem.die(Lemming[this.deathType]);
+			}
+		}
+	}
+};
 
 Prop.prototype.playAnim = function(key, frameRate) {
 	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
@@ -1484,6 +1519,67 @@ Prop.prototype.setAsExit = function(type) {
 		return false;
 	};
 };
+
+Prop.prototype.setAsTrap = function(type) {
+	this.objectType = "trap";
+	this.state.trapsGroup.push(this);
+	this.type = type;
+
+	// Set configuration
+	var propConfig = game.cache.getJSON("config").props.traps[type];
+	this.loadTexture(propConfig.atlas);
+	var a, idleFrames = [];
+	for(a = 0;a < propConfig.animations.idle.frames.length;a++) {
+		idleFrames.push(propConfig.animations.idle.frames[a]);
+	}
+
+	// Set animation(s)
+	this.animations.add("idle", idleFrames, 15, true);
+	this.playAnim("idle", 15);
+
+	// Set bounding box
+	this.bbox = {
+		base: {
+			left: propConfig.bbox.left,
+			right: propConfig.bbox.right,
+			top: propConfig.bbox.top,
+			bottom: propConfig.bbox.bottom
+		},
+		get left() {
+			return this.owner.x + this.base.left;
+		},
+		get right() {
+			return this.owner.x + this.base.right;
+		},
+		get top() {
+			return this.owner.y + this.base.top;
+		},
+		get bottom() {
+			return this.owner.y + this.base.bottom;
+		},
+
+		owner: this
+	};
+
+	// Set anchor
+	if(propConfig.anchor) {
+		this.anchor.setTo(propConfig.anchor.x, propConfig.anchor.y);
+	}
+
+	// Set trap properties
+	this.instant = true;
+	if(!propConfig.instant) {
+		this.instant = false;
+	}
+	this.deathType = "DEATHTYPE_DROWN";
+	if(propConfig.death_type) {
+		this.deathType = propConfig.death_type;
+	}
+	this.repeating = false;
+	if(propConfig.repeating) {
+		this.repeating = true;
+	}
+};
 var bootState = {
 	preload: function() {
 		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
@@ -1496,6 +1592,11 @@ var bootState = {
 
 		// Load game
 		this.loadGame();
+
+		// Initialize global game properties
+		this.game.tiles = {
+			solidTileTypes: [1, 2]
+		}
 
 		// List file loaded
 		game.load.onFileComplete.addOnce(function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
@@ -1698,23 +1799,6 @@ var intermissionState = {
 	create: function() {
 		this.background = new Background(this.game, "bgMainMenu");
 
-		// Init bitmap data
-		if(!game.cache.checkBitmapDataKey("previewTileNormal")) {
-			normalBmd = this.game.add.bitmapData(8, 8);
-			normalBmd.fill(0, 255, 0, 1);
-			game.cache.addBitmapData("previewTileNormal", normalBmd);
-		}
-		if(!game.cache.checkBitmapDataKey("previewTileSteel")) {
-			steelBmd = this.game.add.bitmapData(8, 8);
-			steelBmd.fill(127, 127, 127, 1);
-			game.cache.addBitmapData("previewTileSteel", steelBmd);
-		}
-		if(!game.cache.checkBitmapDataKey("previewBG")) {
-			steelBmd = this.game.add.bitmapData(8, 8);
-			steelBmd.fill(0, 0, 0, 1);
-			game.cache.addBitmapData("previewBG", steelBmd);
-		}
-
 		this.initMapPreview();
 
 		this.game.input.onTap.addOnce(function() {
@@ -1800,9 +1884,9 @@ var intermissionState = {
 
 		// Create preview
 		this.map.primitiveLayer = [];
-		var gfx = game.add.image(0, 0, game.cache.getBitmapData("previewBG"));
-		gfx.width = (8 * this.map.width);
-		gfx.height = (8 * this.map.height);
+		var gfx = game.add.image(0, 0, "minimap", "bg.png");
+		gfx.width = (16 * this.map.width);
+		gfx.height = (16 * this.map.height);
 		this.minimap.add(gfx);
 		for(var a = 0;a < this.map.tileLayer.length;a++) {
 			var tileType = this.map.tileLayer[a];
@@ -1812,14 +1896,17 @@ var intermissionState = {
 					xTile: (a % this.map.width),
 					yTile: Math.floor(a / this.map.width)
 				};
-				place.xPos = place.xTile * 8;
-				place.yPos = place.yTile * 8;
+				place.xPos = place.xTile * 16;
+				place.yPos = place.yTile * 16;
 
-				var bmd = "previewTileNormal";
+				var key = "tile";
 				if(tileType === 2) {
-					bmd = "previewTileSteel";
+					key = "steel";
 				}
-				var gfx = game.add.image(place.xPos, place.yPos, game.cache.getBitmapData(bmd));
+				else if(tileType === 3) {
+					key = "water";
+				}
+				var gfx = game.add.image(place.xPos, place.yPos, "minimap", key + ".png");
 				this.map.primitiveLayer.push(gfx);
 				this.minimap.add(gfx);
 				gfx.bringToTop();
@@ -1999,6 +2086,9 @@ var gameState = {
 				if(tileType === 2) {
 					key = "steel";
 				}
+				else if(tileType === 3) {
+					key = "water";
+				}
 				var tempTile = game.add.image(tileX * 16, tileY * 16, "minimap", key + ".png");
 				this.replaceTile(tileX, tileY, tempTile);
 			},
@@ -2126,8 +2216,8 @@ var gameState = {
 					if(obj.animations) {
 						if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
 							var prevFrame = obj.animations.currentAnim.frame;
-							obj.animations.play(obj.animations.name, 15);
-							obj.animations.currentAnim.setFrame(prevFrame, true);
+							// obj.animations.play(obj.animations.name, 15);
+							// obj.animations.currentAnim.setFrame(prevFrame, true);
 							obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
 						}
 						else {
@@ -2245,7 +2335,7 @@ var gameState = {
 				force = false;
 			}
 			// Don't break steel, unless forced
-			if(force || this.owner.layers.tileLayer.getTileType(tileX, tileY) !== 2) {
+			if(force || this.owner.layers.tileLayer.getTileType(tileX, tileY) === 1) {
 				this.owner.layers.primitiveLayer.removeTile(tileX, tileY);
 				var test = this.owner.layers.tileLayer.setType(tileX, tileY, 0);
 				if(!test) {
@@ -2558,6 +2648,21 @@ var gameState = {
 					}
 				}
 				newObj.setAsExit(exitType);
+			}
+			// Create trap
+			else if(obj.type === "trap") {
+				var newObj = new Prop(this.game, obj.x, obj.y);
+				var trapType = "water";
+				if(objProps && objProps.type) {
+					trapType = objProps.type;
+				}
+				newObj.setAsTrap(trapType);
+				if(newObj.repeating) {
+					newObj.tileScale.setTo(
+						obj.width / 16,
+						obj.height / 16
+						);
+				}
 			}
 		}
 

@@ -27,23 +27,6 @@ var intermissionState = {
 	create: function() {
 		this.background = new Background(this.game, "bgMainMenu");
 
-		// Init bitmap data
-		if(!game.cache.checkBitmapDataKey("previewTileNormal")) {
-			normalBmd = this.game.add.bitmapData(8, 8);
-			normalBmd.fill(0, 255, 0, 1);
-			game.cache.addBitmapData("previewTileNormal", normalBmd);
-		}
-		if(!game.cache.checkBitmapDataKey("previewTileSteel")) {
-			steelBmd = this.game.add.bitmapData(8, 8);
-			steelBmd.fill(127, 127, 127, 1);
-			game.cache.addBitmapData("previewTileSteel", steelBmd);
-		}
-		if(!game.cache.checkBitmapDataKey("previewBG")) {
-			steelBmd = this.game.add.bitmapData(8, 8);
-			steelBmd.fill(0, 0, 0, 1);
-			game.cache.addBitmapData("previewBG", steelBmd);
-		}
-
 		this.initMapPreview();
 
 		this.game.input.onTap.addOnce(function() {
@@ -129,9 +112,9 @@ var intermissionState = {
 
 		// Create preview
 		this.map.primitiveLayer = [];
-		var gfx = game.add.image(0, 0, game.cache.getBitmapData("previewBG"));
-		gfx.width = (8 * this.map.width);
-		gfx.height = (8 * this.map.height);
+		var gfx = game.add.image(0, 0, "minimap", "bg.png");
+		gfx.width = (16 * this.map.width);
+		gfx.height = (16 * this.map.height);
 		this.minimap.add(gfx);
 		for(var a = 0;a < this.map.tileLayer.length;a++) {
 			var tileType = this.map.tileLayer[a];
@@ -141,14 +124,17 @@ var intermissionState = {
 					xTile: (a % this.map.width),
 					yTile: Math.floor(a / this.map.width)
 				};
-				place.xPos = place.xTile * 8;
-				place.yPos = place.yTile * 8;
+				place.xPos = place.xTile * 16;
+				place.yPos = place.yTile * 16;
 
-				var bmd = "previewTileNormal";
+				var key = "tile";
 				if(tileType === 2) {
-					bmd = "previewTileSteel";
+					key = "steel";
 				}
-				var gfx = game.add.image(place.xPos, place.yPos, game.cache.getBitmapData(bmd));
+				else if(tileType === 3) {
+					key = "water";
+				}
+				var gfx = game.add.image(place.xPos, place.yPos, "minimap", key + ".png");
 				this.map.primitiveLayer.push(gfx);
 				this.minimap.add(gfx);
 				gfx.bringToTop();

@@ -243,6 +243,40 @@
 					"exit": "sndYippie"
 				}
 			}
+		},
+		"traps": {
+			"water": {
+				"atlas": "props_traps_generic",
+				"animations": {
+					"idle": {
+						"frames": [
+							"water_000.png",
+							"water_001.png",
+							"water_002.png",
+							"water_003.png",
+							"water_004.png",
+							"water_005.png",
+							"water_006.png",
+							"water_007.png",
+							"water_008.png",
+							"water_009.png"
+						]
+					}
+				},
+				"bbox": {
+					"left": 0,
+					"right": 16,
+					"top": 0,
+					"bottom": 16
+				},
+				"anchor": {
+					"x": 0,
+					"y": 0
+				},
+				"instant": true,
+				"repeating": true,
+				"death_type": "DEATHTYPE_DROWN"
+			}
 		}
 	}
 }
