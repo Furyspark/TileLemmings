@@ -1,10 +1,9 @@
 var Tile = function(game, x, y, key, cropping) {
 	Phaser.Image.call(this, game, x, y, key);
-	this.game = game;
-	this.game.add.existing(this);
+	game.add.existing(this);
 
 	Object.defineProperty(this, "state", {get() {
-		return this.game.state.getCurrentState();
+		return game.state.getCurrentState();
 	}});
 	this.tile = {
 		get x() {
@@ -15,6 +14,8 @@ var Tile = function(game, x, y, key, cropping) {
 		}
 	};
 	this.tile.owner = this;
+	this.markedForRemoval = false;
+
 	// Add to scale group
 	this.state.levelGroup.add(this);
 
@@ -25,22 +26,30 @@ var Tile = function(game, x, y, key, cropping) {
 Tile.prototype = Object.create(Phaser.Image.prototype);
 Tile.prototype.constructor = Tile;
 
-Tile.prototype.destroy = function(removeCol) {
-	if(removeCol == undefined) {
-		removeCol = true;
-	}
-
-	var layer = this.state.layers.primitiveLayer;
-	for(var a in layer.data) {
-		var tile = layer.data[a];
-		if(tile === this) {
-			// Remove collision flag
-			if(removeCol) {
-				this.state.layers.tileLayer.setType(this.tile.x, this.tile.y, 0);
-			}
-			// Delete self
-			layer.data[a] = null;
-			this.kill();
+Tile.prototype.update = function() {
+	// Remove self
+	if(this.markedForRemoval) {
+		if(typeof removeCol === "undefined") {
+			removeCol = true;
 		}
+
+		var layer = this.state.layers.primitiveLayer;
+		for(var a in layer.data) {
+			var tile = layer.data[a];
+			if(tile === this) {
+				// Remove collision flag
+				if(removeCol) {
+					this.state.layers.tileLayer.setType(this.tile.x, this.tile.y, 0);
+				}
+				// Delete self
+				layer.data[a] = null;
+			}
+		}
+
+		this.pendingDestroy = true;
 	}
+};
+
+Tile.prototype.remove = function(removeCol) {
+	this.markedForRemoval = true;
 };

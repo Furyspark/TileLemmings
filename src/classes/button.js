@@ -1,10 +1,9 @@
 var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
-	this.game = game;
 
 	Object.defineProperty(this, "state", {
 		get() {
-			return this.game.state.getCurrentState();
+			return game.state.getCurrentState();
 		}
 	});
 
@@ -28,6 +27,7 @@ var GUI_Button = function(game, x, y) {
 		fill: "#ffffff",
 		boundsAlignH: "center"
 	});
+	this.state.guiGroup.add(this.label);
 	this.label.stroke = "#000000";
 	this.label.strokeThickness = 3;
 	this.label.owner = this;

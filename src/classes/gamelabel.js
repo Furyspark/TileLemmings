@@ -10,26 +10,29 @@ var GameLabel = function(game, owner, x, y, offsetObj, defaultText) {
 		strokeThickness: 3
 	};
 	Phaser.Text.call(this, game, x, y, defaultText, this.defaultStyle);
-	this.game = game;
-
+	game.add.existing(this);
 	Object.defineProperty(this, "state", {get() {
-		return this.game.state.getCurrentState();
+		return game.state.getCurrentState();
 	}});
 
 	this.state.levelGroup.add(this);
 
 	this.reposition();
+	this.markedForRemoval = false;
 };
 
 GameLabel.prototype = Object.create(Phaser.Text.prototype);
 GameLabel.prototype.constructor = GameLabel;
 
 GameLabel.prototype.remove = function() {
-	this.state.levelGroup.removeChild(this);
+	this.markedForRemoval = true;
 };
 
 GameLabel.prototype.update = function() {
 	this.reposition();
+	if(this.markedForRemoval) {
+		this.pendingDestroy = true;
+	}
 };
 
 GameLabel.prototype.reposition = function() {

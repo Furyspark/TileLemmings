@@ -43,10 +43,25 @@ var gameState = {
 			getIndex: function(tileX, tileY) {
 				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
 			},
+			logTiles: function() {
+				var str = "";
+				for(var a = 0;a < this.data.length;a++) {
+					if(this.data[a]) {
+						str += 1;
+					}
+					else {
+						str += "0";
+					}
+					if(a % this.state.map.width == this.state.map.width-1) {
+						str += "\n";
+					}
+				}
+				console.log(str);
+			},
 			removeTile: function(tileX, tileY) {
 				var testTile = this.getTile(tileX, tileY);
-				if(testTile != null) {
-					testTile.destroy();
+				if(testTile) {
+					testTile.remove();
 					return true;
 				}
 				return false;
@@ -58,7 +73,7 @@ var gameState = {
 					imageKey,
 					cutout);
 				this.replaceTile(tileX, tileY, tempTile);
-				if(tileType != undefined) {
+				if(tileType !== undefined) {
 					this.state.layers.tileLayer.setType(tileX, tileY, tileType);
 					this.state.layers.minimapLayer.placeTile(tileX, tileY, tileType);
 					return true;
@@ -205,7 +220,6 @@ var gameState = {
 		y: 0
 	},
 
-	tileLayer: null,
 	levelGroup: null,
 	lemmingsGroup: {
 		all: []
@@ -213,19 +227,22 @@ var gameState = {
 	doorsGroup: [],
 	exitsGroup: [],
 	trapsGroup: [],
-	guiGroup: [],
+	guiGroup: null,
+	grid: {
+		enabled: false,
+		image: null
+	},
 	alarms: {
 		data: [],
 		remove: function(alarm) {
 			var found = false;
 			for(var a = 0;a < this.data.length && !found;a++) {
 				var curAlarm = this.data[a];
-				if(curAlarm == alarm) {
+				if(curAlarm === alarm) {
 					found = true;
 					this.data.splice(a, 1);
 				}
 			}
-			delete alarm;
 		}
 	},
 
@@ -320,7 +337,8 @@ var gameState = {
 		select: -1,
 		get current() {
 			return this.items[this.select];
-		}
+		},
+		previewGroup: []
 	},
 
 	init: function(levelFolder, levelObj) {
@@ -359,13 +377,14 @@ var gameState = {
 		this.layers.minimapLayer.init(this);
 		this.speedManager.owner = this;
 		// Create groups
-		this.levelGroup = new Phaser.Group(game);
+		this.levelGroup = game.add.group();
+		this.guiGroup = game.add.group();
 		
 		// Create GUI
 		this.createLevelGUI();
 
 		// Create camera config
-		this.cam = new Camera(this.game, this);
+		this.cam = new Camera(game, this);
 		// Add tile functions to map
 		this.map.removeTile = function(tileX, tileY, force) {
 			// This function attempts to remove a tile
@@ -391,36 +410,6 @@ var gameState = {
 		// Set map size
 		this.layers.tileLayer.width = this.map.width;
 		this.layers.tileLayer.height = this.map.height;
-
-		// Predetermine map files
-		this.mapFiles = [];
-		// Load Background Music
-		if(this.map.properties.bgm) {
-			this.mapFiles.push({
-				url: "assets/audio/bgm/" + this.map.properties.bgm,
-				key: "bgm",
-				type: "sound"
-			});
-		}
-		// Load Background
-		if(this.map.properties.bg) {
-			this.mapFiles.push({
-				url: "assets/gfx/backgrounds/" + this.map.properties.bg,
-				key: "bg",
-				type: "image"
-			});
-		}
-		// Load tilesets
-		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelFolder.baseUrl + this.levelObj.filename)[1]
-		for(var a = 0;a < this.map.tilesets.length;a++) {
-			var tileset = this.map.tilesets[a];
-			var url = levelPath + tileset.image;
-			this.mapFiles.push({
-				url: url,
-				key: tileset.name,
-				type: "image"
-			});
-		}
 
 		// Determine tile properties
 		tileProps = {};
@@ -465,40 +454,14 @@ var gameState = {
 				}
 			}
 		}
-
-		// Preload map files
-		if(this.mapFiles.length > 0) {
-			// Set load handler
-			game.load.onLoadComplete.addOnce(function() {
-				this.startLevel();
-			}, this);
-
-			// Load files
-			for(var a in this.mapFiles) {
-				var file = this.mapFiles[a];
-				switch(file.type) {
-					case "sound":
-					game.load.audio(file.key, file.url);
-					break;
-					case "image":
-					game.load.image(file.key, file.url);
-					break;
-				}
-			}
-
-			// Start loading
-			game.load.start();
-		}
-		else {
-			// No files needed to be loaded: start level
-			this.startLevel();
-		}
+		
+		this.startLevel();
 	},
 
 	initMap: function() {
 		// Resize map
-		this.game.world.width = this.map.totalwidth;
-		this.game.world.height = this.map.totalheight;
+		game.world.width = this.map.totalwidth;
+		game.world.height = this.map.totalheight;
 
 		// Describe function(s)
 		this.map.getTileset = function(gid) {
@@ -574,8 +537,12 @@ var gameState = {
 
 		// Create background
 		if(game.cache.checkImageKey("bg")) {
-			this.background = new Background(this.game, "bg");
+			this.background = new Background(game, "bg");
 		}
+
+		// Create grid
+		// this.grid.image = game.add.tileSprite(0, 0, game.stage.width, game.stage.height, "misc", "gridTile.png");
+		// this.grid.image.visible = true;
 
 		// Set (z-)order of display objects
 		// Bring backgrounds objects to top first, ending with foreground objects
@@ -583,32 +550,28 @@ var gameState = {
 			this.world.bringToTop(this.background);
 		}
 		this.world.bringToTop(this.levelGroup);
-		for(var a = 0;a < this.guiGroup.length;a++) {
-			var elem = this.guiGroup[a];
-			this.world.bringToTop(elem);
-			if(elem.label) {
-				this.world.bringToTop(elem.label);
-			}
-		}
+		// this.world.bringToTop(this.grid.image);
+		this.world.bringToTop(this.guiGroup);
 		this.world.bringToTop(this.layers.minimapLayer.group);
 	},
 
 	enableUserInteraction: function() {
 		// Create keys
 		this.keyboard = {
-			left: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-			right: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-			up: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
-			down: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-			space: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-			p: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
-			f: this.game.input.keyboard.addKey(Phaser.Keyboard.F),
-			q: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
-			e: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
-			w: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
-			s: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
-			a: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
-			d: this.game.input.keyboard.addKey(Phaser.Keyboard.D)
+			left: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+			right: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+			up: game.input.keyboard.addKey(Phaser.Keyboard.UP),
+			down: game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+			space: game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+			p: game.input.keyboard.addKey(Phaser.Keyboard.P),
+			f: game.input.keyboard.addKey(Phaser.Keyboard.F),
+			q: game.input.keyboard.addKey(Phaser.Keyboard.Q),
+			e: game.input.keyboard.addKey(Phaser.Keyboard.E),
+			w: game.input.keyboard.addKey(Phaser.Keyboard.W),
+			s: game.input.keyboard.addKey(Phaser.Keyboard.S),
+			a: game.input.keyboard.addKey(Phaser.Keyboard.A),
+			d: game.input.keyboard.addKey(Phaser.Keyboard.D),
+			g: game.input.keyboard.addKey(Phaser.Keyboard.G)
 		};
 
 		// Set pause functionality
@@ -621,6 +584,11 @@ var gameState = {
 		// Set fast-forward functionality
 		this.keyboard.f.onDown.add(function() {
 			this.fastForward();
+		}, this);
+		// Set toggle grid functionality
+		this.keyboard.g.onDown.add(function() {
+			this.grid.enabled = !this.grid.enabled;
+			// this.grid.image.visible = this.grid.enabled;
 		}, this);
 
 		game.input.mouse.capture = true;
@@ -659,7 +627,7 @@ var gameState = {
 			var objProps = obj.properties;
 			// Create door
 			if(obj.type === "door") {
-				var newObj = new Prop(this.game, (obj.x + (obj.width * 0.5)), obj.y);
+				var newObj = new Prop(game, (obj.x + (obj.width * 0.5)), obj.y);
 				var doorValue = 0;
 				var doorType = "classic";
 				var doorRate = 50;
@@ -685,7 +653,7 @@ var gameState = {
 			}
 			// Create exit
 			else if(obj.type === "exit") {
-				var newObj = new Prop(this.game, obj.x + (obj.width * 0.5), obj.y + obj.height);
+				var newObj = new Prop(game, obj.x + (obj.width * 0.5), obj.y + obj.height);
 				var exitType = "classic";
 				if(objProps) {
 					if(objProps.type) {
@@ -696,7 +664,7 @@ var gameState = {
 			}
 			// Create trap
 			else if(obj.type === "trap") {
-				var newObj = new Prop(this.game, obj.x, obj.y);
+				var newObj = new Prop(game, obj.x, obj.y);
 				var trapType = "water";
 				if(objProps && objProps.type) {
 					trapType = objProps.type;
@@ -714,7 +682,7 @@ var gameState = {
 		// Let's go... HRRRRN
 		this.layers.minimapLayer.finalize();
 		var snd = game.sound.play("sndLetsGo");
-		var alarm = new Alarm(this.game, 90, function() {
+		var alarm = new Alarm(game, 90, function() {
 			this.openDoors();
 		}, this);
 	},
@@ -748,7 +716,7 @@ var gameState = {
 	nuke: function() {
 		// Start nuke
 		if(!this.nukeStarted) {
-			this.game.sound.play("sndOhNo");
+			game.sound.play("sndOhNo");
 			this.nukeStarted = true;
 			this.nuke();
 			// Set lemming count of all doors to 0
@@ -770,7 +738,7 @@ var gameState = {
 			}
 			// Set nuke alarm
 			if(searchComplete) {
-				var alarm = new Alarm(this.game, 10, function() {
+				var alarm = new Alarm(game, 10, function() {
 					this.nuke();
 				}, this);
 			}
@@ -779,8 +747,8 @@ var gameState = {
 
 	getWorldCursor: function() {
 		return {
-			x: this.game.input.activePointer.worldX / this.zoom,
-			y: this.game.input.activePointer.worldY / this.zoom
+			x: game.input.activePointer.worldX / this.zoom,
+			y: game.input.activePointer.worldY / this.zoom
 		};
 	},
 
@@ -795,7 +763,8 @@ var gameState = {
 	zoomTo: function(factor) {
 		this.zoom = factor;
 		this.levelGroup.scale.setTo(factor);
-		this.game.camera.bounds.setTo(0, 0, Math.floor(this.map.totalwidth * this.zoom), Math.floor(this.map.totalheight * this.zoom));
+		game.camera.bounds.setTo(0, 0, Math.floor(this.map.totalwidth * this.zoom), Math.floor(this.map.totalheight * this.zoom));
+		// this.grid.image.tileScale.setTo(this.zoom);
 	},
 
 	update: function() {
@@ -906,36 +875,48 @@ var gameState = {
 
 	clearState: function() {
 		// Remove all game objects
-		this.levelGroup.removeAll(false, false);
-		this.levelGroup.destroy();
+		// this.levelGroup.destroy();
+
 		// Determine all groups to have their children destroyed
 		var removeGroups = [
-			this.lemmingsGroup.all,
-			this.doorsGroup,
-			this.exitsGroup,
-			this.trapsGroup,
-			this.guiGroup,
-			this.layers.primitiveLayer.data
+			// this.lemmingsGroup.all,
+			// this.doorsGroup,
+			// this.exitsGroup,
+			// this.trapsGroup,
+			// this.guiGroup
 		];
+		this.lemmingsGroup.all = [];
+		this.doorsGroup = [];
+		this.exitsGroup = [];
+		this.trapsGroup = [];
+		this.layers.primitiveLayer.data = [];
 
 		// Remove all GUI objects
-		for(var a = 0;a < removeGroups.length;a++) {
-			var remGrp = removeGroups[a];
-			while(remGrp.length > 0) {
-				var gobj = remGrp.shift();
-				if(gobj) {
-					if(typeof gobj.remove !== "undefined") {
-						gobj.remove();
-					}
-					else {
-						gobj.destroy();
-					}
-				}
-			}
-		}
+		// for(var a = 0;a < removeGroups.length;a++) {
+		// 	var remGrp = removeGroups[a];
+		// 	while(remGrp.length > 0) {
+		// 		var gobj = remGrp.shift();
+		// 		if(gobj) {
+		// 			if(gobj.remove !== undefined) {
+		// 				gobj.remove();
+		// 			}
+		// 			else {
+		// 				gobj.destroy();
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		// Remove reference to grid screen
+		// this.grid.enabled = false;
+		// if(this.grid.image !== undefined) {
+		// 	this.grid.image.visible = true;
+		// 	this.grid.image.pendingDestroy = true;
+		// 	this.grid.image = null;
+		// }
 
 		// Clear minimap
-		this.layers.minimapLayer.clear();
+		// this.layers.minimapLayer.clear();
 
 		// Clear tile layer
 		this.layers.tileLayer.data = [];
@@ -948,8 +929,8 @@ var gameState = {
 		this.stopBGM();
 
 		// Stop the alarms
-		while(this.alarms.length > 0) {
-			this.alarms[0].cancel();
+		while(this.alarms.data.length > 0) {
+			this.alarms.data[0].cancel();
 		}
 	},
 
@@ -961,16 +942,16 @@ var gameState = {
 		this.saveGame(levelIndex);
 		if(this.levelFolder.levels.length > levelIndex+1) {
 			var newLevel = this.levelFolder.levels[levelIndex+1];
-			this.game.state.start("intermission", true, false, this.levelFolder, newLevel, false, this.mapFiles);
+			game.state.start("intermission", true, false, this.levelFolder, newLevel, false, this.mapFiles);
 		}
 		else {
-			this.game.state.start("menu");
+			game.state.start("menu");
 		}
 	},
 
 	retryLevel: function() {
 		this.clearState();
-		this.game.state.start("intermission", true, false, this.levelFolder, this.levelObj, true, this.mapFiles);
+		game.state.start("intermission", true, false, this.levelFolder, this.levelObj, true, this.mapFiles);
 	},
 
 	getLevelIndex: function() {
@@ -1011,9 +992,9 @@ var gameState = {
 		if(this.layers.minimapLayer.mouseOver()) {
 			return true;
 		}
-		for(var a = 0;a < this.guiGroup.length;a++) {
-			var uiNode = this.guiGroup[a];
-			if(uiNode.mouseOver()) {
+		for(var a = 0;a < this.guiGroup.children.length;a++) {
+			var uiNode = this.guiGroup.children[a];
+			if(uiNode.mouseOver && uiNode.mouseOver()) {
 				return true;
 			}
 		}
@@ -1034,7 +1015,13 @@ var gameState = {
 		if(this.state.actions.select >= 0) {
 			if(this.action.name == this.state.actions.current.name ||
 			this.subaction.name == this.state.actions.current.name) {
-				return false;
+				// Exclude builders at their end
+				if(this.action.name === "builder" && this.animations.currentAnim.name === "build_end") {
+					// Don't make unselectable
+				}
+				else {
+					return false;
+				}
 			}
 			if(typeof this.attributes[this.state.actions.current.name] !== "undefined" && this.attributes[this.state.actions.current.name]) {
 				return false;
@@ -1072,7 +1059,7 @@ var gameState = {
 			var action = this.actions.items[a];
 			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
 			var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
-			this.guiGroup.push(btn);
+			this.guiGroup.add(btn);
 			buttons.push(btn);
 			btn.set({
 				released: animPrefix + "0.png",
@@ -1085,7 +1072,7 @@ var gameState = {
 
 		// Create pause button
 		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
-		this.guiGroup.push(btn);
+		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
 			released: "Btn_Pause_0.png",
@@ -1095,7 +1082,7 @@ var gameState = {
 
 		// Create fast forward button
 		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
-		this.guiGroup.push(btn);
+		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
 			released: "Btn_FastForward_0.png",
@@ -1105,14 +1092,13 @@ var gameState = {
 
 		// Create nuke button
 		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
-		this.guiGroup.push(btn);
+		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
 			released: "Btn_Nuke_0.png",
 			pressed: "Btn_Nuke_1.png"
 		}, "nuke", "misc");
 		btn.doubleTap.enabled = true;
-		this.guiGroup.push(btn);
 
 		// Align buttons
 		var alignX = 0;
@@ -1129,8 +1115,8 @@ var gameState = {
 	},
 
 	deselectAllActions: function() {
-		for(var a = 0;a < this.guiGroup.length;a++) {
-			var obj = this.guiGroup[a];
+		for(var a = 0;a < this.guiGroup.children.length;a++) {
+			var obj = this.guiGroup.children[a];
 			if(obj.subType === "action") {
 				obj.deselect();
 			}

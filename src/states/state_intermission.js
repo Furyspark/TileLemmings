@@ -27,16 +27,19 @@ var intermissionState = {
 
 	create: function() {
 		// Add background
-		this.background = new Background(this.game, "bgMainMenu");
+		this.background = new Background(game, "bgMainMenu");
+
+		// Init map
+		this.map = game.cache.getJSON("level");
 
 		// Create map preview
 		this.initMapPreview();
 
 		// Add user input
-		this.game.input.onTap.addOnce(function() {
+		game.input.onTap.addOnce(function() {
 			if(!this.mouseOverGUI()) {
 				this.clearState();
-				this.game.state.start("game", true, false, this.levelFolder, this.levelObj);
+				this.loadLevelFiles();
 			}
 		}, this);
 
@@ -53,6 +56,82 @@ var intermissionState = {
 		btn.resize(60, 24);
 		btn.label.text = "Main Menu";
 		btn.label.fontSize = 10;
+	},
+
+	loadLevelFiles: function() {
+		// Predetermine map files
+		this.mapFiles = [];
+		// Load Background Music
+		if(this.map.properties.bgm) {
+			this.mapFiles.push({
+				url: "assets/audio/bgm/" + this.map.properties.bgm,
+				key: "bgm",
+				type: "sound"
+			});
+		}
+		// Load Background
+		if(this.map.properties.bg) {
+			this.mapFiles.push({
+				url: "assets/gfx/backgrounds/" + this.map.properties.bg,
+				key: "bg",
+				type: "image"
+			});
+		}
+		// Load tilesets
+		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelFolder.baseUrl + this.levelObj.filename)[1]
+		for(var a = 0;a < this.map.tilesets.length;a++) {
+			var tileset = this.map.tilesets[a];
+			var url = levelPath + tileset.image;
+			this.mapFiles.push({
+				url: url,
+				key: tileset.name,
+				type: "image"
+			});
+		}
+
+		// Preload map files
+		if(this.mapFiles.length > 0) {
+			// Set load handler
+			this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+				if(progress === undefined) {
+					progress = -1;
+				}
+
+				if(progress >= 0 && totalLoadedFiles >= totalFiles) {
+					game.load.onFileComplete.remove(this.loadFunction, this);
+					this.loadFunction = null;
+					this.startLevel();
+				}
+				else if(!game.load.onFileComplete.has(this.loadFunction, this)) {
+					game.load.onFileComplete.add(this.loadFunction, this);
+				}
+			};
+
+			// Load files
+			for(var a = 0;a < this.mapFiles.length;a++) {
+				var file = this.mapFiles[a];
+				switch(file.type) {
+					case "sound":
+					game.load.audio(file.key, file.url);
+					break;
+					case "image":
+					game.load.image(file.key, file.url);
+					break;
+				}
+			}
+
+			// Start loading
+			game.load.start();
+			this.loadFunction();
+		}
+		else {
+			// No files needed to be loaded: start level
+			this.startLevel();
+		}
+	},
+
+	startLevel: function() {
+		game.state.start("game", true, false, this.levelFolder, this.levelObj);
 	},
 
 	mouseOverGUI: function() {
@@ -101,9 +180,7 @@ var intermissionState = {
 	},
 
 	initMapPreview: function() {
-		this.minimap = new Phaser.Group(this.game);
-
-		this.map = this.game.cache.getJSON("level");
+		this.minimap = new Phaser.Group(game);
 
 		var tilesetRefs = [null];
 		// Pre-parse tilesets
@@ -184,10 +261,10 @@ var intermissionState = {
 		}
 		this.minimap.width = Math.max(240, Math.min(480, this.map.width * 4));
 		this.minimap.height = Math.max(180, Math.min(480, this.map.height * 4));
-		this.minimap.x = (this.game.stage.width - 30) - this.minimap.width;
+		this.minimap.x = (game.stage.width - 30) - this.minimap.width;
 		this.minimap.y = 30;
 
-		var txt = this.game.add.text(120, 10, this.levelObj.name, {
+		var txt = game.add.text(120, 10, this.levelObj.name, {
 			font: "bold 20pt Arial",
 			fill: "#FFFFFF",
 			boundsAlignH: "center",
@@ -203,12 +280,12 @@ var intermissionState = {
 			stroke: "#000000",
 			strokeThickness: 3
 		};
-		txt = this.game.add.text(120, 70, lemmingCount.toString() + " lemmings\n" + ((this.map.properties.need / lemmingCount) * 100) + "% to be saved", newStyle);
+		txt = game.add.text(120, 70, lemmingCount.toString() + " lemmings\n" + ((this.map.properties.need / lemmingCount) * 100) + "% to be saved", newStyle);
 		txt.setTextBounds(0, 0, 240, 80);
 		this.labels.push(txt);
 
 		// Free memory
-		this.game.cache.removeJSON("level");
+		game.cache.removeJSON("level");
 	},
 
 	clearMapFiles: function(mapFiles) {
@@ -217,10 +294,10 @@ var intermissionState = {
 			var mapFile = mapFiles[a];
 			switch(mapFile.type) {
 				case "image":
-					this.game.cache.removeImage(mapFile.key, true);
+					game.cache.removeImage(mapFile.key, true);
 					break;
 				case "sound":
-					this.game.cache.removeSound(mapFile.key);
+					game.cache.removeSound(mapFile.key);
 					break;
 			}
 		}

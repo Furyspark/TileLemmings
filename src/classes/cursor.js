@@ -1,9 +1,9 @@
 var Cursor = function(game, x, y, owner) {
 	Phaser.Sprite.call(this, game, x, y, "misc");
-	this.game.add.existing(this);
+	game.add.existing(this);
 	this.owner = owner;
 	Object.defineProperty(this, "state", {get() {
-		return this.game.state.getCurrentState();
+		return game.state.getCurrentState();
 	}})
 	this.state.levelGroup.add(this);
 
@@ -20,7 +20,7 @@ Cursor.prototype.reposition = function() {
 	this.y = this.owner.y - 8;
 };
 
-Cursor.prototype.destroy = function() {
+Cursor.prototype.remove = function() {
 	for(var a in this.state.levelGroup.children) {
 		var obj = this.state.levelGroup.children[a];
 		if(obj === this) {

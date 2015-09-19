@@ -1,8 +1,8 @@
 var Prop = function(game, x, y) {
-	Phaser.TileSprite.call(this, game, x, y);
+	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
 	Object.defineProperty(this, "state", {get() {
-		return this.game.state.getCurrentState();
+		return game.state.getCurrentState();
 	}});
 	this.state.levelGroup.add(this);
 	this.anchor.setTo(0.5, 0.5);
@@ -13,20 +13,6 @@ var Prop = function(game, x, y) {
 
 Prop.prototype = Object.create(Phaser.Sprite.prototype);
 Prop.prototype.constructor = Prop;
-
-Prop.prototype.update = function() {
-	// Update traps
-	if(this.type === "trap") {
-		// Detect lemmings
-		var checkGroup = this.state.lemmingsGroup.all;
-		for(var a = 0;a < checkGroup;a++) {
-			var lem = checkGroup[a];
-			if(!lem.dead && lem.active && this.instant) {
-				lem.die(Lemming[this.deathType]);
-			}
-		}
-	}
-};
 
 Prop.prototype.playAnim = function(key, frameRate) {
 	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
@@ -77,7 +63,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 		// Set event
 		this.animations.getAnimation("opening").onComplete.addOnce(function() {
 			this.playAnim("open", 15);
-			var alarm = new Alarm(this.game, 30, function() {
+			var alarm = new Alarm(game, 30, function() {
 				this.opened();
 				if(this.state.doorsGroup[0] === this) {
 					this.state.playLevelBGM();
@@ -103,10 +89,10 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 		}
 		if(this.lemmings > 0) {
 			this.lemmings--;
-			var lem = new Lemming(this.game, this.x, this.y + 30);
+			var lem = new Lemming(game, this.x, this.y + 30);
 			this.lemmingsGroup.push(lem);
 			if(recurring) {
-				var alarm = new Alarm(this.game, this.rate, this.spawnLemming, this);
+				var alarm = new Alarm(game, this.rate, this.spawnLemming, this);
 			}
 		}
 	};

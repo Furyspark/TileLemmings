@@ -1,6 +1,20 @@
 {
 "frames": [
 	{
+		"filename": "gridTile.png",
+		"frame": {"x":31, "y":17, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
+		"filename": "previewTile.png",
+		"frame": {"x":31, "y":0, "w":16, "h":16},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	{
 		"filename": "sprCursor_Idle.png",
 		"frame": {"x":0, "y":31, "w":30, "h":30},
 		"trimmed": true,
@@ -18,7 +32,7 @@
 ],
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 31, "h": 62},
+	"size": {"w": 48, "h": 62},
 	"scale": "1"
 }
 }

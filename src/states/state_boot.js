@@ -1,6 +1,20 @@
 var bootState = {
-	preload: function() {
+	loadFunction: null,
+	loadSignalAdded: false,
+
+	create: function() {
+		// Disable context menu (right-click menu for browsers)
 		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+
+		// Load game
+		this.loadGame();
+
+		// Initialize global game properties
+		game.tiles = {
+			solidTileTypes: [1, 2]
+		}
+
+		// Load asset list
 		this.loadAssetList("./assets/asset_list.json");
 	},
 
@@ -8,30 +22,29 @@ var bootState = {
 		// Load asset list
 		game.load.json("assetList", assetListFilename);
 
-		// Load game
-		this.loadGame();
 
-		// Initialize global game properties
-		this.game.tiles = {
-			solidTileTypes: [1, 2]
-		}
+		this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+			if(progress === undefined) {
+				progress = -1;
+			}
 
-		// List file loaded
-		game.load.onFileComplete.addOnce(function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
-			if(fileKey === "assetList" && success) {
+			if(progress >= 0 && totalLoadedFiles >= totalFiles) {
+				game.load.onFileComplete.remove(this.loadFunction, this);
+				this.loadFunction = null;
+				this.loadSignalAdded = false;
 				this.loadAssets();
 			}
-		}, this);
+			else if(!this.loadSignalAdded) {
+				this.loadSignalAdded = true;
+				game.load.onFileComplete.add(this.loadFunction, this);
+			}
+		}
+		this.loadFunction();
+		game.load.start();
 	},
 
 	loadAssets: function() {
 		var assetList = game.cache.getJSON("assetList");
-
-		// Add callback for Finish Loading
-		game.load.onLoadComplete.addOnce(function() {
-			game.state.start("menu");
-		}, this);
-
 
 		// Load sprites
 		var a, curAsset, curList = assetList.sprites;
@@ -74,6 +87,25 @@ var bootState = {
 			curAsset = curList[a];
 			game.load.json(curAsset.key, curAsset.url);
 		}
+
+		// Add callback for Finish Loading
+		this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+			if(progress === undefined) {
+				progress = -1;
+			}
+
+			if(progress >= 0 && totalLoadedFiles >= totalFiles) {
+				game.load.onFileComplete.remove(this.loadFunction, this);
+				this.loadFunction = null;
+				this.loadSignalAdded = false;
+				game.state.start("menu");
+			}
+			else if(!this.loadSignalAdded) {
+				this.loadSignalAdded = true;
+				game.load.onFileComplete.add(this.loadFunction, this);
+			}
+		}
+		this.loadFunction();
 	}, 
 
 	loadGame: function() {

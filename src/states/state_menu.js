@@ -3,7 +3,7 @@ var menuState = {
 	guiGroup: [],
 
 	create: function() {
-		this.background = new Background(this.game, "bgMainMenu");
+		this.background = new Background(game, "bgMainMenu");
 
 		this.setupMainMenu();
 	},
@@ -21,13 +21,13 @@ var menuState = {
 			height: 60,
 			spacing: 20
 		};
-		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
-		var levelList = this.game.cache.getJSON("levelList").difficulties;
+		btnProps.cols = Math.floor((game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		var levelList = game.cache.getJSON("levelList").difficulties;
 		for(var a = 0;a < levelList.length;a++) {
 			var levelFolder = levelList[a];
 			var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
 			var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
-			var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
+			var btn = new GUI_MainMenuButton(game, xTo, yTo, "mainmenu");
 			btn.set({
 				pressed: "btnGray_Down.png",
 				released: "btnGray_Up.png"
@@ -51,7 +51,7 @@ var menuState = {
 		this.clearGUIGroup();
 
 		this.levelList = [];
-		var levelFolder = this.game.cache.getJSON("levelList").difficulties[index];
+		var levelFolder = game.cache.getJSON("levelList").difficulties[index];
 		var btnProps = {
 			basePos: {
 				x: 40,
@@ -61,7 +61,7 @@ var menuState = {
 			height: 60,
 			spacing: 20
 		};
-		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		btnProps.cols = Math.floor((game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
 		var completedLevels = [];
 		if(game.saveFile[levelFolder.resref]) {
 			completedLevels = game.saveFile[levelFolder.resref];
@@ -73,7 +73,7 @@ var menuState = {
 				var level = levelFolder.levels[a];
 				var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
 				var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
-				var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
+				var btn = new GUI_MainMenuButton(game, xTo, yTo, "mainmenu");
 				btn.resize(btnProps.width, btnProps.height);
 				btn.label.text = level.name;
 				btn.params = {
@@ -83,7 +83,7 @@ var menuState = {
 					pressed: "btnGray_Down.png",
 					released: "btnGray_Up.png"
 				}, function() {
-					this.game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
+					game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
 				}, btn);
 				btn.params = {
 					levelFolder: levelFolder,
@@ -94,7 +94,7 @@ var menuState = {
 		}
 
 		// Create back button
-		var btn = new GUI_MainMenuButton(this.game, 4, 4, "mainmenu");
+		var btn = new GUI_MainMenuButton(game, 4, 4, "mainmenu");
 		btn.resize(40, 24);
 		btn.label.text = "Back";
 		btn.set({

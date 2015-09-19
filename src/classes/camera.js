@@ -1,10 +1,9 @@
 var Camera = function(game, state) {
-	this.game = game;
 	this.state = state;
 
 	this.scrolling = false;
 	Object.defineProperty(this, "gameCamera", {get() {
-		return this.game.camera;
+		return game.camera;
 	}});
 
 	Object.defineProperties(this, {
@@ -46,9 +45,11 @@ Camera.prototype.move = function(hor, ver, relative) {
 		this.gameCamera.y = (ver * this.state.zoom);
 	}
 	// Move UI
-	for(var a = 0;a < this.state.guiGroup.length;a++) {
-		var uiNode = this.state.guiGroup[a];
-		uiNode.x = this.gameCamera.x + uiNode.guiAlign.x;
-		uiNode.y = this.gameCamera.y + uiNode.guiAlign.y;
+	for(var a = 0;a < this.state.guiGroup.children.length;a++) {
+		var uiNode = this.state.guiGroup.children[a];
+		if(uiNode.guiAlign) {
+			uiNode.x = this.gameCamera.x + uiNode.guiAlign.x;
+			uiNode.y = this.gameCamera.y + uiNode.guiAlign.y;
+		}
 	}
 };

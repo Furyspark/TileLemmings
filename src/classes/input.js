@@ -1,11 +1,9 @@
 var Input = function(game) {
-	this.game = game;
-
 	this.mouse = {
 		buttons: {
 			left: {
 				get deviceHandler() {
-					return this.game.input.activePointer.leftButton;
+					return game.input.activePointer.leftButton;
 				},
 				get down() {
 					return this.deviceHandler.isDown;
@@ -15,7 +13,7 @@ var Input = function(game) {
 			},
 			right: {
 				get deviceHandler() {
-					return this.game.input.activePointer.rightButton;
+					return game.input.activePointer.rightButton;
 				},
 				get down() {
 					return this.deviceHandler.isDown;
@@ -25,7 +23,7 @@ var Input = function(game) {
 			},
 			middle: {
 				get deviceHandler() {
-					return this.game.input.activePointer.middleButton;
+					return game.input.activePointer.middleButton;
 				},
 				get down() {
 					return this.deviceHandler.isDown;

@@ -1,9 +1,8 @@
 var GUI_MainMenuButton = function(game, x, y, imageKey) {
 	GUI.call(this, game, x, y);
-	this.game = game;
 
 	Object.defineProperty(this, "state", {get() {
-		return this.game.state.getCurrentState();
+		return game.state.getCurrentState();
 	}});
 
 	// Load base texture
@@ -79,8 +78,8 @@ GUI_MainMenuButton.prototype.constructor = GUI_Button;
 
 GUI_MainMenuButton.prototype.mouseOver = function() {
 	var cursor = {
-		x: this.game.input.activePointer.worldX,
-		y: this.game.input.activePointer.worldY
+		x: game.input.activePointer.worldX,
+		y: game.input.activePointer.worldY
 	};
 	cursor.x = cursor.x;
 	cursor.y = cursor.y;
@@ -109,7 +108,7 @@ GUI_MainMenuButton.prototype.resize = function(width, height) {
 
 GUI_MainMenuButton.prototype.update = function() {
 	this.label.reposition();
-	if(this.pressed && (!this.mouseOver() || !this.game.input.activePointer.isDown)) {
+	if(this.pressed && (!this.mouseOver() || !game.input.activePointer.isDown)) {
 		this.pressed = false;
 		this.animations.play("up");
 	}
