@@ -1575,10 +1575,6 @@ Prop.prototype.setAsTrap = function(type) {
 	if(propConfig.death_type) {
 		this.deathType = propConfig.death_type;
 	}
-	this.repeating = false;
-	if(propConfig.repeating) {
-		this.repeating = true;
-	}
 };
 var bootState = {
 	preload: function() {
@@ -2216,8 +2212,6 @@ var gameState = {
 					if(obj.animations) {
 						if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
 							var prevFrame = obj.animations.currentAnim.frame;
-							// obj.animations.play(obj.animations.name, 15);
-							// obj.animations.currentAnim.setFrame(prevFrame, true);
 							obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
 						}
 						else {

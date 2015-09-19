@@ -274,7 +274,6 @@
 					"y": 0
 				},
 				"instant": true,
-				"repeating": true,
 				"death_type": "DEATHTYPE_DROWN"
 			}
 		}

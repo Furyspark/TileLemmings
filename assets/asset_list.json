@@ -139,11 +139,6 @@
 			"atlasUrl": "assets/gfx/sprite_atlases/props_sports.json"
 		},
 		{
-			"key": "props_traps_generic",
-			"url": "assets/gfx/sprite_atlases/props_traps_generic.png",
-			"atlasUrl": "assets/gfx/sprite_atlases/props_traps_generic.json"
-		},
-		{
 			"key": "mainmenu",
 			"url": "assets/gfx/sprite_atlases/mainmenu.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/mainmenu.json"

@@ -209,8 +209,4 @@ Prop.prototype.setAsTrap = function(type) {
 	if(propConfig.death_type) {
 		this.deathType = propConfig.death_type;
 	}
-	this.repeating = false;
-	if(propConfig.repeating) {
-		this.repeating = true;
-	}
 };
