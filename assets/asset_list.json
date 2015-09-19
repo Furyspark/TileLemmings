@@ -53,6 +53,10 @@
 		{
 			"key": "sndDoor_Cave",
 			"url": "assets/audio/sfx/sndDoor_Cave.ogg"
+		},
+		{
+			"key": "sndLaser",
+			"url": "assets/audio/sfx/sndLaser.ogg"
 		}
 	],
 	"sprite_atlases": [

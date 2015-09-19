@@ -62,7 +62,7 @@
 				"animName": "door",
 				"frames": 9,
 				"sound": {
-					"open": "sndDoor"
+					"open": "sndLaser"
 				}
 			},
 			"sports": {

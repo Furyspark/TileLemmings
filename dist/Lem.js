@@ -2703,7 +2703,6 @@ var gameState = {
 				y: Math.floor((rate.y * this.map.totalheight) - (this.cam.height * 0.5))
 			};
 			this.cam.move(moveTo.x, moveTo.y, false);
-			console.log(rate.y);
 		}
 		// WASD
 		if(!this.cam.scrolling) {

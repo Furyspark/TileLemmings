@@ -16,6 +16,18 @@
 				{
 					"filename": "level3.json",
 					"name": "Diggy Diggy Hole"
+				},
+				{
+					"filename": "level4.json",
+					"name": "Shaft Mining"
+				},
+				{
+					"filename": "level5.json",
+					"name": "Along the Hole"
+				},
+				{
+					"filename": "level6.json",
+					"name": "Last Resort"
 				}
 			]
 		}
