@@ -1491,7 +1491,11 @@ var bootState = {
 	},
 
 	loadAssetList: function(assetListFilename) {
+		// Load asset list
 		game.load.json("assetList", assetListFilename);
+
+		// Load game
+		this.loadGame();
 
 		// List file loaded
 		game.load.onFileComplete.addOnce(function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
@@ -1551,6 +1555,16 @@ var bootState = {
 			curAsset = curList[a];
 			game.load.json(curAsset.key, curAsset.url);
 		}
+	}, 
+
+	loadGame: function() {
+		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
+		if(rawSave) {
+			game.saveFile = JSON.parse(rawSave);
+		}
+		else {
+			game.saveFile = {};
+		}
 	}
 };
 var menuState = {
@@ -1605,28 +1619,35 @@ var menuState = {
 			spacing: 20
 		};
 		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		var completedLevels = [];
+		if(game.saveFile[levelFolder.resref]) {
+			completedLevels = game.saveFile[levelFolder.resref];
+		}
 		// Create level buttons
 		for(var a = 0;a < levelFolder.levels.length;a++) {
-			var level = levelFolder.levels[a];
-			var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
-			var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
-			var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
-			btn.resize(btnProps.width, btnProps.height);
-			btn.label.text = level.name;
-			btn.params = {
-				url: levelFolder.baseUrl + level.filename
-			};
-			btn.set({
-				pressed: "btnGray_Down.png",
-				released: "btnGray_Up.png"
-			}, function() {
-				this.game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
-			}, btn);
-			btn.params = {
-				levelFolder: levelFolder,
-				level: level
+			// Don't add not unlocked levels
+			if(a === 0 || completedLevels.indexOf(a-1) !== -1) {
+				var level = levelFolder.levels[a];
+				var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
+				var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
+				var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
+				btn.resize(btnProps.width, btnProps.height);
+				btn.label.text = level.name;
+				btn.params = {
+					url: levelFolder.baseUrl + level.filename
+				};
+				btn.set({
+					pressed: "btnGray_Down.png",
+					released: "btnGray_Up.png"
+				}, function() {
+					this.game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
+				}, btn);
+				btn.params = {
+					levelFolder: levelFolder,
+					level: level
+				}
+				this.guiGroup.push(btn);
 			}
-			this.guiGroup.push(btn);
 		}
 
 		// Create back button
@@ -2788,6 +2809,7 @@ var gameState = {
 		this.clearState();
 		// Get current level
 		var levelIndex = this.getLevelIndex();
+		this.saveGame(levelIndex);
 		if(this.levelFolder.levels.length > levelIndex+1) {
 			var newLevel = this.levelFolder.levels[levelIndex+1];
 			this.game.state.start("intermission", true, false, this.levelFolder, newLevel, false, this.mapFiles);
@@ -2810,6 +2832,26 @@ var gameState = {
 			}
 		}
 		return -1;
+	},
+
+	saveGame: function(levelIndex) {
+		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
+		var curSave = {};
+		if(rawSave) {
+			curSave = JSON.parse(rawSave);
+			if(!curSave[this.levelFolder.resref]) {
+				curSave[this.levelFolder.resref] = [];
+			}
+			if(curSave[this.levelFolder.resref].indexOf(levelIndex) === -1) {
+				curSave[this.levelFolder.resref].push(levelIndex);
+			}
+		}
+		else {
+			curSave[this.levelFolder.resref] = [];
+			curSave[this.levelFolder.resref].push(levelIndex);
+		}
+		game.saveFile = curSave;
+		localStorage["tilelemmings.profiles.default.progress"] = JSON.stringify(curSave);
 	},
 
 	render: function() {

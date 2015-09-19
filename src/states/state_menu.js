@@ -50,28 +50,35 @@ var menuState = {
 			spacing: 20
 		};
 		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		var completedLevels = [];
+		if(game.saveFile[levelFolder.resref]) {
+			completedLevels = game.saveFile[levelFolder.resref];
+		}
 		// Create level buttons
 		for(var a = 0;a < levelFolder.levels.length;a++) {
-			var level = levelFolder.levels[a];
-			var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
-			var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
-			var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
-			btn.resize(btnProps.width, btnProps.height);
-			btn.label.text = level.name;
-			btn.params = {
-				url: levelFolder.baseUrl + level.filename
-			};
-			btn.set({
-				pressed: "btnGray_Down.png",
-				released: "btnGray_Up.png"
-			}, function() {
-				this.game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
-			}, btn);
-			btn.params = {
-				levelFolder: levelFolder,
-				level: level
+			// Don't add not unlocked levels
+			if(a === 0 || completedLevels.indexOf(a-1) !== -1) {
+				var level = levelFolder.levels[a];
+				var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
+				var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
+				var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
+				btn.resize(btnProps.width, btnProps.height);
+				btn.label.text = level.name;
+				btn.params = {
+					url: levelFolder.baseUrl + level.filename
+				};
+				btn.set({
+					pressed: "btnGray_Down.png",
+					released: "btnGray_Up.png"
+				}, function() {
+					this.game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
+				}, btn);
+				btn.params = {
+					levelFolder: levelFolder,
+					level: level
+				}
+				this.guiGroup.push(btn);
 			}
-			this.guiGroup.push(btn);
 		}
 
 		// Create back button

@@ -832,7 +832,6 @@ var gameState = {
 				y: Math.floor((rate.y * this.map.totalheight) - (this.cam.height * 0.5))
 			};
 			this.cam.move(moveTo.x, moveTo.y, false);
-			console.log(rate.y);
 		}
 		// WASD
 		if(!this.cam.scrolling) {
@@ -938,6 +937,7 @@ var gameState = {
 		this.clearState();
 		// Get current level
 		var levelIndex = this.getLevelIndex();
+		this.saveGame(levelIndex);
 		if(this.levelFolder.levels.length > levelIndex+1) {
 			var newLevel = this.levelFolder.levels[levelIndex+1];
 			this.game.state.start("intermission", true, false, this.levelFolder, newLevel, false, this.mapFiles);
@@ -960,6 +960,26 @@ var gameState = {
 			}
 		}
 		return -1;
+	},
+
+	saveGame: function(levelIndex) {
+		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
+		var curSave = {};
+		if(rawSave) {
+			curSave = JSON.parse(rawSave);
+			if(!curSave[this.levelFolder.resref]) {
+				curSave[this.levelFolder.resref] = [];
+			}
+			if(curSave[this.levelFolder.resref].indexOf(levelIndex) === -1) {
+				curSave[this.levelFolder.resref].push(levelIndex);
+			}
+		}
+		else {
+			curSave[this.levelFolder.resref] = [];
+			curSave[this.levelFolder.resref].push(levelIndex);
+		}
+		game.saveFile = curSave;
+		localStorage["tilelemmings.profiles.default.progress"] = JSON.stringify(curSave);
 	},
 
 	render: function() {

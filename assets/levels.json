@@ -7,11 +7,15 @@
 			"levels": [
 				{
 					"filename": "level1.json",
-					"name": "Medieval Kineval"
+					"name": "Bash that wall down!"
 				},
 				{
 					"filename": "level2.json",
-					"name": "Thunder Struck"
+					"name": "Block and Build"
+				},
+				{
+					"filename": "level3.json",
+					"name": "Diggy Diggy Hole"
 				}
 			]
 		}

@@ -5,7 +5,11 @@ var bootState = {
 	},
 
 	loadAssetList: function(assetListFilename) {
+		// Load asset list
 		game.load.json("assetList", assetListFilename);
+
+		// Load game
+		this.loadGame();
 
 		// List file loaded
 		game.load.onFileComplete.addOnce(function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
@@ -64,6 +68,16 @@ var bootState = {
 		for(a in curList) {
 			curAsset = curList[a];
 			game.load.json(curAsset.key, curAsset.url);
+		}
+	}, 
+
+	loadGame: function() {
+		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
+		if(rawSave) {
+			game.saveFile = JSON.parse(rawSave);
+		}
+		else {
+			game.saveFile = {};
 		}
 	}
 };
