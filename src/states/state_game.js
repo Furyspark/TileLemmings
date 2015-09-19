@@ -454,7 +454,7 @@ var gameState = {
 				}
 			}
 		}
-		
+
 		this.startLevel();
 	},
 
@@ -541,8 +541,8 @@ var gameState = {
 		}
 
 		// Create grid
-		// this.grid.image = game.add.tileSprite(0, 0, game.stage.width, game.stage.height, "misc", "gridTile.png");
-		// this.grid.image.visible = true;
+		this.grid.image = game.add.tileSprite(0, 0, game.stage.width, game.stage.height, "misc", "gridTile.png");
+		this.grid.image.visible = false;
 
 		// Set (z-)order of display objects
 		// Bring backgrounds objects to top first, ending with foreground objects
@@ -550,8 +550,14 @@ var gameState = {
 			this.world.bringToTop(this.background);
 		}
 		this.world.bringToTop(this.levelGroup);
-		// this.world.bringToTop(this.grid.image);
+		this.world.bringToTop(this.grid.image);
 		this.world.bringToTop(this.guiGroup);
+		for(var a = 0;a < this.guiGroup.children.length;a++) {
+			var elem = this.guiGroup.children[a];
+			if(elem.label) {
+				this.guiGroup.bringToTop(elem.label);
+			}
+		}
 		this.world.bringToTop(this.layers.minimapLayer.group);
 	},
 
@@ -588,7 +594,7 @@ var gameState = {
 		// Set toggle grid functionality
 		this.keyboard.g.onDown.add(function() {
 			this.grid.enabled = !this.grid.enabled;
-			// this.grid.image.visible = this.grid.enabled;
+			this.grid.image.visible = this.grid.enabled;
 		}, this);
 
 		game.input.mouse.capture = true;
@@ -764,7 +770,7 @@ var gameState = {
 		this.zoom = factor;
 		this.levelGroup.scale.setTo(factor);
 		game.camera.bounds.setTo(0, 0, Math.floor(this.map.totalwidth * this.zoom), Math.floor(this.map.totalheight * this.zoom));
-		// this.grid.image.tileScale.setTo(this.zoom);
+		this.grid.image.tileScale.setTo(this.zoom);
 	},
 
 	update: function() {
@@ -908,12 +914,12 @@ var gameState = {
 		// }
 
 		// Remove reference to grid screen
-		// this.grid.enabled = false;
-		// if(this.grid.image !== undefined) {
-		// 	this.grid.image.visible = true;
-		// 	this.grid.image.pendingDestroy = true;
-		// 	this.grid.image = null;
-		// }
+		this.grid.enabled = false;
+		if(this.grid.image !== undefined) {
+			this.grid.image.visible = true;
+			this.grid.image.pendingDestroy = true;
+			this.grid.image = null;
+		}
 
 		// Clear minimap
 		// this.layers.minimapLayer.clear();
