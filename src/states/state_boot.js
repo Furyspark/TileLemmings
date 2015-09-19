@@ -3,6 +3,13 @@ var bootState = {
 	loadSignalAdded: false,
 
 	create: function() {
+		var resizeFunction = function() {
+			this.scaleMode = Phaser.ScaleManager.USER_SCALE;
+			var scaleFactor = Math.min(window.innerWidth / game.width, window.innerHeight / game.height);
+			this.setUserScale(scaleFactor, scaleFactor, 0, 0);
+		};
+		game.scale.setResizeCallback(resizeFunction, game.scale);
+		resizeFunction.call(game.scale);
 		// Disable context menu (right-click menu for browsers)
 		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 

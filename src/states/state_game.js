@@ -532,6 +532,9 @@ var gameState = {
 			if(this.map.properties[action.name]) {
 				this.setActionAmount(action.name, parseInt(this.map.properties[action.name]));
 			}
+			else {
+				this.setActionAmount(action.name, 0);
+			}
 		}
 
 		// Set misc map properties
@@ -878,7 +881,9 @@ var gameState = {
 			var speedFactor = 10;
 			moveRel.x *= speedFactor;
 			moveRel.y *= speedFactor;
-			this.cam.move(moveRel.x, moveRel.y);
+			if(moveRel.x !== 0 || moveRel.y !== 0) {
+				this.cam.move(moveRel.x, moveRel.y, true);
+			}
 		}
 
 		// Update minimap
@@ -1089,7 +1094,7 @@ var gameState = {
 		for(var a in this.actions.items) {
 			var action = this.actions.items[a];
 			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
-			var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+			var btn = new GUI_Button(game, 0, 0);
 			this.guiGroup.add(btn);
 			buttons.push(btn);
 			btn.set({
@@ -1102,7 +1107,7 @@ var gameState = {
 		}
 
 		// Create pause button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -1112,7 +1117,7 @@ var gameState = {
 		this.speedManager.pauseButton = btn;
 
 		// Create fast forward button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -1122,7 +1127,7 @@ var gameState = {
 		this.speedManager.fastForwardButton = btn;
 
 		// Create nuke button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -1132,7 +1137,7 @@ var gameState = {
 		btn.doubleTap.enabled = true;
 
 		// Create grid button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -1143,14 +1148,17 @@ var gameState = {
 
 		// Align buttons
 		var alignX = 0;
-		for(var a in buttons) {
+		for(var a = 0;a < buttons.length;a++) {
 			var btn = buttons[a];
 			btn.x = alignX;
 			alignX += btn.width;
-			btn.y -= btn.height;
 			btn.guiAlign = {
-				x: btn.x - game.camera.x,
-				y: btn.y - game.camera.y
+				x: btn.x,
+				y: -btn.height,
+				anchor: {
+					x: 0,
+					y: 1
+				}
 			};
 		}
 	},

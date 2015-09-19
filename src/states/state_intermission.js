@@ -261,7 +261,7 @@ var intermissionState = {
 		}
 		this.minimap.width = Math.max(240, Math.min(480, this.map.width * 4));
 		this.minimap.height = Math.max(180, Math.min(480, this.map.height * 4));
-		this.minimap.x = (game.stage.width - 30) - this.minimap.width;
+		this.minimap.x = (game.width - 30) - this.minimap.width;
 		this.minimap.y = 30;
 
 		var txt = game.add.text(120, 10, this.levelObj.name, {

@@ -28,6 +28,9 @@ var Camera = function(game, state) {
 			}
 		}
 	});
+
+	// Push for a move
+	this.move(0, 0, true);
 };
 
 Camera.prototype.constructor = Camera;
@@ -48,8 +51,8 @@ Camera.prototype.move = function(hor, ver, relative) {
 	for(var a = 0;a < this.state.guiGroup.children.length;a++) {
 		var uiNode = this.state.guiGroup.children[a];
 		if(uiNode.guiAlign) {
-			uiNode.x = this.gameCamera.x + uiNode.guiAlign.x;
-			uiNode.y = this.gameCamera.y + uiNode.guiAlign.y;
+			uiNode.x = (this.gameCamera.x + (uiNode.guiAlign.anchor.x * this.gameCamera.width)) + uiNode.guiAlign.x;
+			uiNode.y = (this.gameCamera.y + (uiNode.guiAlign.anchor.y * this.gameCamera.height)) + uiNode.guiAlign.y;
 		}
 	}
 	// Move grid

@@ -29,6 +29,9 @@ var Camera = function(game, state) {
 			}
 		}
 	});
+
+	// Push for a move
+	this.move(0, 0, true);
 };
 
 Camera.prototype.constructor = Camera;
@@ -49,8 +52,8 @@ Camera.prototype.move = function(hor, ver, relative) {
 	for(var a = 0;a < this.state.guiGroup.children.length;a++) {
 		var uiNode = this.state.guiGroup.children[a];
 		if(uiNode.guiAlign) {
-			uiNode.x = this.gameCamera.x + uiNode.guiAlign.x;
-			uiNode.y = this.gameCamera.y + uiNode.guiAlign.y;
+			uiNode.x = (this.gameCamera.x + (uiNode.guiAlign.anchor.x * this.gameCamera.width)) + uiNode.guiAlign.x;
+			uiNode.y = (this.gameCamera.y + (uiNode.guiAlign.anchor.y * this.gameCamera.height)) + uiNode.guiAlign.y;
 		}
 	}
 	// Move grid
@@ -490,7 +493,7 @@ GameLabel.prototype.reposition = function() {
 	this.setTextBounds(-(this.width * 0.5), -(this.height), this.width, this.height);
 };
 var Background = function(game, imageKey) {
-	Phaser.TileSprite.call(this, game, 0, 0, game.stage.width, game.stage.height, imageKey);
+	Phaser.TileSprite.call(this, game, 0, 0, game.scale.width, game.scale.height, imageKey);
 	game.add.existing(this);
 	Object.defineProperty(this, "state", {get() {
 		return game.state.getCurrentState();
@@ -1650,6 +1653,13 @@ var bootState = {
 	loadSignalAdded: false,
 
 	create: function() {
+		var resizeFunction = function() {
+			this.scaleMode = Phaser.ScaleManager.USER_SCALE;
+			var scaleFactor = Math.min(window.innerWidth / game.width, window.innerHeight / game.height);
+			this.setUserScale(scaleFactor, scaleFactor, 0, 0);
+		};
+		game.scale.setResizeCallback(resizeFunction, game.scale);
+		resizeFunction.call(game.scale);
 		// Disable context menu (right-click menu for browsers)
 		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
@@ -2142,7 +2152,7 @@ var intermissionState = {
 		}
 		this.minimap.width = Math.max(240, Math.min(480, this.map.width * 4));
 		this.minimap.height = Math.max(180, Math.min(480, this.map.height * 4));
-		this.minimap.x = (game.stage.width - 30) - this.minimap.width;
+		this.minimap.x = (game.width - 30) - this.minimap.width;
 		this.minimap.y = 30;
 
 		var txt = game.add.text(120, 10, this.levelObj.name, {
@@ -2718,6 +2728,9 @@ var gameState = {
 			if(this.map.properties[action.name]) {
 				this.setActionAmount(action.name, parseInt(this.map.properties[action.name]));
 			}
+			else {
+				this.setActionAmount(action.name, 0);
+			}
 		}
 
 		// Set misc map properties
@@ -3064,7 +3077,9 @@ var gameState = {
 			var speedFactor = 10;
 			moveRel.x *= speedFactor;
 			moveRel.y *= speedFactor;
-			this.cam.move(moveRel.x, moveRel.y);
+			if(moveRel.x !== 0 || moveRel.y !== 0) {
+				this.cam.move(moveRel.x, moveRel.y, true);
+			}
 		}
 
 		// Update minimap
@@ -3275,7 +3290,7 @@ var gameState = {
 		for(var a in this.actions.items) {
 			var action = this.actions.items[a];
 			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
-			var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+			var btn = new GUI_Button(game, 0, 0);
 			this.guiGroup.add(btn);
 			buttons.push(btn);
 			btn.set({
@@ -3288,7 +3303,7 @@ var gameState = {
 		}
 
 		// Create pause button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -3298,7 +3313,7 @@ var gameState = {
 		this.speedManager.pauseButton = btn;
 
 		// Create fast forward button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -3308,7 +3323,7 @@ var gameState = {
 		this.speedManager.fastForwardButton = btn;
 
 		// Create nuke button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -3318,7 +3333,7 @@ var gameState = {
 		btn.doubleTap.enabled = true;
 
 		// Create grid button
-		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		var btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -3329,14 +3344,17 @@ var gameState = {
 
 		// Align buttons
 		var alignX = 0;
-		for(var a in buttons) {
+		for(var a = 0;a < buttons.length;a++) {
 			var btn = buttons[a];
 			btn.x = alignX;
 			alignX += btn.width;
-			btn.y -= btn.height;
 			btn.guiAlign = {
-				x: btn.x - game.camera.x,
-				y: btn.y - game.camera.y
+				x: btn.x,
+				y: -btn.height,
+				anchor: {
+					x: 0,
+					y: 1
+				}
 			};
 		}
 	},
@@ -3414,6 +3432,13 @@ var game = new Phaser.Game(
 	Phaser.AUTO,
 	"content"
 );
+
+// window.resizeGame = function(ratio) {
+// 	// width = window.innerWidth;
+// 	// height = window.innerHeight;
+// 	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+// 	// game.scale.setUserScale(width / 800, height / 600);
+// };
 
 game.state.add("boot", bootState);
 game.state.add("menu", menuState);
