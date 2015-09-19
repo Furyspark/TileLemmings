@@ -60,6 +60,7 @@ var gameState = {
 				this.replaceTile(tileX, tileY, tempTile);
 				if(tileType != undefined) {
 					this.state.layers.tileLayer.setType(tileX, tileY, tileType);
+					this.state.layers.minimapLayer.placeTile(tileX, tileY, tileType);
 					return true;
 				}
 				return false;
@@ -67,6 +68,128 @@ var gameState = {
 			replaceTile: function(tileX, tileY, newTile) {
 				this.removeTile(tileX, tileY);
 				this.data[this.getIndex(tileX, tileY)] = newTile;
+			}
+		},
+		minimapLayer: {
+			data: [],
+			group: null,
+			bg: null,
+			frame: null,
+			scrolling: false,
+			offset: {
+				x: 0,
+				y: 0
+			},
+			size: {
+				width: 120,
+				height: 90
+			},
+			init: function(state) {
+				this.state = state;
+				this.group = game.add.group();
+				Object.defineProperties(this.group, {
+					left: {
+						get() {
+							return (this.x - this.width);
+						}
+					},
+					top: {
+						get() {
+							return (this.y - this.height);
+						}
+					}
+				});
+				this.bg = game.add.image(0, 0, "minimap", "bg.png");
+				this.bg.width = this.state.map.width * 16;
+				this.bg.height = this.state.map.height * 16;
+				this.group.add(this.bg);
+				// Fill ALL the data
+				while(this.data.length < this.state.map.width * this.state.map.height) {
+					this.data.push(null);
+				}
+			},
+			getTile: function(tileX, tileY) {
+				return this.data[this.getIndex(tileX, tileY)];
+			},
+			getIndex: function(tileX, tileY) {
+				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
+			},
+			removeTile: function(tileX, tileY) {
+				var testTile = this.getTile(tileX, tileY);
+				if(testTile != null) {
+					this.data[tileX, tileY] = null;
+					testTile.destroy();
+					return true;
+				}
+				return false;
+			},
+			placeTile: function(tileX, tileY, tileType) {
+				var key = "tile";
+				if(tileType === 2) {
+					key = "steel";
+				}
+				var tempTile = game.add.image(tileX * 16, tileY * 16, "minimap", key + ".png");
+				this.replaceTile(tileX, tileY, tempTile);
+			},
+			replaceTile: function(tileX, tileY, newTile) {
+				this.removeTile(tileX, tileY);
+				this.data[this.getIndex(tileX, tileY)] = newTile;
+				this.group.add(newTile);
+				if(this.frame) {
+					this.group.bringToTop(this.frame);
+				}
+			},
+			finalize: function() {
+				this.createFrame();
+				this.group.width = this.size.width;
+				this.group.height = this.size.height;
+				this.offset.x = game.camera.width - this.size.width;
+				this.offset.y = game.camera.height - this.size.height;
+				this.reposition();
+			},
+			reposition: function() {
+				this.group.x = game.camera.x + this.offset.x;
+				this.group.y = game.camera.y + this.offset.y;
+				this.updateFrame();
+			},
+			createFrame: function() {
+				if(this.frame) {
+					this.frame.destroy();
+				}
+				this.frame = game.add.image(0, 0, "minimap", "frame.png");
+				this.group.add(this.frame);
+				this.group.bringToTop(this.frame);
+				this.frame.width = this.state.cam.width;
+				this.frame.height = this.state.cam.height;
+			},
+			updateFrame: function() {
+				if(this.frame) {
+					this.frame.x = this.state.cam.x;
+					this.frame.y = this.state.cam.y;
+				}
+			},
+			getCursorInRate: function() {
+				var cursor = this.state.getWorldCursor();
+				cursor.x *= 2;
+				cursor.y *= 2;
+				var result = {
+					x: ((cursor.x - this.group.x) / this.group.width),
+					y: ((cursor.y - this.group.y) / this.group.height)
+				}
+				return result;
+			},
+			mouseOver: function() {
+				var cursor = this.getCursorInRate();
+				if(cursor.x >= 0 && cursor.x <= 1 &&
+					cursor.y >= 0 && cursor.y <= 1) {
+					return true;
+				}
+				return false;
+			},
+			clear: function() {
+				this.group.destroy();
+				this.data = [];
+				this.scrolling = false;
 			}
 		}
 	},
@@ -218,18 +341,7 @@ var gameState = {
 	},
 
 	create: function() {
-		this.layers.tileLayer.state = this;
-		this.layers.primitiveLayer.state = this;
-		this.speedManager.owner = this;
-		// Create groups
-		this.levelGroup = new Phaser.Group(game);
-		
-		// Create GUI
-		this.createLevelGUI();
-
-		// Create camera config
-		this.cam = new Camera(this.game, this);
-
+		this.enableUserInteraction();
 		// Create map
 		this.map = game.cache.getJSON("level");
 		this.map.owner = this;
@@ -239,6 +351,19 @@ var gameState = {
 		Object.defineProperty(this.map, "totalheight", {get() {
 			return this.height * this.tileheight;
 		}});
+
+		this.layers.tileLayer.state = this;
+		this.layers.primitiveLayer.state = this;
+		this.layers.minimapLayer.init(this);
+		this.speedManager.owner = this;
+		// Create groups
+		this.levelGroup = new Phaser.Group(game);
+		
+		// Create GUI
+		this.createLevelGUI();
+
+		// Create camera config
+		this.cam = new Camera(this.game, this);
 		// Add tile functions to map
 		this.map.removeTile = function(tileX, tileY, force) {
 			// This function attempts to remove a tile
@@ -318,22 +443,18 @@ var gameState = {
 			if(layer.name === "tiles") {
 				for(var b = 0;b < layer.data.length;b++) {
 					var gid = layer.data[b];
-					if(gid === 0) {
-						this.layers.tileLayer.data.push(0);
-					}
-					else {
+					var tileType = 0;
+					if(gid > 0) {
+						tileType = 1;
 						var props = tileProps[gid.toString()];
 						if(props) {
-							var tileType = 1;
 							if(props.tileType) {
 								tileType = parseInt(props.tileType);
 							}
-							this.layers.tileLayer.data.push(tileType);
 						}
-						else {
-							this.layers.tileLayer.data.push(1);
-						}
+						this.layers.minimapLayer.placeTile((b % this.map.width), Math.floor(b / this.map.width), tileType);
 					}
+					this.layers.tileLayer.data.push(tileType);
 				}
 			}
 			else if(layer.name === "objects") {
@@ -467,6 +588,7 @@ var gameState = {
 				this.world.bringToTop(elem.label);
 			}
 		}
+		this.world.bringToTop(this.layers.minimapLayer.group);
 	},
 
 	enableUserInteraction: function() {
@@ -480,7 +602,11 @@ var gameState = {
 			p: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
 			f: this.game.input.keyboard.addKey(Phaser.Keyboard.F),
 			q: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
-			e: this.game.input.keyboard.addKey(Phaser.Keyboard.E)
+			e: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+			w: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+			s: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
+			a: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
+			d: this.game.input.keyboard.addKey(Phaser.Keyboard.D)
 		};
 
 		// Set pause functionality
@@ -496,11 +622,19 @@ var gameState = {
 		}, this);
 
 		game.input.mouse.capture = true;
-		// Add action assignment possibility
+		// Add left-mouse button functionality
 		game.input.activePointer.leftButton.onDown.add(function() {
+			// Assign action to lemming
 			if(this.lemmingSelected != null && this.actions.current && this.actions.current.amount > 0) {
 				this.lemmingSelected.setAction(this.actions.current.name);
 			}
+			// Start minimap scrolling
+			else if(this.layers.minimapLayer.mouseOver()) {
+				this.layers.minimapLayer.scrolling = true;
+			}
+		}, this);
+		game.input.activePointer.leftButton.onUp.add(function() {
+			this.layers.minimapLayer.scrolling = false;
 		}, this);
 		// Add right-mouse scrolling possibility
 		game.input.activePointer.rightButton.onDown.add(function() {
@@ -514,12 +648,8 @@ var gameState = {
 
 	startLevel: function() {
 		this.initMap();
-		this.enableUserInteraction();
 		this.zoomTo(2);
 		// Set level stuff
-		// Create groups
-
-		// Create map layers
 
 		// Create objects
 		for(var a in this.map.objects) {
@@ -561,6 +691,7 @@ var gameState = {
 		}
 
 		// Let's go... HRRRRN
+		this.layers.minimapLayer.finalize();
 		var snd = game.sound.play("sndLetsGo");
 		var alarm = new Alarm(this.game, 90, function() {
 			this.openDoors();
@@ -680,6 +811,7 @@ var gameState = {
 		}
 
 		// Scroll
+		// Right-click
 		if(this.cam.scrolling) {
 			var originRel = this.getScreenCursor();
 			var speedFactor = 2;
@@ -690,6 +822,44 @@ var gameState = {
 			this.scrollOrigin = this.getScreenCursor();
 			this.cam.move(moveRel.x, moveRel.y);
 		}
+		// Minimap
+		else if(this.layers.minimapLayer.scrolling) {
+			var rate = this.layers.minimapLayer.getCursorInRate();
+			rate.x = Math.max(0, Math.min(1, rate.x));
+			rate.y = Math.max(0, Math.min(1, rate.y));
+			var moveTo = {
+				x: Math.floor((rate.x * this.map.totalwidth) - (this.cam.width * 0.5)),
+				y: Math.floor((rate.y * this.map.totalheight) - (this.cam.height * 0.5))
+			};
+			this.cam.move(moveTo.x, moveTo.y, false);
+			console.log(rate.y);
+		}
+		// WASD
+		if(!this.cam.scrolling) {
+			var moveRel = {
+				x: 0,
+				y: 0
+			};
+			if(this.keyboard.a.isDown) {
+				moveRel.x--;
+			}
+			if(this.keyboard.d.isDown) {
+				moveRel.x++;
+			}
+			if(this.keyboard.w.isDown) {
+				moveRel.y--;
+			}
+			if(this.keyboard.s.isDown) {
+				moveRel.y++;
+			}
+			var speedFactor = 10;
+			moveRel.x *= speedFactor;
+			moveRel.y *= speedFactor;
+			this.cam.move(moveRel.x, moveRel.y);
+		}
+
+		// Update minimap
+		this.layers.minimapLayer.reposition();
 
 		// Test for victory/defeat
 		if(this.victoryState.gameStarted && !this.victoryState.gameEnded) {
@@ -744,6 +914,9 @@ var gameState = {
 			}
 		}
 
+		// Clear minimap
+		this.layers.minimapLayer.clear();
+
 		// Clear tile layer
 		this.layers.tileLayer.data = [];
 
@@ -794,6 +967,9 @@ var gameState = {
 	},
 
 	cursorOverGUI: function() {
+		if(this.layers.minimapLayer.mouseOver()) {
+			return true;
+		}
 		for(var a = 0;a < this.guiGroup.length;a++) {
 			var uiNode = this.guiGroup[a];
 			if(uiNode.mouseOver()) {

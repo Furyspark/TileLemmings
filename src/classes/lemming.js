@@ -241,7 +241,7 @@ Lemming.prototype.turnAround = function() {
 	this.scale.x = -this.scale.x;
 	this.dir = -this.dir;
 	this.velocity.x = -this.velocity.x;
-	this.x += this.velocity.x;
+	this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
 };
 
 Lemming.prototype.update = function() {

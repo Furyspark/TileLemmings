@@ -134,6 +134,11 @@
 			"key": "mainmenu",
 			"url": "assets/gfx/sprite_atlases/mainmenu.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/mainmenu.json"
+		},
+		{
+			"key": "minimap",
+			"url": "assets/gfx/sprite_atlases/minimap.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/minimap.json"
 		}
 	],
 	"images": [

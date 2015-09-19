@@ -33,9 +33,18 @@ var Camera = function(game, state) {
 
 Camera.prototype.constructor = Camera;
 
-Camera.prototype.move = function(hor, ver) {
-	this.gameCamera.x += hor;
-	this.gameCamera.y += ver;
+Camera.prototype.move = function(hor, ver, relative) {
+	if(typeof relative === "undefined") {
+		relative = true;
+	}
+	if(relative) {
+		this.gameCamera.x += hor;
+		this.gameCamera.y += ver;
+	}
+	else {
+		this.gameCamera.x = (hor * this.state.zoom);
+		this.gameCamera.y = (ver * this.state.zoom);
+	}
 	// Move UI
 	for(var a = 0;a < this.state.guiGroup.length;a++) {
 		var uiNode = this.state.guiGroup[a];
