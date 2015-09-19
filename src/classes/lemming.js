@@ -480,18 +480,9 @@ Lemming.prototype.update = function() {
 		// Remove label
 		if (this.gameLabel) {
 			this.gameLabel.remove();
-			this.gameLabel = null;
 		}
 		this.removeActionPreview();
 		// Remove from state's group
-		var done = false;
-		for (var a = 0; a < this.state.lemmingsGroup.all.length && !done; a++) {
-			var lem = this.state.lemmingsGroup.all[a];
-			if (lem === this) {
-				this.state.lemmingsGroup.all.splice(a, 1);
-				done = true;
-			}
-		}
 		this.active = false;
 		// Kill self
 		this.pendingDestroy = true;
@@ -772,8 +763,9 @@ Lemming.prototype.proceedExplode = function() {
 	if (this.subaction.name === "exploder" && !this.subaction.idle && !this.dead && this.active) {
 		this.subaction.value--;
 		if (this.subaction.value <= 0) {
-			this.gameLabel.remove();
-			this.gameLabel = null;
+			if(this.gameLabel) {
+				this.gameLabel.remove();
+			}
 			if (this.onFloor()) {
 				game.sound.play("sndOhNo");
 				this.dead = true;
@@ -809,7 +801,7 @@ Lemming.prototype.explode = function() {
 };
 
 Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {
-	var group = this.state.lemmingsGroup.all;
+	var group = this.state.lemmingsGroup.children;
 	var result = [];
 	if (group) {
 		for (var a = 0; a < group.length; a++) {
@@ -830,6 +822,9 @@ Lemming.prototype.isOutsideLevel = function() {
 };
 
 Lemming.prototype.die = function(deathType) {
+	if(this.gameLabel) {
+		this.gameLabel.remove();
+	}
 	// Set states
 	this.dead = true;
 	this.velocity.x = 0;

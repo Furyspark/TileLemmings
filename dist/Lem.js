@@ -274,6 +274,9 @@ GUI_Button.prototype.doAction = function() {
 					this.animations.play("down");
 					this.state.nuke();
 					break;
+				case "grid":
+					this.state.toggleGrid();
+					break;
 			}
 			break;
 	}
@@ -1047,18 +1050,9 @@ Lemming.prototype.update = function() {
 		// Remove label
 		if (this.gameLabel) {
 			this.gameLabel.remove();
-			this.gameLabel = null;
 		}
 		this.removeActionPreview();
 		// Remove from state's group
-		var done = false;
-		for (var a = 0; a < this.state.lemmingsGroup.all.length && !done; a++) {
-			var lem = this.state.lemmingsGroup.all[a];
-			if (lem === this) {
-				this.state.lemmingsGroup.all.splice(a, 1);
-				done = true;
-			}
-		}
 		this.active = false;
 		// Kill self
 		this.pendingDestroy = true;
@@ -1339,8 +1333,9 @@ Lemming.prototype.proceedExplode = function() {
 	if (this.subaction.name === "exploder" && !this.subaction.idle && !this.dead && this.active) {
 		this.subaction.value--;
 		if (this.subaction.value <= 0) {
-			this.gameLabel.remove();
-			this.gameLabel = null;
+			if(this.gameLabel) {
+				this.gameLabel.remove();
+			}
 			if (this.onFloor()) {
 				game.sound.play("sndOhNo");
 				this.dead = true;
@@ -1376,7 +1371,7 @@ Lemming.prototype.explode = function() {
 };
 
 Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {
-	var group = this.state.lemmingsGroup.all;
+	var group = this.state.lemmingsGroup.children;
 	var result = [];
 	if (group) {
 		for (var a = 0; a < group.length; a++) {
@@ -1397,6 +1392,9 @@ Lemming.prototype.isOutsideLevel = function() {
 };
 
 Lemming.prototype.die = function(deathType) {
+	if(this.gameLabel) {
+		this.gameLabel.remove();
+	}
 	// Set states
 	this.dead = true;
 	this.velocity.x = 0;
@@ -1531,7 +1529,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 		if(this.lemmings > 0) {
 			this.lemmings--;
 			var lem = new Lemming(game, this.x, this.y + 30);
-			this.lemmingsGroup.push(lem);
+			this.lemmingsGroup.add(lem);
 			if(recurring) {
 				var alarm = new Alarm(game, this.rate, this.spawnLemming, this);
 			}
@@ -2409,16 +2407,13 @@ var gameState = {
 	},
 
 	levelGroup: null,
-	lemmingsGroup: {
-		all: []
-	},
 	doorsGroup: [],
 	exitsGroup: [],
 	trapsGroup: [],
 	guiGroup: null,
 	grid: {
 		enabled: false,
-		image: null
+		button: null
 	},
 	alarms: {
 		data: [],
@@ -2456,18 +2451,22 @@ var gameState = {
 		},
 		refresh: function() {
 			// Update objects
-			for(var a = 0;a < this.owner.levelGroup.children.length;a++) {
-				var obj = this.owner.levelGroup.children[a];
-				if(obj) {
-					// Update animations
-					if(obj.animations) {
-						if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
-							var prevFrame = obj.animations.currentAnim.frame;
-							obj.animations.currentAnim.paused = false;
-							obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
-						}
-						else if(obj.animations.currentAnim && this.effectiveSpeed === 0) {
-							obj.animations.paused = true;
+			var checkGroups = [this.owner.levelGroup.children, this.owner.lemmingsGroup.children];
+			for(var b = 0;b < checkGroups.length;b++) {
+				var grp = checkGroups[b];
+				for(var a = 0;a < grp.length;a++) {
+					var obj = grp[a];
+					if(obj) {
+						// Update animations
+						if(obj.animations) {
+							if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
+								var prevFrame = obj.animations.currentAnim.frame;
+								obj.animations.currentAnim.paused = false;
+								obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
+							}
+							else if(obj.animations.currentAnim && this.effectiveSpeed === 0) {
+								obj.animations.paused = true;
+							}
 						}
 					}
 				}
@@ -2524,6 +2523,13 @@ var gameState = {
 		],
 		select: -1,
 		get current() {
+			if(this.select === -1) {
+				return {
+					name: "",
+					amount: 0,
+					button: null
+				};
+			}
 			return this.items[this.select];
 		},
 		previewGroup: []
@@ -2566,6 +2572,7 @@ var gameState = {
 		this.speedManager.owner = this;
 		// Create groups
 		this.levelGroup = game.add.group();
+		this.lemmingsGroup = game.add.group(this.levelGroup);
 		this.guiGroup = game.add.group();
 		
 		// Create GUI
@@ -2729,8 +2736,16 @@ var gameState = {
 		}
 
 		// Create grid
-		this.grid.image = game.add.tileSprite(0, 0, game.stage.width, game.stage.height, "misc", "gridTile.png");
-		this.grid.image.visible = false;
+		this.gridGroup = game.add.group(this.levelGroup);
+		for(var a = 0;a < this.map.width * this.map.height;a++) {
+			var placePos = {
+				x: (a % this.map.width) * this.map.tilewidth,
+				y: Math.floor(a / this.map.width) * this.map.tileheight
+			};
+			var grdImg = game.add.image(placePos.x, placePos.y, "misc", "gridTile.png");
+			this.gridGroup.add(grdImg);
+		}
+		this.gridGroup.visible = false;
 
 		// Set (z-)order of display objects
 		// Bring backgrounds objects to top first, ending with foreground objects
@@ -2738,7 +2753,6 @@ var gameState = {
 			this.world.bringToTop(this.background);
 		}
 		this.world.bringToTop(this.levelGroup);
-		this.world.bringToTop(this.grid.image);
 		this.world.bringToTop(this.guiGroup);
 		for(var a = 0;a < this.guiGroup.children.length;a++) {
 			var elem = this.guiGroup.children[a];
@@ -2781,8 +2795,7 @@ var gameState = {
 		}, this);
 		// Set toggle grid functionality
 		this.keyboard.g.onDown.add(function() {
-			this.grid.enabled = !this.grid.enabled;
-			this.grid.image.visible = this.grid.enabled;
+			this.toggleGrid();
 		}, this);
 
 		game.input.mouse.capture = true;
@@ -2843,7 +2856,7 @@ var gameState = {
 				// Add to total lemming count
 				this.victoryState.total += doorValue;
 				// Create object
-				newObj.setAsDoor(doorType, doorValue, doorRate, delay, this.lemmingsGroup.all);
+				newObj.setAsDoor(doorType, doorValue, doorRate, delay, this.lemmingsGroup);
 			}
 			// Create exit
 			else if(obj.type === "exit") {
@@ -2907,6 +2920,19 @@ var gameState = {
 		}
 	},
 
+	toggleGrid: function() {
+		if(this.grid.enabled) {
+			this.grid.enabled = false;
+			this.gridGroup.visible = false;
+			this.grid.button.visualRelease();
+		}
+		else {
+			this.grid.enabled = true;
+			this.gridGroup.visible = true;
+			this.grid.button.visualPress();
+		}
+	},
+
 	nuke: function() {
 		// Start nuke
 		if(!this.nukeStarted) {
@@ -2923,8 +2949,8 @@ var gameState = {
 		// Proceed nuke
 		else {
 			var searchComplete = false;
-			for(var a = 0;a < this.lemmingsGroup.all.length && !searchComplete;a++) {
-				var lem = this.lemmingsGroup.all[a];
+			for(var a = 0;a < this.lemmingsGroup.children.length && !searchComplete;a++) {
+				var lem = this.lemmingsGroup.children[a];
 				if(lem.subaction.name !== "exploder") {
 					lem.setExploder();
 					searchComplete = true;
@@ -2958,7 +2984,7 @@ var gameState = {
 		this.zoom = factor;
 		this.levelGroup.scale.setTo(factor);
 		game.camera.bounds.setTo(0, 0, Math.floor(this.map.totalwidth * this.zoom), Math.floor(this.map.totalheight * this.zoom));
-		this.grid.image.tileScale.setTo(this.zoom);
+		// this.grid.image.tileScale.setTo(this.zoom);
 	},
 
 	update: function() {
@@ -2974,8 +3000,8 @@ var gameState = {
 				}
 			}
 		};
-		for(var a = 0;a < this.lemmingsGroup.all.length;a++) {
-			var obj = this.lemmingsGroup.all[a];
+		for(var a = 0;a < this.lemmingsGroup.children.length;a++) {
+			var obj = this.lemmingsGroup.children[a];
 			obj.cursorDeselect();
 			if(obj.mouseOver()) {
 				lemmingSelect.data.push(obj);
@@ -3043,6 +3069,9 @@ var gameState = {
 
 		// Update minimap
 		this.layers.minimapLayer.reposition();
+		// Update z-order
+		this.levelGroup.bringToTop(this.lemmingsGroup);
+		this.levelGroup.bringToTop(this.gridGroup);
 
 		// Test for victory/defeat
 		if(this.victoryState.gameStarted && !this.victoryState.gameEnded) {
@@ -3053,7 +3082,7 @@ var gameState = {
 					allDoorsEmpty = false;
 				}
 			}
-			if(allDoorsEmpty && this.lemmingsGroup.all.length === 0) {
+			if(allDoorsEmpty && this.lemmingsGroup.children.length === 0) {
 				this.victoryState.gameEnded = true;
 				if(this.victoryState.saved >= this.victoryState.need) {
 					// Victory
@@ -3079,7 +3108,6 @@ var gameState = {
 			// this.trapsGroup,
 			// this.guiGroup
 		];
-		this.lemmingsGroup.all = [];
 		this.doorsGroup = [];
 		this.exitsGroup = [];
 		this.trapsGroup = [];
@@ -3103,11 +3131,6 @@ var gameState = {
 
 		// Remove reference to grid screen
 		this.grid.enabled = false;
-		if(this.grid.image !== undefined) {
-			this.grid.image.visible = true;
-			this.grid.image.pendingDestroy = true;
-			this.grid.image = null;
-		}
 
 		// Clear minimap
 		// this.layers.minimapLayer.clear();
@@ -3294,6 +3317,16 @@ var gameState = {
 		}, "nuke", "misc");
 		btn.doubleTap.enabled = true;
 
+		// Create grid button
+		var btn = new GUI_Button(game, 0, game.camera.y + game.camera.height);
+		this.guiGroup.add(btn);
+		buttons.push(btn);
+		btn.set({
+			released: "Btn_Grid_0.png",
+			pressed: "Btn_Grid_1.png"
+		}, "grid", "misc");
+		this.grid.button = btn;
+
 		// Align buttons
 		var alignX = 0;
 		for(var a in buttons) {
@@ -3352,7 +3385,7 @@ var gameState = {
 		var arrayCheck = [];
 		switch(instanceTypeCheck) {
 			case "lemming":
-			arrayCheck = this.lemmingsGroup.all;
+			arrayCheck = this.lemmingsGroup.children;
 			break;
 			case "door":
 			arrayCheck = this.doorsGroup;

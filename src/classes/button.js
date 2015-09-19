@@ -160,6 +160,9 @@ GUI_Button.prototype.doAction = function() {
 					this.animations.play("down");
 					this.state.nuke();
 					break;
+				case "grid":
+					this.state.toggleGrid();
+					break;
 			}
 			break;
 	}

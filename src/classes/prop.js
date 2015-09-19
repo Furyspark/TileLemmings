@@ -90,7 +90,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 		if(this.lemmings > 0) {
 			this.lemmings--;
 			var lem = new Lemming(game, this.x, this.y + 30);
-			this.lemmingsGroup.push(lem);
+			this.lemmingsGroup.add(lem);
 			if(recurring) {
 				var alarm = new Alarm(game, this.rate, this.spawnLemming, this);
 			}
