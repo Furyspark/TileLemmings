@@ -3,6 +3,7 @@ var intermissionState = {
 	levelObj: null,
 	background: null,
 	labels: [],
+	guiGroup: [],
 
 	map: null,
 	minimap: null,
@@ -25,17 +26,47 @@ var intermissionState = {
 	},
 
 	create: function() {
+		// Add background
 		this.background = new Background(this.game, "bgMainMenu");
 
+		// Create map preview
 		this.initMapPreview();
 
+		// Add user input
 		this.game.input.onTap.addOnce(function() {
-			this.clearState();
-			this.game.state.start("game", true, false, this.levelFolder, this.levelObj);
+			if(!this.mouseOverGUI()) {
+				this.clearState();
+				this.game.state.start("game", true, false, this.levelFolder, this.levelObj);
+			}
 		}, this);
+
+		// Add 'return to main menu' button
+		var btn = new GUI_MainMenuButton(game, 4, 4, "mainmenu");
+		this.guiGroup.push(btn);
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			this.clearState();
+			game.state.start("menu");
+		}, this);
+		btn.resize(60, 24);
+		btn.label.text = "Main Menu";
+		btn.label.fontSize = 10;
+	},
+
+	mouseOverGUI: function() {
+		for(var a = 0;a < this.guiGroup.length;a++) {
+			var elem = this.guiGroup[a];
+			if(elem.mouseOver()) {
+				return true;
+			}
+		}
+		return false;
 	},
 
 	clearState: function() {
+		// Destroy minimap
 		while(this.minimap.children.length > 0) {
 			var gobj = this.minimap.children[0];
 			this.minimap.removeChildAt(0);
@@ -47,8 +78,19 @@ var intermissionState = {
 			}
 		}
 		this.minimap.destroy();
+		// Destroy labels
 		while(this.labels.length > 0) {
 			var gobj = this.labels.shift();
+			if(gobj.remove) {
+				gobj.remove();
+			}
+			else {
+				gobj.destroy();
+			}
+		}
+		// Destroy GUI elements (buttons etc)
+		while(this.guiGroup.length > 0) {
+			var gobj = this.guiGroup.shift();
 			if(gobj.remove) {
 				gobj.remove();
 			}

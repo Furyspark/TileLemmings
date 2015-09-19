@@ -46,7 +46,11 @@
 			"levels": [
 				{
 					"filename": "level1.json",
-					"name": "Bash that wall down!"
+					"name": "Multitasking"
+				},
+				{
+					"filename": "level2.json",
+					"name": "Intervention"
 				}
 			]
 		}

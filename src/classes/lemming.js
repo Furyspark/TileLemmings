@@ -309,7 +309,9 @@ Lemming.prototype.update = function() {
 		else if (this.onFloor() && this.action.name === "basher" && !this.action.idle) {
 			// Remove tile in front of lemming
 			var alarm = new Alarm(this.game, 30, function() {
-				this.setAction("walker");
+				if(this.action.name === "basher" && !this.action.idle) {
+					this.clearAction();
+				}
 			}, this);
 			var bashResult = this.state.map.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1));
 			if (bashResult === 1 ||
@@ -450,13 +452,13 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 };
 
 Lemming.prototype.playAnim = function(key, frameRate) {
-	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
+	this.animations.play(key, frameRate * Math.max(1, this.state.speedManager.effectiveSpeed));
 	// this.anchor.setTo(
 	// 	0.5 - (this.animationProperties[key].offset.x / this.width),
 	// 	1 - (this.animationProperties[key].offset.y / this.height)
 	// );
 	if (this.state.speedManager.effectiveSpeed === 0) {
-		this.animations.stop();
+		this.animations.paused = true;
 	}
 };
 
@@ -675,12 +677,12 @@ Lemming.prototype.proceedDig = function() {
 
 Lemming.prototype.proceedMine = function() {
 	if (this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
-		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		var result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
 		if (result === 2) {
 			game.sound.play("sndChink");
 			this.clearAction();
 		} else {
-			result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
+			result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y - (this.tile.height - 1)));
 			if (result === 2) {
 				game.sound.play("sndChink");
 				this.clearAction();

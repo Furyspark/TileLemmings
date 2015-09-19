@@ -258,10 +258,11 @@ var gameState = {
 					if(obj.animations) {
 						if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
 							var prevFrame = obj.animations.currentAnim.frame;
+							obj.animations.currentAnim.paused = false;
 							obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
 						}
-						else {
-							obj.animations.stop();
+						else if(obj.animations.currentAnim && this.effectiveSpeed === 0) {
+							obj.animations.paused = true;
 						}
 					}
 				}
@@ -662,6 +663,7 @@ var gameState = {
 				var doorValue = 0;
 				var doorType = "classic";
 				var doorRate = 50;
+				var delay = 0;
 				if(objProps) {
 					if(objProps.value) {
 						doorValue = parseInt(objProps.value);
@@ -672,11 +674,14 @@ var gameState = {
 					if(objProps.rate) {
 						doorRate = parseInt(objProps.rate);
 					}
+					if(objProps.delay) {
+						delay = parseInt(objProps.delay);
+					}
 				}
 				// Add to total lemming count
 				this.victoryState.total += doorValue;
 				// Create object
-				newObj.setAsDoor(doorType, doorValue, doorRate, this.lemmingsGroup.all);
+				newObj.setAsDoor(doorType, doorValue, doorRate, delay, this.lemmingsGroup.all);
 			}
 			// Create exit
 			else if(obj.type === "exit") {

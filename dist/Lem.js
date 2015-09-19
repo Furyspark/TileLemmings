@@ -858,7 +858,9 @@ Lemming.prototype.update = function() {
 		else if (this.onFloor() && this.action.name === "basher" && !this.action.idle) {
 			// Remove tile in front of lemming
 			var alarm = new Alarm(this.game, 30, function() {
-				this.setAction("walker");
+				if(this.action.name === "basher" && !this.action.idle) {
+					this.clearAction();
+				}
 			}, this);
 			var bashResult = this.state.map.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1));
 			if (bashResult === 1 ||
@@ -999,13 +1001,13 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 };
 
 Lemming.prototype.playAnim = function(key, frameRate) {
-	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
+	this.animations.play(key, frameRate * Math.max(1, this.state.speedManager.effectiveSpeed));
 	// this.anchor.setTo(
 	// 	0.5 - (this.animationProperties[key].offset.x / this.width),
 	// 	1 - (this.animationProperties[key].offset.y / this.height)
 	// );
 	if (this.state.speedManager.effectiveSpeed === 0) {
-		this.animations.stop();
+		this.animations.paused = true;
 	}
 };
 
@@ -1224,12 +1226,12 @@ Lemming.prototype.proceedDig = function() {
 
 Lemming.prototype.proceedMine = function() {
 	if (this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
-		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		var result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
 		if (result === 2) {
 			game.sound.play("sndChink");
 			this.clearAction();
 		} else {
-			result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
+			result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y - (this.tile.height - 1)));
 			if (result === 2) {
 				game.sound.play("sndChink");
 				this.clearAction();
@@ -1401,7 +1403,7 @@ Prop.prototype.playAnim = function(key, frameRate) {
 	}
 };
 
-Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
+Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
 	this.state.doorsGroup.push(this);
@@ -1426,6 +1428,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	// Set class variables
 	this.lemmings = lemmings;
 	this.rate = Math.max(10, rate);
+	this.delay = Math.max(0, delay);
 
 	// Set animation
 	this.animations.add("opening", openingFrames, 15, false);
@@ -1444,14 +1447,23 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 			this.playAnim("open", 15);
 			var alarm = new Alarm(this.game, 30, function() {
 				this.opened();
-				this.state.playLevelBGM();
+				if(this.state.doorsGroup[0] === this) {
+					this.state.playLevelBGM();
+				}
 			}, this);
 		}, this);
 		// Play animation
 		this.playAnim("opening", 15);
 	};
 	this.opened = function() {
-		this.spawnLemming(true);
+		if(this.delay === 0) {
+			this.spawnLemming(true);
+		}
+		else {
+			var alarm = new Alarm(game, this.delay, function() {
+				this.spawnLemming(true);
+			}, this);
+		}
 	};
 	this.spawnLemming = function(recurring) {
 		if(typeof recurring === "undefined") {
@@ -1678,10 +1690,22 @@ var menuState = {
 		this.clearGUIGroup();
 
 		// Add button(s)
+		var btnProps = {
+			basePos: {
+				x: 40,
+				y: 30
+			},
+			width: 160,
+			height: 60,
+			spacing: 20
+		};
+		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
 		var levelList = this.game.cache.getJSON("levelList").difficulties;
 		for(var a = 0;a < levelList.length;a++) {
 			var levelFolder = levelList[a];
-			var btn = new GUI_MainMenuButton(this.game, 80, 60, "mainmenu");
+			var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
+			var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
+			var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
 			btn.set({
 				pressed: "btnGray_Down.png",
 				released: "btnGray_Up.png"
@@ -1771,6 +1795,7 @@ var intermissionState = {
 	levelObj: null,
 	background: null,
 	labels: [],
+	guiGroup: [],
 
 	map: null,
 	minimap: null,
@@ -1793,17 +1818,47 @@ var intermissionState = {
 	},
 
 	create: function() {
+		// Add background
 		this.background = new Background(this.game, "bgMainMenu");
 
+		// Create map preview
 		this.initMapPreview();
 
+		// Add user input
 		this.game.input.onTap.addOnce(function() {
-			this.clearState();
-			this.game.state.start("game", true, false, this.levelFolder, this.levelObj);
+			if(!this.mouseOverGUI()) {
+				this.clearState();
+				this.game.state.start("game", true, false, this.levelFolder, this.levelObj);
+			}
 		}, this);
+
+		// Add 'return to main menu' button
+		var btn = new GUI_MainMenuButton(game, 4, 4, "mainmenu");
+		this.guiGroup.push(btn);
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			this.clearState();
+			game.state.start("menu");
+		}, this);
+		btn.resize(60, 24);
+		btn.label.text = "Main Menu";
+		btn.label.fontSize = 10;
+	},
+
+	mouseOverGUI: function() {
+		for(var a = 0;a < this.guiGroup.length;a++) {
+			var elem = this.guiGroup[a];
+			if(elem.mouseOver()) {
+				return true;
+			}
+		}
+		return false;
 	},
 
 	clearState: function() {
+		// Destroy minimap
 		while(this.minimap.children.length > 0) {
 			var gobj = this.minimap.children[0];
 			this.minimap.removeChildAt(0);
@@ -1815,8 +1870,19 @@ var intermissionState = {
 			}
 		}
 		this.minimap.destroy();
+		// Destroy labels
 		while(this.labels.length > 0) {
 			var gobj = this.labels.shift();
+			if(gobj.remove) {
+				gobj.remove();
+			}
+			else {
+				gobj.destroy();
+			}
+		}
+		// Destroy GUI elements (buttons etc)
+		while(this.guiGroup.length > 0) {
+			var gobj = this.guiGroup.shift();
 			if(gobj.remove) {
 				gobj.remove();
 			}
@@ -2212,10 +2278,11 @@ var gameState = {
 					if(obj.animations) {
 						if(obj.animations.currentAnim && this.effectiveSpeed > 0) {
 							var prevFrame = obj.animations.currentAnim.frame;
+							obj.animations.currentAnim.paused = false;
 							obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
 						}
-						else {
-							obj.animations.stop();
+						else if(obj.animations.currentAnim && this.effectiveSpeed === 0) {
+							obj.animations.paused = true;
 						}
 					}
 				}
@@ -2616,6 +2683,7 @@ var gameState = {
 				var doorValue = 0;
 				var doorType = "classic";
 				var doorRate = 50;
+				var delay = 0;
 				if(objProps) {
 					if(objProps.value) {
 						doorValue = parseInt(objProps.value);
@@ -2626,11 +2694,14 @@ var gameState = {
 					if(objProps.rate) {
 						doorRate = parseInt(objProps.rate);
 					}
+					if(objProps.delay) {
+						delay = parseInt(objProps.delay);
+					}
 				}
 				// Add to total lemming count
 				this.victoryState.total += doorValue;
 				// Create object
-				newObj.setAsDoor(doorType, doorValue, doorRate, this.lemmingsGroup.all);
+				newObj.setAsDoor(doorType, doorValue, doorRate, delay, this.lemmingsGroup.all);
 			}
 			// Create exit
 			else if(obj.type === "exit") {

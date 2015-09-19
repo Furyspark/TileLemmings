@@ -12,10 +12,22 @@ var menuState = {
 		this.clearGUIGroup();
 
 		// Add button(s)
+		var btnProps = {
+			basePos: {
+				x: 40,
+				y: 30
+			},
+			width: 160,
+			height: 60,
+			spacing: 20
+		};
+		btnProps.cols = Math.floor((this.game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
 		var levelList = this.game.cache.getJSON("levelList").difficulties;
 		for(var a = 0;a < levelList.length;a++) {
 			var levelFolder = levelList[a];
-			var btn = new GUI_MainMenuButton(this.game, 80, 60, "mainmenu");
+			var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
+			var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
+			var btn = new GUI_MainMenuButton(this.game, xTo, yTo, "mainmenu");
 			btn.set({
 				pressed: "btnGray_Down.png",
 				released: "btnGray_Up.png"

@@ -35,7 +35,7 @@ Prop.prototype.playAnim = function(key, frameRate) {
 	}
 };
 
-Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
+Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
 	this.state.doorsGroup.push(this);
@@ -60,6 +60,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 	// Set class variables
 	this.lemmings = lemmings;
 	this.rate = Math.max(10, rate);
+	this.delay = Math.max(0, delay);
 
 	// Set animation
 	this.animations.add("opening", openingFrames, 15, false);
@@ -78,14 +79,23 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, lemmingsGroup) {
 			this.playAnim("open", 15);
 			var alarm = new Alarm(this.game, 30, function() {
 				this.opened();
-				this.state.playLevelBGM();
+				if(this.state.doorsGroup[0] === this) {
+					this.state.playLevelBGM();
+				}
 			}, this);
 		}, this);
 		// Play animation
 		this.playAnim("opening", 15);
 	};
 	this.opened = function() {
-		this.spawnLemming(true);
+		if(this.delay === 0) {
+			this.spawnLemming(true);
+		}
+		else {
+			var alarm = new Alarm(game, this.delay, function() {
+				this.spawnLemming(true);
+			}, this);
+		}
 	};
 	this.spawnLemming = function(recurring) {
 		if(typeof recurring === "undefined") {
