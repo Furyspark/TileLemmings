@@ -116,6 +116,7 @@ var bootState = {
 	}, 
 
 	loadGame: function() {
+		// Load progress
 		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
 		if(rawSave) {
 			game.saveFile = JSON.parse(rawSave);
@@ -123,5 +124,8 @@ var bootState = {
 		else {
 			game.saveFile = {};
 		}
+
+		// Load settings
+		GameManager.loadSettings();
 	}
 };

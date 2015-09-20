@@ -1,10 +1,6 @@
 var GUI_MainMenuButton = function(game, x, y, imageKey) {
 	GUI.call(this, game, x, y);
 
-	Object.defineProperty(this, "state", {get() {
-		return game.state.getCurrentState();
-	}});
-
 	// Load base texture
 	this.loadTexture(imageKey);
 

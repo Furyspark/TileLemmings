@@ -1,12 +1,6 @@
 var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
 
-	Object.defineProperty(this, "state", {
-		get() {
-			return game.state.getCurrentState();
-		}
-	});
-
 	// Load base texture
 	this.loadTexture("gui");
 
@@ -118,7 +112,7 @@ GUI_Button.prototype.select = function(makeSound) {
 	}
 
 	if (makeSound) {
-		game.sound.play("sndUI_Click");
+		GameManager.audio.play("sndUI_Click");
 	}
 };
 

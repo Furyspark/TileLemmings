@@ -110,19 +110,15 @@ var GUI = function(game, x, y) {
 	// Set references
 	this.guiType = "undefined";
 	this.subType = "";
-	this.state = game.state.getCurrentState();
+	Object.defineProperty(this, "state", {get() {
+		return game.state.getCurrentState();
+	}});
 };
 
 GUI.prototype = Object.create(Phaser.Sprite.prototype);
 GUI.prototype.constructor = GUI;
 var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
-
-	Object.defineProperty(this, "state", {
-		get() {
-			return game.state.getCurrentState();
-		}
-	});
 
 	// Load base texture
 	this.loadTexture("gui");
@@ -235,7 +231,7 @@ GUI_Button.prototype.select = function(makeSound) {
 	}
 
 	if (makeSound) {
-		game.sound.play("sndUI_Click");
+		GameManager.audio.play("sndUI_Click");
 	}
 };
 
@@ -291,10 +287,6 @@ GUI_Button.prototype.remove = function() {
 };
 var GUI_MainMenuButton = function(game, x, y, imageKey) {
 	GUI.call(this, game, x, y);
-
-	Object.defineProperty(this, "state", {get() {
-		return game.state.getCurrentState();
-	}});
 
 	// Load base texture
 	this.loadTexture(imageKey);
@@ -418,6 +410,91 @@ GUI_MainMenuButton.prototype.deselect = function() {
 GUI_MainMenuButton.prototype.remove = function() {
 	this.label.destroy();
 	this.destroy();
+};
+var GUI_Slider = function(game, x, y, width, imageKey, linkedVar) {
+	GUI.call(this, game, x, y);
+
+	// Set default parameters
+	if(width === undefined) {
+		width = 128;
+	}
+	if(imageKey === undefined) {
+		imageKey = "mainmenu";
+	}
+	if(linkedVar === undefined) {
+		linkedVar = null;
+	}
+
+	// Set geometric data
+	this.width = width;
+	this.anchor.x = 0.5;
+	this.anchor.y = 0.5;
+
+	// Set appearance
+	this.loadTexture(imageKey, "slider_bg.png");
+
+	// Set misc data
+	this.linkedVar = linkedVar;
+
+	// Create a label
+	this.label = game.add.text(x, y - 40, "", {
+		font: "bold 12pt Arial",
+		fill: "#FFFFFF",
+		boundsAlignH: "center",
+		stroke: "#000000",
+		strokeThickness: 3
+	});
+	this.label.setTextBounds(-(this.width * 0.5), 0, this.width, 24);
+
+	// Create bar
+	this.bar = game.add.image(this.x, this.y, imageKey, "slider.png");
+	this.bar.anchor.x = 0.5;
+	this.bar.anchor.y = 0.5;
+	this.bar.owner = this;
+
+	// Set bar default position
+	if(this.linkedVar) {
+		var rate = (this.linkedVar.base[this.linkedVar.name] - this.linkedVar.min) / (this.linkedVar.max - this.linkedVar.min);
+		this.bar.x = this.left + ((this.right - this.left) * rate);
+	}
+
+	// Add event handling for the bar
+	this.inputEnabled = true;
+	this.hitArea = new Phaser.Rectangle(-(this.width * 0.5), -12, this.width, 24);
+	this.events.onInputDown.add(function() {
+		this.bar.dragging = true;
+	}, this);
+	this.events.onInputUp.add(function() {
+		this.bar.dragging = false;
+	}, this);
+	this.bar.update = function() {
+		if(this.dragging) {
+			var limits = {
+				left: this.owner.left,
+				right: this.owner.right
+			};
+			this.x = Math.max(limits.left, Math.min(limits.right, game.input.activePointer.x));
+			if(this.owner.linkedVar) {
+				var rate = (this.x - limits.left) / (limits.right - limits.left);
+				this.owner.linkedVar.base[this.owner.linkedVar.name] = this.owner.linkedVar.min + (rate * (this.owner.linkedVar.max - this.owner.linkedVar.min));
+			}
+		}
+	};
+
+	// Make sure the bar and label are in the same group as this object
+	this.events.onAddedToGroup.add(function() {
+		this.parent.add(this.bar);
+		this.parent.add(this.label);
+	}, this);
+};
+
+GUI_Slider.prototype = Object.create(GUI.prototype);
+GUI_Slider.prototype.constructor = GUI_Slider;
+
+GUI_Slider.prototype.remove = function() {
+	this.bar.pendingDestroy = true;
+	this.label.pendingDestroy = true;
+	this.pendingDestroy = true;
 };
 var Cursor = function(game, x, y, owner) {
 	Phaser.Sprite.call(this, game, x, y, "misc");
@@ -944,7 +1021,7 @@ Lemming.prototype.update = function() {
 				alarm.cancel();
 			} else if (bashResult === 2) {
 				alarm.cancel;
-				game.sound.play("sndChink");
+				GameManager.audio.play("sndChink");
 				this.clearAction();
 			}
 		}
@@ -1026,7 +1103,7 @@ Lemming.prototype.update = function() {
 					this.playAnim("exit", 15);
 					var sndKey = game.cache.getJSON("config").props.exits[exitProp.type].sound.exit;
 					if (sndKey) {
-						game.sound.play(sndKey);
+						GameManager.audio.play(sndKey);
 					}
 					this.velocity.x = 0;
 					this.velocity.y = 0;
@@ -1106,6 +1183,7 @@ Lemming.prototype.clearAction = function() {
 
 Lemming.prototype.setAction = function(actionName) {
 	// Normal actions
+	var actionSuccess = false;
 	if ((actionName != this.action.name || (actionName === "builder" && this.animations.currentAnim.name === "build_end")) &&
 		(this.action.name !== "blocker" || (this.action.idle && actionName === "blocker")) &&
 		!this.dead && this.active) {
@@ -1121,7 +1199,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -1140,7 +1218,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -1155,7 +1233,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -1174,7 +1252,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -1193,7 +1271,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -1207,7 +1285,7 @@ Lemming.prototype.setAction = function(actionName) {
 			case "floater":
 				if (!this.attributes.floater) {
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					this.attributes.floater = true;
 				}
 				break;
@@ -1215,7 +1293,7 @@ Lemming.prototype.setAction = function(actionName) {
 			case "climber":
 				if (!this.attributes.climber) {
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					this.attributes.climber = true;
 				}
 				break;
@@ -1227,10 +1305,14 @@ Lemming.prototype.setAction = function(actionName) {
 			// SET SUBACTION: Exploder
 			case "exploder":
 				this.state.expendAction(actionName, 1);
-				game.sound.play("sndAction");
+				actionSuccess = true;
 				this.setExploder();
 				break;
 		}
+	}
+	// Play sound
+	if(actionSuccess) {
+		GameManager.audio.play("sndAction");
 	}
 };
 
@@ -1255,7 +1337,7 @@ Lemming.prototype.proceedBuild = function() {
 	if (this.action.name == "builder" && !this.action.idle && !this.dead && this.active) {
 		this.action.value--;
 		if (this.action.value < 2) {
-			game.sound.play("sndBuildEnding");
+			GameManager.audio.play("sndBuildEnding");
 		}
 		var moveTo = {
 			x: this.x + (this.tile.width * this.dir),
@@ -1297,7 +1379,7 @@ Lemming.prototype.proceedDig = function() {
 	if (this.action.name == "digger" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
 		if (result === 2) {
-			game.sound.play("sndChink");
+			GameManager.audio.play("sndChink");
 			this.clearAction();
 		} else {
 			this.y += this.tile.height;
@@ -1313,12 +1395,12 @@ Lemming.prototype.proceedMine = function() {
 	if (this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
 		if (result === 2) {
-			game.sound.play("sndChink");
+			GameManager.audio.play("sndChink");
 			this.clearAction();
 		} else {
 			result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y - (this.tile.height - 1)));
 			if (result === 2) {
-				game.sound.play("sndChink");
+				GameManager.audio.play("sndChink");
 				this.clearAction();
 			} else {
 				this.x += (this.tile.width * this.dir);
@@ -1340,7 +1422,7 @@ Lemming.prototype.proceedExplode = function() {
 				this.gameLabel.remove();
 			}
 			if (this.onFloor()) {
-				game.sound.play("sndOhNo");
+				GameManager.audio.play("sndOhNo");
 				this.dead = true;
 				this.playAnim("explode", 15);
 				this.velocity.x = 0;
@@ -1360,7 +1442,7 @@ Lemming.prototype.proceedExplode = function() {
 };
 
 Lemming.prototype.explode = function() {
-	game.sound.play("sndPop");
+	GameManager.audio.play("sndPop");
 	// Remove 3x3 tiles
 	for (var a = -1; a <= 1; a++) {
 		for (var b = -1; b <= 1; b++) {
@@ -1416,19 +1498,19 @@ Lemming.prototype.die = function(deathType) {
 	switch (deathType) {
 		// DEATH ACTION: Out of room
 		case Lemming.DEATHTYPE_OUT_OF_ROOM:
-			game.sound.play("sndDie");
+			GameManager.audio.play("sndDie");
 			this.remove();
 			break;
 			// DEATH ACTION: Fall death
 		case Lemming.DEATHTYPE_FALL:
-			game.sound.play("sndSplat");
+			GameManager.audio.play("sndSplat");
 			this.playAnim("splat", 15);
 			this.animations.currentAnim.onComplete.addOnce(function() {
 				this.remove();
 			}, this);
 			break;
 		case Lemming.DEATHTYPE_DROWN:
-			game.sound.play("sndDrown");
+			GameManager.audio.play("sndDrown");
 			this.playAnim("drown", 15);
 			this.animations.currentAnim.onComplete.addOnce(function() {
 				this.remove();
@@ -1500,7 +1582,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 	this.openDoor = function() {
 		// Play sound
 		if(this.state.doorsGroup[0] === this) {
-			game.sound.play(doorConfig.sound.open);
+			GameManager.audio.play(doorConfig.sound.open);
 		}
 		// Set event
 		this.animations.getAnimation("opening").onComplete.addOnce(function() {
@@ -1766,6 +1848,7 @@ var bootState = {
 	}, 
 
 	loadGame: function() {
+		// Load progress
 		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
 		if(rawSave) {
 			game.saveFile = JSON.parse(rawSave);
@@ -1773,11 +1856,23 @@ var bootState = {
 		else {
 			game.saveFile = {};
 		}
+
+		// Load settings
+		GameManager.loadSettings();
 	}
 };
 var menuState = {
 	background: null,
 	guiGroup: [],
+
+	defaultLabelStyle: {
+		font: "bold 12pt Arial",
+		fill: "#FFFFFF",
+		boundsAlignH: "center",
+		stroke: "#000000",
+		strokeThickness: 3,
+		center: true
+	},
 
 	create: function() {
 		this.background = new Background(game, "bgMainMenu");
@@ -1799,6 +1894,7 @@ var menuState = {
 			spacing: 20
 		};
 		btnProps.cols = Math.floor((game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		// Create level buttons
 		var levelList = game.cache.getJSON("levelList").difficulties;
 		for(var a = 0;a < levelList.length;a++) {
 			var levelFolder = levelList[a];
@@ -1822,6 +1918,19 @@ var menuState = {
 			btn.label.text = btn.params.difficulty.name;
 			this.guiGroup.push(btn);
 		}
+
+		// Create options button
+		var placePos = {x: 40, y: 320};
+		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+		btn.label.text = "Options";
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			this.setupOptionsMenu();
+		}, this);
+		btn.resize(160, 60);
+		this.guiGroup.push(btn);
 	},
 
 	setupLevelList: function(index) {
@@ -1883,9 +1992,78 @@ var menuState = {
 		this.guiGroup.push(btn);
 	},
 
+	setupOptionsMenu: function() {
+		this.clearGUIGroup();
+		var a, chan;
+
+		this.settings = {
+			audio: {
+				volume: {}
+			}
+		};
+		for(a in GameManager.audio.volume) {
+			this.settings.audio.volume[a] = GameManager.audio.volume[a];
+		}
+
+		// Create Save button
+		var placePos = {x: 260, y: 530};
+		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+		btn.label.text = "OK";
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			// Apply settings
+			for(a in this.state.settings.audio.volume) {
+				GameManager.audio.volume[a] = this.state.settings.audio.volume[a];
+			}
+			// Save settings and go back to main menu
+			GameManager.saveSettings();
+			this.state.setupMainMenu();
+		}, btn);
+		btn.resize(80, 30);
+		this.guiGroup.push(btn);
+
+		// Create Cancel button
+		placePos = {x: 500, y: 530};
+		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+		btn.label.text = "Cancel";
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			this.state.setupMainMenu();
+		}, btn);
+		btn.resize(80, 30);
+		this.guiGroup.push(btn);
+
+		// Create volume slider(s)
+		// Create label
+		placePos = {x: 160, y: 20};
+		var elem = game.add.text(placePos.x, placePos.y, "Volume", this.defaultLabelStyle);
+		elem.setTextBounds(-120, 0, 240, 30);
+		this.guiGroup.push(elem);
+		// SFX volume
+		placePos = {x: 160, y: 80};
+		var elem = new GUI_Slider(game, placePos.x, placePos.y, 64, "mainmenu", {base: this.settings.audio.volume, name: "sfx", min: 0, max: 1});
+		elem.label.text = "Sound";
+		this.guiGroup.push(elem);
+		// BGM volume
+		placePos.y += 60;
+		var elem = new GUI_Slider(game, placePos.x, placePos.y, 64, "mainmenu", {base: this.settings.audio.volume, name: "bgm", min: 0, max: 1});
+		elem.label.text = "Music";
+		this.guiGroup.push(elem);
+	},
+
 	clearGUIGroup: function() {
 		while(this.guiGroup.length > 0) {
-			this.guiGroup.shift().remove();
+			var elem = this.guiGroup.shift();
+			if(elem.remove) {
+				elem.remove();
+			}
+			else {
+				elem.destroy();
+			}
 		}
 	}
 };
@@ -2901,7 +3079,7 @@ var gameState = {
 
 		// Let's go... HRRRRN
 		this.layers.minimapLayer.finalize();
-		var snd = game.sound.play("sndLetsGo");
+		var snd = GameManager.audio.play("sndLetsGo");
 		var alarm = new Alarm(game, 90, function() {
 			this.openDoors();
 		}, this);
@@ -2949,7 +3127,7 @@ var gameState = {
 	nuke: function() {
 		// Start nuke
 		if(!this.nukeStarted) {
-			game.sound.play("sndOhNo");
+			GameManager.audio.play("sndOhNo");
 			this.nukeStarted = true;
 			this.nuke();
 			// Set lemming count of all doors to 0
@@ -3270,17 +3448,11 @@ var gameState = {
 	},
 
 	playLevelBGM: function() {
-		this.playBGM("bgm");
-	},
-
-	playBGM: function(bgm) {
-		this.bgm = game.sound.play(bgm, 1, true);
+		GameManager.audio.play_bgm("bgm");
 	},
 
 	stopBGM: function() {
-		if(this.bgm !== null) {
-			this.bgm.stop();
-		}
+		GameManager.audio.stop_bgm();
 	},
 
 	createLevelGUI: function() {
@@ -3446,4 +3618,84 @@ game.state.add("intermission", intermissionState);
 game.state.add("game", gameState);
 
 game.state.start("boot");
+var GameManager = {
+	audio: {
+		volume: {
+			sfx: 0.75,
+			bgm: 0.5
+		},
+		bgm: null,
+		play: function(key, loop, channel) {
+			if(loop === undefined) {
+				loop = false;
+			}
+			if(channel === undefined) {
+				channel = this.CHANNEL_SFX;
+			}
+			return game.sound.play(key, this.volume[this.channel_to_string(channel)], loop);
+		},
+		play_bgm: function(key) {
+			this.stop_bgm();
+			return this.bgm = game.sound.play(key, this.volume[this.channel_to_string(this.CHANNEL_BGM)], true);
+		},
+		stop_bgm: function() {
+			if(this.bgm !== null) {
+				this.bgm.stop();
+				this.bgm = null;
+			}
+		},
+		CHANNEL_SFX: 0,
+		CHANNEL_BGM: 1,
+		channel_to_string: function(channel) {
+			switch(channel) {
+				default:
+				case this.CHANNEL_SFX:
+					return "sfx";
+					break;
+				case this.CHANNEL_BGM:
+					return "bgm";
+					break;
+			}
+			return "";
+		}
+	},
+
+	saveSettings: function() {
+		// Load previous settings
+		var settings = localStorage["tilelemmings.profiles.default.settings"];
+		if(settings) {
+			settings = JSON.parse(settings);
+		}
+		else {
+			settings = {};
+		}
+
+		// Parse settings
+		if(!settings.audio) {
+			settings.audio = {};
+		}
+		settings.audio.volume = this.audio.volume;
+
+		// Save current settings
+		localStorage["tilelemmings.profiles.default.settings"] = JSON.stringify(settings);
+	},
+
+	loadSettings: function() {
+		// Load previous settings
+		var settings = localStorage["tilelemmings.profiles.default.settings"];
+		if(settings) {
+			settings = JSON.parse(settings);
+		}
+		else {
+			settings = {};
+		}
+
+		// Parse settings
+		if(settings.audio.volume) {
+			for(a in settings.audio.volume) {
+				this.audio.volume[a] = settings.audio.volume[a];
+			}
+		}
+	}
+};
 })(Phaser);

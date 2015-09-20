@@ -58,7 +58,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 	this.openDoor = function() {
 		// Play sound
 		if(this.state.doorsGroup[0] === this) {
-			game.sound.play(doorConfig.sound.open);
+			GameManager.audio.play(doorConfig.sound.open);
 		}
 		// Set event
 		this.animations.getAnimation("opening").onComplete.addOnce(function() {

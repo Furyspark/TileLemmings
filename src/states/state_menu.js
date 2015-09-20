@@ -2,6 +2,15 @@ var menuState = {
 	background: null,
 	guiGroup: [],
 
+	defaultLabelStyle: {
+		font: "bold 12pt Arial",
+		fill: "#FFFFFF",
+		boundsAlignH: "center",
+		stroke: "#000000",
+		strokeThickness: 3,
+		center: true
+	},
+
 	create: function() {
 		this.background = new Background(game, "bgMainMenu");
 
@@ -22,6 +31,7 @@ var menuState = {
 			spacing: 20
 		};
 		btnProps.cols = Math.floor((game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		// Create level buttons
 		var levelList = game.cache.getJSON("levelList").difficulties;
 		for(var a = 0;a < levelList.length;a++) {
 			var levelFolder = levelList[a];
@@ -45,6 +55,19 @@ var menuState = {
 			btn.label.text = btn.params.difficulty.name;
 			this.guiGroup.push(btn);
 		}
+
+		// Create options button
+		var placePos = {x: 40, y: 320};
+		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+		btn.label.text = "Options";
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			this.setupOptionsMenu();
+		}, this);
+		btn.resize(160, 60);
+		this.guiGroup.push(btn);
 	},
 
 	setupLevelList: function(index) {
@@ -106,9 +129,78 @@ var menuState = {
 		this.guiGroup.push(btn);
 	},
 
+	setupOptionsMenu: function() {
+		this.clearGUIGroup();
+		var a, chan;
+
+		this.settings = {
+			audio: {
+				volume: {}
+			}
+		};
+		for(a in GameManager.audio.volume) {
+			this.settings.audio.volume[a] = GameManager.audio.volume[a];
+		}
+
+		// Create Save button
+		var placePos = {x: 260, y: 530};
+		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+		btn.label.text = "OK";
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			// Apply settings
+			for(a in this.state.settings.audio.volume) {
+				GameManager.audio.volume[a] = this.state.settings.audio.volume[a];
+			}
+			// Save settings and go back to main menu
+			GameManager.saveSettings();
+			this.state.setupMainMenu();
+		}, btn);
+		btn.resize(80, 30);
+		this.guiGroup.push(btn);
+
+		// Create Cancel button
+		placePos = {x: 500, y: 530};
+		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+		btn.label.text = "Cancel";
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			this.state.setupMainMenu();
+		}, btn);
+		btn.resize(80, 30);
+		this.guiGroup.push(btn);
+
+		// Create volume slider(s)
+		// Create label
+		placePos = {x: 160, y: 20};
+		var elem = game.add.text(placePos.x, placePos.y, "Volume", this.defaultLabelStyle);
+		elem.setTextBounds(-120, 0, 240, 30);
+		this.guiGroup.push(elem);
+		// SFX volume
+		placePos = {x: 160, y: 80};
+		var elem = new GUI_Slider(game, placePos.x, placePos.y, 64, "mainmenu", {base: this.settings.audio.volume, name: "sfx", min: 0, max: 1});
+		elem.label.text = "Sound";
+		this.guiGroup.push(elem);
+		// BGM volume
+		placePos.y += 60;
+		var elem = new GUI_Slider(game, placePos.x, placePos.y, 64, "mainmenu", {base: this.settings.audio.volume, name: "bgm", min: 0, max: 1});
+		elem.label.text = "Music";
+		this.guiGroup.push(elem);
+	},
+
 	clearGUIGroup: function() {
 		while(this.guiGroup.length > 0) {
-			this.guiGroup.shift().remove();
+			var elem = this.guiGroup.shift();
+			if(elem.remove) {
+				elem.remove();
+			}
+			else {
+				elem.destroy();
+			}
 		}
 	}
 };

@@ -5,7 +5,9 @@ var GUI = function(game, x, y) {
 	// Set references
 	this.guiType = "undefined";
 	this.subType = "";
-	this.state = game.state.getCurrentState();
+	Object.defineProperty(this, "state", {get() {
+		return game.state.getCurrentState();
+	}});
 };
 
 GUI.prototype = Object.create(Phaser.Sprite.prototype);

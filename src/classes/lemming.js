@@ -371,7 +371,7 @@ Lemming.prototype.update = function() {
 				alarm.cancel();
 			} else if (bashResult === 2) {
 				alarm.cancel;
-				game.sound.play("sndChink");
+				GameManager.audio.play("sndChink");
 				this.clearAction();
 			}
 		}
@@ -453,7 +453,7 @@ Lemming.prototype.update = function() {
 					this.playAnim("exit", 15);
 					var sndKey = game.cache.getJSON("config").props.exits[exitProp.type].sound.exit;
 					if (sndKey) {
-						game.sound.play(sndKey);
+						GameManager.audio.play(sndKey);
 					}
 					this.velocity.x = 0;
 					this.velocity.y = 0;
@@ -533,6 +533,7 @@ Lemming.prototype.clearAction = function() {
 
 Lemming.prototype.setAction = function(actionName) {
 	// Normal actions
+	var actionSuccess = false;
 	if ((actionName != this.action.name || (actionName === "builder" && this.animations.currentAnim.name === "build_end")) &&
 		(this.action.name !== "blocker" || (this.action.idle && actionName === "blocker")) &&
 		!this.dead && this.active) {
@@ -548,7 +549,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -567,7 +568,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -582,7 +583,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -601,7 +602,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -620,7 +621,7 @@ Lemming.prototype.setAction = function(actionName) {
 				if (this.onFloor()) {
 					this.clearAction();
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					// Set action
 					this.action.name = actionName;
 					this.action.active = true;
@@ -634,7 +635,7 @@ Lemming.prototype.setAction = function(actionName) {
 			case "floater":
 				if (!this.attributes.floater) {
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					this.attributes.floater = true;
 				}
 				break;
@@ -642,7 +643,7 @@ Lemming.prototype.setAction = function(actionName) {
 			case "climber":
 				if (!this.attributes.climber) {
 					this.state.expendAction(actionName, 1);
-					game.sound.play("sndAction");
+					actionSuccess = true;
 					this.attributes.climber = true;
 				}
 				break;
@@ -654,10 +655,14 @@ Lemming.prototype.setAction = function(actionName) {
 			// SET SUBACTION: Exploder
 			case "exploder":
 				this.state.expendAction(actionName, 1);
-				game.sound.play("sndAction");
+				actionSuccess = true;
 				this.setExploder();
 				break;
 		}
+	}
+	// Play sound
+	if(actionSuccess) {
+		GameManager.audio.play("sndAction");
 	}
 };
 
@@ -682,7 +687,7 @@ Lemming.prototype.proceedBuild = function() {
 	if (this.action.name == "builder" && !this.action.idle && !this.dead && this.active) {
 		this.action.value--;
 		if (this.action.value < 2) {
-			game.sound.play("sndBuildEnding");
+			GameManager.audio.play("sndBuildEnding");
 		}
 		var moveTo = {
 			x: this.x + (this.tile.width * this.dir),
@@ -724,7 +729,7 @@ Lemming.prototype.proceedDig = function() {
 	if (this.action.name == "digger" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
 		if (result === 2) {
-			game.sound.play("sndChink");
+			GameManager.audio.play("sndChink");
 			this.clearAction();
 		} else {
 			this.y += this.tile.height;
@@ -740,12 +745,12 @@ Lemming.prototype.proceedMine = function() {
 	if (this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
 		var result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
 		if (result === 2) {
-			game.sound.play("sndChink");
+			GameManager.audio.play("sndChink");
 			this.clearAction();
 		} else {
 			result = this.state.map.removeTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y - (this.tile.height - 1)));
 			if (result === 2) {
-				game.sound.play("sndChink");
+				GameManager.audio.play("sndChink");
 				this.clearAction();
 			} else {
 				this.x += (this.tile.width * this.dir);
@@ -767,7 +772,7 @@ Lemming.prototype.proceedExplode = function() {
 				this.gameLabel.remove();
 			}
 			if (this.onFloor()) {
-				game.sound.play("sndOhNo");
+				GameManager.audio.play("sndOhNo");
 				this.dead = true;
 				this.playAnim("explode", 15);
 				this.velocity.x = 0;
@@ -787,7 +792,7 @@ Lemming.prototype.proceedExplode = function() {
 };
 
 Lemming.prototype.explode = function() {
-	game.sound.play("sndPop");
+	GameManager.audio.play("sndPop");
 	// Remove 3x3 tiles
 	for (var a = -1; a <= 1; a++) {
 		for (var b = -1; b <= 1; b++) {
@@ -843,19 +848,19 @@ Lemming.prototype.die = function(deathType) {
 	switch (deathType) {
 		// DEATH ACTION: Out of room
 		case Lemming.DEATHTYPE_OUT_OF_ROOM:
-			game.sound.play("sndDie");
+			GameManager.audio.play("sndDie");
 			this.remove();
 			break;
 			// DEATH ACTION: Fall death
 		case Lemming.DEATHTYPE_FALL:
-			game.sound.play("sndSplat");
+			GameManager.audio.play("sndSplat");
 			this.playAnim("splat", 15);
 			this.animations.currentAnim.onComplete.addOnce(function() {
 				this.remove();
 			}, this);
 			break;
 		case Lemming.DEATHTYPE_DROWN:
-			game.sound.play("sndDrown");
+			GameManager.audio.play("sndDrown");
 			this.playAnim("drown", 15);
 			this.animations.currentAnim.onComplete.addOnce(function() {
 				this.remove();

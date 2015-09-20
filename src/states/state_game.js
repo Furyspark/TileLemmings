@@ -705,7 +705,7 @@ var gameState = {
 
 		// Let's go... HRRRRN
 		this.layers.minimapLayer.finalize();
-		var snd = game.sound.play("sndLetsGo");
+		var snd = GameManager.audio.play("sndLetsGo");
 		var alarm = new Alarm(game, 90, function() {
 			this.openDoors();
 		}, this);
@@ -753,7 +753,7 @@ var gameState = {
 	nuke: function() {
 		// Start nuke
 		if(!this.nukeStarted) {
-			game.sound.play("sndOhNo");
+			GameManager.audio.play("sndOhNo");
 			this.nukeStarted = true;
 			this.nuke();
 			// Set lemming count of all doors to 0
@@ -1074,17 +1074,11 @@ var gameState = {
 	},
 
 	playLevelBGM: function() {
-		this.playBGM("bgm");
-	},
-
-	playBGM: function(bgm) {
-		this.bgm = game.sound.play(bgm, 1, true);
+		GameManager.audio.play_bgm("bgm");
 	},
 
 	stopBGM: function() {
-		if(this.bgm !== null) {
-			this.bgm.stop();
-		}
+		GameManager.audio.stop_bgm();
 	},
 
 	createLevelGUI: function() {

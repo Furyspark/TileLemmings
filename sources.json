@@ -4,6 +4,7 @@
 	"./src/classes/gui.js",
 	"./src/classes/button.js",
 	"./src/classes/mainmenuButton.js",
+	"./src/classes/gui_slider.js",
 	"./src/classes/cursor.js",
 	"./src/classes/gamelabel.js",
 	"./src/classes/background.js",
@@ -14,5 +15,6 @@
 	"./src/states/state_menu.js",
 	"./src/states/state_intermission.js",
 	"./src/states/state_game.js",
-	"./src/game.js"
+	"./src/game.js",
+	"./src/gamemanager.js"
 ]
