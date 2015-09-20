@@ -36,6 +36,14 @@
 				{
 					"filename": "level8.json",
 					"name": "It gets tricky"
+				},
+				{
+					"filename": "level9.json",
+					"name": "Ravage the Lands"
+				},
+				{
+					"filename": "level10.json",
+					"name": "El Oh El"
 				}
 			]
 		},
@@ -51,6 +59,18 @@
 				{
 					"filename": "level2.json",
 					"name": "Intervention"
+				},
+				{
+					"filename": "level3.json",
+					"name": "Hedge Wall"
+				},
+				{
+					"filename": "level4.json",
+					"name": "Into the Basin"
+				},
+				{
+					"filename": "level5.json",
+					"name": "One step forward, two steps back"
 				}
 			]
 		}
