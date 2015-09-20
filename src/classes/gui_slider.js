@@ -12,13 +12,13 @@ var GUI_Slider = function(game, x, y, width, imageKey, linkedVar) {
 		linkedVar = null;
 	}
 
+	// Set appearance
+	this.loadTexture(imageKey, "slider_bg.png");
+
 	// Set geometric data
 	this.width = width;
 	this.anchor.x = 0.5;
 	this.anchor.y = 0.5;
-
-	// Set appearance
-	this.loadTexture(imageKey, "slider_bg.png");
 
 	// Set misc data
 	this.linkedVar = linkedVar;

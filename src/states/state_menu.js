@@ -30,7 +30,7 @@ var menuState = {
 			height: 60,
 			spacing: 20
 		};
-		btnProps.cols = Math.floor((game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		btnProps.cols = Math.floor((game.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
 		// Create level buttons
 		var levelList = game.cache.getJSON("levelList").difficulties;
 		for(var a = 0;a < levelList.length;a++) {
@@ -84,7 +84,7 @@ var menuState = {
 			height: 60,
 			spacing: 20
 		};
-		btnProps.cols = Math.floor((game.stage.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+		btnProps.cols = Math.floor((game.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
 		var completedLevels = [];
 		if(game.saveFile[levelFolder.resref]) {
 			completedLevels = game.saveFile[levelFolder.resref];
@@ -182,12 +182,12 @@ var menuState = {
 		this.guiGroup.push(elem);
 		// SFX volume
 		placePos = {x: 160, y: 80};
-		var elem = new GUI_Slider(game, placePos.x, placePos.y, 64, "mainmenu", {base: this.settings.audio.volume, name: "sfx", min: 0, max: 1});
+		var elem = new GUI_Slider(game, placePos.x, placePos.y, 256, "mainmenu", {base: this.settings.audio.volume, name: "sfx", min: 0, max: 1});
 		elem.label.text = "Sound";
 		this.guiGroup.push(elem);
 		// BGM volume
 		placePos.y += 60;
-		var elem = new GUI_Slider(game, placePos.x, placePos.y, 64, "mainmenu", {base: this.settings.audio.volume, name: "bgm", min: 0, max: 1});
+		var elem = new GUI_Slider(game, placePos.x, placePos.y, 256, "mainmenu", {base: this.settings.audio.volume, name: "bgm", min: 0, max: 1});
 		elem.label.text = "Music";
 		this.guiGroup.push(elem);
 	},
