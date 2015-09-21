@@ -1,7 +1,13 @@
-var Alarm = function(game, duration, callback, callbackContext) {
-	this.duration = duration;
+var Alarm = function(game, duration, callback, callbackContext, recurring) {
+	if(recurring === undefined) {
+		recurring = false;
+	}
+
+	this.baseDuration = duration;
+	this.duration = this.baseDuration;
 	this.callback = callback;
 	this.callbackContext = callbackContext;
+	this.recurring = recurring;
 
 	Object.defineProperty(this, "state", {get() {
 		return game.state.getCurrentState();
@@ -24,7 +30,12 @@ Alarm.prototype.step = function() {
 			if(this.callbackContext !== null) {
 				this.fire();
 			}
-			this.state.alarms.remove(this);
+			if(this.recurring) {
+				this.duration = this.baseDuration;
+			}
+			else {
+				this.cancel();
+			}
 		}
 	}
 };

@@ -70,6 +70,17 @@
 				},
 				{
 					"filename": "level5.json",
+					"name": "Go ahead, make my day"
+				}
+			]
+		},
+		{
+			"resref": "taxing",
+			"name": "Taxing",
+			"baseUrl": "assets/levels/taxing/",
+			"levels": [
+				{
+					"filename": "level1.json",
 					"name": "One step forward, two steps back"
 				}
 			]
