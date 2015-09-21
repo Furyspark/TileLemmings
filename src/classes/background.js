@@ -1,5 +1,5 @@
 var Background = function(game, imageKey) {
-	Phaser.TileSprite.call(this, game, 0, 0, game.scale.width, game.scale.height, imageKey);
+	Phaser.TileSprite.call(this, game, 0, 0, 800, 600, imageKey);
 	game.add.existing(this);
 	Object.defineProperty(this, "state", {get() {
 		return game.state.getCurrentState();
