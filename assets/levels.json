@@ -82,6 +82,21 @@
 				{
 					"filename": "level1.json",
 					"name": "One step forward, two steps back"
+				},
+				{
+					"filename": "level2.json",
+					"name": "Working around the clock"
+				}
+			]
+		},
+		{
+			"resref": "mayhem",
+			"name": "Mayhem",
+			"baseUrl": "assets/levels/mayhem/",
+			"levels": [
+				{
+					"filename": "level1.json",
+					"name": "It takes two"
 				}
 			]
 		}

@@ -2601,7 +2601,7 @@ var intermissionState = {
 			stroke: "#000000",
 			strokeThickness: 3
 		};
-		txt = game.add.text(120, 70, lemmingCount.toString() + " lemmings\n" + ((this.map.properties.need / lemmingCount) * 100) + "% to be saved", newStyle);
+		txt = game.add.text(120, 70, lemmingCount.toString() + " lemmings\n" + Math.floor((this.map.properties.need / lemmingCount) * 100) + "% to be saved", newStyle);
 		txt.setTextBounds(0, 0, 240, 80);
 		this.labels.push(txt);
 
