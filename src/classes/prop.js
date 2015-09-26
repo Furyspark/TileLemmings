@@ -21,6 +21,27 @@ Prop.prototype.playAnim = function(key, frameRate) {
 	}
 };
 
+Prop.prototype.update = function() {
+	// Trap stuff
+	var a, lem;
+	if(this.objectType === "trap") {
+		// Search for lemmings
+		for(a = 0;a < this.state.lemmingsGroup.children.length;a++) {
+			lem = this.state.lemmingsGroup.children[a];
+			if(!lem.dead && lem.active && this.inPosition(lem.x, lem.y) && this.animations.currentAnim.name === "idle") {
+				lem.die(this.deathType);
+				// Play kill animation, if applicable
+				if(this.animations.getAnimation("kill")) {
+					this.playAnim("kill", 15);
+					if(this.killSound) {
+						GameManager.audio.play(this.killSound);
+					}
+				}
+			}
+		}
+	}
+};
+
 Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) {
 	// Set primary data
 	this.objectType = "door";
@@ -142,8 +163,8 @@ Prop.prototype.setAsExit = function(type) {
 
 	// Set functions
 	this.inPosition = function(xCheck, yCheck) {
-		if(xCheck >= this.bbox.left && xCheck <= this.bbox.right &&
-			yCheck >= this.bbox.top && yCheck <= this.bbox.bottom) {
+		if(xCheck >= Math.min(this.bbox.left, this.bbox.right) && xCheck <= Math.max(this.bbox.left, this.bbox.right) &&
+			yCheck >= Math.min(this.bbox.top, this.bbox.bottom) && yCheck <= Math.max(this.bbox.top, this.bbox.bottom)) {
 			return true;
 		}
 		return false;
@@ -158,13 +179,31 @@ Prop.prototype.setAsTrap = function(type) {
 	// Set configuration
 	var propConfig = game.cache.getJSON("config").props.traps[type];
 	this.loadTexture(propConfig.atlas);
-	var a, idleFrames = [];
+	var a, idleFrames = [], killFrames = [];
+	// Add idle animation
 	for(a = 0;a < propConfig.animations.idle.frames.length;a++) {
 		idleFrames.push(propConfig.animations.idle.frames[a]);
+	}
+	// Add kill animation, if any
+	if(propConfig.animations.kill) {
+		for(a = 0;a < propConfig.animations.kill.frames.length;a++) {
+			killFrames.push(propConfig.animations.kill.frames[a]);
+		}
+	}
+	// Set sound effect(s)
+	this.killSound = null;
+	if(propConfig.killsound) {
+		this.killSound = propConfig.killsound;
 	}
 
 	// Set animation(s)
 	this.animations.add("idle", idleFrames, 15, true);
+	if(killFrames.length > 0) {
+		this.animations.add("kill", killFrames, 15, false);
+		this.animations.getAnimation("kill").onComplete.add(function() {
+			this.playAnim("idle", 15);
+		}, this);
+	}
 	this.playAnim("idle", 15);
 
 	// Set bounding box
@@ -176,33 +215,43 @@ Prop.prototype.setAsTrap = function(type) {
 			bottom: propConfig.bbox.bottom
 		},
 		get left() {
-			return this.owner.x + this.base.left;
+			return this.owner.x + (this.base.left * this.owner.scale.x);
 		},
 		get right() {
-			return this.owner.x + this.base.right;
+			return this.owner.x + (this.base.right * this.owner.scale.x);
 		},
 		get top() {
-			return this.owner.y + this.base.top;
+			return this.owner.y + (this.base.top * this.owner.scale.y);
 		},
 		get bottom() {
-			return this.owner.y + this.base.bottom;
+			return this.owner.y + (this.base.bottom * this.owner.scale.y);
 		},
 
 		owner: this
 	};
 
 	// Set anchor
-	if(propConfig.anchor) {
-		this.anchor.setTo(propConfig.anchor.x, propConfig.anchor.y);
-	}
+	// if(propConfig.anchor) {
+	// 	this.anchor.setTo(propConfig.anchor.x, propConfig.anchor.y);
+	// }
+	this.anchor.set(0.5, 0.5);
 
 	// Set trap properties
 	this.instant = true;
 	if(!propConfig.instant) {
 		this.instant = false;
 	}
-	this.deathType = "DEATHTYPE_DROWN";
-	if(propConfig.death_type) {
-		this.deathType = propConfig.death_type;
+	this.deathType = Lemming.DEATHTYPE_DROWN;
+	if(propConfig.deathtype) {
+		this.deathType = Lemming[propConfig.deathtype];
 	}
+
+	// Set functions
+	this.inPosition = function(xCheck, yCheck) {
+		if(xCheck >= Math.min(this.bbox.left, this.bbox.right) && xCheck <= Math.max(this.bbox.left, this.bbox.right) &&
+			yCheck >= Math.min(this.bbox.top, this.bbox.bottom) && yCheck <= Math.max(this.bbox.top, this.bbox.bottom)) {
+			return true;
+		}
+		return false;
+	};
 };

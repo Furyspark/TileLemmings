@@ -1,0 +1,304 @@
+{
+"frames": [
+	{
+		"filename": "flamethrower0.png",
+		"frame": {"x":65, "y":404, "w":14, "h":18},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":18,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower1.png",
+		"frame": {"x":0, "y":404, "w":64, "h":18},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":18,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower2.png",
+		"frame": {"x":0, "y":249, "w":92, "h":24},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":12,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower3.png",
+		"frame": {"x":0, "y":218, "w":108, "h":30},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":8,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower4.png",
+		"frame": {"x":0, "y":185, "w":120, "h":32},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":4,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower5.png",
+		"frame": {"x":0, "y":148, "w":132, "h":36},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":0,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower6.png",
+		"frame": {"x":0, "y":0, "w":138, "h":36},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":0,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower7.png",
+		"frame": {"x":0, "y":74, "w":136, "h":36},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":0,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower8.png",
+		"frame": {"x":0, "y":111, "w":134, "h":36},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":0,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flamethrower9.png",
+		"frame": {"x":0, "y":37, "w":136, "h":36},
+		"trimmed": true,
+		"spriteSourceSize": {"x":138,"y":0,"w":276,"h":54},
+		"sourceSize": {"w":276,"h":54}
+	},
+	{
+		"filename": "flameturret0.png",
+		"frame": {"x":325, "y":195, "w":50, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret1.png",
+		"frame": {"x":202, "y":65, "w":44, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret10.png",
+		"frame": {"x":321, "y":306, "w":52, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret11.png",
+		"frame": {"x":324, "y":0, "w":56, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret12.png",
+		"frame": {"x":316, "y":156, "w":56, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret13.png",
+		"frame": {"x":316, "y":117, "w":56, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret14.png",
+		"frame": {"x":260, "y":345, "w":60, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":2,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret15.png",
+		"frame": {"x":319, "y":384, "w":58, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret2.png",
+		"frame": {"x":321, "y":345, "w":52, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret3.png",
+		"frame": {"x":316, "y":78, "w":56, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret4.png",
+		"frame": {"x":267, "y":0, "w":56, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret5.png",
+		"frame": {"x":316, "y":39, "w":56, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret6.png",
+		"frame": {"x":260, "y":306, "w":60, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":2,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret7.png",
+		"frame": {"x":260, "y":384, "w":58, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret8.png",
+		"frame": {"x":135, "y":126, "w":50, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "flameturret9.png",
+		"frame": {"x":325, "y":234, "w":44, "h":38},
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":0,"w":62,"h":74},
+		"sourceSize": {"w":62,"h":74}
+	},
+	{
+		"filename": "pounder_idle0.png",
+		"frame": {"x":137, "y":37, "w":64, "h":88},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill0.png",
+		"frame": {"x":251, "y":65, "w":64, "h":82},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill1.png",
+		"frame": {"x":260, "y":225, "w":64, "h":80},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill10.png",
+		"frame": {"x":202, "y":0, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill11.png",
+		"frame": {"x":186, "y":126, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill12.png",
+		"frame": {"x":186, "y":191, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill13.png",
+		"frame": {"x":195, "y":256, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill14.png",
+		"frame": {"x":195, "y":321, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill2.png",
+		"frame": {"x":121, "y":185, "w":64, "h":78},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill3.png",
+		"frame": {"x":251, "y":148, "w":64, "h":76},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill4.png",
+		"frame": {"x":65, "y":274, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill5.png",
+		"frame": {"x":130, "y":264, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill6.png",
+		"frame": {"x":65, "y":339, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill7.png",
+		"frame": {"x":0, "y":339, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill8.png",
+		"frame": {"x":0, "y":274, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	},
+	{
+		"filename": "pounder_kill9.png",
+		"frame": {"x":130, "y":329, "w":64, "h":64},
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":116},
+		"sourceSize": {"w":64,"h":116}
+	}
+
+],
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 381, "h": 423},
+	"scale": "1"
+}
+}

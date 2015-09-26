@@ -245,36 +245,115 @@
 			}
 		},
 		"traps": {
-			"water": {
-				"atlas": "props_traps_generic",
+			"flameturret": {
+				"atlas": "props_traps",
 				"animations": {
 					"idle": {
 						"frames": [
-							"water_000.png",
-							"water_001.png",
-							"water_002.png",
-							"water_003.png",
-							"water_004.png",
-							"water_005.png",
-							"water_006.png",
-							"water_007.png",
-							"water_008.png",
-							"water_009.png"
+							"flameturret0.png",
+							"flameturret1.png",
+							"flameturret2.png",
+							"flameturret3.png",
+							"flameturret4.png",
+							"flameturret5.png",
+							"flameturret6.png",
+							"flameturret7.png",
+							"flameturret8.png",
+							"flameturret9.png",
+							"flameturret10.png",
+							"flameturret11.png",
+							"flameturret12.png",
+							"flameturret13.png",
+							"flameturret14.png",
+							"flameturret15.png"
 						]
 					}
 				},
 				"bbox": {
-					"left": 0,
-					"right": 16,
-					"top": 0,
-					"bottom": 16
+					"left": -24,
+					"right": 24,
+					"top": -24,
+					"bottom": 0
+				},
+				"anchor": {
+					"x": 0.5,
+					"y": 1
+				},
+				"instant": true,
+				"deathtype": "DEATHTYPE_BURN"
+			},
+			"flamethrower": {
+				"atlas": "props_traps",
+				"animations": {
+					"idle": {
+						"frames": [
+							"flamethrower0.png",
+							"flamethrower1.png",
+							"flamethrower2.png",
+							"flamethrower3.png",
+							"flamethrower4.png",
+							"flamethrower5.png",
+							"flamethrower6.png",
+							"flamethrower7.png",
+							"flamethrower8.png",
+							"flamethrower9.png"
+						]
+					}
+				},
+				"bbox": {
+					"left": -1,
+					"right": 112,
+					"top": -8,
+					"bottom": 8
 				},
 				"anchor": {
 					"x": 0,
-					"y": 0
+					"y": 0.5
 				},
 				"instant": true,
-				"death_type": "DEATHTYPE_DROWN"
+				"deathtype": "DEATHTYPE_BURN"
+			},
+			"pounder": {
+				"atlas": "props_traps",
+				"animations": {
+					"idle": {
+						"frames": [
+							"pounder_idle0.png"
+						]
+					},
+					"kill": {
+						"frames": [
+							"pounder_kill0.png",
+							"pounder_kill1.png",
+							"pounder_kill2.png",
+							"pounder_kill3.png",
+							"pounder_kill4.png",
+							"pounder_kill5.png",
+							"pounder_kill6.png",
+							"pounder_kill7.png",
+							"pounder_kill8.png",
+							"pounder_kill9.png",
+							"pounder_kill10.png",
+							"pounder_kill11.png",
+							"pounder_kill12.png",
+							"pounder_kill13.png",
+							"pounder_kill14.png"
+						]
+					}
+				},
+				"bbox": {
+					"left": -3,
+					"right": 3,
+					"top": -2,
+					"bottom": 1
+				},
+				"anchor": {
+					"x": 0.5,
+					"y": 1
+				},
+				"instant": false,
+				"deathtype": "DEATHTYPE_INSTANT",
+				"killsound": "sndDoor_Cave"
 			}
 		}
 	}

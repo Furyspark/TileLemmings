@@ -380,8 +380,24 @@ var gameState = {
 					this.layers.tileLayer.data.push(tileType);
 				}
 			} else if (layer.name === "objects") {
-				for (var b in layer.objects) {
-					this.map.objects.push(layer.objects[b]);
+				for (var b = 0;b < layer.objects.length;b++) {
+					var obj = layer.objects[b];
+					var gid = 0;
+					if(obj.gid) {
+						// Determine bitmask properties
+						obj.mirrored = (obj.gid & 0x80000000);
+						obj.flipped = (obj.gid & 0x40000000);
+						obj.diagonal = (obj.gid & 0x20000000);
+						obj.gid = obj.gid & ~(0x80000000 | 0x40000000 |0x20000000);
+						gid = obj.gid;
+
+						// Set state
+						var props = tileProps[gid.toString()];
+						if(props) {
+							obj.tileproperties = props;
+						}
+						this.map.objects.push(obj);
+					}
 				}
 			}
 		}
@@ -426,12 +442,6 @@ var gameState = {
 					};
 					tileset.cols = Math.floor(tileset.imagewidth / (tileset.tilewidth + tileset.spacing));
 					tileset.rows = Math.floor(tileset.imageheight / (tileset.tileheight + tileset.spacing));
-					// var cutout = new Phaser.Rectangle(
-					// 	tileset.margin + ((tileset.tilewidth + tileset.spacing) * (baseGid % tileset.cols)),
-					// 	tileset.margin + ((tileset.tileheight + tileset.spacing) * Math.floor(baseGid / tileset.cols)),
-					// 	tileset.tilewidth,
-					// 	tileset.tileheight
-					// );
 					var cutout = this.layers.primitiveLayer.getCutout(baseGid, tileset);
 					this.layers.primitiveLayer.placeTile(placeAt.tile.x, placeAt.tile.y, tileset.name, cutout);
 				}
@@ -439,8 +449,8 @@ var gameState = {
 		}
 
 		// Set up build tile rectangle
-		var tileX = 2;
-		var tileY = 1;
+		var tileX = 0;
+		var tileY = 0;
 		var tileWidth = 16;
 		var tileHeight = 16;
 		var tileSpacing = 4;
@@ -482,16 +492,50 @@ var gameState = {
 			this.gridGroup.add(grdImg);
 		}
 		this.gridGroup.visible = false;
+	},
 
+	zOrder: function() {
 		// Set (z-)order of display objects
+		// First, set the ordering on levelGroup
+		var a, obj;
+		for(a = 0;a < this.trapsGroup.length;a++) {
+			obj = this.trapsGroup[a];
+			this.levelGroup.bringToTop(obj);
+		}
+		for(a = 0;a < this.doorsGroup.length;a++) {
+			obj = this.doorsGroup[a];
+			this.levelGroup.bringToTop(obj);
+		}
+		for(a = 0;a < this.exitsGroup.length;a++) {
+			obj = this.exitsGroup[a];
+			this.levelGroup.bringToTop(obj);
+		}
+		for(a = 0;a < this.layers.primitiveLayer.data.length;a++) {
+			obj = this.layers.primitiveLayer.data[a];
+			if(obj) {
+				this.levelGroup.bringToTop(obj);
+			}
+		}
+		for(a = 0;a < this.actions.previewGroup.length;a++) {
+			obj = this.actions.previewGroup[a];
+			this.levelGroup.bringToTop(obj);
+		}
+		this.levelGroup.bringToTop(this.lemmingsGroup);
+		for(a = 0;a < this.lemmingsGroup.children.length;a++) {
+			obj = this.lemmingsGroup.children[a];
+			if(obj.cursor.sprite) {
+				this.levelGroup.bringToTop(obj.cursor.sprite);
+			}
+		}
 		// Bring backgrounds objects to top first, ending with foreground objects
 		if (this.background) {
 			this.world.bringToTop(this.background);
 		}
 		this.world.bringToTop(this.levelGroup);
 		this.world.bringToTop(this.guiGroup);
-		for (var a = 0; a < this.guiGroup.children.length; a++) {
-			var elem = this.guiGroup.children[a];
+		var elem;
+		for (a = 0; a < this.guiGroup.children.length; a++) {
+			elem = this.guiGroup.children[a];
 			if (elem.label) {
 				this.guiGroup.bringToTop(elem.label);
 			}
@@ -561,22 +605,22 @@ var gameState = {
 		// Set level stuff
 
 		// Create objects
-		for (var a in this.map.objects) {
+		for (var a = 0;a < this.map.objects.length;a++) {
 			var obj = this.map.objects[a];
 			var objProps = obj.properties;
 			// Create door
-			if (obj.type === "door") {
-				var newObj = new Prop(game, (obj.x + (obj.width * 0.5)), obj.y);
+			if (obj.tileproperties && obj.tileproperties.propType && obj.tileproperties.propType === "door") {
+				var newObj = new Prop(game, (obj.x + (obj.width * 0.5)), obj.y - obj.height);
 				var doorValue = 0;
 				var doorType = "classic";
 				var doorRate = 50;
 				var delay = 0;
+				if(obj.tileproperties.resref) {
+					doorType = obj.tileproperties.resref;
+				}
 				if (objProps) {
 					if (objProps.value) {
 						doorValue = parseInt(objProps.value);
-					}
-					if (objProps.type) {
-						doorType = objProps.type;
 					}
 					if (objProps.rate) {
 						doorRate = parseInt(objProps.rate);
@@ -591,29 +635,31 @@ var gameState = {
 				newObj.setAsDoor(doorType, doorValue, doorRate, delay, this.lemmingsGroup);
 			}
 			// Create exit
-			else if (obj.type === "exit") {
-				var newObj = new Prop(game, obj.x + (obj.width * 0.5), obj.y + obj.height);
+			else if (obj.tileproperties && obj.tileproperties.propType && obj.tileproperties.propType === "exit") {
+				var newObj = new Prop(game, obj.x + (obj.width * 0.5), obj.y);
 				var exitType = "classic";
-				if (objProps) {
-					if (objProps.type) {
-						exitType = objProps.type;
-					}
+				if(obj.tileproperties.resref) {
+					exitType = obj.tileproperties.resref;
 				}
 				newObj.setAsExit(exitType);
 			}
 			// Create trap
-			else if (obj.type === "trap") {
-				var newObj = new Prop(game, obj.x, obj.y);
-				var trapType = "water";
-				if (objProps && objProps.type) {
-					trapType = objProps.type;
+			else if (obj.tileproperties && obj.tileproperties.propType && obj.tileproperties.propType === "trap") {
+				var trapType = "";
+				if(obj.tileproperties.resref) {
+					trapType = obj.tileproperties.resref;
 				}
-				newObj.setAsTrap(trapType);
-				if (newObj.repeating) {
-					newObj.tileScale.setTo(
-						obj.width / 16,
-						obj.height / 16
-					);
+				if(trapType !== "") {
+					var cfg = game.cache.getJSON("config").props.traps[trapType];
+					var newObj = new Prop(game, obj.x + (obj.width * cfg.anchor.x), (obj.y - obj.height) + (obj.height * cfg.anchor.y));
+					if(obj.mirrored) {
+						newObj.scale.x = -newObj.scale.x;
+						newObj.x += obj.width;
+					}
+					if(obj.flipped) {
+						newObj.sclae.y = -newObj.scale.y;
+					}
+					newObj.setAsTrap(trapType);
 				}
 			}
 		}
@@ -813,6 +859,9 @@ var gameState = {
 				}
 			}
 		}
+
+		// Z-Ordering
+		this.zOrder();
 	},
 
 	clearState: function() {

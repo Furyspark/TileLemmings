@@ -61,6 +61,10 @@
 		{
 			"key": "sndDrown",
 			"url": "assets/audio/sfx/sndDrown.ogg"
+		},
+		{
+			"key": "sndBurn",
+			"url": "assets/audio/sfx/sndBurn.ogg"
 		}
 	],
 	"sprite_atlases": [
@@ -139,6 +143,11 @@
 			"atlasUrl": "assets/gfx/sprite_atlases/props_sports.json"
 		},
 		{
+			"key": "props_traps",
+			"url": "assets/gfx/sprite_atlases/props_traps.png",
+			"atlasUrl": "assets/gfx/sprite_atlases/props_traps.json"
+		},
+		{
 			"key": "mainmenu",
 			"url": "assets/gfx/sprite_atlases/mainmenu.png",
 			"atlasUrl": "assets/gfx/sprite_atlases/mainmenu.json"
@@ -151,24 +160,8 @@
 	],
 	"images": [
 		{
-			"key": "tilesetIsland",
-			"url": "assets/gfx/tilesets/tilesetIsland.png"
-		},
-		{
-			"key": "tilesetPink",
-			"url": "assets/gfx/tilesets/tilesetPink.png"
-		},
-		{
-			"key": "tilesetPillar",
-			"url": "assets/gfx/tilesets/tilesetPillar.png"
-		},
-		{
 			"key": "tilesetPlaceables",
 			"url": "assets/gfx/tilesets/tilesetPlaceables.png"
-		},
-		{
-			"key": "tilesetMiscTiles2",
-			"url": "assets/gfx/tilesets/tilesetMiscTiles2.png"
 		},
 		{
 			"key": "bgMainMenu",

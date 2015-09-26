@@ -182,6 +182,10 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	}, false);
+	this.addAnim("burn", "Burn", 13, {
+		x: 0,
+		y: 0
+	}, false);
 	this.playAnim("fall", 15);
 	this.velocity.y = 1;
 
@@ -203,6 +207,8 @@ var Lemming = function(game, x, y) {
 Lemming.DEATHTYPE_OUT_OF_ROOM = 0;
 Lemming.DEATHTYPE_FALL = 1;
 Lemming.DEATHTYPE_DROWN = 2;
+Lemming.DEATHTYPE_BURN = 3;
+Lemming.DEATHTYPE_INSTANT = 4;
 
 Lemming.prototype = Object.create(Phaser.Sprite.prototype);
 Lemming.prototype.constructor = Lemming;
@@ -912,6 +918,16 @@ Lemming.prototype.die = function(deathType) {
 			this.animations.currentAnim.onComplete.addOnce(function() {
 				this.remove();
 			}, this);
+			break;
+		case Lemming.DEATHTYPE_BURN:
+			GameManager.audio.play("sndBurn");
+			this.playAnim("burn", 15);
+			this.animations.currentAnim.onComplete.addOnce(function() {
+				this.remove();
+			}, this);
+			break;
+		case Lemming.DEATHTYPE_INSTANT:
+			this.remove();
 			break;
 	}
 };

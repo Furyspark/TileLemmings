@@ -81,12 +81,15 @@ var intermissionState = {
 		var levelPath = /([\w\/]+[\/])[\w\.]+/g.exec(this.levelFolder.baseUrl + this.levelObj.filename)[1]
 		for(var a = 0;a < this.map.tilesets.length;a++) {
 			var tileset = this.map.tilesets[a];
-			var url = levelPath + tileset.image;
-			this.mapFiles.push({
-				url: url,
-				key: tileset.name,
-				type: "image"
-			});
+			// Exclude image sheets
+			if(tileset.image) {
+				var url = levelPath + tileset.image;
+				this.mapFiles.push({
+					url: url,
+					key: tileset.name,
+					type: "image"
+				});
+			}
 		}
 
 		// Preload map files
@@ -220,10 +223,9 @@ var intermissionState = {
 			else if(layer.type === "objectgroup") {
 				for(var b = 0;b < layer.objects.length;b++) {
 					var obj = layer.objects[b];
-					if(obj.type === "door") {
-						if(obj.properties && obj.properties.value) {
-							lemmingCount += parseInt(obj.properties.value);
-						}
+					// Quick and dirty way to check for door value; will need to make a proper map class later
+					if(obj.properties && obj.properties.value) {
+						lemmingCount += parseInt(obj.properties.value);
 					}
 				}
 			}

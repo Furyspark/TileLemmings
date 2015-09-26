@@ -86,6 +86,10 @@
 				{
 					"filename": "level2.json",
 					"name": "Working around the clock"
+				},
+				{
+					"filename": "level3.json",
+					"name": "Blaster Master"
 				}
 			]
 		},

@@ -17,36 +17,37 @@
          "name":"objects",
          "objects":[
                 {
-                 "height":64,
-                 "id":1,
+                 "gid":105,
+                 "height":32,
+                 "id":3,
                  "name":"",
                  "properties":
                     {
                      "rate":"90",
-                     "type":"egypt",
                      "value":"5"
                     },
                  "rotation":0,
-                 "type":"door",
+                 "type":"",
                  "visible":true,
-                 "width":64,
+                 "width":96,
                  "x":80,
-                 "y":112
+                 "y":160
                 }, 
                 {
+                 "gid":115,
                  "height":64,
-                 "id":2,
+                 "id":4,
                  "name":"",
                  "properties":
                     {
-                     "type":"egypt"
+
                     },
                  "rotation":0,
-                 "type":"exit",
+                 "type":"",
                  "visible":true,
                  "width":64,
                  "x":496,
-                 "y":160
+                 "y":224
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -55,7 +56,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "properties":
     {
@@ -83,6 +84,233 @@
          "tilecount":100,
          "tileheight":16,
          "tilewidth":16
+        }, 
+        {
+         "firstgid":101,
+         "margin":0,
+         "name":"doors",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tilecount":9,
+         "tileheight":64,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "propType":"door",
+                 "resref":"cave"
+                },
+             "1":
+                {
+                 "propType":"door",
+                 "resref":"circus"
+                },
+             "2":
+                {
+                 "propType":"door",
+                 "resref":"classic"
+                },
+             "3":
+                {
+                 "propType":"door",
+                 "resref":"crystal"
+                },
+             "4":
+                {
+                 "propType":"door",
+                 "resref":"egypt"
+                },
+             "5":
+                {
+                 "propType":"door",
+                 "resref":"medieval"
+                },
+             "6":
+                {
+                 "propType":"door",
+                 "resref":"polar"
+                },
+             "7":
+                {
+                 "propType":"door",
+                 "resref":"space"
+                },
+             "8":
+                {
+                 "propType":"door",
+                 "resref":"sports"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_cave.png"
+                },
+             "1":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_circus.png"
+                },
+             "2":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_classic.png"
+                },
+             "3":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_crystal.png"
+                },
+             "4":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_egypt.png"
+                },
+             "5":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_medieval.png"
+                },
+             "6":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_polar.png"
+                },
+             "7":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_space.png"
+                },
+             "8":
+                {
+                 "image":"..\/..\/gfx\/editor\/doors\/door_sports.png"
+                }
+            },
+         "tilewidth":96
+        }, 
+        {
+         "firstgid":110,
+         "margin":0,
+         "name":"exits",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tilecount":12,
+         "tileheight":112,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "propType":"exit",
+                 "resref":"cave"
+                },
+             "1":
+                {
+                 "propType":"exit",
+                 "resref":"circus"
+                },
+             "10":
+                {
+                 "propType":"exit",
+                 "resref":"space"
+                },
+             "11":
+                {
+                 "propType":"exit",
+                 "resref":"sports"
+                },
+             "2":
+                {
+                 "propType":"exit",
+                 "resref":"classic"
+                },
+             "3":
+                {
+                 "propType":"exit",
+                 "resref":"crystal"
+                },
+             "4":
+                {
+                 "propType":"exit",
+                 "resref":"dirt"
+                },
+             "5":
+                {
+                 "propType":"exit",
+                 "resref":"egypt"
+                },
+             "6":
+                {
+                 "propType":"exit",
+                 "resref":"fire"
+                },
+             "7":
+                {
+                 "propType":"exit",
+                 "resref":"medieval"
+                },
+             "8":
+                {
+                 "propType":"exit",
+                 "resref":"pink"
+                },
+             "9":
+                {
+                 "propType":"exit",
+                 "resref":"polar"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_cave.png"
+                },
+             "1":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_circus.png"
+                },
+             "10":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_space.png"
+                },
+             "11":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_sports.png"
+                },
+             "2":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_classic.png"
+                },
+             "3":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_crystal.png"
+                },
+             "4":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_dirt.png"
+                },
+             "5":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_egypt.png"
+                },
+             "6":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_fire.png"
+                },
+             "7":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_medieval.png"
+                },
+             "8":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_pink.png"
+                },
+             "9":
+                {
+                 "image":"..\/..\/gfx\/editor\/exits\/exit_polar.png"
+                }
+            },
+         "tilewidth":96
         }],
  "tilewidth":16,
  "version":1,
