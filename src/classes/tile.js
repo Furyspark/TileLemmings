@@ -46,18 +46,10 @@ Tile.prototype.update = function() {
 
 	// Remove self
 	if(this.markedForRemoval) {
-		if(typeof removeCol === "undefined") {
-			removeCol = true;
-		}
-
 		var layer = this.state.layers.primitiveLayer;
 		for(var a in layer.data) {
 			var tile = layer.data[a];
 			if(tile === this) {
-				// Remove collision flag
-				if(removeCol) {
-					this.state.layers.tileLayer.setType(this.tile.x, this.tile.y, 0);
-				}
 				// Delete self
 				layer.data[a] = null;
 			}
@@ -74,4 +66,8 @@ Tile.prototype.animate = function() {
 
 Tile.prototype.remove = function(removeCol) {
 	this.markedForRemoval = true;
+	// Remove collision flag
+	if(removeCol) {
+		this.state.layers.tileLayer.setType(this.tile.x, this.tile.y, 0);
+	}
 };

@@ -71,6 +71,7 @@ var GameManager = {
 		}
 
 		// Parse settings
+		var a;
 		if(settings.audio && settings.audio.volume) {
 			for(a in settings.audio.volume) {
 				this.audio.volume[a] = settings.audio.volume[a];

@@ -1,4 +1,5 @@
 [
+	"./src/pre.js",
 	"./src/classes/camera.js",
 	"./src/classes/alarm.js",
 	"./src/classes/gui.js",

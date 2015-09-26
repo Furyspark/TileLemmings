@@ -12,7 +12,7 @@ var gameState = {
 					return false;
 				}
 				this.data[this.getIndex(tileX, tileY)] = type;
-				if(this.state.minimap) {
+				if (this.state.minimap) {
 					this.state.minimap.refresh();
 				}
 				return true;
@@ -30,11 +30,23 @@ var gameState = {
 			getIndex: function(tileX, tileY) {
 				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
 			},
-			getTileType: function(tileX, tileY) {
+			getTileType: function(tileX, tileY, checkLemming) {
+				if (checkLemming === undefined) {
+					checkLemming = null;
+				}
+
+				// Get out of room type: 0 (or air)
 				if (tileX < 0 || tileX > this.state.map.width ||
 					tileY < 0 || tileY > this.state.map.height) {
-					return 0;
+					return GameData.tile.type.AIR;
 				}
+
+				// Get special type: blocker
+				if (this.state.getBlockerInTile(tileX, tileY, checkLemming)) {
+					return GameData.tile.type.BLOCKER;
+				}
+
+				// Return normal data
 				return this.data[this.getIndex(tileX, tileY)];
 			}
 		},
@@ -317,13 +329,13 @@ var gameState = {
 				force = false;
 			}
 			// Don't break steel, unless forced
-			if (force || this.owner.layers.tileLayer.getTileType(tileX, tileY) === 1) {
+			if (force || this.owner.layers.tileLayer.getTileType(tileX, tileY) === GameData.tile.type.TILE) {
 				this.owner.layers.primitiveLayer.replaceTile(tileX, tileY, null);
-				var test = this.owner.layers.tileLayer.setType(tileX, tileY, 0);
+				var test = this.owner.layers.tileLayer.setType(tileX, tileY, GameData.tile.type.AIR);
 				if (!test) {
 					return 1;
 				}
-			} else if (this.owner.layers.tileLayer.getTileType(tileX, tileY) === 2) {
+			} else if (this.owner.layers.tileLayer.getTileType(tileX, tileY) === GameData.tile.type.STEEL) {
 				return 2;
 			}
 			return 0;
@@ -333,7 +345,7 @@ var gameState = {
 		this.layers.tileLayer.height = this.map.height;
 
 		// Determine tile properties
-		tileProps = {};
+		var tileProps = {};
 		for (var a = 0; a < this.map.tilesets.length; a++) {
 			var tileset = this.map.tilesets[a];
 			var testTileProps = tileset.tileproperties;
@@ -728,7 +740,6 @@ var gameState = {
 		if (!this.cursorOverGUI() && lemmingSelect.data.length > 0) {
 			lemmingSelect.data[0].cursorSelect();
 		}
-		delete lemmingSelect;
 
 		// Handle alarms
 		for (var a = 0; a < this.alarms.data.length; a++) {
@@ -775,7 +786,7 @@ var gameState = {
 		}
 
 		// Update minimap
-		if(this.minimap) {
+		if (this.minimap) {
 			this.minimap.reposition();
 		}
 		// Update z-order
@@ -1105,5 +1116,56 @@ var gameState = {
 			}
 		}
 		return result;
+	},
+
+	/*
+		method: getBlockerInTile(tileX, tileY[, checkLemming])
+		Returns true if there is a blocker in that specified tile
+		checkLemming specifies the lemming the check originates from(optional)
+		If set, will not check for itself as a blocker, and will only detect blockers in
+		the same tile that are in front of checkLemming
+	*/
+	getBlockerInTile: function(tileX, tileY, checkLemming) {
+		if (checkLemming === undefined) {
+			checkLemming = null;
+		}
+
+		var rect = {
+			left: tileX * GameData.tile.width,
+			top: (tileY * GameData.tile.height) + 1,
+			right: (tileX * GameData.tile.width) + GameData.tile.width,
+			bottom: ((tileY * GameData.tile.height) + GameData.tile.height) + 1
+		};
+
+		var a, lem;
+		for (a = 0; a < this.lemmingsGroup.children.length; a++) {
+			lem = this.lemmingsGroup.children[a];
+
+			if (lem.action.name === "blocker" && !lem.action.idle &&
+				lem.x >= rect.left && lem.x < rect.right &&
+				lem.y >= rect.top && lem.y < rect.bottom &&
+				checkLemming !== lem) {
+
+				// No checkLemming has been specified
+				if (!checkLemming) {
+					return true;
+				}
+				// checkLemming has been specified but is not relevant(not in the same tile as lem)
+				else if (checkLemming && !(checkLemming.x >= rect.left && checkLemming.x < rect.right &&
+					checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
+					return true;
+				}
+				// checkLemming has been specified and in the same time as lem; check for requirements
+				else if (checkLemming && (checkLemming.x >= rect.left && checkLemming.x < rect.right &&
+					checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
+					// Check to see if lem is in front of checkLemming
+					if((checkLemming.x >= lem.x && checkLemming.dir === -1) ||
+						(checkLemming.x <= lem.x && checkLemming.dir === 1)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 };
