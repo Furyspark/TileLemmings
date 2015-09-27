@@ -4,6 +4,16 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 
+		watch: {
+			all: {
+				files: "src/**",
+				options: {
+					livereload: true,
+					interval: 1500
+				}
+			}
+		},
+
 		concat: {
 			options: {
 				banner: "(function(Phaser) {\n",
@@ -17,7 +27,8 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-contrib-concat");
 
-	grunt.registerTask("default", ["concat"]);
+	grunt.registerTask("default", ["concat", "watch"]);
 };
