@@ -1,6 +1,4 @@
-var Camera = function(game, state) {
-	this.state = state;
-
+var Camera = function(game) {
 	this.scrolling = false;
 	Object.defineProperty(this, "gameCamera", {get() {
 		return game.camera;
@@ -26,6 +24,11 @@ var Camera = function(game, state) {
 			get() {
 				return this.gameCamera.y / this.state.zoom;
 			}
+		},
+		"state": {
+			get() {
+				return game.state.getCurrentState();
+			}
 		}
 	});
 
@@ -47,14 +50,12 @@ Camera.prototype.move = function(hor, ver, relative) {
 		this.gameCamera.x = (hor * this.state.zoom);
 		this.gameCamera.y = (ver * this.state.zoom);
 	}
-	// Move UI
-	//for(var a = 0;a < this.state.guiGroup.children.length;a++) {
-	//	var uiNode = this.state.guiGroup.children[a];
-	//	if(uiNode.guiAlign) {
-	//		uiNode.x = (this.gameCamera.x + (uiNode.guiAlign.anchor.x * this.gameCamera.width)) + uiNode.guiAlign.x;
-	//		uiNode.y = (this.gameCamera.y + (uiNode.guiAlign.anchor.y * this.gameCamera.height)) + uiNode.guiAlign.y;
-	//	}
-	//}
+	
+	// Adjust minimap's viewport frame
+	if(this.state.minimap) {
+		this.state.minimap.adjustFrame();
+	}
+	
 	// Move grid
 	var grid = this.state.grid.image;
 	if(grid) {

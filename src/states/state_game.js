@@ -831,10 +831,6 @@ var gameState = {
 			}
 		}
 
-		// Update minimap
-		//if (this.minimap) {
-		//	this.minimap.reposition();
-		//}
 		// Update z-order
 		this.levelGroup.bringToTop(this.lemmingsGroup);
 		this.levelGroup.bringToTop(this.gridGroup);

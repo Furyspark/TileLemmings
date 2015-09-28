@@ -185,7 +185,14 @@ GUI_Minimap.prototype.scroll = function() {
 	};
 	this.state.cam.move(moveTo.x, moveTo.y, false);
 
-	// Reposition frame
+	this.adjustFrame();
+};
+
+/*
+	method: adjustFrame
+  Adjusts the viewport frame on the minimap
+*/
+GUI_Minimap.prototype.adjustFrame = function() {
 	this.viewFrame.x = this.state.cam.x;
 	this.viewFrame.y = this.state.cam.y;
 };
