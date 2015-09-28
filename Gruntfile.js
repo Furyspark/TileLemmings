@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 
 		watch: {
 			all: {
-				files: "src/**",
+				files: "./src/**",
 				options: {
 					livereload: true,
 					interval: 1500
@@ -30,5 +30,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-contrib-concat");
 
-	grunt.registerTask("default", ["concat", "watch"]);
+	grunt.registerTask("default", ["concat"]);
+	grunt.registerTask("develop", ["concat", "watch"]);
 };
