@@ -10,7 +10,8 @@ module.exports = function(grunt) {
 				options: {
 					livereload: true,
 					interval: 1500
-				}
+				},
+				tasks: ["default"]
 			}
 		},
 
