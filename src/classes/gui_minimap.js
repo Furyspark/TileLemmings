@@ -12,10 +12,6 @@ var GUI_Minimap = function() {
 		width: this.state.map.tilewidth,
 		height: this.state.map.tileheight
 	};
-	this.screenAnchor = {
-		x: 0,
-		y: 0
-	};
 	this.limits = {
 		size: {
 			max: {
@@ -51,7 +47,7 @@ GUI_Minimap.prototype.update = function() {
 	if(this.scrolling) {
 		this.scroll();
 	}
-	this.reposition();
+	//this.reposition();
 };
 
 GUI_Minimap.prototype.refresh = function() {
@@ -120,7 +116,8 @@ GUI_Minimap.prototype.refresh = function() {
 	this.resize();
 
 	// Reposition self
-	this.reposition();
+	//this.reposition();
+	this.adjustZOrder();
 };
 
 GUI_Minimap.prototype.clear = function() {
@@ -155,28 +152,11 @@ GUI_Minimap.prototype.resize = function() {
 	this.viewFrame.height = this.state.cam.height;
 
 	// Reposition
-	this.reposition();
+	//this.reposition();
+	this.adjustZOrder();
 
 	// Update hit area
 	this.bg.hitArea = new Phaser.Rectangle(0, 0, this.width / this.scale.x, this.height / this.scale.y);
-};
-
-GUI_Minimap.prototype.reposition = function() {
-	// Get position rate
-	var ratePos = {
-		x: (this.screenAnchor.x * game.camera.width),
-		y: (this.screenAnchor.y * game.camera.height)
-	};
-
-	// Reposition
-	this.x = Math.max(game.camera.x, Math.min((game.camera.x + game.camera.width) - this.width, ratePos.x + game.camera.x));
-	this.y = Math.max(game.camera.y, Math.min((game.camera.y + game.camera.height) - this.height, ratePos.y + game.camera.y));
-
-	// Update frame
-	this.viewFrame.x = this.state.cam.x;
-	this.viewFrame.y = this.state.cam.y;
-
-	this.adjustZOrder();
 };
 
 GUI_Minimap.prototype.mouseOver = function() {
@@ -186,7 +166,7 @@ GUI_Minimap.prototype.mouseOver = function() {
 };
 
 GUI_Minimap.prototype.getCursorInRate = function() {
-	var cursor = this.state.getWorldCursor();
+	var cursor = this.state.getScreenCursor();
 	cursor.x *= 2;
 	cursor.y *= 2;
 	return {
@@ -204,6 +184,10 @@ GUI_Minimap.prototype.scroll = function() {
 		y: Math.floor((rate.y * this.state.map.totalheight) - (this.state.cam.height * 0.5))
 	};
 	this.state.cam.move(moveTo.x, moveTo.y, false);
+
+	// Reposition frame
+	this.viewFrame.x = this.state.cam.x;
+	this.viewFrame.y = this.state.cam.y;
 };
 
 GUI_Minimap.prototype.adjustZOrder = function() {

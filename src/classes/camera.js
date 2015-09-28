@@ -48,13 +48,13 @@ Camera.prototype.move = function(hor, ver, relative) {
 		this.gameCamera.y = (ver * this.state.zoom);
 	}
 	// Move UI
-	for(var a = 0;a < this.state.guiGroup.children.length;a++) {
-		var uiNode = this.state.guiGroup.children[a];
-		if(uiNode.guiAlign) {
-			uiNode.x = (this.gameCamera.x + (uiNode.guiAlign.anchor.x * this.gameCamera.width)) + uiNode.guiAlign.x;
-			uiNode.y = (this.gameCamera.y + (uiNode.guiAlign.anchor.y * this.gameCamera.height)) + uiNode.guiAlign.y;
-		}
-	}
+	//for(var a = 0;a < this.state.guiGroup.children.length;a++) {
+	//	var uiNode = this.state.guiGroup.children[a];
+	//	if(uiNode.guiAlign) {
+	//		uiNode.x = (this.gameCamera.x + (uiNode.guiAlign.anchor.x * this.gameCamera.width)) + uiNode.guiAlign.x;
+	//		uiNode.y = (this.gameCamera.y + (uiNode.guiAlign.anchor.y * this.gameCamera.height)) + uiNode.guiAlign.y;
+	//	}
+	//}
 	// Move grid
 	var grid = this.state.grid.image;
 	if(grid) {

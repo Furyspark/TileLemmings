@@ -312,7 +312,7 @@ var gameState = {
 		// Create groups
 		this.levelGroup = game.add.group();
 		this.lemmingsGroup = game.add.group(this.levelGroup);
-		this.guiGroup = game.add.group();
+		this.guiGroup = game.add.group(game.stage);
 
 		// Create GUI
 		this.createLevelGUI();
@@ -599,8 +599,8 @@ var gameState = {
 		this.initMap();
 		this.zoomTo(2);
 		this.minimap = new GUI_Minimap();
-		this.minimap.screenAnchor.x = 1;
-		this.minimap.screenAnchor.y = 1;
+		this.minimap.x = game.camera.width - this.minimap.width;
+		this.minimap.y = game.camera.height - this.minimap.height;
 		this.guiGroup.add(this.minimap);
 		// Set level stuff
 
@@ -832,9 +832,9 @@ var gameState = {
 		}
 
 		// Update minimap
-		if (this.minimap) {
-			this.minimap.reposition();
-		}
+		//if (this.minimap) {
+		//	this.minimap.reposition();
+		//}
 		// Update z-order
 		this.levelGroup.bringToTop(this.lemmingsGroup);
 		this.levelGroup.bringToTop(this.gridGroup);
