@@ -1088,15 +1088,8 @@ var gameState = {
 		for (var a = 0; a < buttons.length; a++) {
 			var btn = buttons[a];
 			btn.x = alignX;
+			btn.y = game.camera.height - btn.height;
 			alignX += btn.width;
-			btn.guiAlign = {
-				x: btn.x,
-				y: -btn.height,
-				anchor: {
-					x: 0,
-					y: 1
-				}
-			};
 		}
 	},
 
