@@ -2,7 +2,9 @@ var game = new Phaser.Game(
 	800,
 	600,
 	Phaser.AUTO,
-	"content"
+	"content",
+	false,
+	false
 );
 
 // window.resizeGame = function(ratio) {

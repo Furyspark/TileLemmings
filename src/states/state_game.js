@@ -878,20 +878,7 @@ var gameState = {
 		this.layers.primitiveLayer.data = [];
 
 		// Remove all GUI objects
-		// for(var a = 0;a < removeGroups.length;a++) {
-		// 	var remGrp = removeGroups[a];
-		// 	while(remGrp.length > 0) {
-		// 		var gobj = remGrp.shift();
-		// 		if(gobj) {
-		// 			if(gobj.remove !== undefined) {
-		// 				gobj.remove();
-		// 			}
-		// 			else {
-		// 				gobj.destroy();
-		// 			}
-		// 		}
-		// 	}
-		// }
+		this.guiGroup.destroy();
 
 		// Remove reference to grid screen
 		this.grid.enabled = false;
