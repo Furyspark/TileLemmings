@@ -693,6 +693,7 @@ Lemming.prototype.setExploder = function() {
 		x: 0,
 		y: -((this.bbox.bottom - this.bbox.top) + 8)
 	}, "5");
+	this.state.levelGroup.bringToTop(this.gameLabel);
 	// Create alarm
 	this.subaction.alarm = new Alarm(game, 60, function() {
 		this.proceedExplode();

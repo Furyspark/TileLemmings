@@ -527,6 +527,7 @@ var gameState = {
 				this.levelGroup.bringToTop(obj.cursor.sprite);
 			}
 		}
+		this.levelGroup.bringToTop(this.gridGroup);
 		// Bring backgrounds objects to top first, ending with foreground objects
 		if (this.background) {
 			this.world.bringToTop(this.background);
@@ -663,6 +664,9 @@ var gameState = {
 				}
 			}
 		}
+
+		// Z-Order
+		this.zOrder();
 
 		// Let's go... HRRRRN
 		var snd = GameManager.audio.play("sndLetsGo");
@@ -831,10 +835,6 @@ var gameState = {
 			}
 		}
 
-		// Update z-order
-		this.levelGroup.bringToTop(this.lemmingsGroup);
-		this.levelGroup.bringToTop(this.gridGroup);
-
 		// Test for victory/defeat
 		if (this.victoryState.gameStarted && !this.victoryState.gameEnded) {
 			var allDoorsEmpty = true;
@@ -857,7 +857,7 @@ var gameState = {
 		}
 
 		// Z-Ordering
-		this.zOrder();
+		//this.zOrder();
 	},
 
 	clearState: function() {

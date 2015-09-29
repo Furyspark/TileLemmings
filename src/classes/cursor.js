@@ -6,6 +6,7 @@ var Cursor = function(game, x, y, owner) {
 		return game.state.getCurrentState();
 	}})
 	this.state.levelGroup.add(this);
+	this.state.levelGroup.bringToTop(this);
 
 	this.anchor.setTo(0.5, 0.5);
 	this.animations.add("hover", ["sprCursor_Open.png"]);
