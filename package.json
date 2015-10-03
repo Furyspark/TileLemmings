@@ -11,6 +11,6 @@
   },
   "private": true,
   "scripts": {
-    "test": "electron ."
+    "start": "grunt default && electron ."
   }
 }

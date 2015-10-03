@@ -487,7 +487,7 @@ Lemming.prototype.update = function() {
 		}
 
 		// Drown
-		if (this.tile.type(this.tile.x(this.x), this.tile.y(this.y)) == GameData.tile.type.WATER) {
+		if (this.tile.type(this.tile.x(this.x), this.tile.y(this.y-1)) == GameData.tile.type.WATER) {
 			this.die(Lemming.DEATHTYPE_DROWN);
 		}
 	}

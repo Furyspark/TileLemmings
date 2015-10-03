@@ -1,0 +1,16 @@
+{
+	"folders":
+	[
+		{
+			"path": "D:\\Projects\\TileLemmings"
+		}
+	],
+	"build_systems": [
+		{
+			"name": "Start",
+			"working_dir": "${project_path}",
+			"shell": true,
+			"cmd": ["npm", "start"]
+		}
+	]
+}
