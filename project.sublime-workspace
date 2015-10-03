@@ -19,10 +19,22 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "",
+		"height": 311.0,
+		"last_filter": ":w",
 		"selected_items":
 		[
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git add...",
+				"Git: Add..."
+			],
 			[
 				":open",
 				"View: Toggle Open Files in Side Bar"
@@ -77,11 +89,13 @@
 	},
 	"expanded_folders":
 	[
-		"/D/Projects/TileLemmings",
-		"/D/Projects/TileLemmings/TileLemmings"
+		"/D/Projects/TileLemmings"
 	],
 	"file_history":
 	[
+		"/D/Projects/TileLemmings/TileLemmings/src/classes/lemming.js",
+		"/D/Projects/TileLemmings/TileLemmings/project.sublime-project",
+		"/D/Projects/TileLemmings/TileLemmings/package.json",
 		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/D/Projects/Phaser/Raticide/src/classes/gui/gui_window.js",
@@ -206,10 +220,7 @@
 		"/D/Projects/Phaser/Meow/Meow.sublime-project",
 		"/D/Projects/Phaser/Meow/package.json",
 		"/D/Projects/Phaser/Meow/lib/gamelib.js",
-		"/D/Projects/Phaser/Meow/lib/states/menustate.js",
-		"/C/Users/Tijmen/Downloads/MiniGameButtonMash/Game.rvproj",
-		"/D/sandbox/Games 3/Alice in Harlotland/娼婦さん御一行！/Game.ini",
-		"/D/Projects/Phaser/Meow/lib/game.js"
+		"/D/Projects/Phaser/Meow/lib/states/menustate.js"
 	],
 	"find":
 	{
@@ -227,6 +238,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"water",
 			"ignored",
 			");\n",
 			"value",
@@ -372,7 +384,11 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Electron",
+	"output.git":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "Start",
 	"project": "project.sublime-project",
 	"replace":
 	{
