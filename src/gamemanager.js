@@ -40,6 +40,8 @@ var GameManager = {
 		}
 	},
 
+	tilesets: {},
+
 	saveSettings: function() {
 		// Load previous settings
 		var settings = localStorage["tilelemmings.profiles.default.settings"];

@@ -1,19 +1,25 @@
-var Tile = function(game, x, y, key, animationCrop) {
-	Phaser.Image.call(this, game, x, y, key);
+var Tile = function(game, key, animationCrop) {
+	Phaser.Image.call(this, game, 0, 0, key);
 	game.add.existing(this);
 
-	Object.defineProperty(this, "state", {get() {
-		return game.state.getCurrentState();
-	}});
-	this.tile = {
-		get x() {
-			return Math.floor(this.owner.x / this.owner.state.map.tilewidth);
+	Object.defineProperties(this, {
+		"state": {
+			get() {
+				return game.state.getCurrentState();
+			}
 		},
-		get y() {
-			return Math.floor(this.owner.y / this.owner.state.map.tileheight);
+		"tileX": {
+			get() {
+				return Math.floor(this.owner.x / this.owner.state.map.tilewidth);
+			}
 		},
-		owner: this
-	};
+		"tileY": {
+			get() {
+				return Math.floor(this.owner.y / this.owner.state.map.tileheight);
+			}
+		}
+	});
+
 	this.markedForRemoval = false;
 
 	// Add animation/cropping
@@ -22,9 +28,6 @@ var Tile = function(game, x, y, key, animationCrop) {
 		frame: 0,
 		fps: 6
 	};
-
-	// Add to scale group
-	this.state.levelGroup.add(this);
 
 	// Crop
 	this.crop(this.animation.croppings[this.animation.frame], true);
@@ -41,20 +44,7 @@ Tile.prototype = Object.create(Phaser.Image.prototype);
 Tile.prototype.constructor = Tile;
 
 Tile.prototype.update = function() {
-	// Animate
-
-
-	// Remove self
 	if(this.markedForRemoval) {
-		var layer = this.state.layers.primitiveLayer;
-		for(var a in layer.data) {
-			var tile = layer.data[a];
-			if(tile === this) {
-				// Delete self
-				layer.data[a] = null;
-			}
-		}
-
 		this.pendingDestroy = true;
 	}
 };
@@ -64,10 +54,6 @@ Tile.prototype.animate = function() {
 	this.crop(this.animation.croppings[this.animation.frame], true);
 };
 
-Tile.prototype.remove = function(removeCol) {
+Tile.prototype.remove = function() {
 	this.markedForRemoval = true;
-	// Remove collision flag
-	if(removeCol) {
-		this.state.layers.tileLayer.setType(this.tile.x, this.tile.y, 0);
-	}
 };

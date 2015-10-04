@@ -10,6 +10,8 @@
 	"./src/classes/cursor.js",
 	"./src/classes/gamelabel.js",
 	"./src/classes/background.js",
+	"./src/classes/level.js",
+	"./src/classes/layer.js",
 	"./src/classes/tile.js",
 	"./src/classes/lemming.js",
 	"./src/classes/prop.js",

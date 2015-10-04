@@ -1,0 +1,14 @@
+{ "image":"..\/gfx\/tilesets\/tilesetMedieval.png",
+ "imageheight":120,
+ "imagewidth":160,
+ "margin":2,
+ "name":"tilesetMedieval",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":48,
+ "tileheight":16,
+ "tilewidth":16
+}

@@ -1,150 +1,8 @@
 var gameState = {
-	map: null,
+	level: null,
 	zoom: 1,
 	minimap: null,
-	layers: {
-		tileLayer: {
-			data: [],
-			state: null,
-			setType: function(tileX, tileY, type) {
-				if (tileX < 0 || tileX > this.state.map.width ||
-					tileY < 0 || tileY > this.state.map.height) {
-					return false;
-				}
-				this.data[this.getIndex(tileX, tileY)] = type;
-				if (this.state.minimap) {
-					this.state.minimap.refresh();
-				}
-				return true;
-			},
-			logTiles: function() {
-				var str = "";
-				for (var a in this.data) {
-					str += this.data[a];
-					if (a % this.state.map.width == this.state.map.width - 1) {
-						str += "\n";
-					}
-				}
-				console.log(str);
-			},
-			getIndex: function(tileX, tileY) {
-				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
-			},
-			getTileType: function(tileX, tileY, checkLemming) {
-				if (checkLemming === undefined) {
-					checkLemming = null;
-				}
-
-				// Get out of room type: 0 (or air)
-				if (tileX < 0 || tileX > this.state.map.width ||
-					tileY < 0 || tileY > this.state.map.height) {
-					return GameData.tile.type.AIR;
-				}
-
-				// Get special type: blocker
-				if (this.state.getBlockerInTile(tileX, tileY, checkLemming)) {
-					return GameData.tile.type.BLOCKER;
-				}
-
-				// Return normal data
-				return this.data[this.getIndex(tileX, tileY)];
-			}
-		},
-		primitiveLayer: {
-			data: [],
-			state: null,
-			init: function() {
-				while (this.data.length < this.state.map.tilewidth * this.state.map.tileheight) {
-					this.data.push(null);
-				}
-			},
-			getCutout: function(basegid, tileset) {
-				var spacing = tileset.spacing,
-					margin = tileset.margin,
-					tilewidth = tileset.tilewidth,
-					tileheight = tileset.tileheight,
-					result = [],
-					tilesetTileWidth = (tileset.imagewidth) / (tilewidth + spacing);
-				// Get is animation
-				if (tileset.tiles && tileset.tiles[basegid] && tileset.tiles[basegid].animation) {
-					var animArr = tileset.tiles[basegid].animation;
-					animArr.forEach(function(value, index, array) {
-						// Gather data
-						var tileX = (value.tileid % tilesetTileWidth);
-						var tileY = Math.floor(value.tileid / tilesetTileWidth);
-						// Create cut-out for animation
-						var cutout = new Phaser.Rectangle(
-							margin + ((spacing + tilewidth) * tileX),
-							margin + ((spacing + tileheight) * tileY),
-							tilewidth,
-							tileheight
-						);
-						result.push(cutout);
-					});
-				}
-				// Static tile
-				else {
-					// Gather data
-					var tileX = (basegid % tilesetTileWidth);
-					var tileY = Math.floor(basegid / tilesetTileWidth);
-					// Create cut-out for animation
-					var cutout = new Phaser.Rectangle(
-						margin + ((spacing + tilewidth) * tileX),
-						margin + ((spacing + tileheight) * tileY),
-						tilewidth,
-						tileheight
-					);
-					result.push(cutout);
-				}
-				return result;
-			},
-			getTile: function(tileX, tileY) {
-				return this.data[this.getIndex(tileX, tileY)];
-			},
-			getIndex: function(tileX, tileY) {
-				return Math.floor((tileX % this.state.map.width) + (tileY * this.state.map.width));
-			},
-			logTiles: function() {
-				var str = "";
-				for (var a = 0; a < this.data.length; a++) {
-					if (this.data[a]) {
-						str += 1;
-					} else {
-						str += "0";
-					}
-					if (a % this.state.map.width == this.state.map.width - 1) {
-						str += "\n";
-					}
-				}
-				console.log(str);
-			},
-			removeTile: function(tileX, tileY) {
-				var testTile = this.getTile(tileX, tileY);
-				if (testTile) {
-					testTile.remove();
-					return true;
-				}
-				return false;
-			},
-			placeTile: function(tileX, tileY, imageKey, cutout, tileType) {
-				var tempTile = new Tile(game, (tileX * this.state.map.tilewidth), (tileY * this.state.map.tileheight),
-					imageKey,
-					cutout);
-				this.replaceTile(tileX, tileY, tempTile);
-				if (tileType !== undefined) {
-					this.state.layers.tileLayer.setType(tileX, tileY, tileType);
-					return true;
-				}
-				return false;
-			},
-			replaceTile: function(tileX, tileY, newTile) {
-				this.removeTile(tileX, tileY);
-				this.data[this.getIndex(tileX, tileY)] = newTile;
-			}
-		}
-	},
 	background: null,
-	bgm: null,
 	lemmingSelected: null,
 
 	scrollOrigin: {
@@ -285,29 +143,8 @@ var gameState = {
 		this.nukeStarted = false;
 	},
 
-	preload: function() {
-		// Preload map data
-		game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
-	},
-
 	create: function() {
 		this.enableUserInteraction();
-		// Create map
-		this.map = game.cache.getJSON("level");
-		this.map.owner = this;
-		Object.defineProperty(this.map, "totalwidth", {
-			get() {
-				return this.width * this.tilewidth;
-			}
-		})
-		Object.defineProperty(this.map, "totalheight", {
-			get() {
-				return this.height * this.tileheight;
-			}
-		});
-
-		this.layers.tileLayer.state = this;
-		this.layers.primitiveLayer.state = this;
 		this.speedManager.owner = this;
 		// Create groups
 		this.levelGroup = game.add.group();
@@ -319,179 +156,8 @@ var gameState = {
 
 		// Create camera config
 		this.cam = new Camera(game, this);
-		// Add tile functions to map
-		this.map.removeTile = function(tileX, tileY, force) {
-			// This function attempts to remove a tile
-			// Return values:    0 if success
-			//                   1 if no tile exists there
-			//                   2 if hit steel
-			if (typeof force === "undefined") {
-				force = false;
-			}
-			// Don't break steel, unless forced
-			if (force || this.owner.layers.tileLayer.getTileType(tileX, tileY) === GameData.tile.type.TILE) {
-				this.owner.layers.primitiveLayer.replaceTile(tileX, tileY, null);
-				var test = this.owner.layers.tileLayer.setType(tileX, tileY, GameData.tile.type.AIR);
-				if (!test) {
-					return 1;
-				}
-			} else if (this.owner.layers.tileLayer.getTileType(tileX, tileY) === GameData.tile.type.STEEL) {
-				return 2;
-			}
-			return 0;
-		};
-		// Set map size
-		this.layers.tileLayer.width = this.map.width;
-		this.layers.tileLayer.height = this.map.height;
-
-		// Determine tile properties
-		var tileProps = {};
-		for (var a = 0; a < this.map.tilesets.length; a++) {
-			var tileset = this.map.tilesets[a];
-			var testTileProps = tileset.tileproperties;
-			if (testTileProps) {
-				for (var b = tileset.firstgid; b < tileset.firstgid + tileset.tilecount; b++) {
-					var baseGID = b - tileset.firstgid;
-					var testProp = testTileProps[baseGID.toString()];
-					if (testProp) {
-						tileProps[b.toString()] = testProp;
-					}
-				}
-			}
-		}
-
-		// Set tile layers
-		this.map.objects = [];
-		for (var a = 0; a < this.map.layers.length; a++) {
-			var layer = this.map.layers[a];
-			if (layer.name === "tiles") {
-				for (var b = 0; b < layer.data.length; b++) {
-					var gid = layer.data[b];
-					var tileType = 0;
-					if (gid > 0) {
-						tileType = 1;
-						var props = tileProps[gid.toString()];
-						if (props) {
-							if (props.tileType) {
-								tileType = parseInt(props.tileType);
-							}
-						}
-					}
-					this.layers.tileLayer.data.push(tileType);
-				}
-			} else if (layer.name === "objects") {
-				for (var b = 0;b < layer.objects.length;b++) {
-					var obj = layer.objects[b];
-					var gid = 0;
-					if(obj.gid) {
-						// Determine bitmask properties
-						obj.mirrored = (obj.gid & 0x80000000);
-						obj.flipped = (obj.gid & 0x40000000);
-						obj.diagonal = (obj.gid & 0x20000000);
-						obj.gid = obj.gid & ~(0x80000000 | 0x40000000 |0x20000000);
-						gid = obj.gid;
-
-						// Set state
-						var props = tileProps[gid.toString()];
-						if(props) {
-							obj.tileproperties = props;
-						}
-						this.map.objects.push(obj);
-					}
-				}
-			}
-		}
 
 		this.startLevel();
-	},
-
-	initMap: function() {
-		// Resize map
-		game.world.width = this.map.totalwidth;
-		game.world.height = this.map.totalheight;
-
-		// Describe function(s)
-		this.map.getTileset = function(gid) {
-			for (var a in this.tilesets) {
-				var tileset = this.tilesets[a];
-				if (gid >= tileset.firstgid && gid < tileset.firstgid + tileset.tilecount) {
-					return tileset;
-				}
-			}
-			return null;
-		};
-
-		// Create tiles
-		this.layers.primitiveLayer.init();
-		for (var a in this.map.layers) {
-			var layer = this.map.layers[a];
-			for (var b in layer.data) {
-				var gid = layer.data[b];
-				if (gid > 0) {
-					var tileset = this.map.getTileset(gid);
-					var baseGid = gid - tileset.firstgid;
-					var placeAt = {
-						tile: {
-							x: (b % this.map.width),
-							y: Math.floor(b / this.map.width)
-						},
-						raw: {
-							x: (b % this.map.width) * this.map.tilewidth,
-							y: Math.floor(b / this.map.width) * this.map.tileheight
-						}
-					};
-					tileset.cols = Math.floor(tileset.imagewidth / (tileset.tilewidth + tileset.spacing));
-					tileset.rows = Math.floor(tileset.imageheight / (tileset.tileheight + tileset.spacing));
-					var cutout = this.layers.primitiveLayer.getCutout(baseGid, tileset);
-					this.layers.primitiveLayer.placeTile(placeAt.tile.x, placeAt.tile.y, tileset.name, cutout);
-				}
-			}
-		}
-
-		// Set up build tile rectangle
-		var tileX = 0;
-		var tileY = 0;
-		var tileWidth = 16;
-		var tileHeight = 16;
-		var tileSpacing = 4;
-		this.buildTileRect = [new Phaser.Rectangle(2 + ((tileWidth + tileSpacing) * tileX), 2 + ((tileHeight + tileSpacing) * tileY), tileWidth, tileHeight)];
-
-		// Set up action count
-		for (var a in this.actions.items) {
-			var action = this.actions.items[a];
-			if (this.map.properties[action.name]) {
-				this.setActionAmount(action.name, parseInt(this.map.properties[action.name]));
-			} else {
-				this.setActionAmount(action.name, 0);
-			}
-		}
-
-		// Set misc map properties
-		// PROPERTY: Save need count
-		if (this.map.properties.need) {
-			this.victoryState.need = this.map.properties.need;
-		}
-		// PROPERTY: Fall distance
-		if (!this.map.properties.falldist) {
-			this.map.properties.falldist = (9 * this.map.tileheight);
-		}
-
-		// Create background
-		if (game.cache.checkImageKey("bg")) {
-			this.background = new Background(game, "bg");
-		}
-
-		// Create grid
-		this.gridGroup = game.add.group(this.levelGroup);
-		for (var a = 0; a < this.map.width * this.map.height; a++) {
-			var placePos = {
-				x: (a % this.map.width) * this.map.tilewidth,
-				y: Math.floor(a / this.map.width) * this.map.tileheight
-			};
-			var grdImg = game.add.image(placePos.x, placePos.y, "misc", "gridTile.png");
-			this.gridGroup.add(grdImg);
-		}
-		this.gridGroup.visible = false;
 	},
 
 	zOrder: function() {
@@ -509,12 +175,6 @@ var gameState = {
 		for(a = 0;a < this.exitsGroup.length;a++) {
 			obj = this.exitsGroup[a];
 			this.levelGroup.bringToTop(obj);
-		}
-		for(a = 0;a < this.layers.primitiveLayer.data.length;a++) {
-			obj = this.layers.primitiveLayer.data[a];
-			if(obj) {
-				this.levelGroup.bringToTop(obj);
-			}
 		}
 		for(a = 0;a < this.actions.previewGroup.length;a++) {
 			obj = this.actions.previewGroup[a];
@@ -597,73 +257,11 @@ var gameState = {
 	},
 
 	startLevel: function() {
-		this.initMap();
 		this.zoomTo(2);
 		this.minimap = new GUI_Minimap();
 		this.minimap.x = game.camera.width - this.minimap.width;
 		this.minimap.y = game.camera.height - this.minimap.height;
 		this.guiGroup.add(this.minimap);
-		// Set level stuff
-
-		// Create objects
-		for (var a = 0;a < this.map.objects.length;a++) {
-			var obj = this.map.objects[a];
-			var objProps = obj.properties;
-			// Create door
-			if (obj.tileproperties && obj.tileproperties.propType && obj.tileproperties.propType === "door") {
-				var newObj = new Prop(game, (obj.x + (obj.width * 0.5)), obj.y - obj.height);
-				var doorValue = 0;
-				var doorType = "classic";
-				var doorRate = 50;
-				var delay = 0;
-				if(obj.tileproperties.resref) {
-					doorType = obj.tileproperties.resref;
-				}
-				if (objProps) {
-					if (objProps.value) {
-						doorValue = parseInt(objProps.value);
-					}
-					if (objProps.rate) {
-						doorRate = parseInt(objProps.rate);
-					}
-					if (objProps.delay) {
-						delay = parseInt(objProps.delay);
-					}
-				}
-				// Add to total lemming count
-				this.victoryState.total += doorValue;
-				// Create object
-				newObj.setAsDoor(doorType, doorValue, doorRate, delay, this.lemmingsGroup);
-			}
-			// Create exit
-			else if (obj.tileproperties && obj.tileproperties.propType && obj.tileproperties.propType === "exit") {
-				var newObj = new Prop(game, obj.x + (obj.width * 0.5), obj.y);
-				var exitType = "classic";
-				if(obj.tileproperties.resref) {
-					exitType = obj.tileproperties.resref;
-				}
-				newObj.setAsExit(exitType);
-			}
-			// Create trap
-			else if (obj.tileproperties && obj.tileproperties.propType && obj.tileproperties.propType === "trap") {
-				var trapType = "";
-				if(obj.tileproperties.resref) {
-					trapType = obj.tileproperties.resref;
-				}
-				if(trapType !== "") {
-					var cfg = game.cache.getJSON("config").props.traps[trapType];
-					var newObj = new Prop(game, obj.x + (obj.width * cfg.anchor.x), (obj.y - obj.height) + (obj.height * cfg.anchor.y));
-					if(obj.mirrored) {
-						newObj.scale.x = -newObj.scale.x;
-						newObj.x += obj.width;
-					}
-					if(obj.flipped) {
-						newObj.sclae.y = -newObj.scale.y;
-					}
-					newObj.setAsTrap(trapType);
-				}
-			}
-		}
 
 		// Z-Order
 		this.zOrder();
@@ -861,9 +459,6 @@ var gameState = {
 	},
 
 	clearState: function() {
-		// Remove all game objects
-		// this.levelGroup.destroy();
-
 		// Determine all groups to have their children destroyed
 		var removeGroups = [
 			// this.lemmingsGroup.all,
@@ -875,16 +470,15 @@ var gameState = {
 		this.doorsGroup = [];
 		this.exitsGroup = [];
 		this.trapsGroup = [];
-		this.layers.primitiveLayer.data = [];
 
 		// Remove all GUI objects
 		this.guiGroup.destroy();
+		
+		// Remove all game objects
+		this.levelGroup.destroy();
 
 		// Remove reference to grid screen
 		this.grid.enabled = false;
-
-		// Clear tile layer
-		this.layers.tileLayer.data = [];
 
 		// Reset speed manager
 		this.speedManager.paused = false;
