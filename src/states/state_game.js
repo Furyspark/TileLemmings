@@ -482,7 +482,7 @@ var gameState = {
 	},
 
 	expendAction: function(action, amount) {
-		amount = amount || 1;
+		if(amount === undefined) { amount = 1; }
 
 		this.setActionAmount(action, this.getActionAmount(action) - amount);
 	},
@@ -498,7 +498,7 @@ var gameState = {
 	},
 
 	setActionAmount: function(actionName, amount) {
-		amount = amount || 0;
+		if(amount === undefined) { amount = 0; }
 
 		for (var a in this.actions.items) {
 			var action = this.actions.items[a];
