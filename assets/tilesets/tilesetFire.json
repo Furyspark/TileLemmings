@@ -1,0 +1,21 @@
+{ "image":"..\/gfx\/tilesets\/tilesetFire.png",
+ "imageheight":120,
+ "imagewidth":220,
+ "margin":2,
+ "name":"tilesetFire",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":66,
+ "tileheight":16,
+ "tileproperties":
+    {
+     "22":
+        {
+         "tileType":"2"
+        }
+    },
+ "tilewidth":16
+}

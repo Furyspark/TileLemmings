@@ -34,7 +34,7 @@ var Tile = function(x, y, key, animationCrop) {
 
 	// Set animation timer(s)
 	if(this.animation.croppings.length > 1) {
-		new Alarm(game, this.animation.fps, function() {
+		new Alarm(this.animation.fps, function() {
 			this.animate();
 		}, this, true);
 	}

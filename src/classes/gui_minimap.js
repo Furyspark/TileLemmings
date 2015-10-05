@@ -51,6 +51,8 @@ GUI_Minimap.prototype.update = function() {
 GUI_Minimap.prototype.onLevelStart = function() {
 	// Create frame/viewport
 	this.viewFrame = game.add.image(0, 0, "minimap", "frame.png");
+	this.viewFrame.width = this.state.cam.width;
+	this.viewFrame.height = this.state.cam.height;
 	this.add(this.viewFrame);
 
 	// Add event listener

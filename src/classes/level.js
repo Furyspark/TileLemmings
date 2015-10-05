@@ -8,6 +8,7 @@ var Level = function(src, onLoad, onLoadContext, levelFolder, levelObj) {
 
 	this.baseWidth = 1;
 	this.baseHeight = 1;
+	this.fallDist = (9 * GameData.tile.height);
 
 	this.levelFolder = levelFolder;
 	this.levelObj = levelObj;
@@ -17,14 +18,32 @@ var Level = function(src, onLoad, onLoadContext, levelFolder, levelObj) {
 	this.objectLayer = null;
 	this.bg = null;
 
+	// Create groups
 	this.lemmingsGroup = game.add.group(this);
+	this.actionPreviewGroup = game.add.group(this);
+	this.gameLabelGroup = game.add.group(this);
+
+	// Create grid
+	this.gridGroup = game.add.group(this);
+	this.gridGroup.visible = false;
+
+	// Set more properties
 	this.lemmingCount = 0;
 	this.lemmingNeed = 1;
 	this.actions = {};
 
+	// (Default coordinates for the builder tile)
+	this.buildTileRect = new Phaser.Rectangle(
+		2,
+		2,
+		GameData.tile.width,
+		GameData.tile.height
+	);
+
 	// Set game stuff
 	this.started = false;
 	this.ended = false;
+	this.saved = 0;
 
 	// Define properties
 	Object.defineProperties(this, {
@@ -118,8 +137,16 @@ Level.prototype.applySource = function(src) {
 	this.baseWidth = src.width;
 	this.baseHeight = src.height;
 
+	// Generate grid
+	var a, b, gridTile;
+	for(a = 0;a < this.baseWidth;a++) {
+		for(b = 0;b < this.baseHeight;b++) {
+			gridTile = game.add.image(a * GameData.tile.width, b * GameData.tile.height, "misc", "gridTile.png", this.gridGroup);
+		}
+	}
+
 	// Create layers
-	var layer, tempLayer, a;
+	var layer, tempLayer;
 	for(a = 0;a < src.layers.length;a++) {
 		layer = src.layers[a];
 		this.addLayer(layer);
@@ -132,9 +159,7 @@ Level.prototype.applySource = function(src) {
 	// Set actions
 	for(a in GameData.actions) {
 		if(src.properties[a]) {
-			this.actions[a] = {
-				value: src.properties[a]
-			};
+			this.actions[a] = parseInt(src.properties[a]);
 		}
 	}
 
@@ -174,6 +199,9 @@ Level.prototype.zOrder = function() {
 	// }
 	// Lemmings
 	this.bringToTop(this.lemmingsGroup);
+	this.bringToTop(this.actionPreviewGroup);
+	this.bringToTop(this.gridGroup);
+	this.bringToTop(this.gameLabelGroup);
 	for(a = 0;a < this.lemmingsGroup.children.length;a++) {
 		obj = this.lemmingsGroup.children[a];
 		if(obj.cursor.sprite) {
@@ -189,4 +217,69 @@ Level.prototype.zOrder = function() {
 */
 Level.prototype.createBackground = function() {
 	this.bg = new Background("bg", this);
+};
+
+/*
+	method: toTileSpace(x, y)
+*/
+Level.prototype.toTileSpace = function(x, y) {
+	return {
+		x: Math.floor(x / GameData.tile.width),
+		y: Math.floor(y / GameData.tile.height)
+	};
+};
+
+/*
+	method: toWorldSpace(x, y)
+*/
+Level.prototype.toWorldSpace = function(x, y) {
+	return {
+		x: Math.floor(x * GameData.tile.width),
+		y: Math.floor(y * GameData.tile.height)
+	};
+};
+
+/*
+	method: removeTile(tileX, tileY)
+	Removes a tile from the main tile layer at the specified coordinates
+	force determines whether non-diggable tiles should be removed as well
+*/
+Level.prototype.removeTile = function(tileX, tileY, force) {
+	if(force === undefined) { force = false; }
+	var tileType;
+	if(this.tileLayer) {
+		tileType = this.tileLayer.getTileType(tileX, tileY);
+		if(tileType === 1 || force) {
+			this.tileLayer.removeTile(tileX, tileY);
+			this.tileLayer.setTileType(tileX, tileY, 0);
+			return 1;
+		}
+		else if(tileType === 2) {
+			return 2;
+		}
+	}
+	return 0;
+};
+
+/*
+	method: clearAssets
+	Clears the assets used (exclusively) in this level to free memory
+*/
+Level.prototype.clearAssets = function() {
+	if(game.cache.checkSoundKey("bgm")) {
+		game.cache.removeSound("bgm");
+	}
+	if(game.cache.checkImageKey("bg")) {
+		game.cache.removeImage("bg", true);
+	}
+	var ts;
+	while(this.tilesets.length > 0) {
+		ts = this.tilesets.splice(0, 1);
+		if(game.cache.checkJSONKey(ts.key)) {
+			game.cache.removeJSON(ts.key);
+		}
+		if(game.cache.checkImageKey(ts.imageKey)) {
+			game.cache.removeImage(ts.imageKey, true);
+		}
+	}
 };

@@ -1,0 +1,14 @@
+{ "image":"..\/gfx\/tilesets\/tilesetPyramid.png",
+ "imageheight":200,
+ "imagewidth":200,
+ "margin":2,
+ "name":"tilesetPyramid",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":100,
+ "tileheight":16,
+ "tilewidth":16
+}

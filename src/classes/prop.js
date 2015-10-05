@@ -28,8 +28,8 @@ Prop.prototype.update = function() {
 	var a, lem;
 	if(this.objectType === "trap") {
 		// Search for lemmings
-		for(a = 0;a < this.state.lemmingsGroup.children.length;a++) {
-			lem = this.state.lemmingsGroup.children[a];
+		for(a = 0;a < this.level.lemmingsGroup.children.length;a++) {
+			lem = this.level.lemmingsGroup.children[a];
 			if(!lem.dead && lem.active && this.inPosition(lem.x, lem.y) && this.animations.currentAnim.name === "idle") {
 				lem.die(this.deathType);
 				// Play kill animation, if applicable
@@ -93,7 +93,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay) {
 		// Set event
 		this.animations.getAnimation("opening").onComplete.addOnce(function() {
 			this.playAnim("open", 15);
-			var alarm = new Alarm(game, 30, function() {
+			var alarm = new Alarm(30, function() {
 				this.opened();
 				if(GameManager.level.objectLayer.doorGroup.children[0] === this) {
 					this.state.playLevelBGM();
@@ -108,7 +108,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay) {
 			this.spawnLemming(true);
 		}
 		else {
-			var alarm = new Alarm(game, this.delay, function() {
+			var alarm = new Alarm(this.delay, function() {
 				this.spawnLemming(true);
 			}, this);
 		}
@@ -122,7 +122,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay) {
 			var lem = new Lemming(game, this.x, this.y + 30);
 			this.lemmingsGroup.add(lem);
 			if(recurring) {
-				var alarm = new Alarm(game, this.rate, this.spawnLemming, this);
+				var alarm = new Alarm(this.rate, this.spawnLemming, this);
 			}
 		}
 	};

@@ -7,7 +7,7 @@ var GUI_Button = function(game, x, y) {
 	// Initialization
 	this.guiType = "button";
 	this.subType = "";
-	this.action = "";
+	this.actionName = "";
 	this.pressed = false;
 	this.inputEnabled = true;
 	this.doubleTap = {
@@ -92,7 +92,7 @@ GUI_Button.prototype.update = function() {
 	// this.label.reposition();
 	// Update double tap time
 	if(this.doubleTap.enabled && this.doubleTap.time > 0) {
-		this.doubleTap.time = Math.max(0, this.doubleTap.time - this.state.speedManager.effectiveSpeed);
+		this.doubleTap.time = Math.max(0, this.doubleTap.time - GameManager.speedManager.effectiveSpeed);
 	}
 };
 
@@ -134,12 +134,7 @@ GUI_Button.prototype.visualRelease = function() {
 GUI_Button.prototype.doAction = function() {
 	switch (this.subType) {
 		case "action":
-			for (var a in this.state.actions.items) {
-				var item = this.state.actions.items[a];
-				if (item.name == this.action) {
-					this.state.actions.select = a;
-				}
-			}
+			this.state.actionSelect = this.actionName;
 			break;
 		case "misc":
 			switch (this.action) {

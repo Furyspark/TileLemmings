@@ -3,6 +3,7 @@ var gameState = {
 	zoom: 1,
 	minimap: null,
 	lemmingSelected: null,
+	actionSelect: "",
 
 	scrollOrigin: {
 		x: 0,
@@ -10,6 +11,11 @@ var gameState = {
 	},
 
 	guiGroup: null,
+
+	grid: {
+		enabled: false,
+		button: null
+	},
 
 	init: function(levelFolder, levelObj, level) {
 		this.levelFolder = levelFolder;
@@ -72,8 +78,8 @@ var gameState = {
 		// Add left-mouse button functionality
 		game.input.activePointer.leftButton.onDown.add(function() {
 			// Assign action to lemming
-			if (this.lemmingSelected != null && this.actions.current && this.actions.current.amount > 0) {
-				this.lemmingSelected.setAction(this.actions.current.name);
+			if (this.lemmingSelected != null && this.level.actions[this.actionSelect] && this.level.actions[this.actionSelect] > 0) {
+				this.lemmingSelected.setAction(this.actionSelect);
 			}
 		}, this);
 		// Add right-mouse scrolling possibility
@@ -87,7 +93,9 @@ var gameState = {
 	},
 
 	startLevel: function() {
+		// Zoom
 		this.zoomTo(2);
+		// Create minimap
 		this.minimap = new GUI_Minimap(this.level);
 		this.minimap.x = game.camera.width - this.minimap.width;
 		this.minimap.y = game.camera.height - this.minimap.height;
@@ -131,11 +139,11 @@ var gameState = {
 	toggleGrid: function() {
 		if (this.grid.enabled) {
 			this.grid.enabled = false;
-			this.gridGroup.visible = false;
+			this.level.gridGroup.visible = false;
 			this.grid.button.visualRelease();
 		} else {
 			this.grid.enabled = true;
-			this.gridGroup.visible = true;
+			this.level.gridGroup.visible = true;
 			this.grid.button.visualPress();
 		}
 	},
@@ -147,11 +155,11 @@ var gameState = {
 			this.nukeStarted = true;
 			this.nuke();
 			// Set lemming count of all doors to 0
-			for (var a = 0; a < this.doorGroup.children.length; a++) {
-				var door = this.doorGroup.children[a];
+			for (var a = 0; a < this.level.objectLayer.doorGroup.children.length; a++) {
+				var door = this.level.objectLayer.doorGroup.children[a];
 				door.lemmings = 0;
 			}
-			this.victoryState.gameStarted = true;
+			this.level.started = true;
 		}
 		// Proceed nuke
 		else {
@@ -165,7 +173,7 @@ var gameState = {
 			}
 			// Set nuke alarm
 			if (searchComplete) {
-				var alarm = new Alarm(game, 10, function() {
+				var alarm = new Alarm(10, function() {
 					this.nuke();
 				}, this);
 			}
@@ -286,7 +294,11 @@ var gameState = {
 		this.guiGroup.destroy();
 		
 		// Destroy level
+		this.level.clearAssets();
 		this.level.destroy();
+
+		// Destroy alarms
+		GameManager.alarms.clear();
 
 		// Reset speed manager
 		GameManager.speedManager.paused = false;
@@ -304,7 +316,7 @@ var gameState = {
 		this.saveGame(levelIndex);
 		if (this.levelFolder.levels.length > levelIndex + 1) {
 			var newLevel = this.levelFolder.levels[levelIndex + 1];
-			game.state.start("intermission", true, false, this.levelFolder, newLevel, false, this.mapFiles);
+			game.state.start("intermission", true, false, this.levelFolder, newLevel);
 		} else {
 			game.state.start("menu");
 		}
@@ -312,7 +324,7 @@ var gameState = {
 
 	retryLevel: function() {
 		this.clearState();
-		game.state.start("intermission", true, false, this.levelFolder, this.levelObj, true, this.mapFiles);
+		game.state.start("intermission", true, false, this.levelFolder, this.levelObj);
 	},
 
 	getLevelIndex: function() {
@@ -344,10 +356,6 @@ var gameState = {
 		localStorage["tilelemmings.profiles.default.progress"] = JSON.stringify(curSave);
 	},
 
-	render: function() {
-
-	},
-
 	cursorOverGUI: function() {
 		if (this.minimap && this.minimap.mouseOver()) {
 			return true;
@@ -372,9 +380,9 @@ var gameState = {
 		if (this.dead || !this.active) {
 			return false;
 		}
-		if (this.state.actions.select >= 0) {
-			if (this.action.name == this.state.actions.current.name ||
-				this.subaction.name == this.state.actions.current.name) {
+		if (this.level.actions[this.state.actionSelect] >= 0) {
+			if (this.action.name == this.state.actionSelect ||
+				this.subaction.name == this.state.actionSelect) {
 				// Exclude builders at their end
 				if (this.action.name === "builder" && this.animations.currentAnim.name === "build_end") {
 					// Don't make unselectable
@@ -382,7 +390,7 @@ var gameState = {
 					return false;
 				}
 			}
-			if (typeof this.attributes[this.state.actions.current.name] !== "undefined" && this.attributes[this.state.actions.current.name]) {
+			if (typeof this.attributes[this.state.actionSelect] !== "undefined" && this.attributes[this.state.actionSelect]) {
 				return false;
 			}
 		}
@@ -408,23 +416,26 @@ var gameState = {
 		var buttons = [];
 
 		// Create action buttons
-		for (var a in this.level.actions) {
-			var action = this.level.actions[a];
-			var animPrefix = "Btn_" + a.substr(0, 1).toUpperCase() + a.substr(1) + "_";
-			var btn = new GUI_Button(game, 0, 0);
+		var a, animPrefix, btn;
+		for (a in this.level.actions) {
+			animPrefix = "Btn_" + a.substr(0, 1).toUpperCase() + a.substr(1) + "_";
+			btn = new GUI_Button(game, 0, 0);
 			this.guiGroup.add(btn);
 			buttons.push(btn);
 			btn.set({
 				released: animPrefix + "0.png",
 				pressed: animPrefix + "1.png"
-			}, action.name, "action");
+			}, a, "action");
 
 			// Assign buttons
-			action.btn = btn;
+			btn.actionName = a;
+			if(this.level.actions[a] > 0) {
+				btn.label.text = this.level.actions[a].toString();
+			}
 		}
 
 		// Create pause button
-		var btn = new GUI_Button(game, 0, 0);
+		btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -434,7 +445,7 @@ var gameState = {
 		GameManager.speedManager.pauseButton = btn;
 
 		// Create fast forward button
-		var btn = new GUI_Button(game, 0, 0);
+		btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -444,7 +455,7 @@ var gameState = {
 		GameManager.speedManager.fastForwardButton = btn;
 
 		// Create nuke button
-		var btn = new GUI_Button(game, 0, 0);
+		btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
@@ -454,18 +465,19 @@ var gameState = {
 		btn.doubleTap.enabled = true;
 
 		// Create grid button
-		var btn = new GUI_Button(game, 0, 0);
+		btn = new GUI_Button(game, 0, 0);
 		this.guiGroup.add(btn);
 		buttons.push(btn);
 		btn.set({
 			released: "Btn_Grid_0.png",
 			pressed: "Btn_Grid_1.png"
 		}, "grid", "misc");
+		this.grid.button = btn;
 
 		// Align buttons
 		var alignX = 0;
-		for (var a = 0; a < buttons.length; a++) {
-			var btn = buttons[a];
+		for (a = 0; a < buttons.length; a++) {
+			btn = buttons[a];
 			btn.x = alignX;
 			btn.y = game.camera.height - btn.height;
 			alignX += btn.width;
@@ -481,18 +493,15 @@ var gameState = {
 		}
 	},
 
-	expendAction: function(action, amount) {
+	expendAction: function(actionName, amount) {
 		if(amount === undefined) { amount = 1; }
 
-		this.setActionAmount(action, this.getActionAmount(action) - amount);
+		this.setActionAmount(actionName, this.getActionAmount(actionName) - amount);
 	},
 
 	getActionAmount: function(actionName) {
-		for (var a in this.actions.items) {
-			var action = this.actions.items[a];
-			if (action.name == actionName) {
-				return action.amount;
-			}
+		if(this.level.actions[actionName]) {
+			return this.level.actions[actionName];
 		}
 		return -1;
 	},
@@ -500,15 +509,18 @@ var gameState = {
 	setActionAmount: function(actionName, amount) {
 		if(amount === undefined) { amount = 0; }
 
-		for (var a in this.actions.items) {
-			var action = this.actions.items[a];
-			if (action.name == actionName) {
-				action.amount = Math.max(0, amount);
-				action.btn.label.text = action.amount.toString();
-				if (action.amount === 0) {
-					action.btn.label.text = "";
+		if(this.level.actions[actionName]) {
+			this.level.actions[actionName] = amount;
+			this.guiGroup.forEach(function(child, actionName, value) {
+				if(child.subType && child.subType === "action" && child.actionName == actionName) {
+					if(value === 0) {
+						child.label.text = "";
+					}
+					else {
+						child.label.text = value.toString();
+					}
 				}
-			}
+			}, this, true, actionName, this.level.actions[actionName]);
 		}
 	},
 
@@ -576,7 +588,7 @@ var gameState = {
 					checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
 					return true;
 				}
-				// checkLemming has been specified and in the same time as lem; check for requirements
+				// checkLemming has been specified and in the same tile as lem; check for requirements
 				else if (checkLemming && (checkLemming.x >= rect.left && checkLemming.x < rect.right &&
 					checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
 					// Check to see if lem is in front of checkLemming

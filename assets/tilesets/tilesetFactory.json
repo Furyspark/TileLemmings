@@ -1,0 +1,33 @@
+{ "image":"..\/gfx\/tilesets\/tilesetFactory.png",
+ "imageheight":200,
+ "imagewidth":200,
+ "margin":2,
+ "name":"tilesetFactory",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":100,
+ "tileheight":16,
+ "tileproperties":
+    {
+     "52":
+        {
+         "tileType":"2"
+        },
+     "53":
+        {
+         "tileType":"2"
+        },
+     "62":
+        {
+         "tileType":"2"
+        },
+     "63":
+        {
+         "tileType":"2"
+        }
+    },
+ "tilewidth":16
+}

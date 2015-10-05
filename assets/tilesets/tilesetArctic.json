@@ -1,0 +1,14 @@
+{ "image":"..\/gfx\/tilesets\/tilesetArctic.png",
+ "imageheight":240,
+ "imagewidth":200,
+ "margin":2,
+ "name":"tilesetArctic",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":120,
+ "tileheight":16,
+ "tilewidth":16
+}

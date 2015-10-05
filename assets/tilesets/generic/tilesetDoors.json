@@ -59,39 +59,39 @@
     {
      "0":
         {
-         "image":"..\/gfx\/editor\/doors\/door_cave.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_cave.png"
         },
      "1":
         {
-         "image":"..\/gfx\/editor\/doors\/door_circus.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_circus.png"
         },
      "2":
         {
-         "image":"..\/gfx\/editor\/doors\/door_classic.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_classic.png"
         },
      "3":
         {
-         "image":"..\/gfx\/editor\/doors\/door_crystal.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_crystal.png"
         },
      "4":
         {
-         "image":"..\/gfx\/editor\/doors\/door_egypt.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_egypt.png"
         },
      "5":
         {
-         "image":"..\/gfx\/editor\/doors\/door_medieval.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_medieval.png"
         },
      "6":
         {
-         "image":"..\/gfx\/editor\/doors\/door_polar.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_polar.png"
         },
      "7":
         {
-         "image":"..\/gfx\/editor\/doors\/door_space.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_space.png"
         },
      "8":
         {
-         "image":"..\/gfx\/editor\/doors\/door_sports.png"
+         "image":"..\/..\/gfx\/editor\/doors\/door_sports.png"
         }
     },
  "tilewidth":96

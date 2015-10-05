@@ -1,0 +1,14 @@
+{ "image":"..\/gfx\/tilesets\/tilesetIsland.png",
+ "imageheight":380,
+ "imagewidth":200,
+ "margin":2,
+ "name":"tilesetIsland",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":190,
+ "tileheight":16,
+ "tilewidth":16
+}

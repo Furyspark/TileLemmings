@@ -6,10 +6,10 @@ var Lemming = function(game, x, y) {
 			return game.state.getCurrentState();
 		}
 	});
-	this.state.levelGroup.add(this);
+	GameManager.level.lemmingsGroup.add(this);
 
 	// Set game started state
-	this.state.victoryState.gameStarted = true;
+	GameManager.level.started = true;
 
 	// Set base stats
 	this.dead = false;
@@ -93,27 +93,16 @@ var Lemming = function(game, x, y) {
 		},
 		owner: this
 	};
-	this.tile = {
-		get width() {
-			return this.parent.state.map.tilewidth;
+	Object.defineProperties(this, {
+		"tileLayer": {
+			get() {
+				return this.level.tileLayer;
+			}
 		},
-		get height() {
-			return this.parent.state.map.tileheight;
-		},
-		x: function(checkX) {
-			return Math.floor(checkX / this.width);
-		},
-		y: function(checkY) {
-			return Math.floor(checkY / this.height);
-		},
-		type: function(tileX, tileY) {
-			return this.parent.state.layers.tileLayer.getTileType(tileX, tileY, this.parent);
-		}
-	};
-	this.tile.parent = this;
-	Object.defineProperty(this, "tileLayer", {
-		get: function() {
-			return this.state.layers.tileLayer;
+		"level": {
+			get() {
+				return GameManager.level;
+			}
 		}
 	});
 
@@ -241,7 +230,7 @@ Lemming.prototype.cursorSelect = function() {
 		this.cursor.selected = true;
 		this.state.lemmingSelected = this;
 		if (this.cursor.sprite == null) {
-			this.cursor.sprite = new Cursor(game, this.x, this.y, this);
+			this.cursor.sprite = new Cursor(this.x, this.y, this);
 			this.cursor.sprite.reposition();
 		}
 		// Create action preview
@@ -250,53 +239,59 @@ Lemming.prototype.cursorSelect = function() {
 };
 
 Lemming.prototype.createActionPreview = function() {
-	switch (this.state.actions.current.name) {
+	var coords = [];
+	switch (this.state.actionSelect) {
 		case "builder":
 			if (this.onFloor()) {
-				this.placeActionPreviewTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y - 1));
+				coords[0] = this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y - 1);
+				this.placeActionPreviewTile(coords[0].x, coords[0].y);
 			}
 			break;
 		case "miner":
 			if (this.onFloor()) {
-				this.placeActionPreviewTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y + 1));
-				this.placeActionPreviewTile(this.tile.x(this.x + (this.tile.width * this.dir)), this.tile.y(this.y - (this.tile.height - 1)));
+				coords = [
+					this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y + 1),
+					this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y - (GameData.tile.height - 1))
+				];
+				this.placeActionPreviewTile(coords[0].x, coords[0].y);
+				this.placeActionPreviewTile(coords[1].x, coords[1].y);
 			}
 			break;
 		case "digger":
 			if (this.onFloor()) {
-				this.placeActionPreviewTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+				coords[0] = this.level.toTileSpace(this.x, this.y+1);
+				this.placeActionPreviewTile(coords[0].x, coords[0].y);
 			}
 			break;
 		case "blocker":
 			if (this.onFloor()) {
-				this.placeActionPreviewTile(this.tile.x(this.x), this.tile.y(this.y - 1));
+				coords[0] = this.level.toTileSpace(this.x, this.y-1);
+				this.placeActionPreviewTile(coords[0].x, coords[0].y);
 			}
 			break;
 	}
 };
 
 Lemming.prototype.placeActionPreviewTile = function(tileX, tileY) {
-	var gfx = game.add.image(tileX * this.tile.width, tileY * this.tile.height, "misc", "previewTile.png");
-	this.state.levelGroup.add(gfx);
-	this.state.actions.previewGroup.push(gfx);
+	var gfx = game.add.image(tileX * GameData.tile.width, tileY * GameData.tile.height, "misc", "previewTile.png");
+	this.level.actionPreviewGroup.add(gfx);
 };
 
 Lemming.prototype.removeActionPreview = function() {
-	var grp = this.state.actions.previewGroup;
+	var grp = this.level.actionPreviewGroup.children;
 	while (grp.length > 0) {
-		var gobj = grp.shift();
-		if (gobj.remove) {
-			gobj.remove();
-		} else {
-			gobj.destroy();
-		}
+		grp[0].destroy();
 	}
 };
 
 Lemming.prototype.onFloor = function() {
+	var coords = [
+		this.level.toTileSpace(this.x, this.y),
+		this.level.toTileSpace(this.x, this.y-1)
+	];
 	var checks = [
-		this.tile.type(this.tile.x(this.x), this.tile.y(this.y), this),
-		this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1), this)
+		this.tileLayer.getTileType(coords[0].x, coords[0].y),
+		this.tileLayer.getTileType(coords[1].x, coords[1].y)
 	];
 	return (GameData.tile.floorTiles.indexOf(checks[0]) !== -1 ||
 		GameData.tile.floorTiles.indexOf(checks[1]) !== -1);
@@ -306,21 +301,21 @@ Lemming.prototype.turnAround = function() {
 	this.scale.x = -this.scale.x;
 	this.dir = -this.dir;
 	this.velocity.x = -this.velocity.x;
-	this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
+	this.x += (this.velocity.x * GameManager.speedManager.effectiveSpeed);
 };
 
 Lemming.prototype.update = function() {
-	var checks = [],
+	var checks = [], coords = [], a, b, obj, objs,
 		walkedUpRamp = false;
 
-	if (!this.dead && this.active && this.state.speedManager.effectiveSpeed > 0) {
-		this.x += (this.velocity.x * this.state.speedManager.effectiveSpeed);
-		this.y += (this.velocity.y * this.state.speedManager.effectiveSpeed);
+	if (!this.dead && this.active && GameManager.speedManager.effectiveSpeed > 0) {
+		this.x += (this.velocity.x * GameManager.speedManager.effectiveSpeed);
+		this.y += (this.velocity.y * GameManager.speedManager.effectiveSpeed);
 
 		// Walk
 		if (this.onFloor() && this.action.idle) {
 			// Fall death
-			if (this.fallDist >= this.state.map.properties.falldist) {
+			if (this.fallDist >= this.level.properties.fallDist) {
 				this.die(Lemming.DEATHTYPE_FALL);
 			} else {
 				this.fallDist = 0;
@@ -331,18 +326,25 @@ Lemming.prototype.update = function() {
 				}
 				this.velocity.y = 0;
 				// Align to floor
-				this.y = Math.floor(this.y / this.tile.height) * this.tile.height;
+				this.y = Math.floor(this.y / GameData.tile.height) * GameData.tile.height;
 				// Play animation
 				this.playAnim("move", 15);
 				// Check walk up ramp
-				checks[0] = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1));
-				checks[1] = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height));
-				checks[2] = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1));
+				coords = [
+					this.level.toTileSpace(this.x, this.y - 1),
+					this.level.toTileSpace(this.x, (this.y - 1) - GameData.tile.height),
+					this.level.toTileSpace(this.x, this.y - 1)
+				],
+				checks[0] = this.tileLayer.getTileType(coords[0].x, coords[0].y);
+				checks[1] = this.tileLayer.getTileType(coords[1].x, coords[1].y);
+				checks[2] = this.tileLayer.getTileType(coords[2].x, coords[2].y);
 				if (GameData.tile.floorTiles.indexOf(checks[0]) !== -1 &&
 					GameData.tile.floorTiles.indexOf(checks[1]) === -1) {
-					this.y -= this.tile.height;
-					checks[0] = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1));
-					checks[1] = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1 - this.tile.height));
+					this.y -= GameData.tile.height;
+					coords[0] = this.level.toTileSpace(this.x, this.y - 1);
+					coords[1] = this.level.toTileSpace(this.x, (this.y - 1) - GameData.tile.height);
+					checks[0] = this.tileLayer.getTileType(coords[0].x, coords[0].y);
+					checks[1] = this.tileLayer.getTileType(coords[1].x, coords[1].y);
 					walkedUpRamp = true;
 				}
 				// Check walk against wall
@@ -363,9 +365,9 @@ Lemming.prototype.update = function() {
 						this.velocity.y = -0.5;
 						// Align to wall
 						if (this.dir === 1) {
-							this.x = (this.tile.x(this.x) * this.tile.width) - 1;
+							this.x = (this.level.toTileSpace(this.x, this.y).x * GameData.tile.width) - 1;
 						} else if (this.dir === -1) {
-							this.x = (this.tile.x(this.x) * this.tile.width) + (this.tile.width);
+							this.x = (this.level.toTileSpace(this.x, this.y).x * GameData.tile.width) + GameData.tile.width;
 						}
 					}
 				}
@@ -374,15 +376,22 @@ Lemming.prototype.update = function() {
 		// Bashing
 		else if (this.onFloor() && this.action.name === "basher" && !this.action.idle) {
 			// Remove tile in front of lemming
-			var alarm = new Alarm(game, 30, function() {
+			var alarm = new Alarm(30, function() {
 				if (this.action.name === "basher" && !this.action.idle) {
 					this.clearAction();
 				}
 			}, this);
-			var bashResult = this.state.map.removeTile(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1));
+			coords = [
+				this.level.toTileSpace(this.x + ((GameData.tile.width * 0.5) * this.dir), this.y - 1)
+			];
+			var bashResult = this.level.removeTile(coords[0].x, coords[0].y);
+			coords = [
+				this.level.toTileSpace(this.x + ((GameData.tile.width * 0.5) * this.dir), this.y - 1),
+				this.level.toTileSpace(this.x + ((GameData.tile.width * 1.5) * this.dir), this.y - 1)
+			];
 			if (bashResult === 1 ||
-				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 0.5) * this.dir)), this.tile.y(this.y - 1)) == GameData.tile.type.TILE ||
-				this.state.layers.tileLayer.getTileType(this.tile.x(this.x + ((this.tile.width * 1.5) * this.dir)), this.tile.y(this.y - 1)) == GameData.tile.type.TILE) {
+				this.tileLayer.getTileType(coords[0].x, coords[0].y) == GameData.tile.type.TILE ||
+				this.tileLayer.getTileType(coords[1].x, coords[1].y) == GameData.tile.type.TILE) {
 				alarm.cancel();
 			} else if (bashResult === 2) {
 				alarm.cancel;
@@ -411,19 +420,23 @@ Lemming.prototype.update = function() {
 			else {
 				this.velocity.y = 1.5;
 				this.playAnim("fall", 15);
-				this.fallDist += Math.abs(this.velocity.y) * this.state.speedManager.effectiveSpeed;
+				this.fallDist += Math.abs(this.velocity.y) * GameManager.speedManager.effectiveSpeed;
 			}
 		}
 		// Climb
 		else if (this.action.name === "climber" && !this.action.idle) {
-			var wallTileType = this.tile.type(this.tile.x(this.x + (1 * this.dir)), this.tile.y(this.y));
-			var ceilCheckDepth = Math.ceil(Math.abs(this.velocity.y) + 1) * this.state.speedManager.effectiveSpeed;
-			var ceilTileType = this.tile.type(this.tile.x(this.x), this.tile.y(this.y - ceilCheckDepth));
+			var ceilCheckDepth = Math.ceil(Math.abs(this.velocity.y) + 1) * GameManager.speedManager.effectiveSpeed;
+			coords = [
+				this.level.toTileSpace(this.x + (1 * this.dir), this.y),
+				this.level.toTileSpace(this.x, this.y - ceilCheckDepth)
+			];
+			var wallTileType = this.tileLayer.getTileType(coords[0].x, coords[0].y);
+			var ceilTileType = this.tileLayer.getTileType(coords[1].x, coords[1].y);
 			// Hit ceiling
 			if (game.tiles.solidTileTypes.indexOf(ceilTileType) !== -1) {
 				this.velocity.y = 0;
 				this.x -= (1 * this.dir);
-				this.y = (this.tile.y(this.y + ceilCheckDepth) * this.tile.height) + 1;
+				this.y = (this.tile.y(this.y + ceilCheckDepth) * GameData.tile.height) + 1;
 				this.clearAction();
 				this.turnAround();
 			}
@@ -436,7 +449,7 @@ Lemming.prototype.update = function() {
 
 		// Detect blockers
 		if (this.action.name !== "blocker") {
-			var distCheck = Math.ceil((Math.abs(this.velocity.x) * this.state.speedManager.effectiveSpeed) + 1);
+			var distCheck = Math.ceil((Math.abs(this.velocity.x) * GameManager.speedManager.effectiveSpeed) + 1);
 
 			var objs = [];
 			while (distCheck > 0) {
@@ -449,8 +462,8 @@ Lemming.prototype.update = function() {
 				distCheck--;
 			}
 			var turnedAround = false;
-			for (var a = 0; a < objs.length && !turnedAround; a++) {
-				var obj = objs[a];
+			for (a = 0; a < objs.length && !turnedAround; a++) {
+				obj = objs[a];
 				if ((obj.bbox.left > this.x && this.dir === 1) || (obj.bbox.right < this.x && this.dir === -1)) {
 					turnedAround = true;
 					this.turnAround();
@@ -459,10 +472,11 @@ Lemming.prototype.update = function() {
 		}
 
 		// Check for exits
+		var exitProp, checkDone;
 		if (this.onFloor() && this.active) {
-			var checkDone = false;
-			for (var a = 0; a < this.state.exitsGroup.length && !checkDone; a++) {
-				var exitProp = this.state.exitsGroup[a];
+			checkDone = false;
+			for (a = 0; a < this.level.objectLayer.exitGroup.children.length && !checkDone; a++) {
+				exitProp = this.level.objectLayer.exitGroup.children[a];
 				if (exitProp.inPosition(this.x, this.y)) {
 					this.checkDone = true;
 					this.active = false;
@@ -474,7 +488,7 @@ Lemming.prototype.update = function() {
 					this.velocity.x = 0;
 					this.velocity.y = 0;
 					this.animations.currentAnim.onComplete.addOnce(function() {
-						this.state.victoryState.saved++;
+						this.level.saved++;
 						this.remove();
 					}, this);
 				}
@@ -487,7 +501,8 @@ Lemming.prototype.update = function() {
 		}
 
 		// Drown
-		if (this.tile.type(this.tile.x(this.x), this.tile.y(this.y-1)) == GameData.tile.type.WATER) {
+		coords[0] = this.level.toTileSpace(this.x, this.y-1);
+		if (this.tileLayer.getTileType(coords[0].x, coords[0].y) == GameData.tile.type.WATER) {
 			this.die(Lemming.DEATHTYPE_DROWN);
 		}
 	}
@@ -527,12 +542,12 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 };
 
 Lemming.prototype.playAnim = function(key, frameRate) {
-	this.animations.play(key, frameRate * Math.max(1, this.state.speedManager.effectiveSpeed));
+	this.animations.play(key, frameRate * Math.max(1, GameManager.speedManager.effectiveSpeed));
 	// this.anchor.setTo(
 	// 	0.5 - (this.animationProperties[key].offset.x / this.width),
 	// 	1 - (this.animationProperties[key].offset.y / this.height)
 	// );
-	if (this.state.speedManager.effectiveSpeed === 0) {
+	if (GameManager.speedManager.effectiveSpeed === 0) {
 		this.animations.paused = true;
 	}
 };
@@ -574,7 +589,7 @@ Lemming.prototype.setAction = function(actionName) {
 					// Set velocity
 					this.velocity.x = 0;
 					// Set timer
-					this.action.alarm = new Alarm(game, 120, function() {
+					this.action.alarm = new Alarm(120, function() {
 						this.proceedBuild();
 					}, this);
 				}
@@ -608,7 +623,7 @@ Lemming.prototype.setAction = function(actionName) {
 					// Set velocity
 					this.velocity.x = 0;
 					// Set alarm
-					this.action.alarm = new Alarm(game, 120, function() {
+					this.action.alarm = new Alarm(120, function() {
 						this.proceedDig();
 					}, this);
 				}
@@ -627,7 +642,7 @@ Lemming.prototype.setAction = function(actionName) {
 					// Set velocity
 					this.velocity.x = 0;
 					// Set alarm
-					this.action.alarm = new Alarm(game, 150, function() {
+					this.action.alarm = new Alarm(150, function() {
 						this.proceedMine();
 					}, this);
 				}
@@ -689,13 +704,12 @@ Lemming.prototype.setExploder = function() {
 	this.subaction.active = true;
 	this.subaction.value = 5;
 	// Create label
-	this.gameLabel = new GameLabel(game, this, this.x, this.y, {
+	this.gameLabel = new GameLabel(this, this.x, this.y, {
 		x: 0,
 		y: -((this.bbox.bottom - this.bbox.top) + 8)
 	}, "5");
-	this.state.levelGroup.bringToTop(this.gameLabel);
 	// Create alarm
-	this.subaction.alarm = new Alarm(game, 60, function() {
+	this.subaction.alarm = new Alarm(60, function() {
 		this.proceedExplode();
 	}, this);
 };
@@ -707,17 +721,22 @@ Lemming.prototype.proceedBuild = function() {
 			GameManager.audio.play("sndBuildEnding");
 		}
 		var moveTo = {
-			x: this.x + (this.tile.width * this.dir),
-			y: (this.y - this.tile.height)
+			x: this.x + (GameData.tile.width * this.dir),
+			y: (this.y - GameData.tile.height)
 		};
 		var locChange = {
-			x: this.x + (this.tile.width * this.dir),
+			x: this.x + (GameData.tile.width * this.dir),
 			y: this.y - 1
 		};
+		var coords = [
+			this.level.toTileSpace(moveTo.x, moveTo.y - 1),
+			this.level.toTileSpace(locChange.x, locChange.y),
+			this.level.toTileSpace(this.x, this.y - 1)
+		];
 		var checks = [
-			this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1)), // <- Tile the builder is about to move to (+1 horizontally in Lemming's direction, -1 vertically)
-			this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y)), // <- Tile about to change to a plank(+1 horizontally in Lemming's direction)
-			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) // <- Lemming's tile (for blocker checking)
+			this.tileLayer.getTileType(coords[0].x, coords[0].y),
+			this.tileLayer.getTileType(coords[1].x, coords[1].y),
+			this.tileLayer.getTileType(coords[2].x, coords[2].y)
 		];
 		// Turn around at a blocker
 		if (checks[0] == GameData.tile.type.BLOCKER || checks[1] == GameData.tile.type.BLOCKER || checks[2] == GameData.tile.type.BLOCKER) {
@@ -725,17 +744,22 @@ Lemming.prototype.proceedBuild = function() {
 			this.turnAround();
 			// Re-evaluate checks
 			moveTo = {
-				x: this.x + (this.tile.width * this.dir),
-				y: (this.y - this.tile.height)
+				x: this.x + (GameData.tile.width * this.dir),
+				y: (this.y - GameData.tile.height)
 			};
 			locChange = {
-				x: this.x + (this.tile.width * this.dir),
+				x: this.x + (GameData.tile.width * this.dir),
 				y: this.y - 1
 			};
+			coords = [
+				this.level.toTileSpace(moveTo.x, moveTo.y - 1),
+				this.level.toTileSpace(locChange.x, locChange.y),
+				this.level.toTileSpace(this.x, this.y - 1)
+			];
 			checks = [
-				this.tile.type(this.tile.x(moveTo.x), this.tile.y(moveTo.y - 1)), // <- Tile the builder is about to move to (+1 horizontally in Lemming's direction, -1 vertically)
-				this.tile.type(this.tile.x(locChange.x), this.tile.y(locChange.y)), // <- Tile about to change to a plank(+1 horizontally in Lemming's direction)
-				this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)) // <- Lemming's tile (for blocker checking)
+				this.tileLayer.getTileType(coords[0].x, coords[0].y),
+				this.tileLayer.getTileType(coords[1].x, coords[1].y),
+				this.tileLayer.getTileType(coords[2].x, coords[2].y)
 			];
 		}
 		// See whether we can build a step
@@ -745,7 +769,11 @@ Lemming.prototype.proceedBuild = function() {
 			this.y = moveTo.y;
 			// Build a step
 			if (checks[1] == GameData.tile.type.AIR) {
-				this.state.layers.primitiveLayer.placeTile(this.tile.x(locChange.x), this.tile.y(locChange.y), "tilesetPlaceables", this.state.buildTileRect, 1);
+				coords[3] = this.level.toTileSpace(locChange.x, locChange.y);
+				if(this.tileLayer.getTileType(coords[3].x, coords[3].y) === GameData.tile.type.AIR) {
+					this.tileLayer.placeTile(coords[3].x, coords[3].y, "tilesetPlaceables", this.level.buildTileRect, 1);
+					this.tileLayer.setTileType(coords[3].x, coords[3].y, 1);
+				}
 			}
 			// Set alarm
 			if (this.action.value === 0) {
@@ -755,7 +783,7 @@ Lemming.prototype.proceedBuild = function() {
 					this.clearAction();
 				}, this);
 			} else {
-				this.action.alarm = new Alarm(game, 120, function() {
+				this.action.alarm = new Alarm(120, function() {
 					this.proceedBuild();
 				}, this);
 			}
@@ -769,15 +797,17 @@ Lemming.prototype.proceedBuild = function() {
 };
 
 Lemming.prototype.proceedDig = function() {
+	var coords = [];
 	if (this.action.name == "digger" && !this.action.idle && !this.dead && this.active) {
-		var result = this.state.map.removeTile(this.tile.x(this.x), this.tile.y(this.y + 1));
+		coords[0] = this.level.toTileSpace(this.x, this.y+1);
+		var result = this.level.removeTile(coords[0].x, coords[0].y);
 		if (result === 2) {
 			GameManager.audio.play("sndChink");
 			this.clearAction();
 		} else {
-			this.y += this.tile.height;
+			this.y += GameData.tile.height;
 			// Set up new alarm
-			this.action.alarm = new Alarm(game, 120, function() {
+			this.action.alarm = new Alarm(120, function() {
 				this.proceedDig();
 			}, this);
 		}
@@ -785,32 +815,40 @@ Lemming.prototype.proceedDig = function() {
 };
 
 Lemming.prototype.proceedMine = function() {
+	var checks = [], coords = [], result;
 	if (this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
 		// Check for blockers
-		var checks = [
-			this.tile.type(this.tile.x(this.x), this.tile.y(this.y - 1)),
-			this.tile.type(this.tile.x(this.x + (GameData.tile.width * this.dir)), this.tile.y(this.y - 1)),
-			this.tile.type(this.tile.x(this.x + (GameData.tile.width * this.dir)), this.tile.y(this.y + (GameData.tile.height - 1)))
+		coords = [
+			this.level.toTileSpace(this.x, this.y-1),
+			this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y-1),
+			this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y + (GameData.tile.height - 1))
+		];
+		checks = [
+			this.tileLayer.getTileType(coords[0].x, coords[0].y),
+			this.tileLayer.getTileType(coords[1].x, coords[1].y),
+			this.tileLayer.getTileType(coords[2].x, coords[2].y)
 		];
 		if (checks[0] == GameData.tile.type.BLOCKER || checks[1] == GameData.tile.type.BLOCKER || checks[2] == GameData.tile.type.BLOCKER) {
 			this.turnAround();
 		}
 
 		// Remove tile(s)
-		var result = this.state.map.removeTile(this.tile.x(this.x + (GameData.tile.width * this.dir)), this.tile.y(this.y - 1));
+		coords[0] = this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y - 1);
+		result = this.level.removeTile(coords[0].x, coords[0].y);
 		if (result === 2) {
 			GameManager.audio.play("sndChink");
 			this.clearAction();
 		} else {
-			result = this.state.map.removeTile(this.tile.x(this.x + (GameData.tile.width * this.dir)), this.tile.y(this.y + (GameData.tile.height - 1)));
+			coords[0] = this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y + (GameData.tile.height - 1));
+			result = this.state.map.removeTile(coords[0].x, coords[0].y);
 			if (result === 2) {
 				GameManager.audio.play("sndChink");
 				this.clearAction();
 			} else {
-				this.x += (this.tile.width * this.dir);
-				this.y += this.tile.height;
+				this.x += (GameData.tile.width * this.dir);
+				this.y += GameData.tile.height;
 				// Set up new alarm
-				this.action.alarm = new Alarm(game, 150, function() {
+				this.action.alarm = new Alarm(150, function() {
 					this.proceedMine();
 				}, this);
 			}
@@ -838,7 +876,7 @@ Lemming.prototype.proceedExplode = function() {
 			}
 		} else {
 			this.gameLabel.text = this.subaction.value.toString();
-			this.subaction.alarm = new Alarm(game, 60, function() {
+			this.subaction.alarm = new Alarm(60, function() {
 				this.proceedExplode();
 			}, this);
 		}
@@ -848,11 +886,13 @@ Lemming.prototype.proceedExplode = function() {
 Lemming.prototype.explode = function() {
 	GameManager.audio.play("sndPop");
 	// Remove 3x3 tiles
-	for (var a = -1; a <= 1; a++) {
-		for (var b = -1; b <= 1; b++) {
-			var xCheck = this.tile.x(this.x) + a;
-			var yCheck = this.tile.y(this.y - (this.tile.height * 0.5)) + b;
-			this.state.map.removeTile(xCheck, yCheck);
+	var a, b, coords = [];
+	for (a = -1; a <= 1; a++) {
+		for (b = -1; b <= 1; b++) {
+			coords[0] = this.level.toTileSpace(this.x, this.y - (GameData.tile.height * 0.5));
+			coords[0].x += a;
+			coords[0].y += b;
+			this.level.removeTile(coords[0].x, coords[0].y);
 		}
 	}
 	// Remove self
@@ -860,7 +900,7 @@ Lemming.prototype.explode = function() {
 };
 
 Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {
-	var group = this.state.lemmingsGroup.children;
+	var group = this.level.lemmingsGroup.children;
 	var result = [];
 	if (group) {
 		for (var a = 0; a < group.length; a++) {
@@ -876,8 +916,8 @@ Lemming.prototype.detectByAction = function(xCheck, yCheck, actionName) {
 };
 
 Lemming.prototype.isOutsideLevel = function() {
-	return (this.x < 0 || this.x > this.state.map.totalwidth ||
-		this.y < 0 || this.y > this.state.map.totalheight);
+	return (this.x < 0 || this.x > this.level.totalWidth ||
+		this.y < 0 || this.y > this.level.totalHeight);
 };
 
 Lemming.prototype.die = function(deathType) {

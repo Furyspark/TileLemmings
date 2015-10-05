@@ -1,4 +1,4 @@
-var GameLabel = function(game, owner, x, y, offsetObj, defaultText) {
+var GameLabel = function(owner, x, y, offsetObj, defaultText) {
 	defaultText = defaultText || "";
 	this.owner = owner;
 	this.offset = offsetObj;
@@ -11,11 +11,22 @@ var GameLabel = function(game, owner, x, y, offsetObj, defaultText) {
 	};
 	Phaser.Text.call(this, game, x, y, defaultText, this.defaultStyle);
 	game.add.existing(this);
-	Object.defineProperty(this, "state", {get() {
-		return game.state.getCurrentState();
-	}});
 
-	this.state.levelGroup.add(this);
+	// Define properties
+	Object.defineProperties(this, {
+		"state": {
+			get() {
+				return game.state.getCurrentState();
+			}
+		},
+		"level": {
+			get() {
+				return GameManager.level;
+			}
+		}
+	})
+
+	this.level.gameLabelGroup.add(this);
 
 	this.reposition();
 	this.markedForRemoval = false;

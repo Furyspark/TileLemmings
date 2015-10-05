@@ -1,0 +1,14 @@
+{ "image":"..\/gfx\/tilesets\/tilesetPillar.png",
+ "imageheight":320,
+ "imagewidth":400,
+ "margin":2,
+ "name":"tilesetPillar",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":320,
+ "tileheight":16,
+ "tilewidth":16
+}

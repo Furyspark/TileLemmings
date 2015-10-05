@@ -28,6 +28,11 @@ Layer.UNKNOWN_LAYER = 0;
 Layer.TILE_LAYER = 1;
 Layer.OBJECT_LAYER = 2;
 
+Layer.TILE_FLIP_H = 0x80000000;
+Layer.TILE_FLIP_V = 0x40000000;
+Layer.TILE_FLIP_HV = 0x20000000;
+Layer.TILE_CLEAR_BITMASK = ~(Layer.TILE_FLIP_H | Layer.TILE_FLIP_V | Layer.TILE_FLIP_HV);
+
 /*
 	method: applySource(src)
 	Applies a source object to this layer
@@ -53,7 +58,7 @@ Layer.prototype.applySource = function(src) {
 	}
 
 	// Tile layer
-	var a, b, gid, baseGID, tile, ts, animCrops;
+	var a, b, gid, baseGID, tile, ts, animCrops, flip;
 	if(this.type == Layer.TILE_LAYER) {
 		for(a = 0;a < src.data.length;a++) {
 			gid = src.data[a];
@@ -66,8 +71,8 @@ Layer.prototype.applySource = function(src) {
 				if(ts.tileAnimations[baseGID]) {
 					for(b = 0;b < ts.tileAnimations[baseGID].length;b++) {
 						animCrops.push(ts.getTileCrop(
-							ts.indexToCoords(ts.tileAnimations[baseGID].baseGID.x),
-							ts.indexToCoords(ts.tileAnimations[baseGID].baseGID.y)
+							ts.indexToCoords(ts.tileAnimations[baseGID][b].baseGID).x,
+							ts.indexToCoords(ts.tileAnimations[baseGID][b].baseGID).y
 						));
 					}
 				}
@@ -80,7 +85,7 @@ Layer.prototype.applySource = function(src) {
 				this.add(tile);
 				// Set tile type
 				if(ts.tileProperties[baseGID] && ts.tileProperties[baseGID].tileType) {
-					this.setTileType(this.indexToCoods(a).x, this.indexToCoords(a).y, parseInt(ts.tileProperties[baseGID].tileType));
+					this.setTileType(this.indexToCoords(a).x, this.indexToCoords(a).y, parseInt(ts.tileProperties[baseGID].tileType));
 				}
 				else {
 					this.setTileType(this.indexToCoords(a).x, this.indexToCoords(a).y, 1);
@@ -90,16 +95,31 @@ Layer.prototype.applySource = function(src) {
 	}
 
 	// Object layer
-	var obj, srcObj, tsObjSrc, delay;
+	var obj, srcObj, tsObjSrc, delay, propConfig;
 	if(this.type == Layer.OBJECT_LAYER) {
 		for(a = 0;a < src.objects.length;a++) {
 			srcObj = src.objects[a];
+			// Attempt flipping
+			flip = {
+				h: (srcObj.gid & Layer.TILE_FLIP_H) !== 0,
+				v: (srcObj.gid & Layer.TILE_FLIP_V) !== 0,
+				hv: (srcObj.gid & Layer.TILE_FLIP_HV) !== 0
+			};
+			srcObj.gid = srcObj.gid & Layer.TILE_CLEAR_BITMASK;
+			// Proceed
 			ts = this.level.tilesets[srcObj.gid];
 			baseGID = srcObj.gid - ts.firstGID;
 			tsObjSrc = ts.tileProperties[baseGID];
 			// Create props
 			if(tsObjSrc.propType) {
-				obj = new Prop(srcObj.x + (srcObj.width * 0.5), srcObj.y);
+				obj = new Prop(srcObj.x + (srcObj.width * 0.5), srcObj.y, this.level);
+				if(flip.h || flip.hv) {
+					obj.scale.x = -obj.scale.x;
+					obj.x += GameData.tile.width;
+				}
+				if(flip.v || flip.hv) {
+					obj.scale.y = -obj.scale.y;
+				}
 				switch(tsObjSrc.propType) {
 					case "door":
 						obj.y -= srcObj.height;
@@ -116,6 +136,9 @@ Layer.prototype.applySource = function(src) {
 						this.exitGroup.add(obj);
 						break;
 					case "trap":
+						propConfig = game.cache.getJSON("config").props.traps[tsObjSrc.resref];
+						obj.x += ((propConfig.anchor.x - 0.5) * srcObj.width);
+						obj.y += ((propConfig.anchor.y - 0.5) * srcObj.height);
 						obj.setAsTrap(tsObjSrc.resref);
 						this.trapGroup.add(obj);
 						break;
@@ -130,6 +153,9 @@ Layer.prototype.applySource = function(src) {
 	Calculates an index based in the size of this layer
 */
 Layer.prototype.coordsToIndex = function(x, y) {
+	if(x < 0 || x >= this.baseWidth || y < 0 || y >= this.baseHeight) {
+		return -1;
+	}
 	return Math.floor((x % this.baseWidth) + Math.floor(y * this.baseWidth));
 };
 
@@ -150,7 +176,9 @@ Layer.prototype.indexToCoords = function(index) {
 */
 Layer.prototype.setTileType = function(tileX, tileY, type) {
 	var index = this.coordsToIndex(tileX, tileY);
-	this.tileTypes[index] = type;
+	if(index >= 0 && index < this.tileTypes.length) {
+		this.tileTypes[index] = type;
+	}
 };
 
 /*
@@ -158,5 +186,40 @@ Layer.prototype.setTileType = function(tileX, tileY, type) {
 	Returns the tile type at the given position(in tile space)
 */
 Layer.prototype.getTileType = function(tileX, tileY) {
-	return this.tileTypes[this.coordsToIndex(tileX, tileY)];
+	var index = this.coordsToIndex(tileX, tileY);
+	if(index >= 0 && index < this.tileTypes.length) {
+		return this.tileTypes[index];
+	}
+	return GameData.tile.type.AIR;
+};
+
+/*
+	method: removeTile(tileX, tileY)
+	Removes a tile from this layer without setting the tile type
+*/
+Layer.prototype.removeTile = function(tileX, tileY) {
+	var index = this.coordsToIndex(tileX, tileY);
+	if(index >= 0 && index < this.tiles.length) {
+		var tile = this.tiles.splice(index, 1, null)[0];
+		if(tile) {
+			tile.remove();
+		}
+	}
+};
+
+/*
+	method: placeTile(tileX, tileY)
+	Places a tile at the specified coordinates, removing an older tile if there is one
+*/
+Layer.prototype.placeTile = function(tileX, tileY, imageKey, cropping) {
+	var index = this.coordsToIndex(tileX, tileY);
+	if(index >= 0 && index < this.tiles.length) {
+		var coord = this.level.toWorldSpace(tileX, tileY);
+		var tile = new Tile(coord.x, coord.y, imageKey, [cropping]);
+		this.add(tile);
+		var oldTile = this.tiles.splice(index, 1, tile)[0];
+		if(oldTile) {
+			oldTile.remove();
+		}
+	}
 };

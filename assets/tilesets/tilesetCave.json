@@ -1,0 +1,14 @@
+{ "image":"..\/gfx\/tilesets\/tilesetCave.png",
+ "imageheight":160,
+ "imagewidth":200,
+ "margin":2,
+ "name":"tilesetCave",
+ "properties":
+    {
+
+    },
+ "spacing":4,
+ "tilecount":80,
+ "tileheight":16,
+ "tilewidth":16
+}

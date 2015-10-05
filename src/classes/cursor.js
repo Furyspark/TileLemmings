@@ -1,12 +1,24 @@
-var Cursor = function(game, x, y, owner) {
+var Cursor = function(x, y, owner) {
 	Phaser.Sprite.call(this, game, x, y, "misc");
 	game.add.existing(this);
 	this.owner = owner;
-	Object.defineProperty(this, "state", {get() {
-		return game.state.getCurrentState();
-	}})
-	this.state.levelGroup.add(this);
-	this.state.levelGroup.bringToTop(this);
+
+	// Define properties
+	Object.defineProperties(this, {
+		"state": {
+			get() {
+				return game.state.getCurrentState();
+			}
+		},
+		"level": {
+			get() {
+				return GameManager.level;
+			}
+		}
+	})
+
+	this.level.add(this);
+	this.level.bringToTop(this);
 
 	this.anchor.setTo(0.5, 0.5);
 	this.animations.add("hover", ["sprCursor_Open.png"]);
@@ -22,11 +34,5 @@ Cursor.prototype.reposition = function() {
 };
 
 Cursor.prototype.remove = function() {
-	for(var a in this.state.levelGroup.children) {
-		var obj = this.state.levelGroup.children[a];
-		if(obj === this) {
-			this.state.levelGroup.removeChild(this);
-		}
-	}
-	this.kill();
+	this.pendingDestroy = true;
 };

@@ -56,20 +56,15 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":13,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "properties":
     {
      "basher":"5",
      "bg":"bgDarkSky.png",
      "bgm":"medieval.ogg",
-     "blocker":"0",
-     "builder":"0",
-     "climber":"0",
-     "digger":"0",
-     "exploder":"0",
-     "floater":"0",
-     "miner":"0",
+     "builder":"2",
+     "climber":"2",
      "need":"10"
     },
  "renderorder":"right-down",
@@ -81,19 +76,11 @@
         }, 
         {
          "firstgid":49,
-         "source":"..\/..\/tilesets\/tilesetDoors.json"
+         "source":"..\/..\/tilesets\/generic\/tilesetDoors.json"
         }, 
         {
          "firstgid":58,
-         "source":"..\/..\/tilesets\/tilesetExits.json"
-        }, 
-        {
-         "firstgid":70,
-         "source":"..\/..\/tilesets\/tilesetMiscTiles2.json"
-        }, 
-        {
-         "firstgid":166,
-         "source":"..\/..\/tilesets\/tilesetLiquids.json"
+         "source":"..\/..\/tilesets\/generic\/tilesetExits.json"
         }],
  "tilewidth":16,
  "version":1,

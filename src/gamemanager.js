@@ -59,6 +59,11 @@ var GameManager = {
 			for(a = 0;a < this.data.length;a++) {
 				this.data[a].update();
 			}
+		},
+		clear: function() {
+			while(this.data.length > 0) {
+				this.data[0].cancel();
+			}
 		}
 	},
 

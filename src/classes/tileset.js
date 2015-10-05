@@ -1,5 +1,4 @@
 var Tileset = function(url, level, firstGID) {
-	this.imageKey = "";
 	this.rawData = null;
 	this.margin = 0;
 	this.spacing = 0;
@@ -28,15 +27,17 @@ var Tileset = function(url, level, firstGID) {
 	this.level = level;
 	this.url = url;
 	this.tempUrl = this.url.match(/(.+)\/.+$/)[1] + "/";
+	this.imageKey = "";
+	this.key = "ts_" + this.url;
 
 	// Load data
 	game.load.onFileComplete.add(function tilesetLoad(progress, fileKey, success, totalLoadedFiles, totalFiles) {
-		if(fileKey == "ts_" + this.url) {
+		if(fileKey == this.key) {
 			game.load.onFileComplete.remove(tilesetLoad, this);
 			this.processTileset();
 		}
 	}, this);
-	game.load.json("ts_" + this.url, this.url);
+	game.load.json(this.key, this.url);
 	game.load.start();
 };
 Tileset.prototype.constructor = Tileset;
@@ -67,7 +68,7 @@ Tileset.prototype.indexToCoords = function(index) {
 Tileset.prototype.getTileCrop = function(tileX, tileY) {
 	var result = new Phaser.Rectangle(
 		this.margin + ((GameData.tile.width + this.spacing) * tileX),
-		this.margin + ((GameData.tile.height * this.spacing) * tileY),
+		this.margin + ((GameData.tile.height + this.spacing) * tileY),
 		GameData.tile.width,
 		GameData.tile.height
 	);
@@ -80,13 +81,15 @@ Tileset.prototype.getTileCrop = function(tileX, tileY) {
 	Called after the tileset's JSON is done loading
 */
 Tileset.prototype.processTileset = function() {
-	this.rawData = game.cache.getJSON("ts_" + this.url);
+	this.rawData = game.cache.getJSON(this.key);
 
 	// Set base properties
 	this.name = this.rawData.name;
 	this.margin = this.rawData.margin;
 	this.spacing = this.rawData.spacing;
 	this.tileCount = this.rawData.tilecount;
+	this.imageWidth = this.rawData.imagewidth;
+	this.imageHeight = this.rawData.imageheight;
 
 	// Link tileset to the level based on firstGID and tileCount
 	var a;
@@ -128,5 +131,5 @@ Tileset.prototype.processTileset = function() {
 		game.load.image(this.imageKey, this.tempUrl + this.rawData.image);
 	}
 
-	game.cache.removeJSON("ts_" + this.url);
+	game.cache.removeJSON(this.key);
 };
