@@ -90,6 +90,10 @@
         {
          "firstgid":70,
          "source":"..\/..\/tilesets\/tilesetMiscTiles2.json"
+        }, 
+        {
+         "firstgid":166,
+         "source":"..\/..\/tilesets\/tilesetLiquids.json"
         }],
  "tilewidth":16,
  "version":1,
