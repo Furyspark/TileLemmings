@@ -57,11 +57,11 @@ Camera.prototype.move = function(hor, ver, relative) {
 	}
 	
 	// Move grid
-	var grid = this.state.grid.image;
-	if(grid) {
-		grid.x = this.gameCamera.x;
-		grid.y = this.gameCamera.y;
-		grid.tilePosition.x = -this.x;
-		grid.tilePosition.y = -this.y;
-	}
+	// var grid = this.state.grid.image;
+	// if(grid) {
+	// 	grid.x = this.gameCamera.x;
+	// 	grid.y = this.gameCamera.y;
+	// 	grid.tilePosition.x = -this.x;
+	// 	grid.tilePosition.y = -this.y;
+	// }
 };

@@ -2,19 +2,17 @@ var intermissionState = {
 	background: null,
 	labels: [],
 	guiGroup: [],
+	levelFolder: null,
+	levelObj: null,
+
+	drawGroup: null,
 
 	level: null,
 	minimap: null,
 
-	init: function(levelFolder, levelObj, retry, mapFiles) {
-		// Set default parameters
-		if(typeof retry === "undefined") {
-			retry = false;
-		}
-		if(typeof mapFiles === "undefined") {
-			mapFiles = [];
-		}
-		this.clearMapFiles(mapFiles);
+	init: function(levelFolder, levelObj) {
+		this.levelFolder = levelFolder;
+		this.levelObj = levelObj;
 	},
 
 	preload: function() {
@@ -22,23 +20,26 @@ var intermissionState = {
 	},
 
 	create: function() {
+		this.drawGroup = game.add.group();
 		// Init map
 		var cb = function() {
 			this.start();
 		};
-		this.level = game.cache.getJSON("level", cb, this);
+		this.level = new Level(game.cache.getJSON("level"), cb, this, this.levelFolder, this.levelObj);
+		game.world.bringToTop(this.drawGroup);
 	},
 
 	start: function() {
 		// Add background
-		this.background = new Background(game, "bgMainMenu");
+		this.background = new Background("bgMainMenu");
+		this.drawGroup.add(this.background);
 
-		// Create map preview
-		this.initMapPreview();
+		this.createScreen();
 
 		// Add user input
-		game.input.onTap.addOnce(function() {
+		game.input.onTap.add(function startTheLevel() {
 			if(!this.mouseOverGUI()) {
+				game.input.onTap.remove(startTheLevel, this);
 				this.startLevel();
 			}
 		}, this);
@@ -50,15 +51,21 @@ var intermissionState = {
 			pressed: "btnGray_Down.png",
 			released: "btnGray_Up.png"
 		}, function() {
-			this.backToMenu();
+			this.clearState();
+			game.state.start("menu", true, false);
 		}, this);
 		btn.resize(60, 24);
 		btn.label.text = "Main Menu";
 		btn.label.fontSize = 10;
+		this.drawGroup.add(btn);
+
+		// Order drawGroup
+		this.drawGroup.sendToBack(this.level);
 	},
 
 	startLevel: function() {
 		this.clearState();
+		game.state.start("game", false, false, this.levelFolder, this.levelObj, this.level);
 	},
 
 	mouseOverGUI: function() {
@@ -94,14 +101,17 @@ var intermissionState = {
 				gobj.destroy();
 			}
 		}
+		// Destroy background
+		this.background.destroy();
 	},
 
 	createScreen: function() {
-		this.minimap = new GUI_Minimap(this.guiGroup);
-		this.minimap.width = Math.max(240, Math.min(480, this.map.width * 4));
-		this.minimap.height = Math.max(180, Math.min(480, this.map.height * 4));
+		this.minimap = new GUI_Minimap(this.level);
+		this.minimap.width = Math.max(240, Math.min(480, this.level.baseWidth * 4));
+		this.minimap.height = Math.max(180, Math.min(480, this.level.baseHeight * 4));
 		this.minimap.x = (game.width - 30) - this.minimap.width;
 		this.minimap.y = 30;
+		this.drawGroup.add(this.minimap);
 
 		var txt = game.add.text(120, 10, this.level.name, {
 			font: "bold 20pt Arial",
@@ -112,6 +122,7 @@ var intermissionState = {
 		});
 		txt.setTextBounds(0, 0, 240, 40);
 		this.labels.push(txt);
+		this.drawGroup.add(txt);
 
 		var newStyle = {
 			font: "12pt Arial",
@@ -122,5 +133,6 @@ var intermissionState = {
 		txt = game.add.text(120, 70, this.level.lemmingCount.toString() + " lemmings\n" + Math.floor((this.level.lemmingNeed / this.level.lemmingCount) * 100) + "% to be saved", newStyle);
 		txt.setTextBounds(0, 0, 240, 80);
 		this.labels.push(txt);
+		this.drawGroup.add(txt);
 	}
 };

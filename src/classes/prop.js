@@ -1,10 +1,12 @@
-var Prop = function(game, x, y) {
+var Prop = function(x, y, level) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
+
+	this.level = level;
+
 	Object.defineProperty(this, "state", {get() {
 		return game.state.getCurrentState();
 	}});
-	this.state.levelGroup.add(this);
 	this.anchor.setTo(0.5, 0.5);
 
 	this.objectType = "prop";
@@ -15,8 +17,8 @@ Prop.prototype = Object.create(Phaser.Sprite.prototype);
 Prop.prototype.constructor = Prop;
 
 Prop.prototype.playAnim = function(key, frameRate) {
-	this.animations.play(key, frameRate * this.state.speedManager.effectiveSpeed);
-	if(this.state.speedManager.effectiveSpeed === 0) {
+	this.animations.play(key, frameRate * GameManager.speedManager.effectiveSpeed);
+	if(GameManager.speedManager.effectiveSpeed === 0) {
 		this.animations.stop();
 	}
 };
@@ -42,12 +44,19 @@ Prop.prototype.update = function() {
 	}
 };
 
-Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) {
+Prop.prototype.setAsDoor = function(type, lemmings, rate, delay) {
 	// Set primary data
 	this.objectType = "door";
-	this.state.doorsGroup.push(this);
-	this.lemmingsGroup = lemmingsGroup;
 	this.type = type;
+
+	// Define properties
+	Object.defineProperties(this, {
+		"lemmingsGroup": {
+			get() {
+				return this.level.lemmingsGroup;
+			}
+		}
+	});
 	
 	// Set configuration
 	var doorConfig = game.cache.getJSON("config").props.doors[type];
@@ -78,7 +87,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 	// Set functions
 	this.openDoor = function() {
 		// Play sound
-		if(this.state.doorsGroup[0] === this) {
+		if(GameManager.level.objectLayer.doorGroup.children[0] === this) {
 			GameManager.audio.play(doorConfig.sound.open);
 		}
 		// Set event
@@ -86,7 +95,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 			this.playAnim("open", 15);
 			var alarm = new Alarm(game, 30, function() {
 				this.opened();
-				if(this.state.doorsGroup[0] === this) {
+				if(GameManager.level.objectLayer.doorGroup.children[0] === this) {
 					this.state.playLevelBGM();
 				}
 			}, this);
@@ -121,7 +130,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay, lemmingsGroup) 
 
 Prop.prototype.setAsExit = function(type) {
 	this.objectType = "exit";
-	this.state.exitsGroup.push(this);
 	this.type = type;
 
 	// Set configuration
@@ -173,7 +181,6 @@ Prop.prototype.setAsExit = function(type) {
 
 Prop.prototype.setAsTrap = function(type) {
 	this.objectType = "trap";
-	this.state.trapsGroup.push(this);
 	this.type = type;
 
 	// Set configuration

@@ -1,17 +1,19 @@
-var GUI_Minimap = function() {
+var GUI_Minimap = function(level) {
 	Phaser.Group.call(this, game);
 	game.add.existing(this);
+
+	this.level = level;
 	// Set state redirect
-	Object.defineProperty(this, "state", {get() {
-		return game.state.getCurrentState();
-	}});
+	Object.defineProperties(this, {
+		"state": {
+			get() {
+				return game.state.getCurrentState();
+			}
+		}
+	});
 
 	// Set basic data
 	this.scrolling = false;
-	this.tiles = {
-		width: this.state.map.tilewidth,
-		height: this.state.map.tileheight
-	};
 	this.limits = {
 		size: {
 			max: {
@@ -25,16 +27,13 @@ var GUI_Minimap = function() {
 		}
 	};
 
+	this.viewFrame = null;
+
 	// Set up layers
 	this.bg = null;
 	this.layers = {
-		tiles: game.add.group()
+		tiles: game.add.group(this)
 	};
-	this.add(this.layers.tiles);
-
-	// Create frame/viewport
-	this.viewFrame = game.add.image(0, 0, "minimap", "frame.png");
-	this.add(this.viewFrame);
 
 	// Refresh minimap
 	this.refresh();
@@ -47,7 +46,22 @@ GUI_Minimap.prototype.update = function() {
 	if(this.scrolling) {
 		this.scroll();
 	}
-	//this.reposition();
+};
+
+GUI_Minimap.prototype.onLevelStart = function() {
+	// Create frame/viewport
+	this.viewFrame = game.add.image(0, 0, "minimap", "frame.png");
+	this.add(this.viewFrame);
+
+	// Add event listener
+	// Scroll minimap
+	this.bg.inputEnabled = true;
+	this.bg.events.onInputDown.add(function() {
+		this.scrolling = true;
+	}, this);
+	this.bg.events.onInputUp.add(function() {
+		this.scrolling = false;
+	}, this);
 };
 
 GUI_Minimap.prototype.refresh = function() {
@@ -55,7 +69,7 @@ GUI_Minimap.prototype.refresh = function() {
 	this.clear();
 
 	// Determine data
-	var tileLayer = this.state.layers.tileLayer;
+	var tileLayer = this.level.tileLayer.tileTypes;
 	var tileTypeRefs = {
 		1: {
 			red: 0,
@@ -76,31 +90,20 @@ GUI_Minimap.prototype.refresh = function() {
 
 	// Generate background
 	this.bg = game.add.image(0, 0, "minimap", "bg.png");
-	this.bg.width = this.state.map.width * this.tiles.width;
-	this.bg.height = this.state.map.height * this.tiles.height;
+	this.bg.width = this.level.totalWidth;
+	this.bg.height = this.level.totalHeight;
 	this.add(this.bg);
-
-	// Add event listener
-	// Scroll minimap
-	this.bg.inputEnabled = true;
-	this.bg.events.onInputDown.add(function() {
-		this.scrolling = true;
-	}, this);
-	this.bg.events.onInputUp.add(function() {
-		this.scrolling = false;
-	}, this);
 
 
 	// Create tile layer
 	var a, 
 	    tile,
-	    bmd = game.add.bitmapData(this.state.map.width, this.state.map.height);
-	for(a = 0;a < tileLayer.data.length;a++) {
-		tile = tileLayer.data[a];
+	    bmd = game.add.bitmapData(this.level.baseWidth, this.level.baseHeight);
+	for(a = 0;a < tileLayer.length;a++) {
+		tile = tileLayer[a];
 		if(tileTypeRefs[tile]) {
-			var tileX = (a % this.state.map.width);
-			var tileY = Math.floor(a / this.state.map.width);
-			// bmd.draw(tileTypeRefs[tile], tileX, tileY);
+			var tileX = (a % this.level.baseWidth);
+			var tileY = Math.floor(a / this.level.baseWidth);
 			bmd.setPixel(tileX, tileY, tileTypeRefs[tile].red, tileTypeRefs[tile].green, tileTypeRefs[tile].blue);
 		}
 	}
@@ -108,15 +111,14 @@ GUI_Minimap.prototype.refresh = function() {
 	bmd.destroy(true);
 	// Apply tile layer
 	var img = game.add.image(0, 0, "minimap_tilelayer");
-	img.width = this.state.map.totalwidth;
-	img.height = this.state.map.totalheight;
+	img.width = this.level.totalWidth;
+	img.height = this.level.totalHeight;
 	this.layers.tiles.add(img);
 
 	// Resize self
 	this.resize();
 
 	// Reposition self
-	//this.reposition();
 	this.adjustZOrder();
 };
 
@@ -141,18 +143,19 @@ GUI_Minimap.prototype.clear = function() {
 
 GUI_Minimap.prototype.resize = function() {
 	var estimatedSize = {
-		width: this.state.map.width,
-		height: this.state.map.height
+		width: this.level.baseWidth,
+		height: this.level.baseHeight
 	}
 	this.width = Math.max(this.limits.size.min.width, Math.min(this.limits.size.max.width, estimatedSize.width));
 	this.height = Math.max(this.limits.size.min.height, Math.min(this.limits.size.max.height, estimatedSize.height));
 
 	// Resize viewport frame
-	this.viewFrame.width = this.state.cam.width;
-	this.viewFrame.height = this.state.cam.height;
+	if(this.state.cam && this.viewFrame) {
+		this.viewFrame.width = this.state.cam.width;
+		this.viewFrame.height = this.state.cam.height;
+	}
 
 	// Reposition
-	//this.reposition();
 	this.adjustZOrder();
 
 	// Update hit area
@@ -166,9 +169,12 @@ GUI_Minimap.prototype.mouseOver = function() {
 };
 
 GUI_Minimap.prototype.getCursorInRate = function() {
-	var cursor = this.state.getScreenCursor();
-	cursor.x *= 2;
-	cursor.y *= 2;
+	var cursor = {x: -1, y: -1};
+	if(this.state.getScreenCursor) {
+		var cursor = this.state.getScreenCursor();
+		cursor.x *= 2;
+		cursor.y *= 2;
+	}
 	return {
 		x: (cursor.x - this.x) / this.width,
 		y: (cursor.y - this.y) / this.height
@@ -180,8 +186,8 @@ GUI_Minimap.prototype.scroll = function() {
 	rate.x = Math.max(0, Math.min(1, rate.x));
 	rate.y = Math.max(0, Math.min(1, rate.y));
 	var moveTo = {
-		x: Math.floor((rate.x * this.state.map.totalwidth) - (this.state.cam.width * 0.5)),
-		y: Math.floor((rate.y * this.state.map.totalheight) - (this.state.cam.height * 0.5))
+		x: Math.floor((rate.x * this.level.totalWidth) - (this.state.cam.width * 0.5)),
+		y: Math.floor((rate.y * this.level.totalHeight) - (this.state.cam.height * 0.5))
 	};
 	this.state.cam.move(moveTo.x, moveTo.y, false);
 

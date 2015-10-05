@@ -12,7 +12,7 @@ var menuState = {
 	},
 
 	create: function() {
-		this.background = new Background(game, "bgMainMenu");
+		this.background = new Background("bgMainMenu");
 
 		this.setupMainMenu();
 	},
@@ -106,7 +106,7 @@ var menuState = {
 					pressed: "btnGray_Down.png",
 					released: "btnGray_Up.png"
 				}, function() {
-					game.state.start("intermission", true, false, this.params.levelFolder, this.params.level, false);
+					game.state.start("intermission", true, false, this.params.levelFolder, this.params.level);
 				}, btn);
 				btn.params = {
 					levelFolder: levelFolder,

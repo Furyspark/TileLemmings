@@ -2,7 +2,6 @@ var gameState = {
 	level: null,
 	zoom: 1,
 	minimap: null,
-	background: null,
 	lemmingSelected: null,
 
 	scrollOrigin: {
@@ -10,145 +9,19 @@ var gameState = {
 		y: 0
 	},
 
-	levelGroup: null,
-	doorsGroup: [],
-	exitsGroup: [],
-	trapsGroup: [],
 	guiGroup: null,
-	grid: {
-		enabled: false,
-		button: null
-	},
-	alarms: {
-		data: [],
-		remove: function(alarm) {
-			var found = false;
-			for (var a = 0; a < this.data.length && !found; a++) {
-				var curAlarm = this.data[a];
-				if (curAlarm === alarm) {
-					found = true;
-					this.data.splice(a, 1);
-				}
-			}
-		}
-	},
 
-	speedManager: {
-		owner: null,
-		speed: 1,
-		paused: false,
-		get effectiveSpeed() {
-			if (this.paused) {
-				return 0;
-			}
-			return this.speed;
-		},
-		pauseButton: null,
-		fastForwardButton: null,
-		pause: function() {
-			this.paused = true;
-			this.refresh();
-		},
-		unpause: function() {
-			this.paused = false;
-			this.refresh();
-		},
-		refresh: function() {
-			// Update objects
-			var checkGroups = [this.owner.levelGroup.children, this.owner.lemmingsGroup.children];
-			for (var b = 0; b < checkGroups.length; b++) {
-				var grp = checkGroups[b];
-				for (var a = 0; a < grp.length; a++) {
-					var obj = grp[a];
-					if (obj) {
-						// Update animations
-						if (obj.animations) {
-							if (obj.animations.currentAnim && this.effectiveSpeed > 0) {
-								var prevFrame = obj.animations.currentAnim.frame;
-								obj.animations.currentAnim.paused = false;
-								obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
-							} else if (obj.animations.currentAnim && this.effectiveSpeed === 0) {
-								obj.animations.paused = true;
-							}
-						}
-					}
-				}
-			}
-		},
-		setSpeed: function(multiplier) {
-			this.speed = multiplier;
-			this.refresh();
-		}
-	},
-
-	actions: {
-		items: [{
-			name: "climber",
-			amount: 0,
-			button: null
-		}, {
-			name: "floater",
-			amount: 0,
-			button: null
-		}, {
-			name: "exploder",
-			amount: 0,
-			button: null
-		}, {
-			name: "blocker",
-			amount: 0,
-			button: null
-		}, {
-			name: "builder",
-			amount: 0,
-			button: null
-		}, {
-			name: "basher",
-			amount: 0,
-			button: null
-		}, {
-			name: "miner",
-			amount: 0,
-			button: null
-		}, {
-			name: "digger",
-			amount: 0,
-			button: null
-		}],
-		select: -1,
-		get current() {
-			if (this.select === -1) {
-				return {
-					name: "",
-					amount: 0,
-					button: null
-				};
-			}
-			return this.items[this.select];
-		},
-		previewGroup: []
-	},
-
-	init: function(levelFolder, levelObj) {
+	init: function(levelFolder, levelObj, level) {
 		this.levelFolder = levelFolder;
 		this.levelObj = levelObj;
+		this.level = level;
 
-		this.victoryState = {
-			total: 0,
-			saved: 0,
-			need: 0,
-			gameStarted: false,
-			gameEnded: false
-		};
 		this.nukeStarted = false;
 	},
 
 	create: function() {
 		this.enableUserInteraction();
-		this.speedManager.owner = this;
 		// Create groups
-		this.levelGroup = game.add.group();
-		this.lemmingsGroup = game.add.group(this.levelGroup);
 		this.guiGroup = game.add.group(game.stage);
 
 		// Create GUI
@@ -158,49 +31,6 @@ var gameState = {
 		this.cam = new Camera(game, this);
 
 		this.startLevel();
-	},
-
-	zOrder: function() {
-		// Set (z-)order of display objects
-		// First, set the ordering on levelGroup
-		var a, obj;
-		for(a = 0;a < this.trapsGroup.length;a++) {
-			obj = this.trapsGroup[a];
-			this.levelGroup.bringToTop(obj);
-		}
-		for(a = 0;a < this.doorsGroup.length;a++) {
-			obj = this.doorsGroup[a];
-			this.levelGroup.bringToTop(obj);
-		}
-		for(a = 0;a < this.exitsGroup.length;a++) {
-			obj = this.exitsGroup[a];
-			this.levelGroup.bringToTop(obj);
-		}
-		for(a = 0;a < this.actions.previewGroup.length;a++) {
-			obj = this.actions.previewGroup[a];
-			this.levelGroup.bringToTop(obj);
-		}
-		this.levelGroup.bringToTop(this.lemmingsGroup);
-		for(a = 0;a < this.lemmingsGroup.children.length;a++) {
-			obj = this.lemmingsGroup.children[a];
-			if(obj.cursor.sprite) {
-				this.levelGroup.bringToTop(obj.cursor.sprite);
-			}
-		}
-		this.levelGroup.bringToTop(this.gridGroup);
-		// Bring backgrounds objects to top first, ending with foreground objects
-		if (this.background) {
-			this.world.bringToTop(this.background);
-		}
-		this.world.bringToTop(this.levelGroup);
-		this.world.bringToTop(this.guiGroup);
-		var elem;
-		for (a = 0; a < this.guiGroup.children.length; a++) {
-			elem = this.guiGroup.children[a];
-			if (elem.label) {
-				this.guiGroup.bringToTop(elem.label);
-			}
-		}
 	},
 
 	enableUserInteraction: function() {
@@ -258,42 +88,43 @@ var gameState = {
 
 	startLevel: function() {
 		this.zoomTo(2);
-		this.minimap = new GUI_Minimap();
+		this.minimap = new GUI_Minimap(this.level);
 		this.minimap.x = game.camera.width - this.minimap.width;
 		this.minimap.y = game.camera.height - this.minimap.height;
+		this.minimap.onLevelStart();
 		this.guiGroup.add(this.minimap);
 
 		// Z-Order
-		this.zOrder();
+		this.level.zOrder();
 
 		// Let's go... HRRRRN
 		var snd = GameManager.audio.play("sndLetsGo");
-		var alarm = new Alarm(game, 90, function() {
+		var alarm = new Alarm(90, function() {
 			this.openDoors();
 		}, this);
 	},
 
 	pauseGame: function() {
-		if (!this.speedManager.paused) {
-			this.speedManager.pause();
+		if (!GameManager.speedManager.paused) {
+			GameManager.speedManager.pause();
 			// Press pause GUI button
-			this.speedManager.pauseButton.visualPress();
+			GameManager.speedManager.pauseButton.visualPress();
 		} else {
-			this.speedManager.unpause();
+			GameManager.speedManager.unpause();
 			// Release pause GUI button
-			this.speedManager.pauseButton.visualRelease();
+			GameManager.speedManager.pauseButton.visualRelease();
 		}
 	},
 
 	fastForward: function() {
-		if (this.speedManager.speed > 1) {
-			this.speedManager.setSpeed(1);
+		if (GameManager.speedManager.speed > 1) {
+			GameManager.speedManager.setSpeed(1);
 			// Press fast forward GUI button
-			this.speedManager.fastForwardButton.visualRelease();
+			GameManager.speedManager.fastForwardButton.visualRelease();
 		} else {
-			this.speedManager.setSpeed(3);
+			GameManager.speedManager.setSpeed(3);
 			// Release fast forward GUI button
-			this.speedManager.fastForwardButton.visualPress();
+			GameManager.speedManager.fastForwardButton.visualPress();
 		}
 	},
 
@@ -316,8 +147,8 @@ var gameState = {
 			this.nukeStarted = true;
 			this.nuke();
 			// Set lemming count of all doors to 0
-			for (var a = 0; a < this.doorsGroup.length; a++) {
-				var door = this.doorsGroup[a];
+			for (var a = 0; a < this.doorGroup.children.length; a++) {
+				var door = this.doorGroup.children[a];
 				door.lemmings = 0;
 			}
 			this.victoryState.gameStarted = true;
@@ -325,8 +156,8 @@ var gameState = {
 		// Proceed nuke
 		else {
 			var searchComplete = false;
-			for (var a = 0; a < this.lemmingsGroup.children.length && !searchComplete; a++) {
-				var lem = this.lemmingsGroup.children[a];
+			for (var a = 0; a < this.level.lemmingsGroup.children.length && !searchComplete; a++) {
+				var lem = this.level.lemmingsGroup.children[a];
 				if (lem.subaction.name !== "exploder") {
 					lem.setExploder();
 					searchComplete = true;
@@ -358,12 +189,13 @@ var gameState = {
 
 	zoomTo: function(factor) {
 		this.zoom = factor;
-		this.levelGroup.scale.setTo(factor);
-		game.camera.bounds.setTo(0, 0, Math.floor(this.map.totalwidth * this.zoom), Math.floor(this.map.totalheight * this.zoom));
-		// this.grid.image.tileScale.setTo(this.zoom);
+		this.level.scale.setTo(factor);
+		game.camera.bounds.setTo(0, 0, Math.floor(this.level.totalWidth * this.zoom), Math.floor(this.level.totalHeight * this.zoom));
 	},
 
 	update: function() {
+		// Update alarms
+		GameManager.alarms.update();
 		// Determine lemmings under mouse cursor
 		var lemmingSelect = {
 			data: [],
@@ -376,8 +208,8 @@ var gameState = {
 				}
 			}
 		};
-		for (var a = 0; a < this.lemmingsGroup.children.length; a++) {
-			var obj = this.lemmingsGroup.children[a];
+		for (var a = 0; a < this.level.lemmingsGroup.children.length; a++) {
+			var obj = this.level.lemmingsGroup.children[a];
 			obj.cursorDeselect();
 			if (obj.mouseOver()) {
 				lemmingSelect.data.push(obj);
@@ -387,12 +219,6 @@ var gameState = {
 		lemmingSelect.removeBy(this.lemmingSelectableCallback);
 		if (!this.cursorOverGUI() && lemmingSelect.data.length > 0) {
 			lemmingSelect.data[0].cursorSelect();
-		}
-
-		// Handle alarms
-		for (var a = 0; a < this.alarms.data.length; a++) {
-			var alarm = this.alarms.data[a];
-			alarm.step();
 		}
 
 		// Scroll
@@ -434,17 +260,17 @@ var gameState = {
 		}
 
 		// Test for victory/defeat
-		if (this.victoryState.gameStarted && !this.victoryState.gameEnded) {
+		if (this.level.started && !this.level.ended) {
 			var allDoorsEmpty = true;
-			for (var a = 0; a < this.doorsGroup.length && allDoorsEmpty; a++) {
-				var door = this.doorsGroup[a];
+			for (var a = 0; a < this.level.objectLayer.doorGroup.children.length && allDoorsEmpty; a++) {
+				var door = this.level.objectLayer.doorGroup.children[a];
 				if (door.lemmings > 0) {
 					allDoorsEmpty = false;
 				}
 			}
-			if (allDoorsEmpty && this.lemmingsGroup.children.length === 0) {
-				this.victoryState.gameEnded = true;
-				if (this.victoryState.saved >= this.victoryState.need) {
+			if (allDoorsEmpty && this.level.lemmingsGroup.children.length === 0) {
+				this.level.ended = true;
+				if (this.level.saved >= this.level.lemmingNeed) {
 					// Victory
 					this.goToNextLevel();
 				} else {
@@ -453,44 +279,21 @@ var gameState = {
 				}
 			}
 		}
-
-		// Z-Ordering
-		//this.zOrder();
 	},
 
 	clearState: function() {
-		// Determine all groups to have their children destroyed
-		var removeGroups = [
-			// this.lemmingsGroup.all,
-			// this.doorsGroup,
-			// this.exitsGroup,
-			// this.trapsGroup,
-			// this.guiGroup
-		];
-		this.doorsGroup = [];
-		this.exitsGroup = [];
-		this.trapsGroup = [];
-
 		// Remove all GUI objects
 		this.guiGroup.destroy();
 		
-		// Remove all game objects
-		this.levelGroup.destroy();
-
-		// Remove reference to grid screen
-		this.grid.enabled = false;
+		// Destroy level
+		this.level.destroy();
 
 		// Reset speed manager
-		this.speedManager.paused = false;
-		this.speedManager.speed = 1;
+		GameManager.speedManager.paused = false;
+		GameManager.speedManager.speed = 1;
 
 		// Stop the music
 		this.stopBGM();
-
-		// Stop the alarms
-		while (this.alarms.data.length > 0) {
-			this.alarms.data[0].cancel();
-		}
 	},
 
 	goToNextLevel: function() {
@@ -587,8 +390,8 @@ var gameState = {
 	},
 
 	openDoors: function() {
-		for (var a = 0; a < this.doorsGroup.length; a++) {
-			var obj = this.doorsGroup[a];
+		for (var a = 0; a < this.level.objectLayer.doorGroup.children.length; a++) {
+			var obj = this.level.objectLayer.doorGroup.children[a];
 			obj.openDoor();
 		}
 	},
@@ -605,9 +408,9 @@ var gameState = {
 		var buttons = [];
 
 		// Create action buttons
-		for (var a in this.actions.items) {
-			var action = this.actions.items[a];
-			var animPrefix = "Btn_" + action.name.substr(0, 1).toUpperCase() + action.name.substr(1) + "_";
+		for (var a in this.level.actions) {
+			var action = this.level.actions[a];
+			var animPrefix = "Btn_" + a.substr(0, 1).toUpperCase() + a.substr(1) + "_";
 			var btn = new GUI_Button(game, 0, 0);
 			this.guiGroup.add(btn);
 			buttons.push(btn);
@@ -628,7 +431,7 @@ var gameState = {
 			released: "Btn_Pause_0.png",
 			pressed: "Btn_Pause_1.png"
 		}, "pause", "misc");
-		this.speedManager.pauseButton = btn;
+		GameManager.speedManager.pauseButton = btn;
 
 		// Create fast forward button
 		var btn = new GUI_Button(game, 0, 0);
@@ -638,7 +441,7 @@ var gameState = {
 			released: "Btn_FastForward_0.png",
 			pressed: "Btn_FastForward_1.png"
 		}, "fastForward", "misc");
-		this.speedManager.fastForwardButton = btn;
+		GameManager.speedManager.fastForwardButton = btn;
 
 		// Create nuke button
 		var btn = new GUI_Button(game, 0, 0);
@@ -658,7 +461,6 @@ var gameState = {
 			released: "Btn_Grid_0.png",
 			pressed: "Btn_Grid_1.png"
 		}, "grid", "misc");
-		this.grid.button = btn;
 
 		// Align buttons
 		var alignX = 0;
@@ -714,16 +516,16 @@ var gameState = {
 		var arrayCheck = [];
 		switch (instanceTypeCheck) {
 			case "lemming":
-				arrayCheck = this.lemmingsGroup.children;
+				arrayCheck = this.level.lemmingsGroup.children;
 				break;
 			case "door":
-				arrayCheck = this.doorsGroup;
+				arrayCheck = this.level.objectLayer.doorGroup.children;
 				break;
 			case "exit":
-				arrayCheck = this.exitsGroup;
+				arrayCheck = this.level.objectLayer.exitGroup.children;
 				break;
 			case "trap":
-				arrayCheck = this.trapsGroup;
+				arrayCheck = this.level.objectLayer.trapGroup.children;
 				break;
 		}
 		var result = [];
@@ -757,8 +559,8 @@ var gameState = {
 		};
 
 		var a, lem;
-		for (a = 0; a < this.lemmingsGroup.children.length; a++) {
-			lem = this.lemmingsGroup.children[a];
+		for (a = 0; a < this.level.lemmingsGroup.children.length; a++) {
+			lem = this.level.lemmingsGroup.children[a];
 
 			if (lem.action.name === "blocker" && !lem.action.idle &&
 				lem.x >= rect.left && lem.x < rect.right &&

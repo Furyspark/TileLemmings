@@ -1,6 +1,7 @@
-var Background = function(game, imageKey) {
+var Background = function(imageKey, initGroup) {
+	if(initGroup === undefined) { initGroup = game.world; }
 	Phaser.TileSprite.call(this, game, 0, 0, 800, 600, imageKey);
-	game.add.existing(this);
+	initGroup.add(this);
 	Object.defineProperty(this, "state", {get() {
 		return game.state.getCurrentState();
 	}});
@@ -17,8 +18,8 @@ Background.prototype = Object.create(Phaser.TileSprite.prototype);
 Background.prototype.constructor = Background;
 
 Background.prototype.update = function() {
-	this.x = game.camera.x;
-	this.y = game.camera.y;
-	this.tilePosition.x = (this.x * this.parallax.x);
-	this.tilePosition.y = (this.y * this.parallax.y);
+	// this.x = game.camera.x;
+	// this.y = game.camera.y;
+	this.tilePosition.x = (game.camera.x * this.parallax.x);
+	this.tilePosition.y = (game.camera.y * this.parallax.y);
 };

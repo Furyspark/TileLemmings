@@ -23,7 +23,7 @@
 			"file": "src/classes/tileset.js",
 			"settings":
 			{
-				"buffer_size": 1103,
+				"buffer_size": 3323,
 				"line_ending": "Windows"
 			}
 		},
@@ -31,7 +31,31 @@
 			"file": "src/classes/level.js",
 			"settings":
 			{
-				"buffer_size": 2074,
+				"buffer_size": 4358,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/pre.js",
+			"settings":
+			{
+				"buffer_size": 589,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/tilesets/tilesetLiquids.json",
+			"settings":
+			{
+				"buffer_size": 2484,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/prop.js",
+			"settings":
+			{
+				"buffer_size": 6858,
 				"line_ending": "Windows"
 			}
 		},
@@ -39,7 +63,15 @@
 			"file": "src/classes/layer.js",
 			"settings":
 			{
-				"buffer_size": 1460,
+				"buffer_size": 4267,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/tilesets/tilesetDoors.json",
+			"settings":
+			{
+				"buffer_size": 1760,
 				"line_ending": "Windows"
 			}
 		},
@@ -63,7 +95,31 @@
 			"file": "src/states/state_game.js",
 			"settings":
 			{
-				"buffer_size": 20016,
+				"buffer_size": 15928,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/background.js",
+			"settings":
+			{
+				"buffer_size": 713,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/gamemanager.js",
+			"settings":
+			{
+				"buffer_size": 3426,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/alarm.js",
+			"settings":
+			{
+				"buffer_size": 987,
 				"line_ending": "Windows"
 			}
 		},
@@ -71,7 +127,15 @@
 			"file": "src/states/state_intermission.js",
 			"settings":
 			{
-				"buffer_size": 2803,
+				"buffer_size": 3283,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/levels.json",
+			"settings":
+			{
+				"buffer_size": 1914,
 				"line_ending": "Windows"
 			}
 		},
@@ -79,7 +143,7 @@
 			"file": "src/classes/gui_minimap.js",
 			"settings":
 			{
-				"buffer_size": 4888,
+				"buffer_size": 4835,
 				"line_ending": "Windows"
 			}
 		}
@@ -97,6 +161,10 @@
 		[
 			[
 				":w",
+				":w - Save"
+			],
+			[
+				":",
 				":w - Save"
 			],
 			[
@@ -172,18 +240,28 @@
 	"expanded_folders":
 	[
 		"/D/Projects/jsgames/TileLemmings",
+		"/D/Projects/jsgames/TileLemmings/assets",
+		"/D/Projects/jsgames/TileLemmings/assets/gfx",
+		"/D/Projects/jsgames/TileLemmings/assets/tilesets",
 		"/D/Projects/jsgames/TileLemmings/src",
 		"/D/Projects/jsgames/TileLemmings/src/classes",
 		"/D/Projects/jsgames/TileLemmings/src/states"
 	],
 	"file_history":
 	[
+		"/D/Projects/jsgames/TileLemmings/src/classes/camera.js",
+		"/D/Projects/jsgames/TileLemmings/src/classes/background.js",
+		"/D/Projects/jsgames/TileLemmings/src/states/state_menu.js",
+		"/D/Projects/jsgames/TileLemmings/src/classes/mainmenuButton.js",
+		"/D/Projects/jsgames/TileLemmings/assets/tilesets/tilesetDoors.json",
+		"/D/Projects/jsgames/TileLemmings/sources.json",
+		"/D/Projects/node/media-workshop/list.txt",
+		"/D/Projects/node/media-workshop/main.js",
+		"/D/Projects/node/media-workshop/package.json",
 		"/D/Projects/jsgames/TileLemmings/src/gamemanager.js",
 		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/Tijmen/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
-		"/D/Projects/jsgames/TileLemmings/sources.json",
 		"/D/Projects/jsgames/TileLemmings/src/classes/map.js",
-		"/D/Projects/jsgames/TileLemmings/assets/tilesets/tilesetDoors.json",
 		"/D/Projects/jsgames/TileLemmings/src/game.js",
 		"/D/Projects/jsgames/TileLemmings/src/classes/db/tileset.js",
 		"/D/Projects/jsgames/TileLemmings/.gitignore",
@@ -298,14 +376,7 @@
 		"/D/Projects/Phaser/Meow/index.html",
 		"/D/Projects/Phaser/Meow/src/classes.coffee",
 		"/D/Projects/Phaser/Meow/src/gamestate.coffee",
-		"/D/Projects/Phaser/Meow/src/classes/gameobject.coffee",
-		"/D/Projects/Phaser/Meow/src/classes/enemy.coffee",
-		"/D/Projects/Phaser/Meow/src/classes/player.coffee",
-		"/D/Projects/Phaser/Meow/src/game.coffee",
-		"/D/Projects/GMS/RelicRaider/Game/Relic Raider.gmx/datafiles/data/json/exp_table.json",
-		"/D/Projects/GMS/RelicRaider/Game/Relic Raider.gmx/datafiles/data/json/players.json",
-		"/D/Projects/Phaser/Meow/lib/r.js",
-		"/D/Projects/Phaser/Meow/classes.json"
+		"/D/Projects/Phaser/Meow/src/classes/gameobject.coffee"
 	],
 	"find":
 	{
@@ -323,6 +394,34 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"bg",
+			"level.trapGroup",
+			"Layer.trapGroup",
+			"level.exitGroup",
+			"level.doorGroup",
+			"doorGroup.length",
+			"doorsGroup",
+			"clearState",
+			"lemmingsGroup",
+			"startLevel",
+			"instancePosition",
+			"level",
+			"zOrder",
+			"zoomTo",
+			"speedManager",
+			"alarms",
+			"speedManager",
+			"push",
+			"add",
+			"doorGroup",
+			"zoomTo",
+			"clear",
+			"height",
+			"this.background",
+			"data",
+			"push",
+			"applySource",
+			"intermission",
 			"map",
 			"initMap",
 			"auto",
@@ -412,6 +511,9 @@
 		"regex": false,
 		"replace_history":
 		[
+			"level.objectLayer.trapGroup",
+			"level.objectLayer.exitGroup",
+			"level.objectLayer.doorGroup",
 			"labelStr",
 			"$~",
 			"*$",
@@ -428,7 +530,7 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 14,
 			"sheets":
 			[
 				{
@@ -458,7 +560,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
@@ -467,15 +569,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1103,
+						"buffer_size": 3323,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1063,
-								1063
+								2662,
+								2662
 							]
 						],
 						"settings":
@@ -483,10 +585,10 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 649.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
@@ -495,15 +597,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2074,
+						"buffer_size": 4358,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								20,
-								20
+								4355,
+								4355
 							]
 						],
 						"settings":
@@ -511,165 +613,48 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2039.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "src/classes/layer.js",
+					"file": "src/pre.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1460,
+						"buffer_size": 589,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								35,
-								35
+								187,
+								187
 							]
 						],
 						"settings":
 						{
-							"open_with_edit": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "src/classes/tile.js",
+					"file": "assets/tilesets/tilesetLiquids.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1275,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1241,
-								1241
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 119.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "assets/levels/fun/level1.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5835,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5835,
-								5835
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 300.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "src/states/state_game.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 20016,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								20016,
-								20016
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 10924.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "src/states/state_intermission.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2803,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1107,
-								1107
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 499.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "src/classes/gui_minimap.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4888,
+						"buffer_size": 2484,
 						"regions":
 						{
 						},
@@ -682,6 +667,124 @@
 						],
 						"settings":
 						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/classes/prop.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6858,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2713,
+								2713
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 644.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/classes/layer.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4267,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								943,
+								943
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "assets/tilesets/tilesetDoors.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1760,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/classes/tile.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								607,
+								607
+							]
+						],
+						"settings":
+						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
@@ -689,7 +792,273 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "assets/levels/fun/level1.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5835,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15,
+								15
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/states/state_game.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15928,
+						"regions":
+						{
+							"bookmark_i":
+							{
+								"flags": 144,
+								"regions":
+								[
+									[
+										138,
+										138
+									]
+								]
+							}
+						},
+						"selection":
+						[
+							[
+								10616,
+								10616
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5524.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/classes/background.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 713,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								191,
+								191
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/gamemanager.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3426,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1829,
+								1829
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 889.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "src/classes/alarm.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 987,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								878,
+								878
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "src/states/state_intermission.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3283,
+						"regions":
+						{
+							"bookmark_S":
+							{
+								"flags": 144,
+								"regions":
+								[
+									[
+										775,
+										775
+									]
+								]
+							},
+							"bookmark_s":
+							{
+								"flags": 144,
+								"regions":
+								[
+									[
+										775,
+										775
+									]
+								]
+							}
+						},
+						"selection":
+						[
+							[
+								627,
+								627
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "assets/levels.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1914,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "src/classes/gui_minimap.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4835,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3261,
+								3261
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 814.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -784,7 +1153,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 213.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

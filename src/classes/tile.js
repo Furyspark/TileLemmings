@@ -1,5 +1,5 @@
-var Tile = function(game, key, animationCrop) {
-	Phaser.Image.call(this, game, 0, 0, key);
+var Tile = function(x, y, key, animationCrop) {
+	Phaser.Image.call(this, game, x, y, key);
 	game.add.existing(this);
 
 	Object.defineProperties(this, {

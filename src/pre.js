@@ -11,6 +11,16 @@ var GameData = {
 		},
 		width: 16,
 		height: 16
+	},
+	actions: {
+		"climber": {},
+		"floater": {},
+		"exploder": {},
+		"blocker": {},
+		"builder": {},
+		"digger": {},
+		"miner": {},
+		"basher": {}
 	}
 };
 

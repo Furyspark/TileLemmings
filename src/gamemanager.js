@@ -40,6 +40,80 @@ var GameManager = {
 		}
 	},
 
+	level: null,
+
+	alarms: {
+		data: [],
+		remove: function(alarm) {
+			var found = false;
+			for (var a = 0; a < this.data.length && !found; a++) {
+				var curAlarm = this.data[a];
+				if (curAlarm === alarm) {
+					found = true;
+					this.data.splice(a, 1);
+				}
+			}
+		},
+		update: function() {
+			var a;
+			for(a = 0;a < this.data.length;a++) {
+				this.data[a].update();
+			}
+		}
+	},
+
+	speedManager: {
+		speed: 1,
+		paused: false,
+		get effectiveSpeed() {
+			if (this.paused) {
+				return 0;
+			}
+			return this.speed;
+		},
+		pauseButton: null,
+		fastForwardButton: null,
+		pause: function() {
+			this.paused = true;
+			this.refresh();
+		},
+		unpause: function() {
+			this.paused = false;
+			this.refresh();
+		},
+		refresh: function() {
+			// Update objects
+			var checkGroups = [
+				GameManager.level.objectLayer.doorGroup.children,
+				GameManager.level.objectLayer.exitGroup.children,
+				GameManager.level.objectLayer.trapGroup.children,
+				GameManager.level.lemmingsGroup.children
+			];
+			for (var b = 0; b < checkGroups.length; b++) {
+				var grp = checkGroups[b];
+				for (var a = 0; a < grp.length; a++) {
+					var obj = grp[a];
+					if (obj) {
+						// Update animations
+						if (obj.animations) {
+							if (obj.animations.currentAnim && this.effectiveSpeed > 0) {
+								var prevFrame = obj.animations.currentAnim.frame;
+								obj.animations.currentAnim.paused = false;
+								obj.animations.currentAnim.speed = (15 * this.effectiveSpeed);
+							} else if (obj.animations.currentAnim && this.effectiveSpeed === 0) {
+								obj.animations.paused = true;
+							}
+						}
+					}
+				}
+			}
+		},
+		setSpeed: function(multiplier) {
+			this.speed = multiplier;
+			this.refresh();
+		}
+	},
+
 	tilesets: {},
 
 	saveSettings: function() {
