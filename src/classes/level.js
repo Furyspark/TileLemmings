@@ -152,6 +152,29 @@ Level.prototype.applySource = function(src) {
 		this.addLayer(layer);
 	}
 
+	// Apply tile modifiers
+	var tileMod, tile;
+	if(this.tileLayer) {
+		for(a = 0;a < this.rawLayers.length;a++) {
+			layer = this.rawLayers[a];
+			if(layer.type == Layer.TILE_LAYER && layer !== this.tileLayer) {
+				for(b = 0;b < layer.tileMods.length;b++) {
+					tileMod = layer.tileMods[b];
+					if(tileMod) {
+						tile = this.tileLayer.tiles[b];
+						if(tile) {
+							tile.addMod(tileMod, {
+								x: layer.indexToCoords(b).x,
+								y: layer.indexToCoords(b).y,
+								layer: layer
+							});
+						}
+					}
+				}
+			}
+		}
+	}
+
 	// Set properties
 	if(src.properties.need) {
 		this.lemmingNeed = parseInt(src.properties.need);
@@ -192,23 +215,31 @@ Level.prototype.zOrder = function() {
 	}
 	// Objects
 	this.bringToTop(this.objectLayer);
+	// Main tile layer
 	this.bringToTop(this.tileLayer);
-	// for(a = 0;a < this.actions.previewGroup.length;a++) {
-	// 	obj = this.actions.previewGroup[a];
-	// 	this.levelGroup.bringToTop(obj);
-	// }
+	// Tile modifiers
+	var a, layer;
+	for(a = 0;a < this.rawLayers.length;a++) {
+		layer = this.rawLayers[a];
+		if(Layer.IDENTIFIER_MOD.test(layer.name)) {
+			this.bringToTop(layer);
+		}
+	}
 	// Lemmings
 	this.bringToTop(this.lemmingsGroup);
+	// Action preview tiles
 	this.bringToTop(this.actionPreviewGroup);
+	// Grid
 	this.bringToTop(this.gridGroup);
+	// Labels
 	this.bringToTop(this.gameLabelGroup);
+	// Selection markers
 	for(a = 0;a < this.lemmingsGroup.children.length;a++) {
 		obj = this.lemmingsGroup.children[a];
 		if(obj.cursor.sprite) {
 			this.bringToTop(obj.cursor.sprite);
 		}
 	}
-	//this.level.bringToTop(this.gridGroup);
 };
 
 /*

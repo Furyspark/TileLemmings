@@ -65,6 +65,7 @@
      "bgm":"medieval.ogg",
      "builder":"2",
      "climber":"2",
+     "miner":"3",
      "need":"10"
     },
  "renderorder":"right-down",

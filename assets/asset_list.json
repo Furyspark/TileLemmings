@@ -161,7 +161,7 @@
 	"images": [
 		{
 			"key": "tilesetPlaceables",
-			"url": "assets/gfx/tilesets/tilesetPlaceables.png"
+			"url": "assets/gfx/tilesets/generic/tilesetPlaceables.png"
 		},
 		{
 			"key": "bgMainMenu",

@@ -107,11 +107,11 @@ var Lemming = function(game, x, y) {
 	});
 
 	// Set animations
-	this.addAnim("fall", "Fall", 4, {
+	this.addAnim("fall", "Fall", 16, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("move", "Move", 10, {
+	this.addAnim("move", "Walk", 16, {
 		x: 0,
 		y: 0
 	});
@@ -123,15 +123,15 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("build_end", "BuildEnd", 10, {
+	this.addAnim("build_end", "BuildEnd", 24, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("bash", "Bash", 32, {
+	this.addAnim("bash", "Bash", 24, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("dig", "Dig", 8, {
+	this.addAnim("dig", "Dig", 16, {
 		x: 0,
 		y: 4
 	});
@@ -143,7 +143,7 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("explode", "Explode", 16, {
+	this.addAnim("explode", "Explode", 24, {
 		x: 0,
 		y: 0
 	}, false);
@@ -151,27 +151,27 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("float", "Float", 4, {
+	this.addAnim("float", "Float", 16, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("float_start", "Float_Start", 4, {
+	this.addAnim("float_start", "Float_Start", 16, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("climb", "Climb", 8, {
+	this.addAnim("climb", "Climb", 16, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("climb_end", "Climb_End", 8, {
+	this.addAnim("climb_end", "Climb_End", 12, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("drown", "Drown", 16, {
+	this.addAnim("drown", "Drown", 24, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("burn", "Burn", 13, {
+	this.addAnim("burn", "Burn", 8, {
 		x: 0,
 		y: 0
 	}, false);
@@ -305,7 +305,7 @@ Lemming.prototype.turnAround = function() {
 };
 
 Lemming.prototype.update = function() {
-	var checks = [], coords = [], a, b, obj, objs,
+	var checks = [], coords = [], a, b, obj, objs, tile, failed, alarm,
 		walkedUpRamp = false;
 
 	if (!this.dead && this.active && GameManager.speedManager.effectiveSpeed > 0) {
@@ -376,7 +376,7 @@ Lemming.prototype.update = function() {
 		// Bashing
 		else if (this.onFloor() && this.action.name === "basher" && !this.action.idle) {
 			// Remove tile in front of lemming
-			var alarm = new Alarm(30, function() {
+			alarm = new Alarm(30, function() {
 				if (this.action.name === "basher" && !this.action.idle) {
 					this.clearAction();
 				}
@@ -384,20 +384,32 @@ Lemming.prototype.update = function() {
 			coords = [
 				this.level.toTileSpace(this.x + ((GameData.tile.width * 0.5) * this.dir), this.y - 1)
 			];
-			var bashResult = this.level.removeTile(coords[0].x, coords[0].y);
-			coords = [
-				this.level.toTileSpace(this.x + ((GameData.tile.width * 0.5) * this.dir), this.y - 1),
-				this.level.toTileSpace(this.x + ((GameData.tile.width * 1.5) * this.dir), this.y - 1)
-			];
-			if (bashResult === 1 ||
-				this.tileLayer.getTileType(coords[0].x, coords[0].y) == GameData.tile.type.TILE ||
-				this.tileLayer.getTileType(coords[1].x, coords[1].y) == GameData.tile.type.TILE) {
-				alarm.cancel();
-			} else if (bashResult === 2) {
+			// Check for one-way walls
+			tile = this.tileLayer.getTile(coords[0].x, coords[0].y);
+			failed = false;
+			if(tile && ((this.dir === 1 && tile.tileMods[Tile.MOD_NO_DIG_RIGHT]) ||
+				(this.dir === -1 && tile.tileMods[Tile.MOD_NO_DIG_LEFT]))) {
+				failed = true;
+			}
+			// Bash away
+			var bashResult = 0;
+			if(!failed) {
+				bashResult = this.level.removeTile(coords[0].x, coords[0].y);
+				coords = [
+					this.level.toTileSpace(this.x + ((GameData.tile.width * 0.5) * this.dir), this.y - 1),
+					this.level.toTileSpace(this.x + ((GameData.tile.width * 1.5) * this.dir), this.y - 1)
+				];
+			}
+			if (bashResult === 2 || failed) {
 				alarm.cancel;
 				GameManager.audio.play("sndChink");
 				this.clearAction();
 			}
+			else if (bashResult === 1 ||
+				this.tileLayer.getTileType(coords[0].x, coords[0].y) == GameData.tile.type.TILE ||
+				this.tileLayer.getTileType(coords[1].x, coords[1].y) == GameData.tile.type.TILE) {
+				alarm.cancel();
+			} 
 		}
 		// Fall
 		else if (!this.onFloor() && !(this.action.name === "climber" && !this.action.idle)) {
@@ -530,9 +542,13 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 	if (loop === undefined) {
 		loop = true;
 	}
-	var a, frames = [];
+	var a, frames = [], anim, numberStr;
 	for (a = 0; a < numFrames; a += 1) {
-		var anim = "sprLemming_" + animName + "_" + a.toString() + ".png";
+		numberStr = a.toString();
+		while(numberStr.length < 3) {
+			numberStr = "0" + numberStr;
+		}
+		anim = "sprLemming_" + animName + "_" + numberStr + ".png";
 		frames.push(anim);
 	}
 	this.animations.add(key, frames, 60, loop);
@@ -815,7 +831,7 @@ Lemming.prototype.proceedDig = function() {
 };
 
 Lemming.prototype.proceedMine = function() {
-	var checks = [], coords = [], result;
+	var checks = [], coords = [], result, failed, tile;
 	if (this.action.name == "miner" && !this.action.idle && !this.dead && this.active) {
 		// Check for blockers
 		coords = [
@@ -834,17 +850,39 @@ Lemming.prototype.proceedMine = function() {
 
 		// Remove tile(s)
 		coords[0] = this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y - 1);
-		result = this.level.removeTile(coords[0].x, coords[0].y);
-		if (result === 2) {
+		// Check for one-way tiles
+		failed = false;
+		tile = this.tileLayer.getTile(coords[0].x, coords[0].y);
+		if(tile && ((this.dir === 1 && tile.tileMods[Tile.MOD_NO_DIG_RIGHT]) ||
+			(this.dir === -1 && tile.tileMods[Tile.MOD_NO_DIG_LEFT]))) {
+			failed = true;
+		}
+		// Dig
+		if(!failed) {
+			result = this.level.removeTile(coords[0].x, coords[0].y);
+		}
+		if (result === 2 || failed) {
 			GameManager.audio.play("sndChink");
 			this.clearAction();
-		} else {
+		}
+		else {
 			coords[0] = this.level.toTileSpace(this.x + (GameData.tile.width * this.dir), this.y + (GameData.tile.height - 1));
-			result = this.state.map.removeTile(coords[0].x, coords[0].y);
-			if (result === 2) {
+			// Check for one-way tiles
+			failed = false;
+			tile = this.tileLayer.getTile(coords[0].x, coords[0].y);
+			if(tile && ((this.dir === 1 && tile.tileMods[Tile.MOD_NO_DIG_RIGHT]) ||
+				(this.dir === -1 && tile.tileMods[Tile.MOD_NO_DIG_LEFT]))) {
+				failed = true;
+			}
+			// Dig
+			if(!failed) {
+				result = this.level.removeTile(coords[0].x, coords[0].y);
+			}
+			if (result === 2 || failed) {
 				GameManager.audio.play("sndChink");
 				this.clearAction();
-			} else {
+			}
+			else {
 				this.x += (GameData.tile.width * this.dir);
 				this.y += GameData.tile.height;
 				// Set up new alarm

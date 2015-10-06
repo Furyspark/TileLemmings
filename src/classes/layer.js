@@ -12,6 +12,7 @@ var Layer = function(src, level) {
 	// Tile layer stuff
 	this.tiles = [];
 	this.tileTypes = [];
+	this.tileMods = [];
 
 	// Object layer stuff
 	this.doorGroup = game.add.group(this);
@@ -33,6 +34,8 @@ Layer.TILE_FLIP_V = 0x40000000;
 Layer.TILE_FLIP_HV = 0x20000000;
 Layer.TILE_CLEAR_BITMASK = ~(Layer.TILE_FLIP_H | Layer.TILE_FLIP_V | Layer.TILE_FLIP_HV);
 
+Layer.IDENTIFIER_MOD = /^(?:tilemods?)/;
+
 /*
 	method: applySource(src)
 	Applies a source object to this layer
@@ -53,6 +56,7 @@ Layer.prototype.applySource = function(src) {
 	if(this.type == Layer.TILE_LAYER) {
 		while(this.tiles.length < this.baseWidth * this.baseHeight) {
 			this.tiles.push(null);
+			this.tileMods.push(null);
 			this.tileTypes.push(0);
 		}
 	}
@@ -84,11 +88,19 @@ Layer.prototype.applySource = function(src) {
 				this.tiles[a] = tile;
 				this.add(tile);
 				// Set tile type
-				if(ts.tileProperties[baseGID] && ts.tileProperties[baseGID].tileType) {
-					this.setTileType(this.indexToCoords(a).x, this.indexToCoords(a).y, parseInt(ts.tileProperties[baseGID].tileType));
+				if(this.name === "tiles") {
+					if(ts.tileProperties[baseGID] && ts.tileProperties[baseGID].tileType) {
+						this.setTileType(this.indexToCoords(a).x, this.indexToCoords(a).y, parseInt(ts.tileProperties[baseGID].tileType));
+					}
+					else {
+						this.setTileType(this.indexToCoords(a).x, this.indexToCoords(a).y, 1);
+					}
 				}
-				else {
-					this.setTileType(this.indexToCoords(a).x, this.indexToCoords(a).y, 1);
+				// Set mod type
+				else if(Layer.IDENTIFIER_MOD.test(this.name)) {
+					if(ts.tileProperties[baseGID] && ts.tileProperties[baseGID].modType) {
+						this.setModType(this.indexToCoords(a).x, this.indexToCoords(a).y, parseInt(ts.tileProperties[baseGID].modType), ts.tileProperties[baseGID]);
+					}
 				}
 			}
 		}
@@ -222,4 +234,27 @@ Layer.prototype.placeTile = function(tileX, tileY, imageKey, cropping) {
 			oldTile.remove();
 		}
 	}
+};
+
+/*
+	method: setModType(tileX, tileY, modType, modSrc)
+	Marks these coordinates as a tile modifier
+*/
+Layer.prototype.setModType = function(tileX, tileY, modType, modSrc) {
+	var index = this.coordsToIndex(tileX, tileY);
+	var modObj = {
+		type: modType
+	};
+	this.tileMods.splice(index, 1, modObj);
+};
+
+/*
+	method: getTile(tileX, tileY)
+	Returns the tile object in the specified coordinates in the layer
+*/
+Layer.prototype.getTile = function(tileX, tileY) {
+	if(this.type === Layer.TILE_LAYER) {
+		return this.tiles[this.coordsToIndex(tileX, tileY)];
+	}
+	return null;
 };

@@ -18,6 +18,10 @@ Background.prototype = Object.create(Phaser.TileSprite.prototype);
 Background.prototype.constructor = Background;
 
 Background.prototype.update = function() {
+	if(this.state.cam) {
+		this.x = this.state.cam.x;
+		this.y = this.state.cam.y;
+	}
 	this.tilePosition.x = (game.camera.x * this.parallax.x);
 	this.tilePosition.y = (game.camera.y * this.parallax.y);
 };
