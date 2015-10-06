@@ -15,6 +15,28 @@ var menuState = {
 		this.background = new Background("bgMainMenu");
 
 		this.setupMainMenu();
+
+		// Enable control
+		this.keyboard = {
+			k: game.input.keyboard.addKey(Phaser.Keyboard.K)
+		};
+		game.input.enabled = true;
+
+		// CHEAT: Unlock all levels
+		this.keyboard.k.onDown.add(function() {
+			if(this.keyboard.k.ctrlKey && this.keyboard.k.shiftKey) {
+				console.log("CHEATER!");
+				var a, b, cat;
+				for(a in game.saveFile) {
+					cat = game.saveFile[a];
+					for(b = 0;b < 50;b++) {
+						if(cat.indexOf(b) === -1) {
+							cat.push(b);
+						}
+					}
+				}
+			}
+		}, this);
 	},
 
 	setupMainMenu: function() {

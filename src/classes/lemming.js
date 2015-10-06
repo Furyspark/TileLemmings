@@ -448,7 +448,7 @@ Lemming.prototype.update = function() {
 			if (game.tiles.solidTileTypes.indexOf(ceilTileType) !== -1) {
 				this.velocity.y = 0;
 				this.x -= (1 * this.dir);
-				this.y = (this.tile.y(this.y + ceilCheckDepth) * GameData.tile.height) + 1;
+				this.y = (((this.y + ceilCheckDepth) / GameData.tile.height) * GameData.tile.height) + 1;
 				this.clearAction();
 				this.turnAround();
 			}

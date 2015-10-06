@@ -18,9 +18,9 @@ var GameData = {
 		"exploder": {},
 		"blocker": {},
 		"builder": {},
-		"digger": {},
+		"basher": {},
 		"miner": {},
-		"basher": {}
+		"digger": {}
 	}
 };
 

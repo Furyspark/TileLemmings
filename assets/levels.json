@@ -44,6 +44,10 @@
 				{
 					"filename": "level10.json",
 					"name": "El Oh El"
+				},
+				{
+					"filename": "level11.json",
+					"name": "Single Passage"
 				}
 			]
 		},
