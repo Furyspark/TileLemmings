@@ -315,7 +315,7 @@ Lemming.prototype.update = function() {
 		// Walk
 		if (this.onFloor() && this.action.idle) {
 			// Fall death
-			if (this.fallDist >= this.level.properties.fallDist) {
+			if (this.fallDist >= this.level.fallDist) {
 				this.die(Lemming.DEATHTYPE_FALL);
 			} else {
 				this.fallDist = 0;
