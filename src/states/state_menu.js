@@ -13,6 +13,7 @@ var menuState = {
 
 	create: function() {
 		this.background = new Background("bgMainMenu");
+		game.world.add(this.background);
 
 		this.setupMainMenu();
 

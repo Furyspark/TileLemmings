@@ -21,6 +21,9 @@ var intermissionState = {
 
 	create: function() {
 		this.drawGroup = game.add.group();
+		// Add background
+		this.background = new Background("bgMainMenu");
+		this.drawGroup.add(this.background);
 		// Init map
 		var cb = function() {
 			this.start();
@@ -30,10 +33,6 @@ var intermissionState = {
 	},
 
 	start: function() {
-		// Add background
-		this.background = new Background("bgMainMenu");
-		this.drawGroup.add(this.background);
-
 		this.createScreen();
 
 		// Add user input

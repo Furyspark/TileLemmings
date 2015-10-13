@@ -1,7 +1,5 @@
-var Background = function(imageKey, initGroup) {
-	if(initGroup === undefined) { initGroup = game.world; }
+var Background = function(imageKey) {
 	Phaser.TileSprite.call(this, game, 0, 0, 800, 600, imageKey);
-	initGroup.add(this);
 	Object.defineProperty(this, "state", {get() {
 		return game.state.getCurrentState();
 	}});

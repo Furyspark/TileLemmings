@@ -248,6 +248,7 @@ Level.prototype.zOrder = function() {
 */
 Level.prototype.createBackground = function() {
 	this.bg = new Background("bg", this);
+	this.add(this.bg);
 };
 
 /*
