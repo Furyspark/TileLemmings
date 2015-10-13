@@ -289,13 +289,19 @@ var gameState = {
 		}
 	},
 
-	clearState: function() {
+	clearState: function(destroyLevel) {
 		// Remove all GUI objects
 		this.guiGroup.destroy();
 		
 		// Destroy level
-		this.level.clearAssets();
-		this.level.destroy();
+		if(destroyLevel) {
+			this.level.clearAssets();
+			this.level.clearLevel();
+			this.level.destroy();
+		}
+		else {
+			game.world.remove(this.level);
+		}
 
 		// Destroy alarms
 		GameManager.alarms.clear();
@@ -310,7 +316,7 @@ var gameState = {
 
 	goToNextLevel: function() {
 		// Clear state
-		this.clearState();
+		this.clearState(true);
 		// Get current level
 		var levelIndex = this.getLevelIndex();
 		this.saveGame(levelIndex);
@@ -323,8 +329,8 @@ var gameState = {
 	},
 
 	retryLevel: function() {
-		this.clearState();
-		game.state.start("intermission", true, false, this.levelFolder, this.levelObj);
+		this.clearState(true);
+		game.state.start("intermission", true, false, this.levelFolder, this.levelObj, this.level);
 	},
 
 	getLevelIndex: function() {

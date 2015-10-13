@@ -74,16 +74,11 @@ Tile.prototype.update = function() {
 	Called by a timer to animate
 */
 Tile.prototype.animate = function() {
+	if(!this.parent) {
+		console.log("NULL PARENT");
+	}
 	this.animation.frame = (this.animation.frame + 1) % this.animation.croppings.length;
-	this.crop(this.animation.croppings[this.animation.frame], true);
-};
-
-/*
-	method: remove
-	Removes this tile
-*/
-Tile.prototype.remove = function() {
-	this.markedForRemoval = true;
+	this.crop(this.animation.croppings[this.animation.frame]);
 };
 
 /*

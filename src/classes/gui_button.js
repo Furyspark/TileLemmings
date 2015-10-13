@@ -92,7 +92,7 @@ GUI_Button.prototype.update = function() {
 	// this.label.reposition();
 	// Update double tap time
 	if(this.doubleTap.enabled && this.doubleTap.time > 0) {
-		this.doubleTap.time = Math.max(0, this.doubleTap.time - GameManager.speedManager.effectiveSpeed);
+		this.doubleTap.time = Math.max(0, this.doubleTap.time - (1 / GameManager.speedManager.effectiveSpeed));
 	}
 };
 

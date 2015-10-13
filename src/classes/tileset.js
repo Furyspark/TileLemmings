@@ -130,6 +130,4 @@ Tileset.prototype.processTileset = function() {
 		this.level.expectedAssets.push(this.imageKey);
 		game.load.image(this.imageKey, this.tempUrl + this.rawData.image);
 	}
-
-	game.cache.removeJSON(this.key);
 };

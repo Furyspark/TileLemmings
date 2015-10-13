@@ -10,9 +10,12 @@ var intermissionState = {
 	level: null,
 	minimap: null,
 
-	init: function(levelFolder, levelObj) {
+	init: function(levelFolder, levelObj, level) {
 		this.levelFolder = levelFolder;
 		this.levelObj = levelObj;
+		if(level !== undefined) {
+			this.level = level;
+		}
 	},
 
 	preload: function() {
@@ -51,6 +54,9 @@ var intermissionState = {
 			released: "btnGray_Up.png"
 		}, function() {
 			this.clearState();
+			this.level.clearAssets();
+			this.level.clearLevel();
+			this.level.destroy();
 			game.state.start("menu", true, false);
 		}, this);
 		btn.resize(60, 24);
@@ -102,6 +108,8 @@ var intermissionState = {
 		}
 		// Destroy background
 		this.background.destroy();
+
+		this.drawGroup.destroy();
 	},
 
 	createScreen: function() {

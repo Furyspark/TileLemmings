@@ -64,7 +64,7 @@ var Level = function(src, onLoad, onLoadContext, levelFolder, levelObj) {
 		callback: onLoad,
 		context: onLoadContext
 	};
-	this.tilesets = [null];
+	this.tilesets = [];
 
 	// Keep track of assets
 	this.expectedAssets = [];
@@ -298,12 +298,14 @@ Level.prototype.removeTile = function(tileX, tileY, force) {
 	Clears the assets used (exclusively) in this level to free memory
 */
 Level.prototype.clearAssets = function() {
+	// Clear base assets
 	if(game.cache.checkSoundKey("bgm")) {
 		game.cache.removeSound("bgm");
 	}
 	if(game.cache.checkImageKey("bg")) {
 		game.cache.removeImage("bg", true);
 	}
+	// Clear tilesets
 	var ts;
 	while(this.tilesets.length > 0) {
 		ts = this.tilesets.splice(0, 1);
@@ -312,6 +314,25 @@ Level.prototype.clearAssets = function() {
 		}
 		if(game.cache.checkImageKey(ts.imageKey)) {
 			game.cache.removeImage(ts.imageKey, true);
+		}
+	}
+};
+
+/*
+	method: clearLevel
+	Clears the level of its objects
+*/
+Level.prototype.clearLevel = function() {
+	var a, tile, layer;
+	// Destroy layers
+	for(a in this.rawLayers) {
+		layer = this.rawLayers[a];
+		// Destroy tiles
+		while(layer.tiles.length > 0) {
+			tile = layer.tiles.splice(0, 1)[0];
+			if(tile) {
+				tile.destroy();
+			}
 		}
 	}
 };
