@@ -334,5 +334,7 @@ Level.prototype.clearLevel = function() {
 				tile.destroy();
 			}
 		}
+		layer.destroy();
 	}
+	this.rawLayers = {};
 };

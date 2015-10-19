@@ -214,7 +214,7 @@ Layer.prototype.removeTile = function(tileX, tileY) {
 	if(index >= 0 && index < this.tiles.length) {
 		var tile = this.tiles.splice(index, 1, null)[0];
 		if(tile) {
-			tile.remove();
+			tile.destroy();
 		}
 	}
 };
@@ -231,7 +231,7 @@ Layer.prototype.placeTile = function(tileX, tileY, imageKey, cropping) {
 		this.add(tile);
 		var oldTile = this.tiles.splice(index, 1, tile)[0];
 		if(oldTile) {
-			oldTile.remove();
+			oldTile.destroy();
 		}
 	}
 };

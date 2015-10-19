@@ -296,7 +296,6 @@ var gameState = {
 		// Destroy level
 		if(destroyLevel) {
 			this.level.clearAssets();
-			this.level.clearLevel();
 			this.level.destroy();
 		}
 		else {
