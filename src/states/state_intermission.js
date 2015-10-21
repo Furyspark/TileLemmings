@@ -55,6 +55,7 @@ var intermissionState = {
 		}, function() {
 			this.clearState();
 			this.level.clearAssets();
+			GameManager.alarms.clear();
 			this.level.destroy();
 			game.state.start("menu", true, false);
 		}, this);

@@ -50,7 +50,7 @@ Tile.MOD_NO_DIG_LEFT = 2;
 
 /*
 	method: update
-	Called every farme
+	Called every frame
 */
 Tile.prototype.update = function() {
 	var a, mod;
@@ -68,14 +68,15 @@ Tile.prototype.update = function() {
 	}
 };
 
+Tile.prototype.remove = function() {
+	this.markedForRemoval = true;
+};
+
 /*
 	method: animate
 	Called by a timer to animate
 */
 Tile.prototype.animate = function() {
-	if(!this.parent) {
-		console.log("NULL PARENT");
-	}
 	this.animation.frame = (this.animation.frame + 1) % this.animation.croppings.length;
 	this.crop(this.animation.croppings[this.animation.frame]);
 };

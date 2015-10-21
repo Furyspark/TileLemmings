@@ -9,7 +9,7 @@ var Background = function(imageKey) {
 		x: 0.2,
 		y: 0.2
 	};
-	this.tileScale.setTo(2);
+	this.tileScale.setTo(1);
 };
 
 Background.prototype = Object.create(Phaser.TileSprite.prototype);
