@@ -107,11 +107,11 @@ var Lemming = function(game, x, y) {
 	});
 
 	// Set animations
-	this.addAnim("fall", "Fall", 16, {
+	this.addAnim("fall", "Fall", 4, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("move", "Walk", 16, {
+	this.addAnim("move", "Move", 10, {
 		x: 0,
 		y: 0
 	});
@@ -123,15 +123,15 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("build_end", "BuildEnd", 24, {
+	this.addAnim("build_end", "BuildEnd", 10, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("bash", "Bash", 24, {
+	this.addAnim("bash", "Bash", 32, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("dig", "Dig", 16, {
+	this.addAnim("dig", "Dig", 8, {
 		x: 0,
 		y: 4
 	});
@@ -143,7 +143,7 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("explode", "Explode", 24, {
+	this.addAnim("explode", "Explode", 16, {
 		x: 0,
 		y: 0
 	}, false);
@@ -151,27 +151,27 @@ var Lemming = function(game, x, y) {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("float", "Float", 16, {
+	this.addAnim("float", "Float", 4, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("float_start", "Float_Start", 16, {
+	this.addAnim("float_start", "Float_Start", 4, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("climb", "Climb", 16, {
+	this.addAnim("climb", "Climb", 8, {
 		x: 0,
 		y: 0
 	});
-	this.addAnim("climb_end", "Climb_End", 12, {
+	this.addAnim("climb_end", "Climb_End", 8, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("drown", "Drown", 24, {
+	this.addAnim("drown", "Drown", 16, {
 		x: 0,
 		y: 0
 	}, false);
-	this.addAnim("burn", "Burn", 8, {
+	this.addAnim("burn", "Burn", 13, {
 		x: 0,
 		y: 0
 	}, false);
@@ -545,9 +545,6 @@ Lemming.prototype.addAnim = function(key, animName, numFrames, offsets, loop) {
 	var a, frames = [], anim, numberStr;
 	for (a = 0; a < numFrames; a += 1) {
 		numberStr = a.toString();
-		while(numberStr.length < 3) {
-			numberStr = "0" + numberStr;
-		}
 		anim = "sprLemming_" + animName + "_" + numberStr + ".png";
 		frames.push(anim);
 	}
