@@ -105,6 +105,10 @@
 				{
 					"filename": "level1.json",
 					"name": "It takes two"
+				},
+				{
+					"filename": "level2.json",
+					"name": "Melt Them Down!"
 				}
 			]
 		}
