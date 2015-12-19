@@ -4,33 +4,27 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 
-		watch: {
-			all: {
-				files: "./src/**",
-				options: {
-					livereload: true,
-					interval: 1500
-				},
-				tasks: ["default"]
+		shell: {
+			run: {
+				command: "electron ."
 			}
 		},
 
 		concat: {
-			options: {
-				banner: "(function(Phaser) {\n",
-				separator: "\n",
-				footer: "\n})(Phaser);"
-			},
-			dist: {
+			test: {
+				options: {
+					banner: "(function(Phaser, io) {\n",
+					separator: "\n",
+					footer: "\n})(Phaser, io);"
+				},
 				src: sources,
-				dest: "dist/<%= pkg.name %>.js"
+				dest: "game.js"
 			}
 		}
 	});
 
-	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-contrib-concat");
+	grunt.loadNpmTasks("grunt-shell");
 
-	grunt.registerTask("default", ["concat"]);
-	grunt.registerTask("devwatch", ["concat", "watch"]);
+	grunt.registerTask("test", ["concat:test", "shell:run"]);
 };

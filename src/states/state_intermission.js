@@ -9,17 +9,31 @@ var intermissionState = {
 
 	level: null,
 	minimap: null,
+	luckofthedraw: false,
 
 	init: function(levelFolder, levelObj, level) {
-		this.levelFolder = levelFolder;
-		this.levelObj = levelObj;
+		if(levelFolder === "luckofthedraw") {
+			this.luckofthedraw = true;
+			this.levelFolder = "";
+			this.levelObj = levelObj;
+		}
+		else if(!levelFolder) {
+			this.luckofthedraw = true;
+		}
+		else {
+			this.luckofthedraw = false;
+			this.levelFolder = levelFolder;
+			this.levelObj = levelObj;
+		}
 		if(level !== undefined) {
 			this.level = level;
 		}
 	},
 
 	preload: function() {
-		game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
+		if(!this.luckofthedraw) {
+			game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
+		}
 	},
 
 	create: function() {
@@ -31,7 +45,12 @@ var intermissionState = {
 		var cb = function() {
 			this.start();
 		};
-		this.level = new Level(game.cache.getJSON("level"), cb, this, this.levelFolder, this.levelObj);
+		if(!this.luckofthedraw) {
+			this.level = new Level(game.cache.getJSON("level"), cb, this, this.levelFolder, this.levelObj);
+		}
+		else {
+			this.level = new Level(this.levelObj, cb, this);
+		}
 		game.world.bringToTop(this.drawGroup);
 	},
 
@@ -70,7 +89,12 @@ var intermissionState = {
 
 	startLevel: function() {
 		this.clearState();
-		game.state.start("game", false, false, this.levelFolder, this.levelObj, this.level);
+		if(!this.luckofthedraw) {
+			game.state.start("game", false, false, this.levelFolder, this.levelObj, this.level);
+		}
+		else {
+			game.state.start("game", false, false, null, null, this.level);
+		}
 	},
 
 	mouseOverGUI: function() {

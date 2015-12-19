@@ -21,5 +21,6 @@
 	"./src/states/state_intermission.js",
 	"./src/states/state_game.js",
 	"./src/game.js",
+	"./src/luckofthedraw.js",
 	"./src/gamemanager.js"
 ]

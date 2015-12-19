@@ -74,10 +74,22 @@ var menuState = {
 					index: a
 				}
 			};
-			btn.resize(160, 60);
+			btn.resize(btnProps.width, btnProps.height);
 			btn.label.text = btn.params.difficulty.name;
 			this.guiGroup.push(btn);
 		}
+
+		// Create Luck of the Draw button
+		var btn = new GUI_MainMenuButton(game, btnProps.basePos.x, btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * 2), "mainmenu");
+		btn.set({
+			pressed: "btnGray_Down.png",
+			released: "btnGray_Up.png"
+		}, function() {
+			startLuckOfTheDraw();
+		}, btn);
+		btn.resize(btnProps.width, btnProps.height);
+		btn.label.text = "Luck of the Draw";
+		this.guiGroup.push(btn);
 
 		// Create options button
 		var placePos = {x: 40, y: 320};

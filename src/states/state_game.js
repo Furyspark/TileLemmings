@@ -11,6 +11,7 @@ var gameState = {
 	},
 
 	guiGroup: null,
+	luckofthedraw: false,
 
 	grid: {
 		enabled: false,
@@ -18,8 +19,14 @@ var gameState = {
 	},
 
 	init: function(levelFolder, levelObj, level) {
-		this.levelFolder = levelFolder;
-		this.levelObj = levelObj;
+		this.levelFolder = "";
+		this.levelObj = null;
+		this.luckofthedraw = true;
+		if(levelFolder && levelObj) {
+			this.levelFolder = levelFolder;
+			this.levelObj = levelObj;
+			this.luckofthedraw = false;
+		}
 		this.level = level;
 
 		this.nukeStarted = false;
@@ -37,6 +44,10 @@ var gameState = {
 		this.cam = new Camera(game, this);
 
 		this.startLevel();
+	},
+
+	isRandomLevel: function() {
+		return this.luckofthedraw;
 	},
 
 	enableUserInteraction: function() {
@@ -317,19 +328,29 @@ var gameState = {
 		// Clear state
 		this.clearState(true);
 		// Get current level
-		var levelIndex = this.getLevelIndex();
-		this.saveGame(levelIndex);
-		if (this.levelFolder.levels.length > levelIndex + 1) {
-			var newLevel = this.levelFolder.levels[levelIndex + 1];
-			game.state.start("intermission", true, false, this.levelFolder, newLevel);
-		} else {
+		if(this.isRandomLevel()) {
 			game.state.start("menu");
+		}
+		else {
+			var levelIndex = this.getLevelIndex();
+			this.saveGame(levelIndex);
+			if (this.levelFolder.levels.length > levelIndex + 1) {
+				var newLevel = this.levelFolder.levels[levelIndex + 1];
+				game.state.start("intermission", true, false, this.levelFolder, newLevel);
+			} else {
+				game.state.start("menu");
+			}
 		}
 	},
 
 	retryLevel: function() {
 		this.clearState(true);
-		game.state.start("intermission", true, false, this.levelFolder, this.levelObj, this.level);
+		if(this.isRandomLevel()) {
+			game.state.start("intermission", true, false, null, null, this.level);
+		}
+		else {
+			game.state.start("intermission", true, false, this.levelFolder, this.levelObj, this.level);
+		}
 	},
 
 	getLevelIndex: function() {

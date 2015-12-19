@@ -10,10 +10,25 @@ var Level = function(src, onLoad, onLoadContext, levelFolder, levelObj) {
 	this.baseHeight = 1;
 	this.fallDist = (9 * GameData.tile.height);
 
-	this.levelFolder = levelFolder;
-	this.levelObj = levelObj;
-	this.baseUrl = this.levelFolder.baseUrl;
-	this.name = this.levelObj.name;
+	this.levelFolder = "";
+	this.levelObj = null;
+	this.baseUrl = "assets/levels/mayhem/";
+	this.singleLevel = true;
+	if(levelFolder) {
+		this.levelFolder = levelFolder;
+		this.levelObj = levelObj;
+		this.baseUrl = this.levelFolder.baseUrl;
+		this.singleLevel = false;
+		this.name = this.levelObj.name;
+	}
+	else {
+		if(src.properties.name) {
+			this.name = src.properties.name;
+		}
+		else {
+			this.name = "Nameless level";
+		}
+	}
 	this.tileLayer = null;
 	this.objectLayer = null;
 	this.bg = null;
