@@ -1,5 +1,6 @@
 [
 	"./src/gamedata.js",
+	"./src/states.js",
 	"./src/classes/camera.js",
 	"./src/classes/alarm.js",
 	"./src/classes/gui.js",

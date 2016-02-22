@@ -5,8 +5,11 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 
 		shell: {
-			run: {
+			electron: {
 				command: "electron ."
+			},
+			nw: {
+				command: "nw ."
 			}
 		},
 
@@ -26,5 +29,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-shell");
 
-	grunt.registerTask("test", ["concat:test", "shell:run"]);
+	grunt.registerTask("test", ["concat:test", "shell:nw"]);
 };

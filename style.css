@@ -1,0 +1,9 @@
+body {
+  background-color: #343434;
+  margin: 0;
+}
+
+#content {
+  position: relative;
+  margin: 0 auto;
+}
