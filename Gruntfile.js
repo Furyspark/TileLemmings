@@ -5,21 +5,18 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 
 		shell: {
-			electron: {
-				command: "electron ."
-			},
-			nw: {
-				command: "nw ."
-			}
-		},
+      electron: {
+        command: "electron ."
+      }
+    },
 
 		concat: {
-			test: {
-				options: {
-					banner: "(function(Phaser, io) {\n",
-					separator: "\n",
-					footer: "\n})(Phaser, io);"
-				},
+			options: {
+				banner: "(function(Phaser) {\n",
+				separator: "\n",
+				footer: "\n})(Phaser);"
+			},
+			dist: {
 				src: sources,
 				dest: "game.js"
 			}
@@ -29,5 +26,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-shell");
 
-	grunt.registerTask("test", ["concat:test", "shell:nw"]);
+	grunt.registerTask("test", ["concat"]);
 };

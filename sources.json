@@ -1,6 +1,5 @@
 [
 	"./src/gamedata.js",
-	"./src/states.js",
 	"./src/classes/camera.js",
 	"./src/classes/alarm.js",
 	"./src/classes/gui.js",
@@ -22,6 +21,5 @@
 	"./src/states/state_intermission.js",
 	"./src/states/state_game.js",
 	"./src/game.js",
-	"./src/luckofthedraw.js",
 	"./src/gamemanager.js"
 ]

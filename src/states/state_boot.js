@@ -1,135 +1,131 @@
-var state = new Phaser.State();
-$States.addState("boot", state);
+var bootState = {
+	loadFunction: null,
+	loadSignalAdded: false,
 
-state.loadFunction = null;
-state.loadSignalAdded = false;
+	create: function() {
+		var resizeFunction = function() {
+			this.scaleMode = Phaser.ScaleManager.USER_SCALE;
+			var scaleFactor = Math.min(window.innerWidth / game.width, window.innerHeight / game.height);
+			this.setUserScale(scaleFactor, scaleFactor, 0, 0);
+		};
+		game.scale.setResizeCallback(resizeFunction, game.scale);
+		resizeFunction.call(game.scale);
+		// Disable context menu (right-click menu for browsers)
+		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
+		// Load game
+		this.loadGame();
 
-state.create = function() {
-	var resizeFunction = function() {
-		this.scaleMode = Phaser.ScaleManager.USER_SCALE;
-		var scaleFactor = Math.min(window.innerWidth / game.width, window.innerHeight / game.height);
-		this.setUserScale(scaleFactor, scaleFactor, 0, 0);
-		game.scale.pageAlignHorizontally = true;
-		game.scale.pageAlignVertically = true;
-	};
-	game.scale.setResizeCallback(resizeFunction, game.scale);
-	resizeFunction.call(game.scale);
-	// Disable context menu (right-click menu for browsers)
-	// game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
-
-	// Load game
-	this.loadGame();
-
-	// Initialize global game properties
-	game.tiles = {
-		solidTileTypes: [1, 2]
-	}
-
-	// Load asset list
-	this.loadAssetList("./assets/asset_list.json");
-};
-
-state.loadAssetList = function(assetListFilename) {
-	// Load asset list
-	game.load.json("assetList", assetListFilename);
-
-
-	this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
-		if(progress === undefined) {
-			progress = -1;
+		// Initialize global game properties
+		game.tiles = {
+			solidTileTypes: [1, 2]
 		}
 
-		if(progress >= 0 && totalLoadedFiles >= totalFiles) {
-			game.load.onFileComplete.remove(this.loadFunction, this);
-			this.loadFunction = null;
-			this.loadSignalAdded = false;
-			this.loadAssets();
+		// Load asset list
+		this.loadAssetList("./assets/asset_list.json");
+	},
+
+	loadAssetList: function(assetListFilename) {
+		// Load asset list
+		game.load.json("assetList", assetListFilename);
+
+
+		this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+			if(progress === undefined) {
+				progress = -1;
+			}
+
+			if(progress >= 0 && totalLoadedFiles >= totalFiles) {
+				game.load.onFileComplete.remove(this.loadFunction, this);
+				this.loadFunction = null;
+				this.loadSignalAdded = false;
+				this.loadAssets();
+			}
+			else if(!this.loadSignalAdded) {
+				this.loadSignalAdded = true;
+				game.load.onFileComplete.add(this.loadFunction, this);
+			}
 		}
-		else if(!this.loadSignalAdded) {
-			this.loadSignalAdded = true;
-			game.load.onFileComplete.add(this.loadFunction, this);
-		}
-	}
-	this.loadFunction();
-	game.load.start();
-};
+		this.loadFunction();
+		game.load.start();
+	},
 
-state.loadAssets = function() {
-	var assetList = game.cache.getJSON("assetList");
+	loadAssets: function() {
+		var assetList = game.cache.getJSON("assetList");
 
-	// Load sprites
-	var a, curAsset, curList = assetList.sprites;
-	for(a in curList) {
-		curAsset = curList[a];
-		game.load.spritesheet(curAsset.key, curAsset.url, curAsset.frameWidth, curAsset.frameHeight);
-	}
-
-	// Load sprite atlases
-	curList = assetList.sprite_atlases;
-	for(a in curList) {
-		curAsset = curList[a];
-		game.load.atlasJSONArray(curAsset.key, curAsset.url, curAsset.atlasUrl);
-	}
-
-	// Load images
-	curList = assetList.images;
-	for(a in curList) {
-		curAsset = curList[a];
-		game.load.image(curAsset.key, curAsset.url);
-	}
-
-	// Load sounds
-	curList = assetList.sounds;
-	for(a in curList) {
-		curAsset = curList[a];
-		game.load.audio(curAsset.key, curAsset.url);
-	}
-
-	// Load tilemaps
-	curList = assetList.tilemaps;
-	for(a in curList) {
-		curAsset = curList[a];
-		game.load.tilemap(curAsset.key, curAsset.url, null, Phaser.Tilemap.TILED_JSON);
-	}
-
-	// Load JSON
-	curList = assetList.json;
-	for(a in curList) {
-		curAsset = curList[a];
-		game.load.json(curAsset.key, curAsset.url);
-	}
-
-	// Add callback for Finish Loading
-	this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
-		if(progress === undefined) {
-			progress = -1;
+		// Load sprites
+		var a, curAsset, curList = assetList.sprites;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.spritesheet(curAsset.key, curAsset.url, curAsset.frameWidth, curAsset.frameHeight);
 		}
 
-		if(progress >= 0 && totalLoadedFiles >= totalFiles) {
-			game.load.onFileComplete.remove(this.loadFunction, this);
-			this.loadFunction = null;
-			this.loadSignalAdded = false;
-			game.state.start("menu");
+		// Load sprite atlases
+		curList = assetList.sprite_atlases;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.atlasJSONArray(curAsset.key, curAsset.url, curAsset.atlasUrl);
 		}
-		else if(!this.loadSignalAdded) {
-			this.loadSignalAdded = true;
-			game.load.onFileComplete.add(this.loadFunction, this);
+
+		// Load images
+		curList = assetList.images;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.image(curAsset.key, curAsset.url);
 		}
-	}
-	this.loadFunction();
-};
 
-state.loadGame = function() {
-	// Load progress
-	var rawSave = localStorage["tilelemmings.profiles.default.progress"];
-	if(rawSave) {
-		game.saveFile = JSON.parse(rawSave);
-	}
-	else {
-		game.saveFile = {};
-	}
+		// Load sounds
+		curList = assetList.sounds;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.audio(curAsset.key, curAsset.url);
+		}
 
-	// Load settings
-	GameManager.loadSettings();
+		// Load tilemaps
+		curList = assetList.tilemaps;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.tilemap(curAsset.key, curAsset.url, null, Phaser.Tilemap.TILED_JSON);
+		}
+
+		// Load JSON
+		curList = assetList.json;
+		for(a in curList) {
+			curAsset = curList[a];
+			game.load.json(curAsset.key, curAsset.url);
+		}
+
+		// Add callback for Finish Loading
+		this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+			if(progress === undefined) {
+				progress = -1;
+			}
+
+			if(progress >= 0 && totalLoadedFiles >= totalFiles) {
+				game.load.onFileComplete.remove(this.loadFunction, this);
+				this.loadFunction = null;
+				this.loadSignalAdded = false;
+				game.state.start("menu");
+			}
+			else if(!this.loadSignalAdded) {
+				this.loadSignalAdded = true;
+				game.load.onFileComplete.add(this.loadFunction, this);
+			}
+		}
+		this.loadFunction();
+	}, 
+
+	loadGame: function() {
+		// Load progress
+		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
+		if(rawSave) {
+			game.saveFile = JSON.parse(rawSave);
+		}
+		else {
+			game.saveFile = {};
+		}
+
+		// Load settings
+		GameManager.loadSettings();
+	}
 };
