@@ -1,4 +1,3 @@
-(function(Phaser) {
 "use strict";
 
 var GameData = {
@@ -39,7 +38,6 @@ GameData.tile.climbableWallTiles = [
 	GameData.tile.type.TILE,
 	GameData.tile.type.STEEL
 ];
-
 var Camera = function(game) {
 	this.scrolling = false;
 	Object.defineProperty(this, "gameCamera", {get() {
@@ -107,7 +105,6 @@ Camera.prototype.move = function(hor, ver, relative) {
 	// 	grid.tilePosition.y = -this.y;
 	// }
 };
-
 var Alarm = function(duration, callback, callbackContext, recurring) {
 	if(recurring === undefined) {
 		recurring = false;
@@ -153,7 +150,6 @@ Alarm.prototype.cancel = function() {
 Alarm.prototype.fire = function() {
 	this.callback.call(this.callbackContext);
 };
-
 var GUI = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
@@ -167,8 +163,7 @@ var GUI = function(game, x, y) {
 };
 
 GUI.prototype = Object.create(Phaser.Sprite.prototype);
-GUI.prototype.constructor = GUI;
-var GUI_Button = function(game, x, y) {
+GUI.prototype.constructor = GUI;var GUI_Button = function(game, x, y) {
 	GUI.call(this, game, x, y);
 
 	// Load base texture
@@ -331,7 +326,6 @@ GUI_Button.prototype.remove = function() {
 	this.label.destroy();
 	this.destroy();
 };
-
 var GUI_MainMenuButton = function(game, x, y, imageKey) {
 	GUI.call(this, game, x, y);
 
@@ -458,7 +452,6 @@ GUI_MainMenuButton.prototype.remove = function() {
 	this.label.destroy();
 	this.destroy();
 };
-
 var GUI_Slider = function(game, x, y, width, imageKey, linkedVar) {
 	GUI.call(this, game, x, y);
 
@@ -543,8 +536,7 @@ GUI_Slider.prototype.remove = function() {
 	this.bar.pendingDestroy = true;
 	this.label.pendingDestroy = true;
 	this.pendingDestroy = true;
-};
-var GUI_Minimap = function(level) {
+};var GUI_Minimap = function(level) {
 	Phaser.Group.call(this, game);
 	game.add.existing(this);
 
@@ -762,7 +754,6 @@ GUI_Minimap.prototype.adjustZOrder = function() {
 		this.bringToTop(this.viewFrame);
 	}
 };
-
 var Cursor = function(x, y, owner) {
 	Phaser.Sprite.call(this, game, x, y, "misc");
 	game.add.existing(this);
@@ -801,7 +792,6 @@ Cursor.prototype.reposition = function() {
 Cursor.prototype.remove = function() {
 	this.pendingDestroy = true;
 };
-
 var GameLabel = function(owner, x, y, offsetObj, defaultText) {
 	defaultText = defaultText || "";
 	this.owner = owner;
@@ -855,7 +845,6 @@ GameLabel.prototype.reposition = function() {
 	this.y = this.owner.y + this.offset.y;
 	this.setTextBounds(-(this.width * 0.5), -(this.height), this.width, this.height);
 };
-
 var Background = function(imageKey) {
 	Phaser.TileSprite.call(this, game, 0, 0, 800, 600, imageKey);
 	Object.defineProperty(this, "state", {get() {
@@ -881,7 +870,6 @@ Background.prototype.update = function() {
 	this.tilePosition.x = (game.camera.x * this.parallax.x);
 	this.tilePosition.y = (game.camera.y * this.parallax.y);
 };
-
 var Level = function(src, onLoad, onLoadContext, levelFolder, levelObj) {
 	Phaser.Group.call(this, game);
 	game.world.add(this);
@@ -1222,7 +1210,6 @@ Level.prototype.clearLevel = function() {
 	}
 	this.rawLayers = {};
 };
-
 var Tileset = function(url, level, firstGID) {
 	this.rawData = null;
 	this.margin = 0;
@@ -1356,7 +1343,6 @@ Tileset.prototype.processTileset = function() {
 		game.load.image(this.imageKey, this.tempUrl + this.rawData.image);
 	}
 };
-
 var Layer = function(src, level) {
 	Phaser.Group.call(this, game);
 
@@ -1617,7 +1603,6 @@ Layer.prototype.getTile = function(tileX, tileY) {
 	}
 	return null;
 };
-
 var Tile = function(x, y, key, animationCrop) {
 	Phaser.Image.call(this, game, x, y, key);
 
@@ -1718,7 +1703,6 @@ Tile.prototype.addMod = function(modSrc, tileRef) {
 	};
 	this.tileMods[modSrc.type] = modObj;
 };
-
 var Lemming = function(game, x, y) {
 	Phaser.Sprite.call(this, game, x, y, "lemming");
 	game.add.existing(this);
@@ -2732,7 +2716,6 @@ Lemming.prototype.die = function(deathType) {
 Lemming.prototype.remove = function() {
 	this.markedForRemoval = true;
 };
-
 var Prop = function(x, y, level) {
 	Phaser.Sprite.call(this, game, x, y);
 	game.add.existing(this);
@@ -2997,7 +2980,6 @@ Prop.prototype.setAsTrap = function(type) {
 		return false;
 	};
 };
-
 var bootState = {
 	loadFunction: null,
 	loadSignalAdded: false,
@@ -3128,8 +3110,7 @@ var bootState = {
 		// Load settings
 		GameManager.loadSettings();
 	}
-};
-var menuState = {
+};var menuState = {
 	background: null,
 	guiGroup: [],
 
@@ -3358,7 +3339,6 @@ var menuState = {
 		}
 	}
 };
-
 var intermissionState = {
 	background: null,
 	labels: [],
@@ -3504,7 +3484,6 @@ var intermissionState = {
 		this.drawGroup.add(txt);
 	}
 };
-
 var gameState = {
 	level: null,
 	zoom: 1,
@@ -4114,7 +4093,6 @@ var gameState = {
 		return false;
 	}
 };
-
 var game = new Phaser.Game(
 	800,
 	600,
@@ -4137,7 +4115,6 @@ game.state.add("intermission", intermissionState);
 game.state.add("game", gameState);
 
 game.state.start("boot");
-
 var GameManager = {
 	audio: {
 		volume: {
@@ -4300,5 +4277,3 @@ var GameManager = {
 		}
 	}
 };
-
-})(Phaser);
