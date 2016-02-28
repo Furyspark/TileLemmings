@@ -48,7 +48,11 @@
 				{
 					"filename": "level11.json",
 					"name": "Single Passage"
-				}
+				},
+        {
+          "filename": "level12.json",
+          "name": "Jungle Fever"
+        }
 			]
 		},
 		{
