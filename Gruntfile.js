@@ -4,16 +4,11 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 
-		watch: {
-			all: {
-				files: "./src/**",
-				options: {
-					livereload: true,
-					interval: 1500
-				},
-				tasks: ["default"]
-			}
-		},
+		shell: {
+      electron: {
+        command: "electron ."
+      }
+    },
 
 		concat: {
 			options: {
@@ -23,14 +18,13 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				src: sources,
-				dest: "dist/<%= pkg.name %>.js"
+				dest: "game.js"
 			}
 		}
 	});
 
-	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-contrib-concat");
+  grunt.loadNpmTasks("grunt-shell");
 
-	grunt.registerTask("default", ["concat"]);
-	grunt.registerTask("devwatch", ["concat", "watch"]);
+	grunt.registerTask("default", ["concat", "shell:electron"]);
 };
