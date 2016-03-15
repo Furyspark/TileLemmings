@@ -57,7 +57,7 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay) {
 			}
 		}
 	});
-	
+
 	// Set configuration
 	var doorConfig = game.cache.getJSON("config").props.doors[type];
 	this.loadTexture(doorConfig.atlas);
@@ -117,9 +117,9 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay) {
 		if(typeof recurring === "undefined") {
 			var recurring = true;
 		}
-		if(this.lemmings > 0) {
+		if(this.lemmings > 0 && this.state.lemmingPool) {
 			this.lemmings--;
-			var lem = new Lemming(game, this.x, this.y + 30);
+			var lem = this.state.lemmingPool.create(this.x, this.y + 30);
 			this.lemmingsGroup.add(lem);
 			if(recurring) {
 				var alarm = new Alarm(this.rate, this.spawnLemming, this);

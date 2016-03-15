@@ -37,6 +37,12 @@ var gameState = {
 		this.cam = new Camera(game, this);
 
 		this.startLevel();
+
+		this.initPools();
+	},
+
+	initPools: function() {
+		this.lemmingPool = new ObjectPool(Lemming, [], 200);
 	},
 
 	enableUserInteraction: function() {
@@ -292,7 +298,7 @@ var gameState = {
 	clearState: function(destroyLevel) {
 		// Remove all GUI objects
 		this.guiGroup.destroy();
-		
+
 		// Destroy level
 		if(destroyLevel) {
 			this.level.clearAssets();

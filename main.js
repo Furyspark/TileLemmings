@@ -1,5 +1,6 @@
-var app = require('app');  // Module to control application life.
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
+var electron = require("electron");
+var app = electron.app;  // Module to control application life.
+var BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -7,6 +8,7 @@ require('crash-reporter').start();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
 var mainWindow = null;
+var devTools = null;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -21,13 +23,17 @@ app.on('window-all-closed', function() {
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1400, height: 700});
+  mainWindow = new BrowserWindow({width: 800, height: 600, resizable: false, autoHideMenuBar: true});
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.setContentSize(800, 600);
 
   // Open the devtools.
-  mainWindow.openDevTools();
+  mainWindow.webContents.openDevTools();
+  mainWindow.webContents.on("devtools-opened", function() {
+    mainWindow.focus();
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

@@ -1,22 +1,55 @@
-var Lemming = function(game, x, y) {
-	Phaser.Sprite.call(this, game, x, y, "lemming");
+function Lemming() {
+	this.initialize.apply(this, arguments);
+};
+Lemming.prototype = Object.create(Phaser.Sprite.prototype);
+Lemming.prototype.constructor = Lemming;
+
+Object.defineProperties(Lemming.prototype, {
+	state: { get: function() { return game.state.getCurrentState(); } },
+	tileLayer: { get: function() { return this.level.tileLayer; } },
+	level: { get: function() { return GameManager.level; } }
+});
+
+Lemming.prototype.initialize = function() {
+	Phaser.Sprite.call(this, game, 0, 0, "lemming");
 	game.add.existing(this);
-	Object.defineProperty(this, "state", {
-		get() {
-			return game.state.getCurrentState();
-		}
-	});
 	GameManager.level.lemmingsGroup.add(this);
+	this.initMembers();
+	this.anchor.setTo(0.5, 0.5);
+	this.addAnimations();
+};
 
-	// Set game started state
-	GameManager.level.started = true;
+Lemming.prototype.spawn = function(x, y) {
+	this.x = x;
+	this.y = y;
+	this.exists = true;
+};
 
+Lemming.prototype.initMembers = function() {
 	// Set base stats
+	this.exists = false;
 	this.dead = false;
 	this.markedForRemoval = false;
 	this.active = true;
 	this.animationProperties = {};
+	this.initActions();
+	this.initAttributes();
+	this.gameLabel = null;
+	this.dir = 1;
+	this.velocity = {
+		x: 0,
+		y: 0
+	};
+	this.fallDist = 0;
+	this.bbox = new BBox(this);
+	this.objectType = "lemming";
+	this.cursor = {
+		selected: false,
+		sprite: null
+	};
+};
 
+Lemming.prototype.initActions = function() {
 	// Set up action
 	this.action = {
 		name: "",
@@ -31,8 +64,7 @@ var Lemming = function(game, x, y) {
 			return (!this.active);
 		},
 		alarm: null
-	}
-
+	};
 	// Set up sub action
 	this.subaction = {
 		name: "",
@@ -47,66 +79,17 @@ var Lemming = function(game, x, y) {
 			return (!this.active);
 		},
 		alarm: null
-	},
+	};
+};
 
-	// Set up attributes
+Lemming.prototype.initAttributes = function() {
 	this.attributes = {
 		floater: false,
 		climber: false
 	};
+};
 
-	this.gameLabel = null;
-
-	// Set anchor
-	this.anchor.setTo(0.5, 0.5);
-
-	this.dir = 1;
-	this.velocity = {
-		x: 0,
-		y: 0
-	};
-	this.fallDist = 0;
-	this.bbox = {
-		get spriteLeft() {
-			return this.owner.x - Math.abs(this.owner.offsetX);
-		},
-		get spriteTop() {
-			return this.owner.y - Math.abs(this.owner.offsetY);
-		},
-		get spriteRight() {
-			return this.owner.x + (Math.abs(this.owner.width) - Math.abs(this.owner.offsetX));
-		},
-		get spriteBottom() {
-			return this.owner.y + (Math.abs(this.owner.height) - Math.abs(this.owner.offsetY));
-		},
-		get left() {
-			return this.owner.x - 4;
-		},
-		get top() {
-			return this.owner.y - 16;
-		},
-		get right() {
-			return this.owner.x + 4;
-		},
-		get bottom() {
-			return this.owner.y;
-		},
-		owner: this
-	};
-	Object.defineProperties(this, {
-		"tileLayer": {
-			get() {
-				return this.level.tileLayer;
-			}
-		},
-		"level": {
-			get() {
-				return GameManager.level;
-			}
-		}
-	});
-
-	// Set animations
+Lemming.prototype.addAnimations = function() {
 	this.addAnim("fall", "Fall", 4, {
 		x: 0,
 		y: 0
@@ -184,13 +167,6 @@ var Lemming = function(game, x, y) {
 		this.clearAction();
 		this.x += (1 * this.dir);
 	}, this);
-
-	this.objectType = "lemming";
-
-	this.cursor = {
-		selected: false,
-		sprite: null
-	};
 };
 
 Lemming.DEATHTYPE_OUT_OF_ROOM = 0;
@@ -198,9 +174,6 @@ Lemming.DEATHTYPE_FALL = 1;
 Lemming.DEATHTYPE_DROWN = 2;
 Lemming.DEATHTYPE_BURN = 3;
 Lemming.DEATHTYPE_INSTANT = 4;
-
-Lemming.prototype = Object.create(Phaser.Sprite.prototype);
-Lemming.prototype.constructor = Lemming;
 
 Lemming.prototype.mouseOver = function() {
 	var cursor = this.state.getWorldCursor();
@@ -409,7 +382,7 @@ Lemming.prototype.update = function() {
 				this.tileLayer.getTileType(coords[0].x, coords[0].y) == GameData.tile.type.TILE ||
 				this.tileLayer.getTileType(coords[1].x, coords[1].y) == GameData.tile.type.TILE) {
 				alarm.cancel();
-			} 
+			}
 		}
 		// Fall
 		else if (!this.onFloor() && !(this.action.name === "climber" && !this.action.idle)) {

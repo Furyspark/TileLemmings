@@ -1,5 +1,7 @@
 [
+	"./src/core.js",
 	"./src/gamedata.js",
+	"./src/classes/objectpool.js",
 	"./src/classes/camera.js",
 	"./src/classes/alarm.js",
 	"./src/classes/gui.js",
@@ -10,6 +12,7 @@
 	"./src/classes/cursor.js",
 	"./src/classes/gamelabel.js",
 	"./src/classes/background.js",
+	"./src/classes/bbox.js",
 	"./src/classes/level.js",
 	"./src/classes/tileset.js",
 	"./src/classes/layer.js",

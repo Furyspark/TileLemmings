@@ -113,7 +113,7 @@ var bootState = {
 			}
 		}
 		this.loadFunction();
-	}, 
+	},
 
 	loadGame: function() {
 		// Load progress
