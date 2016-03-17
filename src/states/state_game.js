@@ -170,8 +170,9 @@ var gameState = {
 		// Proceed nuke
 		else {
 			var searchComplete = false;
-			for (var a = 0; a < this.level.lemmingsGroup.children.length && !searchComplete; a++) {
-				var lem = this.level.lemmingsGroup.children[a];
+      var lems = this.level.lemmings();
+			for (var a = 0; a < lems.length && !searchComplete; a++) {
+				var lem = lems[a];
 				if (lem.subaction.name !== "exploder") {
 					lem.setExploder();
 					searchComplete = true;
@@ -222,8 +223,9 @@ var gameState = {
 				}
 			}
 		};
-		for (var a = 0; a < this.level.lemmingsGroup.children.length; a++) {
-			var obj = this.level.lemmingsGroup.children[a];
+    var lems = this.level.lemmings();
+		for (var a = 0; a < lems.length; a++) {
+			var obj = lems[a];
 			obj.cursorDeselect();
 			if (obj.mouseOver()) {
 				lemmingSelect.data.push(obj);
@@ -282,7 +284,7 @@ var gameState = {
 					allDoorsEmpty = false;
 				}
 			}
-			if (allDoorsEmpty && this.level.lemmingsGroup.children.length === 0) {
+			if (allDoorsEmpty && this.level.lemmings().length === 0) {
 				this.level.ended = true;
 				if (this.level.saved >= this.level.lemmingNeed) {
 					// Victory
@@ -539,7 +541,7 @@ var gameState = {
 		var arrayCheck = [];
 		switch (instanceTypeCheck) {
 			case "lemming":
-				arrayCheck = this.level.lemmingsGroup.children;
+				arrayCheck = this.level.lemmings();
 				break;
 			case "door":
 				arrayCheck = this.level.objectLayer.doorGroup.children;
@@ -581,9 +583,9 @@ var gameState = {
 			bottom: ((tileY * GameData.tile.height) + GameData.tile.height) + 1
 		};
 
-		var a, lem;
-		for (a = 0; a < this.level.lemmingsGroup.children.length; a++) {
-			lem = this.level.lemmingsGroup.children[a];
+		var a, lem, lems = this.level.lemmingsGroup;
+		for (a = 0; a < lems.length; a++) {
+			lem = lems[a];
 
 			if (lem.action.name === "blocker" && !lem.action.idle &&
 				lem.x >= rect.left && lem.x < rect.right &&

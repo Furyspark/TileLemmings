@@ -21,8 +21,17 @@ var GameData = {
 		"basher": {},
 		"miner": {},
 		"digger": {}
-	}
+	},
+
+  resolution: {
+    width: 800,
+    height: 600
+  }
 };
+
+Object.defineProperties(GameData.resolution, {
+  aspectRatio: { get: function() { return this.width / this.height; } }
+});
 
 
 GameData.tile.floorTiles = [

@@ -23,7 +23,8 @@ ObjectPool.prototype.create = function(x, y, data) {
     this.pool.push(obj);
   }
 
-  return obj.spawn(x, y, data);
+  obj.spawn(x, y, data);
+  return obj;
 };
 
 ObjectPool.prototype.getFirstNotExists = function() {

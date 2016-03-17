@@ -16,10 +16,11 @@ Lemming.prototype.initialize = function() {
 	GameManager.level.lemmingsGroup.add(this);
 	this.initMembers();
 	this.anchor.setTo(0.5, 0.5);
-	this.addAnimations();
+	this.initAnimations();
 };
 
 Lemming.prototype.spawn = function(x, y) {
+  this.level.started = true;
 	this.x = x;
 	this.y = y;
 	this.exists = true;
@@ -89,7 +90,7 @@ Lemming.prototype.initAttributes = function() {
 	};
 };
 
-Lemming.prototype.addAnimations = function() {
+Lemming.prototype.initAnimations = function() {
 	this.addAnim("fall", "Fall", 4, {
 		x: 0,
 		y: 0
@@ -278,6 +279,7 @@ Lemming.prototype.turnAround = function() {
 };
 
 Lemming.prototype.update = function() {
+  if(!this.exists) return;
 	var checks = [], coords = [], a, b, obj, objs, tile, failed, alarm,
 		walkedUpRamp = false;
 
@@ -979,6 +981,10 @@ Lemming.prototype.die = function(deathType) {
 			this.remove();
 			break;
 	}
+};
+
+Lemming.prototype.despawn = function() {
+  this.exists = false;
 };
 
 Lemming.prototype.remove = function() {

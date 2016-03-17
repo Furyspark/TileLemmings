@@ -4,12 +4,26 @@ var bootState = {
 
 	create: function() {
 		var resizeFunction = function() {
-			this.scaleMode = Phaser.ScaleManager.USER_SCALE;
-			var scaleFactor = Math.min(window.innerWidth / game.width, window.innerHeight / game.height);
-			this.setUserScale(scaleFactor, scaleFactor, 0, 0);
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+
+      if(width / GameData.resolution.aspectRatio > height) {
+        game.width = Math.ceil(height * GameData.resolution.aspectRatio);
+        game.height = height;
+      }
+      else {
+        game.width = width;
+        game.height = Math.ceil(width / GameData.resolution.aspectRatio);
+      }
+      // if(game.stage && game.stage.scale) {
+      //   game.stage.scale.pageAlignHorizontally = true;
+      //   game.stage.scale.pageAlignVertically = true;
+      //   if(game.stage.scale.refresh) game.stage.scale.refresh();
+      // }
 		};
-		game.scale.setResizeCallback(resizeFunction, game.scale);
-		resizeFunction.call(game.scale);
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		// game.scale.setResizeCallback(resizeFunction, game.scale);
+		// resizeFunction.call(game.scale);
 		// Disable context menu (right-click menu for browsers)
 		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 

@@ -7,6 +7,6 @@
   },
   "private": true,
   "scripts": {
-    "test": "node compile.js"
+    "test": "node compile.js test & electron ."
   }
 }

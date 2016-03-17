@@ -28,8 +28,9 @@ Prop.prototype.update = function() {
 	var a, lem;
 	if(this.objectType === "trap") {
 		// Search for lemmings
-		for(a = 0;a < this.level.lemmingsGroup.children.length;a++) {
-			lem = this.level.lemmingsGroup.children[a];
+    var lems = this.level.lemmings();
+		for(a = 0;a < lems.length;a++) {
+			lem = lems[a];
 			if(!lem.dead && lem.active && this.inPosition(lem.x, lem.y) && this.animations.currentAnim.name === "idle") {
 				lem.die(this.deathType);
 				// Play kill animation, if applicable
@@ -120,7 +121,6 @@ Prop.prototype.setAsDoor = function(type, lemmings, rate, delay) {
 		if(this.lemmings > 0 && this.state.lemmingPool) {
 			this.lemmings--;
 			var lem = this.state.lemmingPool.create(this.x, this.y + 30);
-			this.lemmingsGroup.add(lem);
 			if(recurring) {
 				var alarm = new Alarm(this.rate, this.spawnLemming, this);
 			}
