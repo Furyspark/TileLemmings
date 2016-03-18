@@ -79,7 +79,11 @@
 				{
 					"filename": "level5.json",
 					"name": "Go ahead, make my day"
-				}
+				},
+        {
+          "filename": "level6.json",
+          "name": "Kettle Kin"
+        }
 			]
 		},
 		{

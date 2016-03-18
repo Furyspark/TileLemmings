@@ -3059,7 +3059,6 @@ var bootState = {
       // }
 		};
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    game.scale.startFullScreen();
 		// game.scale.setResizeCallback(resizeFunction, game.scale);
 		// resizeFunction.call(game.scale);
 		// Disable context menu (right-click menu for browsers)
