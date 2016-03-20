@@ -42,6 +42,7 @@ app.on('ready', function() {
   mainWindow.setContentSize(800, 600);
 
   // Open the devtools.
+  mainWindow.webContents.openDevTools({detach: true});
   mainWindow.webContents.on("devtools-opened", function() {
     mainWindow.focus();
   });

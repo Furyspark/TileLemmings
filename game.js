@@ -3035,1141 +3035,1135 @@ Prop.prototype.setAsTrap = function(type) {
 		return false;
 	};
 };
-var bootState = {
-	loadFunction: null,
-	loadSignalAdded: false,
+var StateManager = {};
 
-	create: function() {
-		var resizeFunction = function() {
-      var width = window.innerWidth;
-      var height = window.innerHeight;
+StateManager.states = {};
 
-      if(width / GameData.resolution.aspectRatio > height) {
-        game.width = Math.ceil(height * GameData.resolution.aspectRatio);
-        game.height = height;
+StateManager.add = function(key, state) {
+  this.states[key] = state;
+};
+
+StateManager.getState = function(key) {
+  return this.states[key];
+};
+
+StateManager.init = function() {
+  for(var a in this.states) {
+    var state = this.states[a];
+    game.state.add(a, state);
+  }
+};
+var state = new Phaser.State();
+StateManager.add("boot", state);
+
+state.loadFunction = null;
+state.loadSignalAdded = false;
+
+state.create = function() {
+  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  // Disable context menu (right-click menu for browsers)
+  game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+
+  // Load game
+  this.loadGame();
+
+  // Initialize global game properties
+  game.tiles = {
+    solidTileTypes: [1, 2]
+  };
+
+  // Load asset list
+  this.loadAssetList("./assets/asset_list.json");
+};
+
+state.loadAssetList = function(assetListFilename) {
+  // Load asset list
+  game.load.json("assetList", assetListFilename);
+
+
+  this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+    if(progress === undefined) {
+      progress = -1;
+    }
+
+    if(progress >= 0 && totalLoadedFiles >= totalFiles) {
+      game.load.onFileComplete.remove(this.loadFunction, this);
+      this.loadFunction = null;
+      this.loadSignalAdded = false;
+      this.loadAssets();
+    }
+    else if(!this.loadSignalAdded) {
+      this.loadSignalAdded = true;
+      game.load.onFileComplete.add(this.loadFunction, this);
+    }
+  }
+  this.loadFunction();
+  game.load.start();
+};
+
+state.loadAssets = function() {
+  var assetList = game.cache.getJSON("assetList");
+
+  // Load sprites
+  var a, curAsset, curList = assetList.sprites;
+  for(a in curList) {
+    curAsset = curList[a];
+    game.load.spritesheet(curAsset.key, curAsset.url, curAsset.frameWidth, curAsset.frameHeight);
+  }
+
+  // Load sprite atlases
+  curList = assetList.sprite_atlases;
+  for(a in curList) {
+    curAsset = curList[a];
+    game.load.atlasJSONArray(curAsset.key, curAsset.url, curAsset.atlasUrl);
+  }
+
+  // Load images
+  curList = assetList.images;
+  for(a in curList) {
+    curAsset = curList[a];
+    game.load.image(curAsset.key, curAsset.url);
+  }
+
+  // Load sounds
+  curList = assetList.sounds;
+  for(a in curList) {
+    curAsset = curList[a];
+    game.load.audio(curAsset.key, curAsset.url);
+  }
+
+  // Load tilemaps
+  curList = assetList.tilemaps;
+  for(a in curList) {
+    curAsset = curList[a];
+    game.load.tilemap(curAsset.key, curAsset.url, null, Phaser.Tilemap.TILED_JSON);
+  }
+
+  // Load JSON
+  curList = assetList.json;
+  for(a in curList) {
+    curAsset = curList[a];
+    game.load.json(curAsset.key, curAsset.url);
+  }
+
+  // Add callback for Finish Loading
+  this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+    if(progress === undefined) {
+      progress = -1;
+    }
+
+    if(progress >= 0 && totalLoadedFiles >= totalFiles) {
+      game.load.onFileComplete.remove(this.loadFunction, this);
+      this.loadFunction = null;
+      this.loadSignalAdded = false;
+      game.state.start("menu");
+    }
+    else if(!this.loadSignalAdded) {
+      this.loadSignalAdded = true;
+      game.load.onFileComplete.add(this.loadFunction, this);
+    }
+  }
+  this.loadFunction();
+};
+
+state.loadGame = function() {
+  // Load progress
+  var rawSave = localStorage["tilelemmings.profiles.default.progress"];
+  if(rawSave) {
+    game.saveFile = JSON.parse(rawSave);
+  }
+  else {
+    game.saveFile = {};
+  }
+
+  // Load settings
+  GameManager.loadSettings();
+};
+var state = new Phaser.State();
+StateManager.add("menu", state);
+
+state.background = null;
+state.guiGroup = [];
+state.defaultLabelStyle = {
+  font: "bold 12pt Arial",
+  fill: "#FFFFFF",
+  boundsAlignH: "center",
+  stroke: "#000000",
+  strokeThickness: 3,
+  center: true
+};
+
+state.create = function() {
+  this.background = new Background("bgMainMenu");
+  game.world.add(this.background);
+
+  this.setupMainMenu();
+
+  // Enable control
+  this.keyboard = {
+    k: game.input.keyboard.addKey(Phaser.Keyboard.K)
+  };
+  game.input.enabled = true;
+
+  // CHEAT: Unlock all levels
+  this.keyboard.k.onDown.add(function() {
+    if(this.keyboard.k.ctrlKey && this.keyboard.k.shiftKey) {
+      console.log("CHEATER!");
+      var a, b, cat;
+      for(a in game.saveFile) {
+        cat = game.saveFile[a];
+        for(b = 0;b < 50;b++) {
+          if(cat.indexOf(b) === -1) {
+            cat.push(b);
+          }
+        }
       }
-      else {
-        game.width = width;
-        game.height = Math.ceil(width / GameData.resolution.aspectRatio);
+    }
+  }, this);
+};
+
+state.setupMainMenu = function() {
+  this.clearGUIGroup();
+
+  // Add button(s)
+  var btnProps = {
+    basePos: {
+      x: 40,
+      y: 30
+    },
+    width: 160,
+    height: 60,
+    spacing: 20
+  };
+  btnProps.cols = Math.floor((game.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+  // Create level buttons
+  var levelList = game.cache.getJSON("levelList").difficulties;
+  for(var a = 0;a < levelList.length;a++) {
+    var levelFolder = levelList[a];
+    var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
+    var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
+    var btn = new GUI_MainMenuButton(game, xTo, yTo, "mainmenu");
+    btn.set({
+      pressed: "btnGray_Down.png",
+      released: "btnGray_Up.png"
+    }, function() {
+      this.state.setupLevelList(this.params.difficulty.index);
+    }, btn);
+    btn.params = {
+      difficulty: {
+        resref: levelFolder.resref,
+        name: levelFolder.name,
+        index: a
       }
-      // if(game.stage && game.stage.scale) {
-      //   game.stage.scale.pageAlignHorizontally = true;
-      //   game.stage.scale.pageAlignVertically = true;
-      //   if(game.stage.scale.refresh) game.stage.scale.refresh();
-      // }
-		};
-    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		// game.scale.setResizeCallback(resizeFunction, game.scale);
-		// resizeFunction.call(game.scale);
-		// Disable context menu (right-click menu for browsers)
-		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+    };
+    btn.resize(160, 60);
+    btn.label.text = btn.params.difficulty.name;
+    this.guiGroup.push(btn);
+  }
 
-		// Load game
-		this.loadGame();
-
-		// Initialize global game properties
-		game.tiles = {
-			solidTileTypes: [1, 2]
-		}
-
-		// Load asset list
-		this.loadAssetList("./assets/asset_list.json");
-	},
-
-	loadAssetList: function(assetListFilename) {
-		// Load asset list
-		game.load.json("assetList", assetListFilename);
-
-
-		this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
-			if(progress === undefined) {
-				progress = -1;
-			}
-
-			if(progress >= 0 && totalLoadedFiles >= totalFiles) {
-				game.load.onFileComplete.remove(this.loadFunction, this);
-				this.loadFunction = null;
-				this.loadSignalAdded = false;
-				this.loadAssets();
-			}
-			else if(!this.loadSignalAdded) {
-				this.loadSignalAdded = true;
-				game.load.onFileComplete.add(this.loadFunction, this);
-			}
-		}
-		this.loadFunction();
-		game.load.start();
-	},
-
-	loadAssets: function() {
-		var assetList = game.cache.getJSON("assetList");
-
-		// Load sprites
-		var a, curAsset, curList = assetList.sprites;
-		for(a in curList) {
-			curAsset = curList[a];
-			game.load.spritesheet(curAsset.key, curAsset.url, curAsset.frameWidth, curAsset.frameHeight);
-		}
-
-		// Load sprite atlases
-		curList = assetList.sprite_atlases;
-		for(a in curList) {
-			curAsset = curList[a];
-			game.load.atlasJSONArray(curAsset.key, curAsset.url, curAsset.atlasUrl);
-		}
-
-		// Load images
-		curList = assetList.images;
-		for(a in curList) {
-			curAsset = curList[a];
-			game.load.image(curAsset.key, curAsset.url);
-		}
-
-		// Load sounds
-		curList = assetList.sounds;
-		for(a in curList) {
-			curAsset = curList[a];
-			game.load.audio(curAsset.key, curAsset.url);
-		}
-
-		// Load tilemaps
-		curList = assetList.tilemaps;
-		for(a in curList) {
-			curAsset = curList[a];
-			game.load.tilemap(curAsset.key, curAsset.url, null, Phaser.Tilemap.TILED_JSON);
-		}
-
-		// Load JSON
-		curList = assetList.json;
-		for(a in curList) {
-			curAsset = curList[a];
-			game.load.json(curAsset.key, curAsset.url);
-		}
-
-		// Add callback for Finish Loading
-		this.loadFunction = function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
-			if(progress === undefined) {
-				progress = -1;
-			}
-
-			if(progress >= 0 && totalLoadedFiles >= totalFiles) {
-				game.load.onFileComplete.remove(this.loadFunction, this);
-				this.loadFunction = null;
-				this.loadSignalAdded = false;
-				game.state.start("menu");
-			}
-			else if(!this.loadSignalAdded) {
-				this.loadSignalAdded = true;
-				game.load.onFileComplete.add(this.loadFunction, this);
-			}
-		}
-		this.loadFunction();
-	},
-
-	loadGame: function() {
-		// Load progress
-		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
-		if(rawSave) {
-			game.saveFile = JSON.parse(rawSave);
-		}
-		else {
-			game.saveFile = {};
-		}
-
-		// Load settings
-		GameManager.loadSettings();
-	}
+  // Create options button
+  var placePos = {x: 40, y: 320};
+  var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+  btn.label.text = "Options";
+  btn.set({
+    pressed: "btnGray_Down.png",
+    released: "btnGray_Up.png"
+  }, function() {
+    this.setupOptionsMenu();
+  }, this);
+  btn.resize(160, 60);
+  this.guiGroup.push(btn);
 };
-var menuState = {
-	background: null,
-	guiGroup: [],
 
-	defaultLabelStyle: {
-		font: "bold 12pt Arial",
-		fill: "#FFFFFF",
-		boundsAlignH: "center",
-		stroke: "#000000",
-		strokeThickness: 3,
-		center: true
-	},
+state.setupLevelList = function(index) {
+  this.clearGUIGroup();
 
-	create: function() {
-		this.background = new Background("bgMainMenu");
-		game.world.add(this.background);
+  this.levelList = [];
+  var levelFolder = game.cache.getJSON("levelList").difficulties[index];
+  var btnProps = {
+    basePos: {
+      x: 40,
+      y: 30
+    },
+    width: 160,
+    height: 60,
+    spacing: 20
+  };
+  btnProps.cols = Math.floor((game.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
+  var completedLevels = [];
+  if(game.saveFile[levelFolder.resref]) {
+    completedLevels = game.saveFile[levelFolder.resref];
+  }
+  // Create level buttons
+  for(var a = 0;a < levelFolder.levels.length;a++) {
+    // Don't add not unlocked levels
+    if(a === 0 || completedLevels.indexOf(a-1) !== -1) {
+      var level = levelFolder.levels[a];
+      var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
+      var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
+      var btn = new GUI_MainMenuButton(game, xTo, yTo, "mainmenu");
+      btn.resize(btnProps.width, btnProps.height);
+      btn.label.text = level.name;
+      btn.params = {
+        url: levelFolder.baseUrl + level.filename
+      };
+      btn.set({
+        pressed: "btnGray_Down.png",
+        released: "btnGray_Up.png"
+      }, function() {
+        game.state.start("intermission", true, false, this.params.levelFolder, this.params.level);
+      }, btn);
+      btn.params = {
+        levelFolder: levelFolder,
+        level: level
+      }
+      this.guiGroup.push(btn);
+    }
+  }
 
-		this.setupMainMenu();
-
-		// Enable control
-		this.keyboard = {
-			k: game.input.keyboard.addKey(Phaser.Keyboard.K)
-		};
-		game.input.enabled = true;
-
-		// CHEAT: Unlock all levels
-		this.keyboard.k.onDown.add(function() {
-			if(this.keyboard.k.ctrlKey && this.keyboard.k.shiftKey) {
-				console.log("CHEATER!");
-				var a, b, cat;
-				for(a in game.saveFile) {
-					cat = game.saveFile[a];
-					for(b = 0;b < 50;b++) {
-						if(cat.indexOf(b) === -1) {
-							cat.push(b);
-						}
-					}
-				}
-			}
-		}, this);
-	},
-
-	setupMainMenu: function() {
-		this.clearGUIGroup();
-
-		// Add button(s)
-		var btnProps = {
-			basePos: {
-				x: 40,
-				y: 30
-			},
-			width: 160,
-			height: 60,
-			spacing: 20
-		};
-		btnProps.cols = Math.floor((game.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
-		// Create level buttons
-		var levelList = game.cache.getJSON("levelList").difficulties;
-		for(var a = 0;a < levelList.length;a++) {
-			var levelFolder = levelList[a];
-			var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
-			var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
-			var btn = new GUI_MainMenuButton(game, xTo, yTo, "mainmenu");
-			btn.set({
-				pressed: "btnGray_Down.png",
-				released: "btnGray_Up.png"
-			}, function() {
-				this.state.setupLevelList(this.params.difficulty.index);
-			}, btn);
-			btn.params = {
-				difficulty: {
-					resref: levelFolder.resref,
-					name: levelFolder.name,
-					index: a
-				}
-			};
-			btn.resize(160, 60);
-			btn.label.text = btn.params.difficulty.name;
-			this.guiGroup.push(btn);
-		}
-
-		// Create options button
-		var placePos = {x: 40, y: 320};
-		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
-		btn.label.text = "Options";
-		btn.set({
-			pressed: "btnGray_Down.png",
-			released: "btnGray_Up.png"
-		}, function() {
-			this.setupOptionsMenu();
-		}, this);
-		btn.resize(160, 60);
-		this.guiGroup.push(btn);
-	},
-
-	setupLevelList: function(index) {
-		this.clearGUIGroup();
-
-		this.levelList = [];
-		var levelFolder = game.cache.getJSON("levelList").difficulties[index];
-		var btnProps = {
-			basePos: {
-				x: 40,
-				y: 30
-			},
-			width: 160,
-			height: 60,
-			spacing: 20
-		};
-		btnProps.cols = Math.floor((game.width - (btnProps.basePos.x * 2)) / (btnProps.width + btnProps.spacing))
-		var completedLevels = [];
-		if(game.saveFile[levelFolder.resref]) {
-			completedLevels = game.saveFile[levelFolder.resref];
-		}
-		// Create level buttons
-		for(var a = 0;a < levelFolder.levels.length;a++) {
-			// Don't add not unlocked levels
-			if(a === 0 || completedLevels.indexOf(a-1) !== -1) {
-				var level = levelFolder.levels[a];
-				var xTo = btnProps.basePos.x + ((btnProps.width + btnProps.spacing) * (a % btnProps.cols));
-				var yTo = btnProps.basePos.y + ((btnProps.height + btnProps.spacing) * Math.floor(a / btnProps.cols));
-				var btn = new GUI_MainMenuButton(game, xTo, yTo, "mainmenu");
-				btn.resize(btnProps.width, btnProps.height);
-				btn.label.text = level.name;
-				btn.params = {
-					url: levelFolder.baseUrl + level.filename
-				};
-				btn.set({
-					pressed: "btnGray_Down.png",
-					released: "btnGray_Up.png"
-				}, function() {
-					game.state.start("intermission", true, false, this.params.levelFolder, this.params.level);
-				}, btn);
-				btn.params = {
-					levelFolder: levelFolder,
-					level: level
-				}
-				this.guiGroup.push(btn);
-			}
-		}
-
-		// Create back button
-		var btn = new GUI_MainMenuButton(game, 4, 4, "mainmenu");
-		btn.resize(40, 24);
-		btn.label.text = "Back";
-		btn.set({
-			pressed: "btnGray_Down.png",
-			released: "btnGray_Up.png"
-		}, function() {
-			this.state.setupMainMenu();
-		}, btn);
-		this.guiGroup.push(btn);
-	},
-
-	setupOptionsMenu: function() {
-		this.clearGUIGroup();
-		var a, chan;
-
-		this.settings = {
-			audio: {
-				volume: {}
-			}
-		};
-		for(a in GameManager.audio.volume) {
-			this.settings.audio.volume[a] = GameManager.audio.volume[a];
-		}
-
-		// Create Save button
-		var placePos = {x: 260, y: 530};
-		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
-		btn.label.text = "OK";
-		btn.set({
-			pressed: "btnGray_Down.png",
-			released: "btnGray_Up.png"
-		}, function() {
-			// Apply settings
-			for(a in this.state.settings.audio.volume) {
-				GameManager.audio.volume[a] = this.state.settings.audio.volume[a];
-			}
-			// Save settings and go back to main menu
-			GameManager.saveSettings();
-			this.state.setupMainMenu();
-		}, btn);
-		btn.resize(80, 30);
-		this.guiGroup.push(btn);
-
-		// Create Cancel button
-		placePos = {x: 500, y: 530};
-		var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
-		btn.label.text = "Cancel";
-		btn.set({
-			pressed: "btnGray_Down.png",
-			released: "btnGray_Up.png"
-		}, function() {
-			this.state.setupMainMenu();
-		}, btn);
-		btn.resize(80, 30);
-		this.guiGroup.push(btn);
-
-		// Create volume slider(s)
-		// Create label
-		placePos = {x: 160, y: 20};
-		var elem = game.add.text(placePos.x, placePos.y, "Volume", this.defaultLabelStyle);
-		elem.setTextBounds(-120, 0, 240, 30);
-		this.guiGroup.push(elem);
-		// SFX volume
-		placePos = {x: 160, y: 80};
-		var elem = new GUI_Slider(game, placePos.x, placePos.y, 256, "mainmenu", {base: this.settings.audio.volume, name: "sfx", min: 0, max: 1});
-		elem.label.text = "Sound";
-		this.guiGroup.push(elem);
-		// BGM volume
-		placePos.y += 60;
-		var elem = new GUI_Slider(game, placePos.x, placePos.y, 256, "mainmenu", {base: this.settings.audio.volume, name: "bgm", min: 0, max: 1});
-		elem.label.text = "Music";
-		this.guiGroup.push(elem);
-	},
-
-	clearGUIGroup: function() {
-		while(this.guiGroup.length > 0) {
-			var elem = this.guiGroup.shift();
-			if(elem.remove) {
-				elem.remove();
-			}
-			else {
-				elem.destroy();
-			}
-		}
-	}
+  // Create back button
+  var btn = new GUI_MainMenuButton(game, 4, 4, "mainmenu");
+  btn.resize(40, 24);
+  btn.label.text = "Back";
+  btn.set({
+    pressed: "btnGray_Down.png",
+    released: "btnGray_Up.png"
+  }, function() {
+    this.state.setupMainMenu();
+  }, btn);
+  this.guiGroup.push(btn);
 };
-var intermissionState = {
-	background: null,
-	labels: [],
-	guiGroup: [],
-	levelFolder: null,
-	levelObj: null,
 
-	drawGroup: null,
+state.setupOptionsMenu = function() {
+  this.clearGUIGroup();
+  var a, chan;
 
-	level: null,
-	minimap: null,
+  this.settings = {
+    audio: {
+      volume: {}
+    }
+  };
+  for(a in GameManager.audio.volume) {
+    this.settings.audio.volume[a] = GameManager.audio.volume[a];
+  }
 
-	init: function(levelFolder, levelObj, level) {
-		this.levelFolder = levelFolder;
-		this.levelObj = levelObj;
-		if(level !== undefined) {
-			this.level = level;
-		}
-	},
+  // Create Save button
+  var placePos = {x: 260, y: 530};
+  var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+  btn.label.text = "OK";
+  btn.set({
+    pressed: "btnGray_Down.png",
+    released: "btnGray_Up.png"
+  }, function() {
+    // Apply settings
+    for(a in this.state.settings.audio.volume) {
+      GameManager.audio.volume[a] = this.state.settings.audio.volume[a];
+    }
+    // Save settings and go back to main menu
+    GameManager.saveSettings();
+    this.state.setupMainMenu();
+  }, btn);
+  btn.resize(80, 30);
+  this.guiGroup.push(btn);
 
-	preload: function() {
-		game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
-	},
+  // Create Cancel button
+  placePos = {x: 500, y: 530};
+  var btn = new GUI_MainMenuButton(game, placePos.x, placePos.y, "mainmenu");
+  btn.label.text = "Cancel";
+  btn.set({
+    pressed: "btnGray_Down.png",
+    released: "btnGray_Up.png"
+  }, function() {
+    this.state.setupMainMenu();
+  }, btn);
+  btn.resize(80, 30);
+  this.guiGroup.push(btn);
 
-	create: function() {
-		this.drawGroup = game.add.group();
-		// Add background
-		this.background = new Background("bgMainMenu");
-		this.drawGroup.add(this.background);
-		// Init map
-		var cb = function() {
-			this.start();
-		};
-		this.level = new Level(game.cache.getJSON("level"), cb, this, this.levelFolder, this.levelObj);
-		game.world.bringToTop(this.drawGroup);
-	},
-
-	start: function() {
-		this.createScreen();
-
-		// Add user input
-		game.input.onTap.add(function startTheLevel() {
-			if(!this.mouseOverGUI()) {
-				game.input.onTap.remove(startTheLevel, this);
-				this.startLevel();
-			}
-		}, this);
-
-		// Add 'return to main menu' button
-		var btn = new GUI_MainMenuButton(game, 4, 4, "mainmenu");
-		this.guiGroup.push(btn);
-		btn.set({
-			pressed: "btnGray_Down.png",
-			released: "btnGray_Up.png"
-		}, function() {
-			this.clearState();
-			this.level.clearAssets();
-			GameManager.alarms.clear();
-			this.level.destroy();
-			game.state.start("menu", true, false);
-		}, this);
-		btn.resize(60, 24);
-		btn.label.text = "Main Menu";
-		btn.label.fontSize = 10;
-		this.drawGroup.add(btn);
-
-		// Order drawGroup
-		this.drawGroup.sendToBack(this.level);
-	},
-
-	startLevel: function() {
-		this.clearState();
-		game.state.start("game", false, false, this.levelFolder, this.levelObj, this.level);
-	},
-
-	mouseOverGUI: function() {
-		for(var a = 0;a < this.guiGroup.length;a++) {
-			var elem = this.guiGroup[a];
-			if(elem.mouseOver()) {
-				return true;
-			}
-		}
-		return false;
-	},
-
-	clearState: function() {
-		// Destroy minimap
-		this.minimap.destroy();
-		// Destroy labels
-		while(this.labels.length > 0) {
-			var gobj = this.labels.shift();
-			if(gobj.remove) {
-				gobj.remove();
-			}
-			else {
-				gobj.destroy();
-			}
-		}
-		// Destroy GUI elements (buttons etc)
-		while(this.guiGroup.length > 0) {
-			var gobj = this.guiGroup.shift();
-			if(gobj.remove) {
-				gobj.remove();
-			}
-			else {
-				gobj.destroy();
-			}
-		}
-		// Destroy background
-		this.background.destroy();
-
-		this.drawGroup.destroy();
-	},
-
-	createScreen: function() {
-		this.minimap = new GUI_Minimap(this.level);
-		this.minimap.width = Math.max(240, Math.min(480, this.level.baseWidth * 4));
-		this.minimap.height = Math.max(180, Math.min(480, this.level.baseHeight * 4));
-		this.minimap.x = (game.width - 30) - this.minimap.width;
-		this.minimap.y = 30;
-		this.drawGroup.add(this.minimap);
-
-		var txt = game.add.text(120, 10, this.level.name, {
-			font: "bold 20pt Arial",
-			fill: "#FFFFFF",
-			boundsAlignH: "center",
-			stroke: "#000000",
-			strokeThickness: 3
-		});
-		txt.setTextBounds(0, 0, 240, 40);
-		this.labels.push(txt);
-		this.drawGroup.add(txt);
-
-		var newStyle = {
-			font: "12pt Arial",
-			fill: "#FFFFFF",
-			stroke: "#000000",
-			strokeThickness: 3
-		};
-		txt = game.add.text(120, 70, this.level.lemmingCount.toString() + " lemmings\n" + Math.floor((this.level.lemmingNeed / this.level.lemmingCount) * 100) + "% to be saved", newStyle);
-		txt.setTextBounds(0, 0, 240, 80);
-		this.labels.push(txt);
-		this.drawGroup.add(txt);
-	}
+  // Create volume slider(s)
+  // Create label
+  placePos = {x: 160, y: 20};
+  var elem = game.add.text(placePos.x, placePos.y, "Volume", this.defaultLabelStyle);
+  elem.setTextBounds(-120, 0, 240, 30);
+  this.guiGroup.push(elem);
+  // SFX volume
+  placePos = {x: 160, y: 80};
+  var elem = new GUI_Slider(game, placePos.x, placePos.y, 256, "mainmenu", {base: this.settings.audio.volume, name: "sfx", min: 0, max: 1});
+  elem.label.text = "Sound";
+  this.guiGroup.push(elem);
+  // BGM volume
+  placePos.y += 60;
+  var elem = new GUI_Slider(game, placePos.x, placePos.y, 256, "mainmenu", {base: this.settings.audio.volume, name: "bgm", min: 0, max: 1});
+  elem.label.text = "Music";
+  this.guiGroup.push(elem);
 };
-var gameState = {
-	level: null,
-	zoom: 1,
-	minimap: null,
-	lemmingSelected: null,
-	actionSelect: "",
 
-	scrollOrigin: {
-		x: 0,
-		y: 0
-	},
+state.clearGUIGroup = function() {
+  while(this.guiGroup.length > 0) {
+    var elem = this.guiGroup.shift();
+    if(elem.remove) {
+      elem.remove();
+    }
+    else {
+      elem.destroy();
+    }
+  }
+};
+var state = new Phaser.State();
+StateManager.add("intermission", state);
 
-	guiGroup: null,
+state.background = null;
+state.labels = [];
+state.guiGroup = [];
+state.levelFolder = null;
+state.levelObj = null;
+state.drawGroup = null;
+state.level = null;
+state.minimap = null;
 
-	grid: {
-		enabled: false,
-		button: null
-	},
+state.init = function(levelFolder, levelObj, level) {
+  this.levelFolder = levelFolder;
+  this.levelObj = levelObj;
+  if(level !== undefined) {
+    this.level = level;
+  }
+};
 
-	init: function(levelFolder, levelObj, level) {
-		this.levelFolder = levelFolder;
-		this.levelObj = levelObj;
-		this.level = level;
+state.preload = function() {
+  game.load.json("level", this.levelFolder.baseUrl + this.levelObj.filename);
+};
 
-		this.nukeStarted = false;
-	},
+state.create = function() {
+  this.drawGroup = game.add.group();
+  // Add background
+  this.background = new Background("bgMainMenu");
+  this.drawGroup.add(this.background);
+  // Init map
+  var cb = function() {
+    this.start();
+  };
+  this.level = new Level(game.cache.getJSON("level"), cb, this, this.levelFolder, this.levelObj);
+  game.world.bringToTop(this.drawGroup);
+};
 
-	create: function() {
-		this.enableUserInteraction();
-		// Create groups
-		this.guiGroup = game.add.group(game.stage);
+state.start = function() {
+  this.createScreen();
 
-		// Create GUI
-		this.createLevelGUI();
+  // Add user input
+  game.input.onTap.add(function startTheLevel() {
+    if(!this.mouseOverGUI()) {
+      game.input.onTap.remove(startTheLevel, this);
+      this.startLevel();
+    }
+  }, this);
 
-		// Create camera config
-		this.cam = new Camera(game, this);
+  // Add 'return to main menu' button
+  var btn = new GUI_MainMenuButton(game, 4, 4, "mainmenu");
+  this.guiGroup.push(btn);
+  btn.set({
+    pressed: "btnGray_Down.png",
+    released: "btnGray_Up.png"
+  }, function() {
+    this.clearState();
+    this.level.clearAssets();
+    GameManager.alarms.clear();
+    this.level.destroy();
+    game.state.start("menu", true, false);
+  }, this);
+  btn.resize(60, 24);
+  btn.label.text = "Main Menu";
+  btn.label.fontSize = 10;
+  this.drawGroup.add(btn);
 
-		this.startLevel();
+  // Order drawGroup
+  this.drawGroup.sendToBack(this.level);
+};
 
-		this.initPools();
-	},
+state.startLevel = function() {
+  this.clearState();
+  game.state.start("game", false, false, this.levelFolder, this.levelObj, this.level);
+};
 
-	initPools: function() {
-		this.lemmingPool = new ObjectPool(Lemming, [], 200);
-	},
+state.mouseOverGUI = function() {
+  for(var a = 0;a < this.guiGroup.length;a++) {
+    var elem = this.guiGroup[a];
+    if(elem.mouseOver()) {
+      return true;
+    }
+  }
+  return false;
+};
 
-	enableUserInteraction: function() {
-		// Create keys
-		this.keyboard = {
-			left: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-			right: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-			up: game.input.keyboard.addKey(Phaser.Keyboard.UP),
-			down: game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-			space: game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-			p: game.input.keyboard.addKey(Phaser.Keyboard.P),
-			f: game.input.keyboard.addKey(Phaser.Keyboard.F),
-			q: game.input.keyboard.addKey(Phaser.Keyboard.Q),
-			e: game.input.keyboard.addKey(Phaser.Keyboard.E),
-			w: game.input.keyboard.addKey(Phaser.Keyboard.W),
-			s: game.input.keyboard.addKey(Phaser.Keyboard.S),
-			a: game.input.keyboard.addKey(Phaser.Keyboard.A),
-			d: game.input.keyboard.addKey(Phaser.Keyboard.D),
-			g: game.input.keyboard.addKey(Phaser.Keyboard.G)
-		};
+state.clearState = function() {
+  // Destroy minimap
+  this.minimap.destroy();
+  // Destroy labels
+  while(this.labels.length > 0) {
+    var gobj = this.labels.shift();
+    if(gobj.remove) {
+      gobj.remove();
+    }
+    else {
+      gobj.destroy();
+    }
+  }
+  // Destroy GUI elements (buttons etc)
+  while(this.guiGroup.length > 0) {
+    var gobj = this.guiGroup.shift();
+    if(gobj.remove) {
+      gobj.remove();
+    }
+    else {
+      gobj.destroy();
+    }
+  }
+  // Destroy background
+  this.background.destroy();
 
-		// Set pause functionality
-		this.keyboard.p.onDown.add(function() {
-			this.pauseGame();
-		}, this);
-		this.keyboard.space.onDown.add(function() {
-			this.pauseGame();
-		}, this);
-		// Set fast-forward functionality
-		this.keyboard.f.onDown.add(function() {
-			this.fastForward();
-		}, this);
-		// Set toggle grid functionality
-		this.keyboard.g.onDown.add(function() {
-			this.toggleGrid();
-		}, this);
+  this.drawGroup.destroy();
+};
 
-		game.input.mouse.capture = true;
-		// Add left-mouse button functionality
-		game.input.activePointer.leftButton.onDown.add(function() {
-			// Assign action to lemming
-			if (this.lemmingSelected != null && this.level.actions[this.actionSelect] && this.level.actions[this.actionSelect] > 0) {
-				this.lemmingSelected.setAction(this.actionSelect);
-			}
-		}, this);
-		// Add right-mouse scrolling possibility
-		game.input.activePointer.rightButton.onDown.add(function() {
-			this.cam.scrolling = true;
-			this.scrollOrigin = this.getScreenCursor();
-		}, this);
-		game.input.activePointer.rightButton.onUp.add(function() {
-			this.cam.scrolling = false;
-		}, this);
-	},
+state.createScreen = function() {
+  this.minimap = new GUI_Minimap(this.level);
+  this.minimap.width = Math.max(240, Math.min(480, this.level.baseWidth * 4));
+  this.minimap.height = Math.max(180, Math.min(480, this.level.baseHeight * 4));
+  this.minimap.x = (game.width - 30) - this.minimap.width;
+  this.minimap.y = 30;
+  this.drawGroup.add(this.minimap);
 
-	startLevel: function() {
-		// Zoom
-		this.zoomTo(2);
-		// Create minimap
-		this.minimap = new GUI_Minimap(this.level);
-		this.minimap.x = game.camera.width - this.minimap.width;
-		this.minimap.y = game.camera.height - this.minimap.height;
-		this.minimap.onLevelStart();
-		this.guiGroup.add(this.minimap);
+  var txt = game.add.text(120, 10, this.level.name, {
+    font: "bold 20pt Arial",
+    fill: "#FFFFFF",
+    boundsAlignH: "center",
+    stroke: "#000000",
+    strokeThickness: 3
+  });
+  txt.setTextBounds(0, 0, 240, 40);
+  this.labels.push(txt);
+  this.drawGroup.add(txt);
 
-		// Z-Order
-		this.level.zOrder();
+  var newStyle = {
+    font: "12pt Arial",
+    fill: "#FFFFFF",
+    stroke: "#000000",
+    strokeThickness: 3
+  };
+  txt = game.add.text(120, 70, this.level.lemmingCount.toString() + " lemmings\n" + Math.floor((this.level.lemmingNeed / this.level.lemmingCount) * 100) + "% to be saved", newStyle);
+  txt.setTextBounds(0, 0, 240, 80);
+  this.labels.push(txt);
+  this.drawGroup.add(txt);
+};
+var state = new Phaser.State();
+StateManager.add("game", state);
 
-		// Let's go... HRRRRN
-		var snd = GameManager.audio.play("sndLetsGo");
-		var alarm = new Alarm(90, function() {
-			this.openDoors();
-		}, this);
-	},
+state.level = null;
+state.zoom = 1;
+state.minimap = null;
+state.lemmingSelected = null;
+state.actionSelect = "";
+state.scrollOrigin = new Phaser.Point(0, 0);
+state.guiGroup = null;
+state.grid = {
+  enabled: false,
+  button: null
+};
 
-	pauseGame: function() {
-		if (!GameManager.speedManager.paused) {
-			GameManager.speedManager.pause();
-			// Press pause GUI button
-			GameManager.speedManager.pauseButton.visualPress();
-		} else {
-			GameManager.speedManager.unpause();
-			// Release pause GUI button
-			GameManager.speedManager.pauseButton.visualRelease();
-		}
-	},
+state.init = function(levelFolder, levelObj, level) {
+  this.levelFolder = levelFolder;
+  this.levelObj = levelObj;
+  this.level = level;
 
-	fastForward: function() {
-		if (GameManager.speedManager.speed > 1) {
-			GameManager.speedManager.setSpeed(1);
-			// Press fast forward GUI button
-			GameManager.speedManager.fastForwardButton.visualRelease();
-		} else {
-			GameManager.speedManager.setSpeed(3);
-			// Release fast forward GUI button
-			GameManager.speedManager.fastForwardButton.visualPress();
-		}
-	},
+  this.nukeStarted = false;
+};
 
-	toggleGrid: function() {
-		if (this.grid.enabled) {
-			this.grid.enabled = false;
-			this.level.gridGroup.visible = false;
-			this.grid.button.visualRelease();
-		} else {
-			this.grid.enabled = true;
-			this.level.gridGroup.visible = true;
-			this.grid.button.visualPress();
-		}
-	},
+state.create = function() {
+  this.enableUserInteraction();
+  // Create groups
+  this.guiGroup = game.add.group(game.stage);
 
-	nuke: function() {
-		// Start nuke
-		if (!this.nukeStarted) {
-			GameManager.audio.play("sndOhNo");
-			this.nukeStarted = true;
-			this.nuke();
-			// Set lemming count of all doors to 0
-			for (var a = 0; a < this.level.objectLayer.doorGroup.children.length; a++) {
-				var door = this.level.objectLayer.doorGroup.children[a];
-				door.lemmings = 0;
-			}
-			this.level.started = true;
-		}
-		// Proceed nuke
-		else {
-			var searchComplete = false;
-      var lems = this.level.lemmings();
-			for (var a = 0; a < lems.length && !searchComplete; a++) {
-				var lem = lems[a];
-				if (lem.subaction.name !== "exploder") {
-					lem.setExploder();
-					searchComplete = true;
-				}
-			}
-			// Set nuke alarm
-			if (searchComplete) {
-				var alarm = new Alarm(10, function() {
-					this.nuke();
-				}, this);
-			}
-		}
-	},
+  // Create GUI
+  this.createLevelGUI();
 
-	getWorldCursor: function() {
-		return {
-			x: game.input.activePointer.worldX / this.zoom,
-			y: game.input.activePointer.worldY / this.zoom
-		};
-	},
+  // Create camera config
+  this.cam = new Camera(game, this);
 
-	getScreenCursor: function() {
-		var worldCursor = this.getWorldCursor();
-		return {
-			x: worldCursor.x - this.cam.x,
-			y: worldCursor.y - this.cam.y
-		};
-	},
+  this.startLevel();
 
-	zoomTo: function(factor) {
-		this.zoom = factor;
-		this.level.scale.setTo(factor);
-		game.camera.bounds.setTo(0, 0, Math.floor(this.level.totalWidth * this.zoom), Math.floor(this.level.totalHeight * this.zoom));
-	},
+  this.initPools();
+};
 
-	update: function() {
-		// Update alarms
-		GameManager.alarms.update();
-		// Determine lemmings under mouse cursor
-		var lemmingSelect = {
-			data: [],
-			removeBy: function(callback) {
-				for (var a = this.data.length - 1; a >= 0; a--) {
-					var lem = this.data[a];
-					if (!callback.call(lem)) {
-						this.data.splice(a, 1);
-					}
-				}
-			}
-		};
+state.initPools = function() {
+  this.lemmingPool = new ObjectPool(Lemming, [], 200);
+};
+
+state.enableUserInteraction = function() {
+  // Create keys
+  this.keyboard = {
+    left: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+    right: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+    up: game.input.keyboard.addKey(Phaser.Keyboard.UP),
+    down: game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+    space: game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+    p: game.input.keyboard.addKey(Phaser.Keyboard.P),
+    f: game.input.keyboard.addKey(Phaser.Keyboard.F),
+    q: game.input.keyboard.addKey(Phaser.Keyboard.Q),
+    e: game.input.keyboard.addKey(Phaser.Keyboard.E),
+    w: game.input.keyboard.addKey(Phaser.Keyboard.W),
+    s: game.input.keyboard.addKey(Phaser.Keyboard.S),
+    a: game.input.keyboard.addKey(Phaser.Keyboard.A),
+    d: game.input.keyboard.addKey(Phaser.Keyboard.D),
+    g: game.input.keyboard.addKey(Phaser.Keyboard.G)
+  };
+
+  // Set pause functionality
+  this.keyboard.p.onDown.add(function() {
+    this.pauseGame();
+  }, this);
+  this.keyboard.space.onDown.add(function() {
+    this.pauseGame();
+  }, this);
+  // Set fast-forward functionality
+  this.keyboard.f.onDown.add(function() {
+    this.fastForward();
+  }, this);
+  // Set toggle grid functionality
+  this.keyboard.g.onDown.add(function() {
+    this.toggleGrid();
+  }, this);
+
+  game.input.mouse.capture = true;
+  // Add left-mouse button functionality
+  game.input.activePointer.leftButton.onDown.add(function() {
+    // Assign action to lemming
+    if (this.lemmingSelected != null && this.level.actions[this.actionSelect] && this.level.actions[this.actionSelect] > 0) {
+      this.lemmingSelected.setAction(this.actionSelect);
+    }
+  }, this);
+  // Add right-mouse scrolling possibility
+  game.input.activePointer.rightButton.onDown.add(function() {
+    this.cam.scrolling = true;
+    this.scrollOrigin = this.getScreenCursor();
+  }, this);
+  game.input.activePointer.rightButton.onUp.add(function() {
+    this.cam.scrolling = false;
+  }, this);
+};
+
+state.startLevel = function() {
+  // Zoom
+  this.zoomTo(2);
+  // Create minimap
+  this.minimap = new GUI_Minimap(this.level);
+  this.minimap.x = game.camera.width - this.minimap.width;
+  this.minimap.y = game.camera.height - this.minimap.height;
+  this.minimap.onLevelStart();
+  this.guiGroup.add(this.minimap);
+
+  // Z-Order
+  this.level.zOrder();
+
+  // Let's go... HRRRRN
+  var snd = GameManager.audio.play("sndLetsGo");
+  var alarm = new Alarm(90, function() {
+    this.openDoors();
+  }, this);
+};
+
+state.pauseGame = function() {
+  if (!GameManager.speedManager.paused) {
+    GameManager.speedManager.pause();
+    // Press pause GUI button
+    GameManager.speedManager.pauseButton.visualPress();
+  } else {
+    GameManager.speedManager.unpause();
+    // Release pause GUI button
+    GameManager.speedManager.pauseButton.visualRelease();
+  }
+};
+
+state.fastForward = function() {
+  if (GameManager.speedManager.speed > 1) {
+    GameManager.speedManager.setSpeed(1);
+    // Press fast forward GUI button
+    GameManager.speedManager.fastForwardButton.visualRelease();
+  } else {
+    GameManager.speedManager.setSpeed(3);
+    // Release fast forward GUI button
+    GameManager.speedManager.fastForwardButton.visualPress();
+  }
+};
+
+state.toggleGrid = function() {
+  if (this.grid.enabled) {
+    this.grid.enabled = false;
+    this.level.gridGroup.visible = false;
+    this.grid.button.visualRelease();
+  } else {
+    this.grid.enabled = true;
+    this.level.gridGroup.visible = true;
+    this.grid.button.visualPress();
+  }
+};
+
+state.nuke = function() {
+  // Start nuke
+  if (!this.nukeStarted) {
+    GameManager.audio.play("sndOhNo");
+    this.nukeStarted = true;
+    this.nuke();
+    // Set lemming count of all doors to 0
+    for (var a = 0; a < this.level.objectLayer.doorGroup.children.length; a++) {
+      var door = this.level.objectLayer.doorGroup.children[a];
+      door.lemmings = 0;
+    }
+    this.level.started = true;
+  }
+  // Proceed nuke
+  else {
+    var searchComplete = false;
     var lems = this.level.lemmings();
-		for (var a = 0; a < lems.length; a++) {
-			var obj = lems[a];
-			obj.cursorDeselect();
-			if (obj.mouseOver()) {
-				lemmingSelect.data.push(obj);
-			}
+    for (var a = 0; a < lems.length && !searchComplete; a++) {
+      var lem = lems[a];
+      if (lem.subaction.name !== "exploder") {
+        lem.setExploder();
+        searchComplete = true;
+      }
+    }
+    // Set nuke alarm
+    if (searchComplete) {
+      var alarm = new Alarm(10, function() {
+        this.nuke();
+      }, this);
+    }
+  }
+};
+
+state.getWorldCursor = function() {
+  return {
+    x: game.input.activePointer.worldX / this.zoom,
+    y: game.input.activePointer.worldY / this.zoom
+  };
+};
+
+state.getScreenCursor = function() {
+  var worldCursor = this.getWorldCursor();
+  return {
+    x: worldCursor.x - this.cam.x,
+    y: worldCursor.y - this.cam.y
+  };
+};
+
+state.zoomTo = function(factor) {
+  this.zoom = factor;
+  this.level.scale.setTo(factor);
+  game.camera.bounds.setTo(0, 0, Math.floor(this.level.totalWidth * this.zoom), Math.floor(this.level.totalHeight * this.zoom));
+};
+
+state.update = function() {
+  // Update alarms
+  GameManager.alarms.update();
+  // Determine lemmings under mouse cursor
+  var lemmingSelect = {
+    data: [],
+    removeBy: function(callback) {
+      for (var a = this.data.length - 1; a >= 0; a--) {
+        var lem = this.data[a];
+        if (!callback.call(lem)) {
+          this.data.splice(a, 1);
+        }
+      }
+    }
+  };
+  var lems = this.level.lemmings();
+  for (var a = 0; a < lems.length; a++) {
+    var obj = lems[a];
+    obj.cursorDeselect();
+    if (obj.mouseOver()) {
+      lemmingSelect.data.push(obj);
+    }
+  }
+  // Callback for checking the right lemming
+  lemmingSelect.removeBy(this.lemmingSelectableCallback);
+  if (!this.cursorOverGUI() && lemmingSelect.data.length > 0) {
+    lemmingSelect.data[0].cursorSelect();
+  }
+
+  // Scroll
+  // Right-click
+  if (this.cam.scrolling) {
+    var originRel = this.getScreenCursor();
+    var speedFactor = 2;
+    var moveRel = {
+      x: (this.scrollOrigin.x - originRel.x) * speedFactor,
+      y: (this.scrollOrigin.y - originRel.y) * speedFactor
+    };
+    this.scrollOrigin = this.getScreenCursor();
+    this.cam.move(moveRel.x, moveRel.y);
+  }
+  // WASD
+  if (!this.cam.scrolling) {
+    var moveRel = {
+      x: 0,
+      y: 0
+    };
+    if (this.keyboard.a.isDown) {
+      moveRel.x--;
+    }
+    if (this.keyboard.d.isDown) {
+      moveRel.x++;
+    }
+    if (this.keyboard.w.isDown) {
+      moveRel.y--;
+    }
+    if (this.keyboard.s.isDown) {
+      moveRel.y++;
+    }
+    var speedFactor = 10;
+    moveRel.x *= speedFactor;
+    moveRel.y *= speedFactor;
+    if (moveRel.x !== 0 || moveRel.y !== 0) {
+      this.cam.move(moveRel.x, moveRel.y, true);
+    }
+  }
+
+  // Test for victory/defeat
+  if (this.level.started && !this.level.ended) {
+    var allDoorsEmpty = true;
+    for (var a = 0; a < this.level.objectLayer.doorGroup.children.length && allDoorsEmpty; a++) {
+      var door = this.level.objectLayer.doorGroup.children[a];
+      if (door.lemmings > 0) {
+        allDoorsEmpty = false;
+      }
+    }
+    if (allDoorsEmpty && this.level.lemmings().length === 0) {
+      this.level.ended = true;
+      if (this.level.saved >= this.level.lemmingNeed) {
+        // Victory
+        this.goToNextLevel();
+      } else {
+        // Defeat
+        this.retryLevel();
+      }
+    }
+  }
+};
+
+state.clearState = function(destroyLevel) {
+  // Remove all GUI objects
+  this.guiGroup.destroy();
+
+  // Destroy level
+  if(destroyLevel) {
+    this.level.clearAssets();
+    this.level.destroy();
+  }
+  else {
+    game.world.remove(this.level);
+  }
+
+  // Destroy alarms
+  GameManager.alarms.clear();
+
+  // Reset speed manager
+  GameManager.speedManager.paused = false;
+  GameManager.speedManager.speed = 1;
+
+  // Stop the music
+  this.stopBGM();
+};
+
+state.goToNextLevel = function() {
+  // Clear state
+  this.clearState(true);
+  // Get current level
+  var levelIndex = this.getLevelIndex();
+  this.saveGame(levelIndex);
+  if (this.levelFolder.levels.length > levelIndex + 1) {
+    var newLevel = this.levelFolder.levels[levelIndex + 1];
+    game.state.start("intermission", true, false, this.levelFolder, newLevel);
+  } else {
+    game.state.start("menu");
+  }
+};
+
+state.retryLevel = function() {
+  this.clearState(true);
+  game.state.start("intermission", true, false, this.levelFolder, this.levelObj, this.level);
+};
+
+state.getLevelIndex = function() {
+  for (var a = 0; a < this.levelFolder.levels.length; a++) {
+    var level = this.levelFolder.levels[a];
+    if (level === this.levelObj) {
+      return a;
+    }
+  }
+  return -1;
+};
+
+state.saveGame = function(levelIndex) {
+  var rawSave = localStorage["tilelemmings.profiles.default.progress"];
+  var curSave = {};
+  if (rawSave) {
+    curSave = JSON.parse(rawSave);
+    if (!curSave[this.levelFolder.resref]) {
+      curSave[this.levelFolder.resref] = [];
+    }
+    if (curSave[this.levelFolder.resref].indexOf(levelIndex) === -1) {
+      curSave[this.levelFolder.resref].push(levelIndex);
+    }
+  } else {
+    curSave[this.levelFolder.resref] = [];
+    curSave[this.levelFolder.resref].push(levelIndex);
+  }
+  game.saveFile = curSave;
+  localStorage["tilelemmings.profiles.default.progress"] = JSON.stringify(curSave);
+};
+
+state.cursorOverGUI = function() {
+  if (this.minimap && this.minimap.mouseOver()) {
+    return true;
+  }
+  for (var a = 0; a < this.guiGroup.children.length; a++) {
+    var uiNode = this.guiGroup.children[a];
+    if (uiNode.mouseOver && uiNode.mouseOver()) {
+      return true;
+    }
+  }
+  return false;
+};
+
+state.lemmingSelectableCallback = function() {
+  // Cursors left and right
+  if ((this.state.keyboard.left.isDown || this.state.keyboard.q.isDown) && this.dir != -1) {
+    return false;
+  }
+  if ((this.state.keyboard.right.isDown || this.state.keyboard.e.isDown) && this.dir != 1) {
+    return false;
+  }
+  if (this.dead || !this.active) {
+    return false;
+  }
+  if (this.level.actions[this.state.actionSelect] >= 0) {
+    if (this.action.name == this.state.actionSelect ||
+      this.subaction.name == this.state.actionSelect) {
+      // Exclude builders at their end
+      if (this.action.name === "builder" && this.animations.currentAnim.name === "build_end") {
+        // Don't make unselectable
+      } else {
+        return false;
+      }
+    }
+    if (typeof this.attributes[this.state.actionSelect] !== "undefined" && this.attributes[this.state.actionSelect]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+state.openDoors = function() {
+  for (var a = 0; a < this.level.objectLayer.doorGroup.children.length; a++) {
+    var obj = this.level.objectLayer.doorGroup.children[a];
+    obj.openDoor();
+  }
+};
+
+state.playLevelBGM = function() {
+  GameManager.audio.play_bgm("bgm");
+};
+
+state.stopBGM = function() {
+  GameManager.audio.stop_bgm();
+};
+
+state.createLevelGUI = function() {
+  var buttons = [];
+
+  // Create action buttons
+  var a, animPrefix, btn;
+  for (a in this.level.actions) {
+    animPrefix = "Btn_" + a.substr(0, 1).toUpperCase() + a.substr(1) + "_";
+    btn = new GUI_Button(game, 0, 0);
+    this.guiGroup.add(btn);
+    buttons.push(btn);
+    btn.set({
+      released: animPrefix + "0.png",
+      pressed: animPrefix + "1.png"
+    }, a, "action");
+
+    // Assign buttons
+    btn.actionName = a;
+    if(this.level.actions[a] > 0) {
+      btn.label.text = this.level.actions[a].toString();
+    }
+  }
+
+  // Create pause button
+  btn = new GUI_Button(game, 0, 0);
+  this.guiGroup.add(btn);
+  buttons.push(btn);
+  btn.set({
+    released: "Btn_Pause_0.png",
+    pressed: "Btn_Pause_1.png"
+  }, "pause", "misc");
+  GameManager.speedManager.pauseButton = btn;
+
+  // Create fast forward button
+  btn = new GUI_Button(game, 0, 0);
+  this.guiGroup.add(btn);
+  buttons.push(btn);
+  btn.set({
+    released: "Btn_FastForward_0.png",
+    pressed: "Btn_FastForward_1.png"
+  }, "fastForward", "misc");
+  GameManager.speedManager.fastForwardButton = btn;
+
+  // Create nuke button
+  btn = new GUI_Button(game, 0, 0);
+  this.guiGroup.add(btn);
+  buttons.push(btn);
+  btn.set({
+    released: "Btn_Nuke_0.png",
+    pressed: "Btn_Nuke_1.png"
+  }, "nuke", "misc");
+  btn.doubleTap.enabled = true;
+
+  // Create grid button
+  btn = new GUI_Button(game, 0, 0);
+  this.guiGroup.add(btn);
+  buttons.push(btn);
+  btn.set({
+    released: "Btn_Grid_0.png",
+    pressed: "Btn_Grid_1.png"
+  }, "grid", "misc");
+  this.grid.button = btn;
+
+  // Align buttons
+  var alignX = 0;
+  for (a = 0; a < buttons.length; a++) {
+    btn = buttons[a];
+    btn.x = alignX;
+    btn.y = game.camera.height - btn.height;
+    alignX += btn.width;
+  }
+};
+
+state.deselectAllActions = function() {
+	for (var a = 0; a < this.guiGroup.children.length; a++) {
+		var obj = this.guiGroup.children[a];
+		if (obj.subType === "action") {
+			obj.deselect();
 		}
-		// Callback for checking the right lemming
-		lemmingSelect.removeBy(this.lemmingSelectableCallback);
-		if (!this.cursorOverGUI() && lemmingSelect.data.length > 0) {
-			lemmingSelect.data[0].cursorSelect();
-		}
-
-		// Scroll
-		// Right-click
-		if (this.cam.scrolling) {
-			var originRel = this.getScreenCursor();
-			var speedFactor = 2;
-			var moveRel = {
-				x: (this.scrollOrigin.x - originRel.x) * speedFactor,
-				y: (this.scrollOrigin.y - originRel.y) * speedFactor
-			};
-			this.scrollOrigin = this.getScreenCursor();
-			this.cam.move(moveRel.x, moveRel.y);
-		}
-		// WASD
-		if (!this.cam.scrolling) {
-			var moveRel = {
-				x: 0,
-				y: 0
-			};
-			if (this.keyboard.a.isDown) {
-				moveRel.x--;
-			}
-			if (this.keyboard.d.isDown) {
-				moveRel.x++;
-			}
-			if (this.keyboard.w.isDown) {
-				moveRel.y--;
-			}
-			if (this.keyboard.s.isDown) {
-				moveRel.y++;
-			}
-			var speedFactor = 10;
-			moveRel.x *= speedFactor;
-			moveRel.y *= speedFactor;
-			if (moveRel.x !== 0 || moveRel.y !== 0) {
-				this.cam.move(moveRel.x, moveRel.y, true);
-			}
-		}
-
-		// Test for victory/defeat
-		if (this.level.started && !this.level.ended) {
-			var allDoorsEmpty = true;
-			for (var a = 0; a < this.level.objectLayer.doorGroup.children.length && allDoorsEmpty; a++) {
-				var door = this.level.objectLayer.doorGroup.children[a];
-				if (door.lemmings > 0) {
-					allDoorsEmpty = false;
-				}
-			}
-			if (allDoorsEmpty && this.level.lemmings().length === 0) {
-				this.level.ended = true;
-				if (this.level.saved >= this.level.lemmingNeed) {
-					// Victory
-					this.goToNextLevel();
-				} else {
-					// Defeat
-					this.retryLevel();
-				}
-			}
-		}
-	},
-
-	clearState: function(destroyLevel) {
-		// Remove all GUI objects
-		this.guiGroup.destroy();
-
-		// Destroy level
-		if(destroyLevel) {
-			this.level.clearAssets();
-			this.level.destroy();
-		}
-		else {
-			game.world.remove(this.level);
-		}
-
-		// Destroy alarms
-		GameManager.alarms.clear();
-
-		// Reset speed manager
-		GameManager.speedManager.paused = false;
-		GameManager.speedManager.speed = 1;
-
-		// Stop the music
-		this.stopBGM();
-	},
-
-	goToNextLevel: function() {
-		// Clear state
-		this.clearState(true);
-		// Get current level
-		var levelIndex = this.getLevelIndex();
-		this.saveGame(levelIndex);
-		if (this.levelFolder.levels.length > levelIndex + 1) {
-			var newLevel = this.levelFolder.levels[levelIndex + 1];
-			game.state.start("intermission", true, false, this.levelFolder, newLevel);
-		} else {
-			game.state.start("menu");
-		}
-	},
-
-	retryLevel: function() {
-		this.clearState(true);
-		game.state.start("intermission", true, false, this.levelFolder, this.levelObj, this.level);
-	},
-
-	getLevelIndex: function() {
-		for (var a = 0; a < this.levelFolder.levels.length; a++) {
-			var level = this.levelFolder.levels[a];
-			if (level === this.levelObj) {
-				return a;
-			}
-		}
-		return -1;
-	},
-
-	saveGame: function(levelIndex) {
-		var rawSave = localStorage["tilelemmings.profiles.default.progress"];
-		var curSave = {};
-		if (rawSave) {
-			curSave = JSON.parse(rawSave);
-			if (!curSave[this.levelFolder.resref]) {
-				curSave[this.levelFolder.resref] = [];
-			}
-			if (curSave[this.levelFolder.resref].indexOf(levelIndex) === -1) {
-				curSave[this.levelFolder.resref].push(levelIndex);
-			}
-		} else {
-			curSave[this.levelFolder.resref] = [];
-			curSave[this.levelFolder.resref].push(levelIndex);
-		}
-		game.saveFile = curSave;
-		localStorage["tilelemmings.profiles.default.progress"] = JSON.stringify(curSave);
-	},
-
-	cursorOverGUI: function() {
-		if (this.minimap && this.minimap.mouseOver()) {
-			return true;
-		}
-		for (var a = 0; a < this.guiGroup.children.length; a++) {
-			var uiNode = this.guiGroup.children[a];
-			if (uiNode.mouseOver && uiNode.mouseOver()) {
-				return true;
-			}
-		}
-		return false;
-	},
-
-	lemmingSelectableCallback: function() {
-		// Cursors left and right
-		if ((this.state.keyboard.left.isDown || this.state.keyboard.q.isDown) && this.dir != -1) {
-			return false;
-		}
-		if ((this.state.keyboard.right.isDown || this.state.keyboard.e.isDown) && this.dir != 1) {
-			return false;
-		}
-		if (this.dead || !this.active) {
-			return false;
-		}
-		if (this.level.actions[this.state.actionSelect] >= 0) {
-			if (this.action.name == this.state.actionSelect ||
-				this.subaction.name == this.state.actionSelect) {
-				// Exclude builders at their end
-				if (this.action.name === "builder" && this.animations.currentAnim.name === "build_end") {
-					// Don't make unselectable
-				} else {
-					return false;
-				}
-			}
-			if (typeof this.attributes[this.state.actionSelect] !== "undefined" && this.attributes[this.state.actionSelect]) {
-				return false;
-			}
-		}
-		return true;
-	},
-
-	openDoors: function() {
-		for (var a = 0; a < this.level.objectLayer.doorGroup.children.length; a++) {
-			var obj = this.level.objectLayer.doorGroup.children[a];
-			obj.openDoor();
-		}
-	},
-
-	playLevelBGM: function() {
-		GameManager.audio.play_bgm("bgm");
-	},
-
-	stopBGM: function() {
-		GameManager.audio.stop_bgm();
-	},
-
-	createLevelGUI: function() {
-		var buttons = [];
-
-		// Create action buttons
-		var a, animPrefix, btn;
-		for (a in this.level.actions) {
-			animPrefix = "Btn_" + a.substr(0, 1).toUpperCase() + a.substr(1) + "_";
-			btn = new GUI_Button(game, 0, 0);
-			this.guiGroup.add(btn);
-			buttons.push(btn);
-			btn.set({
-				released: animPrefix + "0.png",
-				pressed: animPrefix + "1.png"
-			}, a, "action");
-
-			// Assign buttons
-			btn.actionName = a;
-			if(this.level.actions[a] > 0) {
-				btn.label.text = this.level.actions[a].toString();
-			}
-		}
-
-		// Create pause button
-		btn = new GUI_Button(game, 0, 0);
-		this.guiGroup.add(btn);
-		buttons.push(btn);
-		btn.set({
-			released: "Btn_Pause_0.png",
-			pressed: "Btn_Pause_1.png"
-		}, "pause", "misc");
-		GameManager.speedManager.pauseButton = btn;
-
-		// Create fast forward button
-		btn = new GUI_Button(game, 0, 0);
-		this.guiGroup.add(btn);
-		buttons.push(btn);
-		btn.set({
-			released: "Btn_FastForward_0.png",
-			pressed: "Btn_FastForward_1.png"
-		}, "fastForward", "misc");
-		GameManager.speedManager.fastForwardButton = btn;
-
-		// Create nuke button
-		btn = new GUI_Button(game, 0, 0);
-		this.guiGroup.add(btn);
-		buttons.push(btn);
-		btn.set({
-			released: "Btn_Nuke_0.png",
-			pressed: "Btn_Nuke_1.png"
-		}, "nuke", "misc");
-		btn.doubleTap.enabled = true;
-
-		// Create grid button
-		btn = new GUI_Button(game, 0, 0);
-		this.guiGroup.add(btn);
-		buttons.push(btn);
-		btn.set({
-			released: "Btn_Grid_0.png",
-			pressed: "Btn_Grid_1.png"
-		}, "grid", "misc");
-		this.grid.button = btn;
-
-		// Align buttons
-		var alignX = 0;
-		for (a = 0; a < buttons.length; a++) {
-			btn = buttons[a];
-			btn.x = alignX;
-			btn.y = game.camera.height - btn.height;
-			alignX += btn.width;
-		}
-	},
-
-	deselectAllActions: function() {
-		for (var a = 0; a < this.guiGroup.children.length; a++) {
-			var obj = this.guiGroup.children[a];
-			if (obj.subType === "action") {
-				obj.deselect();
-			}
-		}
-	},
-
-	expendAction: function(actionName, amount) {
-		if(amount === undefined) { amount = 1; }
-
-		this.setActionAmount(actionName, this.getActionAmount(actionName) - amount);
-	},
-
-	getActionAmount: function(actionName) {
-		if(this.level.actions[actionName]) {
-			return this.level.actions[actionName];
-		}
-		return -1;
-	},
-
-	setActionAmount: function(actionName, amount) {
-		if(amount === undefined) { amount = 0; }
-
-		if(this.level.actions[actionName]) {
-			this.level.actions[actionName] = amount;
-			this.guiGroup.forEach(function(child, actionName, value) {
-				if(child.subType && child.subType === "action" && child.actionName == actionName) {
-					if(value === 0) {
-						child.label.text = "";
-					}
-					else {
-						child.label.text = value.toString();
-					}
-				}
-			}, this, true, actionName, this.level.actions[actionName]);
-		}
-	},
-
-	instancePosition: function(xCheck, yCheck, instanceTypeCheck) {
-		var arrayCheck = [];
-		switch (instanceTypeCheck) {
-			case "lemming":
-				arrayCheck = this.level.lemmings();
-				break;
-			case "door":
-				arrayCheck = this.level.objectLayer.doorGroup.children;
-				break;
-			case "exit":
-				arrayCheck = this.level.objectLayer.exitGroup.children;
-				break;
-			case "trap":
-				arrayCheck = this.level.objectLayer.trapGroup.children;
-				break;
-		}
-		var result = [];
-		for (var a = 0; a < arrayCheck.length; a++) {
-			var obj = arrayCheck[a];
-			if (xCheck >= obj.bbox.left && xCheck <= obj.bbox.right &&
-				yCheck >= obj.bbox.top && yCheck <= obj.bbox.bottom) {
-				result.push(obj);
-			}
-		}
-		return result;
-	},
-
-	/*
-		method: getBlockerInTile(tileX, tileY[, checkLemming])
-		Returns true if there is a blocker in that specified tile
-		checkLemming specifies the lemming the check originates from(optional)
-		If set, will not check for itself as a blocker, and will only detect blockers in
-		the same tile that are in front of checkLemming
-	*/
-	getBlockerInTile: function(tileX, tileY, checkLemming) {
-		if (checkLemming === undefined) {
-			checkLemming = null;
-		}
-
-		var rect = {
-			left: tileX * GameData.tile.width,
-			top: (tileY * GameData.tile.height) + 1,
-			right: (tileX * GameData.tile.width) + GameData.tile.width,
-			bottom: ((tileY * GameData.tile.height) + GameData.tile.height) + 1
-		};
-
-		var a, lem, lems = this.level.lemmingsGroup;
-		for (a = 0; a < lems.length; a++) {
-			lem = lems[a];
-
-			if (lem.action.name === "blocker" && !lem.action.idle &&
-				lem.x >= rect.left && lem.x < rect.right &&
-				lem.y >= rect.top && lem.y < rect.bottom &&
-				checkLemming !== lem) {
-
-				// No checkLemming has been specified
-				if (!checkLemming) {
-					return true;
-				}
-				// checkLemming has been specified but is not relevant(not in the same tile as lem)
-				else if (checkLemming && !(checkLemming.x >= rect.left && checkLemming.x < rect.right &&
-					checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
-					return true;
-				}
-				// checkLemming has been specified and in the same tile as lem; check for requirements
-				else if (checkLemming && (checkLemming.x >= rect.left && checkLemming.x < rect.right &&
-					checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
-					// Check to see if lem is in front of checkLemming
-					if((checkLemming.x >= lem.x && checkLemming.dir === -1) ||
-						(checkLemming.x <= lem.x && checkLemming.dir === 1)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
+};
+
+state.expendAction = function(actionName, amount) {
+  if(amount === undefined) { amount = 1; }
+
+  this.setActionAmount(actionName, this.getActionAmount(actionName) - amount);
+};
+
+state.getActionAmount = function(actionName) {
+  if(this.level.actions[actionName]) {
+    return this.level.actions[actionName];
+  }
+  return -1;
+};
+
+state.setActionAmount = function(actionName, amount) {
+  if(amount === undefined) { amount = 0; }
+
+  if(this.level.actions[actionName]) {
+    this.level.actions[actionName] = amount;
+    this.guiGroup.forEach(function(child, actionName, value) {
+      if(child.subType && child.subType === "action" && child.actionName == actionName) {
+        if(value === 0) {
+          child.label.text = "";
+        }
+        else {
+          child.label.text = value.toString();
+        }
+      }
+    }, this, true, actionName, this.level.actions[actionName]);
+  }
+};
+
+state.instancePosition = function(xCheck, yCheck, instanceTypeCheck) {
+  var arrayCheck = [];
+  switch (instanceTypeCheck) {
+    case "lemming":
+      arrayCheck = this.level.lemmings();
+      break;
+    case "door":
+      arrayCheck = this.level.objectLayer.doorGroup.children;
+      break;
+    case "exit":
+      arrayCheck = this.level.objectLayer.exitGroup.children;
+      break;
+    case "trap":
+      arrayCheck = this.level.objectLayer.trapGroup.children;
+      break;
+  }
+  var result = [];
+  for (var a = 0; a < arrayCheck.length; a++) {
+    var obj = arrayCheck[a];
+    if (xCheck >= obj.bbox.left && xCheck <= obj.bbox.right &&
+      yCheck >= obj.bbox.top && yCheck <= obj.bbox.bottom) {
+      result.push(obj);
+    }
+  }
+  return result;
+};
+
+/**
+ *
+ * @method getBlockerInTile
+ * @param {Number} tileX
+ * @param {Number} tileY
+ * @param {Lemming} [checkLemming] - the Lemming object this originates from
+ * @return {Boolean} Whether a blocker is present in the specified tile
+ */
+state.getBlockerInTile = function(tileX, tileY, checkLemming) {
+  if (checkLemming === undefined) {
+    checkLemming = null;
+  }
+
+  var rect = {
+    left: tileX * GameData.tile.width,
+    top: (tileY * GameData.tile.height) + 1,
+    right: (tileX * GameData.tile.width) + GameData.tile.width,
+    bottom: ((tileY * GameData.tile.height) + GameData.tile.height) + 1
+  };
+
+  var a, lem, lems = this.level.lemmingsGroup;
+  for (a = 0; a < lems.length; a++) {
+    lem = lems[a];
+
+    if (lem.action.name === "blocker" && !lem.action.idle &&
+      lem.x >= rect.left && lem.x < rect.right &&
+      lem.y >= rect.top && lem.y < rect.bottom &&
+      checkLemming !== lem) {
+
+      // No checkLemming has been specified
+      if (!checkLemming) {
+        return true;
+      }
+      // checkLemming has been specified but is not relevant(not in the same tile as lem)
+      else if (checkLemming && !(checkLemming.x >= rect.left && checkLemming.x < rect.right &&
+        checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
+        return true;
+      }
+      // checkLemming has been specified and in the same tile as lem; check for requirements
+      else if (checkLemming && (checkLemming.x >= rect.left && checkLemming.x < rect.right &&
+        checkLemming.y >= rect.top && checkLemming.y < rect.bottom)) {
+        // Check to see if lem is in front of checkLemming
+        if((checkLemming.x >= lem.x && checkLemming.dir === -1) ||
+          (checkLemming.x <= lem.x && checkLemming.dir === 1)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 };
 var game = new Phaser.Game(
 	800,
@@ -4180,17 +4174,7 @@ var game = new Phaser.Game(
 	false
 );
 
-// window.resizeGame = function(ratio) {
-// 	// width = window.innerWidth;
-// 	// height = window.innerHeight;
-// 	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-// 	// game.scale.setUserScale(width / 800, height / 600);
-// };
-
-game.state.add("boot", bootState);
-game.state.add("menu", menuState);
-game.state.add("intermission", intermissionState);
-game.state.add("game", gameState);
+StateManager.init();
 
 game.state.start("boot");
 var GameManager = {
