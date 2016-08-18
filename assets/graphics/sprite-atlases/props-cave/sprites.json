@@ -1,0 +1,80 @@
+{
+"frames": {
+	"door0.png": {
+		"frame": {"x":0, "y":93, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door1.png": {
+		"frame": {"x":0, "y":93, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door2.png": {
+		"frame": {"x":83, "y":31, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door3.png": {
+		"frame": {"x":83, "y":0, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door4.png": {
+		"frame": {"x":0, "y":124, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door5.png": {
+		"frame": {"x":0, "y":0, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door6.png": {
+		"frame": {"x":0, "y":62, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door7.png": {
+		"frame": {"x":0, "y":31, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"door8.png": {
+		"frame": {"x":0, "y":93, "w":82, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":30,"w":82,"h":60},
+		"sourceSize": {"w":82,"h":60}
+	},
+	"exit0.png": {
+		"frame": {"x":83, "y":62, "w":64, "h":48},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":94},
+		"sourceSize": {"w":64,"h":94}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 166, "h": 155},
+	"scale": "1"
+}
+}

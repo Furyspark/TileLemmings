@@ -1,0 +1,11 @@
+{ "columns":12,
+ "image":"..\/graphics\/tilesets\/pink.png",
+ "imageheight":320,
+ "imagewidth":240,
+ "margin":2,
+ "name":"pink",
+ "spacing":4,
+ "tilecount":192,
+ "tileheight":16,
+ "tilewidth":16
+}

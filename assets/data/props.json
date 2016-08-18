@@ -1,0 +1,35 @@
+{
+  "doorCave": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "audio": {
+      "open": "sndDoor_Cave"
+    },
+    "baseTexture": "atlPropsCave",
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png",
+        "door8.png"
+      ],
+      "open": [
+        "door0.png"
+      ]
+    }
+  }
+}

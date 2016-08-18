@@ -1,0 +1,88 @@
+{
+  "images": [
+    {
+      "key": "bgMainMenu",
+      "src": "assets/graphics/backgrounds/mainmenu.jpg"
+    }
+  ],
+  "texture-atlases": [
+    {
+      "key": "atlMinimap",
+      "src": "assets/graphics/sprite-atlases/minimap/sprites.json"
+    },
+    {
+      "key": "atlLemming",
+      "src": "assets/graphics/sprite-atlases/lemming/sprites.json"
+    },
+    {
+      "key": "atlPropsCave",
+      "src": "assets/graphics/sprite-atlases/props-cave/sprites.json"
+    }
+  ],
+  "audio": [
+    {
+      "key": "sndAction",
+      "src": "assets/audio/sfx/sndAction.ogg"
+    },
+    {
+      "key": "sndBuildEnding",
+      "src": "assets/audio/sfx/sndBuildEnding.ogg"
+    },
+    {
+      "key": "sndBurn",
+      "src": "assets/audio/sfx/sndBurn.ogg"
+    },
+    {
+      "key": "sndChink",
+      "src": "assets/audio/sfx/sndChink.ogg"
+    },
+    {
+      "key": "sndDie",
+      "src": "assets/audio/sfx/sndDie.ogg"
+    },
+    {
+      "key": "sndDoor",
+      "src": "assets/audio/sfx/sndDoor.ogg"
+    },
+    {
+      "key": "sndDoor_Cave",
+      "src": "assets/audio/sfx/sndDoor_Cave.ogg"
+    },
+    {
+      "key": "sndDrown",
+      "src": "assets/audio/sfx/sndDrown.ogg"
+    },
+    {
+      "key": "sndLaser",
+      "src": "assets/audio/sfx/sndLaser.ogg"
+    },
+    {
+      "key": "sndLemmingDeath_Explode",
+      "src": "assets/audio/sfx/sndLemmingDeath_Explode.ogg"
+    },
+    {
+      "key": "sndLemmingDeath_Fall",
+      "src": "assets/audio/sfx/sndLemmingDeath_Fall.ogg"
+    },
+    {
+      "key": "sndLetsGo",
+      "src": "assets/audio/sfx/sndLetsGo.ogg"
+    },
+    {
+      "key": "sndLightning",
+      "src": "assets/audio/sfx/sndLightning.ogg"
+    },
+    {
+      "key": "sndOhNo",
+      "src": "assets/audio/sfx/sndOhNo.ogg"
+    },
+    {
+      "key": "sndUI_Click",
+      "src": "assets/audio/sfx/sndUI_Click.ogg"
+    },
+    {
+      "key": "sndYippie",
+      "src": "assets/audio/sfx/sndYippie.ogg"
+    }
+  ]
+}

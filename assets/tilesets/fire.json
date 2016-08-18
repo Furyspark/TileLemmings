@@ -1,0 +1,11 @@
+{ "columns":11,
+ "image":"..\/graphics\/tilesets\/fire.png",
+ "imageheight":120,
+ "imagewidth":220,
+ "margin":2,
+ "name":"fire",
+ "spacing":4,
+ "tilecount":66,
+ "tileheight":16,
+ "tilewidth":16
+}
