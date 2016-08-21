@@ -12,34 +12,37 @@ Object.defineProperties(Map.prototype, {
 });
 
 Map.prototype.init = function(src, scene) {
-  this.world           = new World();
-  this.grid            = new PIXI.Container();
-  this.camera          = new Camera(this);
-  this.scene           = scene;
-  this.tilesets        = [];
-  this._expectedAssets = [];
-  this._usedAssets     = [];
-  this.width           = 1;
-  this.height          = 1;
-  this.tileWidth       = 16;
-  this.tileHeight      = 16;
-  this.tiles           = [];
-  this.objects         = [];
-  this.background      = { image: null, parallax: new Point(0.5, 0.5), useParallax: true };
-  this.needed          = 1;
-  this.saved           = 0;
-  this.totalLemmings   = 0;
-  this.name            = "No Name";
-  this.pool            = {};
-  this.actions         = {};
-  this.maxFallDistance = 8 * 16;
+  this.world             = new World();
+  this.grid              = new PIXI.Container();
+  this.camera            = new Camera(this);
+  this.scene             = scene;
+  this.tilesets          = [];
+  this._expectedAssets   = [];
+  this._expectedTilesets = [];
+  this._usedAssets       = [];
+  this.width             = 1;
+  this.height            = 1;
+  this.tileWidth         = 16;
+  this.tileHeight        = 16;
+  this.tiles             = [];
+  this.objects           = [];
+  this.background        = { image: null, parallax: new Point(0.5, 0.5), useParallax: true };
+  this.needed            = 1;
+  this.saved             = 0;
+  this.totalLemmings     = 0;
+  this.name              = "No Name";
+  this.pool              = {};
+  this.actions           = {};
+  this.maxFallDistance   = 8 * 16;
 
   this.grid.z = -1500;
   this.grid.visible = false;
   this.world.addChild(this.grid);
 
   this.onLoad = new Signal();
+  this.onCreate = new Signal();
   this.onLoad.addOnce(this.createLevel, this, [], 5);
+
 
   this.baseDir = src.split(/[\/\\]/).slice(0, -1).join("/") + "/";
   var obj = Loader.loadJSON("map", src);
@@ -100,6 +103,7 @@ Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage) {
   ts.firstGid       = firstGid;
   ts.tileProperties = tsData.tileproperties ? tsData.tileproperties : null;
 
+  // Load tileset texture
   if(loadImage) {
     var imageKey = key + "_image";
     this._expectedAssets.push(imageKey);
@@ -111,6 +115,7 @@ Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage) {
     this.tilesets.push(ts);
   }
 
+  this._expectedTilesets.push(key);
   this._usedAssets.push({ type: "json", key: key });
   this.clearAsset(key);
 }
@@ -123,7 +128,60 @@ Map.prototype.parseTileset = function(imageKey, tileset) {
   this.clearAsset(imageKey);
 }
 
+Map.prototype.loadUsedGameObjectAssets = function() {
+  var objects = this.getUsedGameObjects();
+  for(var a = 0;a < objects.length;a++) {
+    var obj = objects[a];
+    var props = this.getObjectProperties(obj);
+    if(props && props.type) {
+      switch(props.type) {
+        case "prop":
+          this.loadGameObjectAsset($dataProps[props.key]);
+          break;
+      }
+    }
+  }
+}
+
+Map.prototype.getUsedGameObjects = function() {
+  var result = [];
+  for(var a = 0;a < this.data.layers.length;a++) {
+    var layer = this.data.layers[a];
+    if(layer.type === "objectgroup") {
+      for(var b = 0;b < layer.objects.length;b++) {
+        var obj = layer.objects[b];
+        result.push(obj);
+      }
+    }
+  }
+  return result;
+}
+
+Map.prototype.loadGameObjectAsset = function(props) {
+  // Load audio
+  for(var a in props.assets.audio) {
+    var k = Loader.determineKey(props.assets.audio[a]);
+    var obj = Loader.loadAudio(k, props.assets.audio[a]);
+    obj.onComplete.addOnce(function(key) {
+      this.clearAsset(key);
+    }, this, [k], 20);
+    this._expectedAssets.push(k);
+  }
+  // Load texture atlases
+  for(var a in props.assets.textureAtlases) {
+    var k = Loader.determineKey(props.assets.textureAtlases[a]);
+    var obj = Loader.loadTextureAtlas(k, props.assets.textureAtlases[a]);
+    obj.onComplete.addOnce(function(key) {
+      this.clearAsset(key);
+    }, this, [k], 20);
+    this._expectedAssets.push(k);
+  }
+}
+
 Map.prototype.clearAsset = function(key) {
+  // Clear tileset
+  this.clearTileset(key);
+  // Check if done loading, and if so, create level
   var a = this._expectedAssets.indexOf(key);
   if(a !== -1) {
     this._expectedAssets.splice(a, 1);
@@ -134,6 +192,16 @@ Map.prototype.clearAsset = function(key) {
         return 0;
       });
       this.onLoad.dispatch();
+    }
+  }
+}
+
+Map.prototype.clearTileset = function(key) {
+  var a = this._expectedTilesets.indexOf(key);
+  if(a !== -1) {
+    this._expectedTilesets.splice(a, 1);
+    if(this._expectedTilesets.length === 0) {
+      this.loadUsedGameObjectAssets();
     }
   }
 }
@@ -172,6 +240,9 @@ Map.prototype.createLevel = function() {
   this.pool.lemming = new Pool("Game_Lemming", this, [], this.totalLemmings);
   // Add grid
   this.addGrid();
+
+  // Dispatch event
+  this.onCreate.dispatch();
 }
 
 Map.prototype.parseTileLayer = function(layer) {
@@ -187,17 +258,23 @@ Map.prototype.parseTileLayer = function(layer) {
 Map.prototype.parseObjectLayer = function(layer) {
   for(var a = 0;a < layer.objects.length;a++) {
     var objData = layer.objects[a];
-    var ts = this.getTileset(objData.gid);
-    if(ts) {
-      var props = ts.getTileProperties(objData.gid - ts.firstGid);
-      if(props) {
-        var obj;
-        if(props.type === "prop") {
-          obj = this.addProp(objData.x, objData.y, props.key, objData);
-        }
+    var props = this.getObjectProperties(objData);
+    if(props) {
+      var obj;
+      if(props.type === "prop") {
+        obj = this.addProp(objData.x, objData.y, props.key, objData);
       }
     }
   }
+}
+
+Map.prototype.getObjectProperties = function(objectData) {
+  var ts = this.getTileset(objectData.gid);
+  if(ts) {
+    var props = ts.getTileProperties(objectData.gid - ts.firstGid);
+    if(props) return props;
+  }
+  return null;
 }
 
 Map.prototype.addGrid = function() {

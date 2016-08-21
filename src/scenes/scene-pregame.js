@@ -11,7 +11,7 @@ Scene_PreGame.prototype.init = function(src) {
   Scene_Base.prototype.init.call(this);
   this._loading = true;
   $gameMap = new Map(src, this);
-  $gameMap.onLoad.addOnce(this.start, this, [], 10);
+  $gameMap.onCreate.addOnce(this.start, this, [], 10);
 }
 
 Scene_PreGame.prototype.start = function() {
@@ -34,6 +34,7 @@ Scene_PreGame.prototype.start = function() {
     this.stage.addChild(this.text[a]);
   }
 
+  // Add user input
   Input.mouse.button.LEFT.onPress.add(this.startLevel, this);
 }
 

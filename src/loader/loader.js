@@ -141,3 +141,7 @@ Loader._finishFile = function(file) {
 Loader.checkLoadCompletion = function() {
   if(this._loading.length === 0) this.onComplete.dispatch();
 }
+
+Loader.determineKey = function(url) {
+  return url;
+}

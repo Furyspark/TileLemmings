@@ -1,0 +1,80 @@
+{
+"frames": {
+	"door0.png": {
+		"frame": {"x":0, "y":183, "w":80, "h":50},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door1.png": {
+		"frame": {"x":162, "y":0, "w":80, "h":50},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door2.png": {
+		"frame": {"x":81, "y":167, "w":80, "h":50},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door3.png": {
+		"frame": {"x":81, "y":116, "w":80, "h":50},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door4.png": {
+		"frame": {"x":81, "y":63, "w":80, "h":52},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door5.png": {
+		"frame": {"x":0, "y":0, "w":80, "h":56},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door6.png": {
+		"frame": {"x":81, "y":0, "w":80, "h":62},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door7.png": {
+		"frame": {"x":0, "y":120, "w":80, "h":62},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"door8.png": {
+		"frame": {"x":0, "y":57, "w":80, "h":62},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102}
+	},
+	"exit0.png": {
+		"frame": {"x":162, "y":51, "w":64, "h":70},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":138},
+		"sourceSize": {"w":64,"h":138}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 243, "h": 234},
+	"scale": "1"
+}
+}

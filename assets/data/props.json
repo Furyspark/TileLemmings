@@ -12,7 +12,15 @@
     "audio": {
       "open": "sndDoor_Cave"
     },
-    "baseTexture": "atlPropsCave",
+    "baseTexture": "",
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor_Cave.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-cave/sprites.json"
+      }
+    },
     "animations": {
       "closed": [
         "door0.png"
