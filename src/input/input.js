@@ -11,7 +11,8 @@ Input.initKeys = function() {
   var keys = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
   "ARROWLEFT", "ARROWRIGHT", "ARROWUP", "ARROWDOWN",
   "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
-  "ALT", "CONTROL", "SHIFT", "ENTER"];
+  "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
+  "ALT", "CONTROL", "SHIFT", "ENTER", " "];
 
   this.key = {};
   for(var a = 0;a < keys.length;a++) {
@@ -76,6 +77,7 @@ Input._refreshButtonStates = function() {
 }
 
 Input._onKeyDown = function(e) {
+  // console.log(e.key);
   var key = this.key[e.key.toUpperCase()];
   if(key && !key.down) {
     key.down = true;

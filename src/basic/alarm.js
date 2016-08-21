@@ -29,3 +29,13 @@ Alarm.prototype.update = function() {
     if(this.baseTime > 0 && this.time === 0) this.time = this.baseTime;
   }
 }
+
+Alarm.prototype.stop = function() {
+  this.time = -1;
+}
+
+Alarm.prototype.start = function(time) {
+  if(!time) time = -1;
+  if(time > 0) this.time = time;
+  else if(time === -1 && this.baseTime > 0) this.time = this.baseTime;
+}

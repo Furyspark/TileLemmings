@@ -3,6 +3,10 @@
     {
       "key": "bgMainMenu",
       "src": "assets/graphics/backgrounds/mainmenu.jpg"
+    },
+    {
+      "key": "tsGeneric",
+      "src": "assets/graphics/tilesets/generic/generic.png"
     }
   ],
   "texture-atlases": [
@@ -17,6 +21,18 @@
     {
       "key": "atlPropsCave",
       "src": "assets/graphics/sprite-atlases/props-cave/sprites.json"
+    },
+    {
+      "key": "atlGUI",
+      "src": "assets/graphics/sprite-atlases/gui/sprites.json"
+    },
+    {
+      "key": "atlMisc",
+      "src": "assets/graphics/sprite-atlases/misc/sprites.json"
+    },
+    {
+      "key": "atlPanels",
+      "src": "assets/graphics/sprite-atlases/panels/sprites.json"
     }
   ],
   "audio": [
@@ -57,7 +73,7 @@
       "src": "assets/audio/sfx/sndLaser.ogg"
     },
     {
-      "key": "sndLemmingDeath_Explode",
+      "key": "sndLemmingExplode",
       "src": "assets/audio/sfx/sndLemmingDeath_Explode.ogg"
     },
     {

@@ -15,14 +15,26 @@ Camera.prototype.update = function() {
 }
 
 Camera.prototype.setPosition = function(position, anchor) {
+  // Gather data
   var oldPos = new Point(this.rect.x, this.rect.y);
   var mapPos = new Point(
     position.x - (this.rect.width * anchor.x),
     position.y - (this.rect.height * anchor.y)
   );
-  var bounds = new Rect(0, 0, $gameMap.realWidth - this.rect.width, $gameMap.realHeight - this.rect.height);
+  // Set bounds
+  var scene = SceneManager.current();
+  var bottomIncrease = 0;
+  if(scene.uiHeight) bottomIncrease = scene.uiHeight / $gameMap.world.scale.y;
+  var bounds = new Rect(0, 0, $gameMap.realWidth - this.rect.width, $gameMap.realHeight + bottomIncrease - this.rect.height);
+  // Move
   this.rect.x = Math.max(bounds.left, Math.min(bounds.right, mapPos.x));
   this.rect.y = Math.max(bounds.top, Math.min(bounds.bottom, mapPos.y));
+  // Update background
+  if($gameMap.background.image) {
+    $gameMap.background.image.tilePosition.x = this.rect.x * $gameMap.background.parallax.x;
+    $gameMap.background.image.tilePosition.y = this.rect.y * $gameMap.background.parallax.y;
+  }
+  // Return data
   var diff = new Point(oldPos.x - this.rect.x, oldPos.y - this.rect.y);
   return diff;
 }

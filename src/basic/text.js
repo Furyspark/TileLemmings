@@ -13,6 +13,6 @@ Text.defaultStyle = {
 
 Text.prototype.init = function(text, style) {
   if(!text) text = "";
-  if(!style) style = Text.defaultStyle;
+  if(!style) style = Object.assign({}, Text.defaultStyle);
   PIXI.Text.prototype.constructor.call(this, text, style);
 }

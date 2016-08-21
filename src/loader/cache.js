@@ -18,6 +18,10 @@ Cache.removeJSON = function(key) {
   delete this._json[key];
 }
 
+Cache.hasJSON = function(key) {
+  return (this._json[key] !== undefined);
+}
+
 Cache.getAudio = function(key) {
   if(this._audio[key]) return this._audio[key];
   return null;
@@ -33,6 +37,10 @@ Cache.removeAudio = function(key) {
   delete this._audio[key];
 }
 
+Cache.hasAudio = function(key) {
+  return (this._audio[key] !== undefined);
+}
+
 Cache.getImage = function(key) {
   if(this._images[key]) return this._images[key].clone();
   return null;
@@ -46,6 +54,10 @@ Cache.removeImage = function(key) {
   var img = this._images[key];
   img.destroy(true);
   delete this._images[key];
+}
+
+Cache.hasImage = function(key) {
+  return (this._images[key] !== undefined);
 }
 
 Cache.getTextureAtlas = function(key) {
@@ -64,4 +76,8 @@ Cache.addTextureAtlas = function(key, dataObj) {
 
 Cache.removeTextureAtlas = function(key) {
   delete this._textureAtlases[key];
+}
+
+Cache.hasTextureAtlas = function(key) {
+  return (this._textureAtlases[key] !== undefined);
 }

@@ -33,10 +33,6 @@ Scene_PreGame.prototype.start = function() {
   for(var a in this.text) {
     this.stage.addChild(this.text[a]);
   }
-  // this.mouseText = new Text();
-  // this.mouseText.position.set(40, 40);
-  // this.stage.addChild(this.mouseText);
-  // SceneManager.push(new Scene_Game());
 
   Input.mouse.button.LEFT.onPress.add(this.startLevel, this);
 }
@@ -46,7 +42,6 @@ Scene_PreGame.prototype.update = function() {
   if(!this._loading) {
     this.updateMinimap();
   }
-  // if(this.mouseText) this.mouseText.text = Input.mouse.position.screen.x.toString() + " / " + Input.mouse.position.screen.y.toString();
 }
 
 Scene_PreGame.prototype.updateMinimap = function() {

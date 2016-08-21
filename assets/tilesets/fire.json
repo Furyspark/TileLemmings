@@ -7,5 +7,19 @@
  "spacing":4,
  "tilecount":66,
  "tileheight":16,
+ "tileproperties":
+    {
+     "22":
+        {
+         "property_steel":true
+        }
+    },
+ "tilepropertytypes":
+    {
+     "22":
+        {
+         "property_steel":"bool"
+        }
+    },
  "tilewidth":16
 }

@@ -1,0 +1,38 @@
+{
+"frames": {
+	"gridTile.png": {
+		"frame": {"x":31, "y":17, "w":16, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	"previewTile.png": {
+		"frame": {"x":31, "y":0, "w":16, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+		"sourceSize": {"w":16,"h":16}
+	},
+	"sprCursor_Idle.png": {
+		"frame": {"x":0, "y":31, "w":30, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
+		"sourceSize": {"w":30,"h":30}
+	},
+	"sprCursor_Open.png": {
+		"frame": {"x":0, "y":0, "w":30, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
+		"sourceSize": {"w":30,"h":30}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 48, "h": 62},
+	"scale": "1"
+}
+}

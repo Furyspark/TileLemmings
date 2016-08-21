@@ -1,11 +1,14 @@
 function Core() {}
 
 Core._dataObjects = [
-  { name: "$dataProps", key: "dataProps", src: "assets/data/props.json" }
+  { name: "$dataProps", key: "dataProps", src: "assets/data/props.json" },
+  { name: "$dataActions", key: "dataActions", src: "assets/data/actions.json" }
 ];
 Core._config = [
   { key: "cfgVideo", src: "config/video.json" }
 ];
+
+Core.tileset = {};
 
 Object.defineProperties(Core, {
   hRes: {
@@ -65,6 +68,7 @@ Core.onResize = function(e) {
 Core.initPixi = function() {
   // this.renderer = new PIXI.CanvasRenderer(this.resolution.x, this.resolution.y);
   this.renderer = new PIXI.WebGLRenderer(this.resolution.x, this.resolution.y);
+  PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
   document.body.appendChild(this.renderer.view);
   if(this.usingElectron) {
     this.resizeWindow(this.resolution.x, this.resolution.y);
@@ -83,9 +87,9 @@ Core.startDataObjects = function() {
   for(var a = 0;a < this._dataObjects.length;a++) {
     var dObj = this._dataObjects[a];
     var obj = Loader.loadJSON(dObj.key, dObj.src);
-    obj.onComplete.addOnce(function() {
-      window[dObj.name] = Cache.getJSON(dObj.key);
-    }, this, [], 20);
+    obj.onComplete.addOnce(function(dataObject) {
+      window[dataObject.name] = Cache.getJSON(dataObject.key);
+    }, this, [dObj], 20);
   }
 }
 

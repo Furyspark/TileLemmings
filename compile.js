@@ -27,13 +27,20 @@ var data = {
     "src/sprites/lemming.js",
     "src/sprites/tile.js",
     "src/sprites/minimap.js",
+    "src/sprites/minimap-tile.js",
     "src/sprites/prop.js",
+    "src/sprites/ui.js",
+    "src/sprites/cursor.js",
+    "src/sprites/background.js",
 
     "src/scenes/scene-base.js",
     "src/scenes/scene-boot.js",
     "src/scenes/scene-mainmenu.js",
     "src/scenes/scene-pregame.js",
     "src/scenes/scene-game.js",
+
+    "src/ui/base.js",
+    "src/ui/button.js",
 
     "src/map/map.js",
     "src/map/tileset.js",

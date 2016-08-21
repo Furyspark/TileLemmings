@@ -18,8 +18,8 @@ Object.defineProperties(Tileset.prototype, {
 Tileset.prototype.init = function() {
   this.texture = null;
   this.firstGid = 1;
-  this.margin = 0;
-  this.spacing = 0;
+  this.margin = 2;
+  this.spacing = 4;
   this.tileWidth = 16;
   this.tileHeight = 16;
   this.tileProperties = null;

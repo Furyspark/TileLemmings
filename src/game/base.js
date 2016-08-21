@@ -14,14 +14,14 @@ Object.defineProperties(Game_Base.prototype, {
     get: function() { return this._x; },
     set: function(value) {
       this._x = value;
-      if(this.sprite) this.sprite.position.x = value;
+      if(this.sprite) this.sprite.x = value;
     }
   },
   y: {
     get: function() { return this._y; },
     set: function(value) {
       this._y = value;
-      if(this.sprite) this.sprite.position.y = value;
+      if(this.sprite) this.sprite.y = value;
     }
   }
 });
@@ -44,4 +44,8 @@ Game_Base.prototype.update = function() {
   for(var a in this.alarms) {
     this.alarms[a].update();
   }
+}
+
+Game_Base.prototype.remove = function() {
+  this.exists = false;
 }

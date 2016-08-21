@@ -42,7 +42,7 @@ Input_Mouse.prototype.updatePosition = function(e) {
   this.position.screen.x = Math.floor(e.clientX * Core.hRes);
   this.position.screen.y = Math.floor(e.clientY * Core.vRes);
   if($gameMap) {
-    this.position.world.x = Math.floor(e.clientX * Core.hRes / $gameMap.world.scale.x);
-    this.position.world.y = Math.floor(e.clientY * Core.vRes / $gameMap.world.scale.y);
+    this.position.world.x = Math.floor(e.clientX * Core.hRes / $gameMap.world.scale.x) + $gameMap.camera.rect.left;
+    this.position.world.y = Math.floor(e.clientY * Core.vRes / $gameMap.world.scale.y) + $gameMap.camera.rect.top;
   }
 }

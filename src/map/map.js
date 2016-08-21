@@ -13,6 +13,7 @@ Object.defineProperties(Map.prototype, {
 
 Map.prototype.init = function(src, scene) {
   this.world           = new World();
+  this.grid            = new PIXI.Container();
   this.camera          = new Camera(this);
   this.scene           = scene;
   this.tilesets        = [];
@@ -24,10 +25,18 @@ Map.prototype.init = function(src, scene) {
   this.tileHeight      = 16;
   this.tiles           = [];
   this.objects         = [];
+  this.background      = { image: null, parallax: new Point(0.5, 0.5), useParallax: true };
   this.needed          = 1;
+  this.saved           = 0;
   this.totalLemmings   = 0;
   this.name            = "No Name";
   this.pool            = {};
+  this.actions         = {};
+  this.maxFallDistance = 8 * 16;
+
+  this.grid.z = -1500;
+  this.grid.visible = false;
+  this.world.addChild(this.grid);
 
   this.onLoad = new Signal();
   this.onLoad.addOnce(this.createLevel, this, [], 5);
@@ -39,19 +48,7 @@ Map.prototype.init = function(src, scene) {
 
 Map.prototype.parseTiledMap = function() {
   this.data = Cache.getJSON("map");
-  // Apply Map Properties
-  if(this.data.properties) {
-    if(this.data.properties.needed) this.needed = this.data.properties.needed;
-    if(this.data.properties.name) this.name = this.data.properties.name;
-  }
-  // Load Music
-  if(this.data.properties.music) {
-    var obj = Loader.loadAudio("music", AudioManager.baseDir("bgm") + this.data.properties.music + ".ogg");
-    this._expectedAssets.push("music");
-    obj.onComplete.addOnce(function() {
-      this.clearAsset("music");
-    }, this, [], 20);
-  }
+  this.parseMapProperties(this.data.properties);
   // Load Tilesets
   for(var a = 0;a < this.data.tilesets.length;a++) {
     var ts = this.data.tilesets[a];
@@ -63,6 +60,33 @@ Map.prototype.parseTiledMap = function() {
     this._expectedAssets.push(key);
     var obj = Loader.loadJSON(key, this.baseDir + ts.source);
     obj.onComplete.addOnce(this.parseTilesetData, this, args, 20);
+  }
+}
+
+Map.prototype.parseMapProperties = function(properties) {
+  // Apply Map Properties
+  if(properties.needed) this.needed = properties.needed;
+  if(properties.name) this.name = properties.name;
+  // Load Music
+  if(properties.music) {
+    var obj = Loader.loadAudio("music", AudioManager.baseDir("bgm") + properties.music + ".ogg");
+    this._expectedAssets.push("music");
+    obj.onComplete.addOnce(function() {
+      this.clearAsset("music");
+    }, this, [], 20);
+  }
+  // Load background
+  if(properties.bg) {
+    var obj = Loader.loadImage("background", "assets/graphics/backgrounds/" + properties.bg + ".jpg");
+    this._expectedAssets.push("background");
+    obj.onComplete.addOnce(function() {
+      this.clearAsset("background");
+    }, this, [], 20);
+  }
+  // Apply actions
+  for(var a in $dataActions) {
+    var action = $dataActions[a];
+    if(properties[action.key]) this.actions[a] = { amount: properties[action.key] };
   }
 }
 
@@ -127,6 +151,7 @@ Map.prototype.createLevel = function() {
   this.height = this.data.height;
   this.tileWidth = this.data.tilewidth;
   this.tileHeight = this.data.tileheight;
+  this.addBackground();
   // Resize
   while(this.tiles.length < this.width * this.height) {
     this.tiles.push(null);
@@ -143,9 +168,10 @@ Map.prototype.createLevel = function() {
       this.parseObjectLayer(layer);
     }
   }
-
   // Create lemming pool
   this.pool.lemming = new Pool("Game_Lemming", this, [], this.totalLemmings);
+  // Add grid
+  this.addGrid();
 }
 
 Map.prototype.parseTileLayer = function(layer) {
@@ -170,6 +196,19 @@ Map.prototype.parseObjectLayer = function(layer) {
           obj = this.addProp(objData.x, objData.y, props.key, objData);
         }
       }
+    }
+  }
+}
+
+Map.prototype.addGrid = function() {
+  for(var a = 0;a < this.width;a++) {
+    for(var b = 0;b < this.height;b++) {
+      var spr = new Sprite_Base();
+      var anim = spr.addAnimation("idle");
+      anim.addFrame("atlMisc", "gridTile.png");
+      spr.position.set(a * this.tileWidth, b * this.tileHeight);
+      spr.playAnimation("idle");
+      this.grid.addChild(spr);
     }
   }
 }
@@ -202,7 +241,8 @@ Map.prototype.addProp = function(x, y, key, data) {
   this.world.addChild(obj.sprite);
 }
 
-Map.prototype.addTile = function(x, y, uid, flags) {
+Map.prototype.addTile = function(x, y, uid, flags, data) {
+  if(!data) data = {};
   if(!flags) flags = 0;
   var ts = this.getTileset(uid);
   if(ts) {
@@ -212,6 +252,16 @@ Map.prototype.addTile = function(x, y, uid, flags) {
     tile.x = x * this.tileWidth;
     tile.y = y * this.tileHeight;
     this.world.addChild(tile.sprite);
+    // Add properties
+    var properties = ts.getTileProperties(uid - ts.firstGid);
+    if(properties) {
+      for(var a in properties) {
+        var property = properties[a];
+        if(a.match(/PROPERTY_([a-zA-Z0-9]+)/i)) {
+          tile.assignProperty(RegExp.$1);
+        }
+      }
+    }
     // Remove old tile
     var oldTile = this.tiles.splice(index, 1, tile)[0];
     if(oldTile instanceof Tile) oldTile.sprite.destroy(true);
@@ -222,7 +272,8 @@ Map.prototype.removeTile = function(x, y) {
   var index = this.getTileIndex(x, y);
   var oldTile = this.tiles.splice(index, 1, null)[0];
   if(oldTile instanceof Tile) {
-    oldTile.sprite.destroy(true);
+    this.world.removeChild(oldTile.sprite);
+    oldTile.sprite.destroy(true, false);
     return true;
   }
   return false;
@@ -237,6 +288,11 @@ Map.prototype.getTilePosition = function(index) {
     Math.floor(index % this.width),
     Math.floor(index / this.width)
   );
+}
+
+Map.prototype.getTile = function(realX, realY) {
+  if(realX < 0 || realY >= this.realWidth || realY < 0 || realY >= this.realHeight) return null;
+  return this.tiles[this.getTileIndex(realX >> 4, realY >> 4)];
 }
 
 Map.prototype.setStage = function(stage) {
@@ -261,6 +317,21 @@ Map.prototype.removeAssetsFromCache = function() {
 }
 
 Map.prototype.update = function() {
+  // Update objects
+  var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
+  for(var a = 0;a < arr.length;a++) {
+    var o = arr[a];
+    o.update();
+  }
+  // Apply Z-ordering
+  this.world.children.sort(function(a, b) {
+    if(a.z !== undefined && b.z !== undefined && a.z > b.z) return -1;
+    if(a.z !== undefined && b.z !== undefined && a.z < b.z) return 1;
+    return 0;
+  });
+}
+
+Map.prototype.updateCamera = function() {
   this.camera.update();
   // Update tiles
   var arr = this.tiles.slice();
@@ -272,29 +343,78 @@ Map.prototype.update = function() {
     }
   }
   // Update objects
-  var arr = this.objects.slice();
+  var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
   for(var a = 0;a < arr.length;a++) {
     var o = arr[a];
-    if(o.exists) {
-      o.update();
-      if(this.camera.contains(o.sprite)) o.sprite.visible = true;
-      else o.sprite.visible = false;
-    }
+    if(this.camera.contains(o.sprite) && o.exists) o.sprite.visible = true;
+    else o.sprite.visible = false;
   }
 }
 
 Map.prototype.getLemmings = function() {
   return this.objects.filter(function(obj) {
-    return (obj instanceof Game_Lemming);
+    return (obj instanceof Game_Lemming && obj.exists);
   });
 }
 
 Map.prototype.getDoors = function() {
   return this.objects.filter(function(obj) {
-    return (obj instanceof Game_Prop && obj.type === "door");
+    return (obj instanceof Game_Prop && obj.type === "door" && obj.exists);
   });
 }
 
 Map.prototype.startMusic = function() {
   AudioManager.playBgm("music");
 }
+
+Map.prototype.tileCollision = function(realX, realY, lem) {
+  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return Tile.COLLISION_ENDOFMAP;
+  var tile = this.getTile(realX, realY);
+  if(tile) return tile.collisionFunction.call(lem, realX, realY);
+  return Tile.COLLISIONFUNC_AIR.call(lem, realX, realY);
+}
+
+Map.prototype.tileHasBlocker = function(realX, realY) {
+  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return false;
+  var r = new Rect((realX >> 4) << 4, (realY >> 4) << 4, this.tileWidth, this.tileHeight);
+  var arr = this.getLemmings().slice().filter(function(lemming) { return lemming.action.current === Game_Lemming.ACTION_BLOCKER; } );
+  for(var a = 0;a < arr.length;a++) {
+    var lemming = arr[a];
+    if(r.contains(lemming.x, lemming.y)) return true;
+  }
+  return false;
+}
+
+Map.prototype.toScreenSpace = function(mapX, mapY) {
+  return new Point(
+    (mapX - this.camera.rect.left) * this.world.scale.x,
+    (mapY - this.camera.rect.top) * this.world.scale.y
+  );
+}
+
+Map.prototype.replaceTile = function(x, y, tile) {
+  var index = this.getTileIndex(x, y);
+  if(index >= 0 && index < this.tiles.length) {
+    var oldTile = this.tiles.splice(index, 1, tile)[0];
+    if(oldTile) oldTile.sprite.destroy(true);
+    tile.x = x * this.tileWidth;
+    tile.y = y * this.tileHeight;
+    this.world.addChild(tile.sprite);
+  }
+}
+
+Map.prototype.toWorldSpace = function(screenX, screenY) {
+  return new Point(
+    (screenX / this.world.scale.x) + this.camera.rect.left,
+    (screenY / this.world.scale.y) + this.camera.rect.top
+  );
+}
+
+Map.prototype.addBackground = function() {
+  if(Cache.hasImage("background")) {
+    this.background.image = new Sprite_Background(Cache.getImage("background"), this.realWidth, this.realHeight);
+    this.world.addChild(this.background.image);
+  }
+}
+
+Map.prototype.end = function() {}

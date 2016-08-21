@@ -28,6 +28,7 @@ Game_Prop.prototype.applySource = function() {
   // Door specific
   if(this.src.type === "door") {
     this.rate = 50;
+    this.value = 0;
     this.sprite.playAnimation("closed");
     this.alarms.door = new Alarm();
     this.dropOffset = new Point(this.src.dropOffset.x, this.src.dropOffset.y);
@@ -57,5 +58,9 @@ Game_Prop.prototype._doorStart = function() {
 }
 
 Game_Prop.prototype._doorAct = function() {
-  this.map.pool.lemming.spawn(this.x + this.dropOffset.x, this.y + this.dropOffset.y);
+  if(this.value > 0) {
+    this.value--;
+    this.map.pool.lemming.spawn(this.x + this.dropOffset.x, this.y + this.dropOffset.y);
+    if(this.value === 0) this.alarms.door.stop();
+  }
 }
