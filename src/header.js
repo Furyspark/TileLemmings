@@ -1,1 +1,3 @@
-var $gameMap    = null;
+var $gameMap        = null;
+PIXI.addons         = {};
+PIXI.addons.filters = {};

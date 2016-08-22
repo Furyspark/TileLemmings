@@ -2,6 +2,8 @@ var data = {
   sources: [
     "src/header.js",
 
+    "src/shaders/color-replace.js",
+
     "src/basic/point.js",
     "src/basic/rect.js",
     "src/basic/signal.js",

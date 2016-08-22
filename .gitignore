@@ -4,3 +4,4 @@ node_modules
 .atom-build.json
 *.bak
 lib/app.js
+lib/main.js

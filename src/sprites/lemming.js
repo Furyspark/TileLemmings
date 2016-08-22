@@ -11,6 +11,7 @@ Sprite_Lemming.prototype.init = function() {
   this.animSpeed = 1 / 4;
   this.anchor.set(0.5);
   this.initAnimations();
+  this.initFilters();
 }
 
 Sprite_Lemming.prototype.initAnimations = function() {
@@ -31,4 +32,16 @@ Sprite_Lemming.prototype.initAnimations = function() {
   this.addAnimationExt("atlLemming", "climb-end", 8, "sprLemming_Climb_End_%s.png");
   this.addAnimationExt("atlLemming", "float", 4, "sprLemming_Float_%s.png");
   this.addAnimationExt("atlLemming", "float-start", 4, "sprLemming_Float_Start_%s.png");
+}
+
+Sprite_Lemming.prototype.initFilters = function() {
+  var color = {
+    hair: 0x00b0b0,
+    skin: 0xf0d0d0,
+    clothes: 0x4040e0
+  };
+  var filter = new PIXI.addons.filters.ColorReplace(color.hair, 0xe040c0, 0.1);
+  // var filter = new PIXI.filters.ColorMatrixFilter();
+  // filter.matrix[1] = 1.0;
+  this.shader = filter;
 }
