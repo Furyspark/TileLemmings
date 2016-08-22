@@ -1,9 +1,11 @@
 function Loader() {}
 
 Loader._loading = [];
+Loader._textureAtlasQueue = [];
 Loader.onComplete = new Signal();
 
 Loader.loadJSON = function(key, src) {
+  if(this.isLoading("json", key) || Cache.hasJSON(key)) return null;
   var xobj = new XMLHttpRequest();
   xobj.open("GET", src);
   xobj.onreadystatechange = function() {
@@ -19,6 +21,7 @@ Loader.loadJSON = function(key, src) {
   var file = {
     key: key,
     src: src,
+    type: "json",
     onComplete: new Signal(),
     onFail: new Signal(),
     dataObject: xobj
@@ -30,6 +33,7 @@ Loader.loadJSON = function(key, src) {
 }
 
 Loader.loadAudio = function(key, src) {
+  if(this.isLoading("audio", key) || Cache.hasAudio(key)) return null;
   var file;
   var howl = new Howl({
     src: [src],
@@ -41,6 +45,7 @@ Loader.loadAudio = function(key, src) {
   file = {
     key: key,
     src: src,
+    type: "audio",
     onComplete: new Signal(),
     onFail: new Signal(),
     dataObject: howl
@@ -52,6 +57,7 @@ Loader.loadAudio = function(key, src) {
 }
 
 Loader.loadImage = function(key, src) {
+  if(this.isLoading("image", key) || Cache.hasImage(key)) return null;
   var file;
   PIXI.loader.add(key, src);
   PIXI.loader.on("complete", function(loader, resources) {
@@ -67,6 +73,7 @@ Loader.loadImage = function(key, src) {
   file = {
     key: key,
     src: src,
+    type: "image",
     onComplete: new Signal(),
     onFail: new Signal(),
     dataObject: null
@@ -79,35 +86,35 @@ Loader.loadImage = function(key, src) {
 }
 
 Loader.loadTextureAtlas = function(key, src) {
+  if(this.isLoading("textureAtlas", key) || Cache.hasTextureAtlas(key)) return null;
   var file;
-  // Load JSON Data
-  PIXI.loader.add(key, src);
-  PIXI.loader.on("complete", function(loader, resources) {
+  var loader = new PIXI.loaders.Loader();
+  loader.add(key, src);
+  loader.on("complete", function(loader, resources) {
     for(var a in resources) {
+      if(a === file.key) file.dataObject = resources[a];
       if(a === file.key || a === file.key + "_image") {
-        if(a === file.key) file.dataObject.data = resources[a].data;
-        else if(a === file.key + "_image") file.dataObject.texture = resources[a].texture;
         file.remaining--;
         if(file.remaining <= 0) file.onComplete.dispatch();
       }
     }
   });
 
-  // Load Image
   file = {
     key: key,
     src: src,
+    type: "textureAtlas",
     onComplete: new Signal(),
     onFail: new Signal(),
-    dataObject: {
-      texture: null,
-      data: null
-    },
+    dataObject: null,
     remaining: 2
   };
   this._loading.push(file);
   file.onComplete.addOnce(this._finishTextureAtlas, this, [file], 10);
-  PIXI.loader.load();
+  loader.load();
+
+  // Add to queue
+  this._textureAtlasQueue.push(file);
 
   return file;
 }
@@ -138,10 +145,21 @@ Loader._finishFile = function(file) {
   this.checkLoadCompletion();
 }
 
+Loader._startLoadingTextureAtlas = function(queueObj) {
+}
+
 Loader.checkLoadCompletion = function() {
   if(this._loading.length === 0) this.onComplete.dispatch();
 }
 
 Loader.determineKey = function(url) {
   return url;
+}
+
+Loader.isLoading = function(type, key) {
+  for(let a = 0;a < this._loading.length;a++) {
+    var file = this._loading[a];
+    if(file.key === key && file.type === type) return true;
+  }
+  return false;
 }

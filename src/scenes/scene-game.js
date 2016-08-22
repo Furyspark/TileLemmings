@@ -113,8 +113,8 @@ Scene_Game.prototype._openDoors = function() {
     var playedSound = false;
     for(var a = 0;a < arr.length;a++) {
       var obj = arr[a];
-      if(!playedSound && obj.src.assets.audio && obj.src.assets.audio.open) {
-        AudioManager.playSound(obj.src.assets.audio.open);
+      if(!playedSound && obj.sounds && obj.sounds.open) {
+        AudioManager.playSound(obj.sounds.open);
         playedSound = true;
       }
       obj.doorOpen();

@@ -77,7 +77,6 @@ Input._refreshButtonStates = function() {
 }
 
 Input._onKeyDown = function(e) {
-  // console.log(e.key);
   var key = this.key[e.key.toUpperCase()];
   if(key && !key.down) {
     key.down = true;

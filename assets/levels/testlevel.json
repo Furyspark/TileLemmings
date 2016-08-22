@@ -17,14 +17,14 @@
          "name":"objects",
          "objects":[
                 {
-                 "gid":259,
+                 "gid":260,
                  "height":32,
-                 "id":1,
+                 "id":8,
                  "name":"",
                  "properties":
                     {
-                     "rate":80,
-                     "value":40
+                     "rate":20,
+                     "value":20
                     },
                  "propertytypes":
                     {
@@ -35,8 +35,72 @@
                  "type":"",
                  "visible":true,
                  "width":96,
+                 "x":240,
+                 "y":144
+                }, 
+                {
+                 "gid":267,
+                 "height":32,
+                 "id":9,
+                 "name":"",
+                 "properties":
+                    {
+                     "value":10
+                    },
+                 "propertytypes":
+                    {
+                     "value":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":96,
                  "x":32,
                  "y":80
+                }, 
+                {
+                 "gid":264,
+                 "height":64,
+                 "id":10,
+                 "name":"",
+                 "properties":
+                    {
+                     "value":5
+                    },
+                 "propertytypes":
+                    {
+                     "value":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":80,
+                 "x":320,
+                 "y":112
+                }, 
+                {
+                 "gid":268,
+                 "height":48,
+                 "id":11,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":304,
+                 "y":336
+                }, 
+                {
+                 "gid":274,
+                 "height":112,
+                 "id":12,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":96,
+                 "x":400,
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -45,7 +109,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "properties":
     {
@@ -58,7 +122,7 @@
      "action_floater":10,
      "action_miner":10,
      "bg":"orange",
-     "music":"cave_early",
+     "music":"classic_early",
      "name":"Test!",
      "needed":10
     },
@@ -91,6 +155,10 @@
         {
          "firstgid":259,
          "source":"..\/tilesets\/generic\/doors.json"
+        }, 
+        {
+         "firstgid":268,
+         "source":"..\/tilesets\/generic\/exits.json"
         }],
  "tilewidth":16,
  "version":1,

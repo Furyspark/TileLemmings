@@ -19,10 +19,6 @@
       "src": "assets/graphics/sprite-atlases/lemming/sprites.json"
     },
     {
-      "key": "atlPropsCave",
-      "src": "assets/graphics/sprite-atlases/props-cave/sprites.json"
-    },
-    {
       "key": "atlGUI",
       "src": "assets/graphics/sprite-atlases/gui/sprites.json"
     },
@@ -55,14 +51,6 @@
     {
       "key": "sndDie",
       "src": "assets/audio/sfx/sndDie.ogg"
-    },
-    {
-      "key": "sndDoor",
-      "src": "assets/audio/sfx/sndDoor.ogg"
-    },
-    {
-      "key": "sndDoor_Cave",
-      "src": "assets/audio/sfx/sndDoor_Cave.ogg"
     },
     {
       "key": "sndDrown",

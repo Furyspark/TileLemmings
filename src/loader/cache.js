@@ -61,7 +61,7 @@ Cache.hasImage = function(key) {
 }
 
 Cache.getTextureAtlas = function(key) {
-  if(this._textureAtlases[key]) return this._textureAtlases[key];
+  if(this._textureAtlases[key]) return this._textureAtlases[key].cache;
   return null;
 }
 
@@ -71,10 +71,24 @@ Cache.addTextureAtlas = function(key, dataObj) {
     var tex = PIXI.utils.TextureCache[a];
     obj[a] = tex;
   }
-  this._textureAtlases[key] = obj;
+  this._textureAtlases[key] = { resources: dataObj, cache: obj };
 }
 
 Cache.removeTextureAtlas = function(key) {
+  // Gather info
+  var obj = this._textureAtlases[key];
+  var arr = [];
+  for(var a in obj.resources.textures) {
+    arr.push(obj.resources.textures[a]);
+  }
+  // Delete textures
+  while(arr.length > 0) {
+    var obj = arr.shift();
+    var destroyBase = false;
+    if(arr.length === 0) destroyBase = true;
+    obj.destroy(destroyBase);
+  }
+  // Delete reference
   delete this._textureAtlases[key];
 }
 

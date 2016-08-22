@@ -76,6 +76,7 @@ Map.prototype.parseMapProperties = function(properties) {
     this._expectedAssets.push("music");
     obj.onComplete.addOnce(function() {
       this.clearAsset("music");
+      this._usedAssets.push({ type: "audio", key: "music" });
     }, this, [], 20);
   }
   // Load background
@@ -84,6 +85,7 @@ Map.prototype.parseMapProperties = function(properties) {
     this._expectedAssets.push("background");
     obj.onComplete.addOnce(function() {
       this.clearAsset("background");
+      this._usedAssets.push({ type: "image", key: "background" });
     }, this, [], 20);
   }
   // Apply actions
@@ -158,23 +160,27 @@ Map.prototype.getUsedGameObjects = function() {
 }
 
 Map.prototype.loadGameObjectAsset = function(props) {
-  // Load audio
-  for(var a in props.assets.audio) {
-    var k = Loader.determineKey(props.assets.audio[a]);
-    var obj = Loader.loadAudio(k, props.assets.audio[a]);
-    obj.onComplete.addOnce(function(key) {
-      this.clearAsset(key);
-    }, this, [k], 20);
-    this._expectedAssets.push(k);
-  }
-  // Load texture atlases
-  for(var a in props.assets.textureAtlases) {
-    var k = Loader.determineKey(props.assets.textureAtlases[a]);
-    var obj = Loader.loadTextureAtlas(k, props.assets.textureAtlases[a]);
-    obj.onComplete.addOnce(function(key) {
-      this.clearAsset(key);
-    }, this, [k], 20);
-    this._expectedAssets.push(k);
+  // Load files
+  for(var assetType in props.assets) {
+    for(var assetKey in props.assets[assetType]) {
+      var k = Loader.determineKey(props.assets[assetType][assetKey]);
+      var file = null;
+      switch(assetType) {
+        case "audio":
+          file = Loader.loadAudio(k, props.assets[assetType][assetKey]);
+          break;
+        case "textureAtlases":
+          file = Loader.loadTextureAtlas(k, props.assets[assetType][assetKey]);
+          break;
+      }
+      if(file !== null) {
+        file.onComplete.addOnce(function(file) {
+          this.clearAsset(file.key);
+          this._usedAssets.push({ type: file.type, key: file.key });
+        }, this, [file], 20);
+        this._expectedAssets.push(k);
+      }
+    }
   }
 }
 
@@ -292,7 +298,7 @@ Map.prototype.addGrid = function() {
 
 Map.prototype.addProp = function(x, y, key, data) {
   // Create object
-  var obj = new Game_Prop(key);
+  var obj = new Game_Prop(key, this);
   obj.map = this;
   obj.x = x;
   obj.y = y;
@@ -303,6 +309,7 @@ Map.prototype.addProp = function(x, y, key, data) {
   obj.y += (data.height * src.anchor.y);
   // Apply Properties
   if(data.properties) {
+    obj.applyProperties(data.properties);
     // Door
     if(obj.type === "door") {
       // Value/Lemming Count
@@ -376,23 +383,6 @@ Map.prototype.setStage = function(stage) {
   stage.addChild(this.world);
 }
 
-Map.prototype.removeAssetsFromCache = function() {
-  while(this._usedAssets.length > 0) {
-    var asset = this._usedAssets.pop();
-    switch(asset.type) {
-      case "json":
-        Cache.removeJSON(asset.key);
-        break;
-      case "image":
-        Cache.removeImage(asset.key);
-        break;
-      case "audio":
-        Cache.removeAudio(asset.key);
-        break;
-    }
-  }
-}
-
 Map.prototype.update = function() {
   // Update objects
   var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
@@ -437,6 +427,12 @@ Map.prototype.getLemmings = function() {
 Map.prototype.getDoors = function() {
   return this.objects.filter(function(obj) {
     return (obj instanceof Game_Prop && obj.type === "door" && obj.exists);
+  });
+}
+
+Map.prototype.getExits = function() {
+  return this.objects.filter(function(obj) {
+    return (obj instanceof Game_Prop && obj.type === "exit" && obj.exists);
   });
 }
 
@@ -494,4 +490,27 @@ Map.prototype.addBackground = function() {
   }
 }
 
-Map.prototype.end = function() {}
+Map.prototype.end = function() {
+  this.clearLevelAssets();
+}
+
+Map.prototype.clearLevelAssets = function() {
+  for(var a = 0;a < this._usedAssets.length;a++) {
+    var asset = this._usedAssets[a];
+    switch(asset.type) {
+      case "json":
+        Cache.removeJSON(asset.key);
+        break;
+      case "audio":
+        Cache.removeAudio(asset.key);
+        break;
+      case "image":
+        Cache.removeImage(asset.key);
+        break;
+      case "textureAtlas":
+        Cache.removeTextureAtlas(asset.key);
+        break;
+    }
+  }
+  this._usedAssets = [];
+}

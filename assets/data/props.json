@@ -9,10 +9,6 @@
       "x": 0,
       "y": 30
     },
-    "audio": {
-      "open": "sndDoor_Cave"
-    },
-    "baseTexture": "",
     "assets": {
       "audio": {
         "open": "assets/audio/sfx/sndDoor_Cave.ogg"
@@ -37,6 +33,628 @@
       ],
       "open": [
         "door0.png"
+      ]
+    }
+  },
+  "doorCircus": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-circus/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png"
+      ],
+      "open": [
+        "door8.png"
+      ]
+    }
+  },
+  "doorClassic": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-classic/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png",
+        "door8.png"
+      ],
+      "open": [
+        "door9.png"
+      ]
+    }
+  },
+  "doorCrystal": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-crystal/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png",
+        "door8.png"
+      ],
+      "open": [
+        "door9.png"
+      ]
+    }
+  },
+  "doorEgyptian": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-egyptian/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png"
+      ],
+      "open": [
+        "door8.png"
+      ]
+    }
+  },
+  "doorMedieval": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-medieval/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png"
+      ],
+      "open": [
+        "door8.png"
+      ]
+    }
+  },
+  "doorPolar": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-polar/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png"
+      ],
+      "open": [
+        "door8.png"
+      ]
+    }
+  },
+  "doorSpace": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndLaser.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-space/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png"
+      ],
+      "open": [
+        "door8.png"
+      ]
+    }
+  },
+  "doorSports": {
+    "type": "door",
+    "anchor": {
+      "x": 0.5,
+      "y": -1
+    },
+    "dropOffset": {
+      "x": 0,
+      "y": 30
+    },
+    "assets": {
+      "audio": {
+        "open": "assets/audio/sfx/sndDoor.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-sports/sprites.json"
+      }
+    },
+    "animations": {
+      "closed": [
+        "door0.png"
+      ],
+      "opening": [
+        "door1.png",
+        "door2.png",
+        "door3.png",
+        "door4.png",
+        "door5.png",
+        "door6.png",
+        "door7.png"
+      ],
+      "open": [
+        "door8.png"
+      ]
+    }
+  },
+  "exitCave": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-cave/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png"
+      ]
+    }
+  },
+  "exitCircus": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-circus/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png"
+      ]
+    }
+  },
+  "exitClassic": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-classic/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png"
+      ]
+    }
+  },
+  "exitCrystal": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-crystal/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png"
+      ]
+    }
+  },
+  "exitEgyptian": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-egyptian/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png"
+      ]
+    }
+  },
+  "exitFire": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-fire/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png"
+      ]
+    }
+  },
+  "exitMedieval": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-medieval/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png"
+      ]
+    }
+  },
+  "exitPink": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-pink/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png"
+      ]
+    }
+  },
+  "exitPolar": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-polar/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png"
+      ]
+    }
+  },
+  "exitSpace": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-circus/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png",
+        "exit6.png",
+        "exit7.png"
+      ]
+    }
+  },
+  "exitSports": {
+    "type": "exit",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -2,
+      "y": -4,
+      "width": 4,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "exit": "assets/audio/sfx/sndYippie.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-sports/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "exit0.png",
+        "exit1.png",
+        "exit2.png",
+        "exit3.png",
+        "exit4.png",
+        "exit5.png"
       ]
     }
   }

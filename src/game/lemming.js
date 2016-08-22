@@ -40,6 +40,7 @@ Game_Lemming.prototype.init = function() {
   this.onGround         = false;
   this.dead             = false;
   this.interactive      = true;
+  this.physicsEnabled   = true;
   this.clickArea        = new Rect(-8, -16, 16, 16);
   this.blockRect        = new Rect(-6, -12, 12, 13);
 
@@ -74,6 +75,7 @@ Game_Lemming.prototype.spawn = function(x, y) {
   this.onGround             = false;
   this.dead                 = false;
   this.interactive          = true;
+  this.physicsEnabled       = true;
   this.bomber.label.visible = false;
   this.bomber.count = -1;
 }
@@ -82,6 +84,10 @@ Game_Lemming.prototype.initTriggers = function() {
   this.sprite.animations["fall-death"].onEnd.add(this.remove, this);
   this.sprite.animations["explode"].onEnd.add(this.explode, this);
   this.sprite.animations["float-start"].onEnd.add(this._floatEndAnim, this);
+  this.sprite.animations["exit"].onEnd.add(function() {
+    this.map.saved++;
+    this.exists = false;
+  }, this);
 }
 
 Game_Lemming.prototype.actionInitEval = function(key) {
@@ -111,9 +117,11 @@ Game_Lemming.prototype.changeDirection = function() {
 
 Game_Lemming.prototype.update = function() {
   Game_Base.prototype.update.call(this);
-  if(!this.dead) this.preMove();
-  if(!this.dead) this.move();
-  if(!this.dead) this.postMove();
+  if(this.physicsEnabled) {
+    if(!this.dead) this.preMove();
+    if(!this.dead) this.move();
+    if(!this.dead) this.postMove();
+  }
   // Evals
   this.bomber.label.scale.x = 1 / this.sprite.scale.x;
   // Play animation
@@ -407,6 +415,11 @@ Game_Lemming.prototype._bomberStartExplode = function() {
   }
 }
 
+Game_Lemming.prototype.cancelBomber = function() {
+  this.alarms.bomber.stop();
+  this.bomber.label.visible = false;
+}
+
 Game_Lemming.prototype._actionTimer = function() {
   if(this.action.current === Game_Lemming.ACTION_BUILDER) this._buildUpdate();
   else if(this.action.current === Game_Lemming.ACTION_BASHER) this._bashUpdate();
@@ -489,4 +502,15 @@ Game_Lemming.prototype.dig = function(targetPoints, adjustMovement) {
     this.y += adjustMovement.y;
   }
   return success;
+}
+
+Game_Lemming.prototype.exit = function() {
+  this.requestAnimation = "exit";
+  this.cancelBomber();
+  this.interactive = false;
+  this.physicsEnabled = false;
+}
+
+Game_Lemming.prototype.canExit = function() {
+  return (this.physicsEnabled && !this.sprite.isAnimationPlaying("explode"));
 }
