@@ -3,3 +3,4 @@ node_modules
 *.sublime*
 .atom-build.json
 *.bak
+lib/app.js
