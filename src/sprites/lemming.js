@@ -35,13 +35,11 @@ Sprite_Lemming.prototype.initAnimations = function() {
 }
 
 Sprite_Lemming.prototype.initFilters = function() {
-  var color = {
-    hair: 0x00b0b0,
-    skin: 0xf0d0d0,
-    clothes: 0x4040e0
-  };
-  var filter = new PIXI.addons.filters.ColorReplace(color.hair, 0xe040c0, 0.1);
-  // var filter = new PIXI.filters.ColorMatrixFilter();
-  // filter.matrix[1] = 1.0;
-  this.shader = filter;
+  // var color = {
+  //   hair: 0x00b0b0,
+  //   skin: 0xf0d0d0,
+  //   clothes: 0x4040e0
+  // };
+  // var filter = new PIXI.addons.filters.ColorReplace(color.hair, color.skin, 0.1);
+  // this.filters = [filter];
 }
