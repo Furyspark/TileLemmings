@@ -59,6 +59,7 @@ Sprite_Base.prototype.isAnimationPlaying = function(key) {
 }
 
 Sprite_Base.prototype.update = function() {
+  // Update animation
   if(this.animation) {
     var oldFrame = this.animFrame;
     this.animFrame = (this.animFrame + this.animSpeed) % this.animation.frames.length;

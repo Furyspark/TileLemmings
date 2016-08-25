@@ -13,5 +13,6 @@ Scene_Base.prototype.render = function() {
   Core.renderer.render(this.stage);
 }
 
-Scene_Base.prototype.create = function() {
-}
+Scene_Base.prototype.create = function() {}
+
+Scene_Base.prototype.end = function() {}

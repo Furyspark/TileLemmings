@@ -52,7 +52,8 @@ Core.initElectron = function() {
   this.usingElectron = false;
   if(typeof require === "function") {
     this.usingElectron = true;
-    this.ipcRenderer = require("electron").ipcRenderer;
+    // this.ipcRenderer = require("electron").ipcRenderer;
+    this.mainWindow = nw.Window.get();
     this.initElectronProperties();
   }
 }
@@ -101,21 +102,23 @@ Core.loadConfig = function() {
 }
 
 Core.fitToWindow = function() {
-  Core.renderer.view.style.width = String(window.innerWidth) + "px";
-  Core.renderer.view.style.height = String(window.innerHeight) + "px";
+  Core.renderer.view.style.width = window.innerWidth.toString() + "px";
+  Core.renderer.view.style.height = window.innerHeight.toString() + "px";
 }
 
 Core.resizeWindow = function(w, h) {
   if(Core.usingElectron) {
     var diffW = window.outerWidth - window.innerWidth;
     var diffH = window.outerHeight - window.innerHeight;
-    Core.ipcRenderer.send("window", ["resize", w + diffW, h + diffH]);
+    // Core.ipcRenderer.send("window", ["resize", w + diffW, h + diffH]);
+    this.mainWindow.resizeTo(w + diffW, h + diffH);
   }
 }
 
 Core.centerWindow = function() {
   if(Core.usingElectron) {
-    Core.ipcRenderer.send("window", ["center"]);
+    // Core.ipcRenderer.send("window", ["center"]);
+    this.mainWindow.setPosition("center");
   }
 }
 

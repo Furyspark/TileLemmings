@@ -1,5 +1,5 @@
 PIXI.addons.filters.ColorReplace = function(originalColor, newColor, epsilon) {
-  PIXI.AbstractFilter.call(this);
+  PIXI.Filter.call(this);
 
   this.uniforms = {
     originalColor: { type: "3f", value: null },
@@ -83,7 +83,7 @@ PIXI.addons.filters.ColorReplace = function(originalColor, newColor, epsilon) {
   ].join("\n");
 }
 
-PIXI.addons.filters.ColorReplace.prototype = Object.create(PIXI.AbstractFilter.prototype);
+PIXI.addons.filters.ColorReplace.prototype = Object.create(PIXI.Filter.prototype);
 PIXI.addons.filters.ColorReplace.prototype.constructor = PIXI.addons.filters.ColorReplace;
 
 Object.defineProperties(PIXI.addons.filters.ColorReplace.prototype, {

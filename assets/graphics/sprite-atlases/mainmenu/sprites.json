@@ -1,0 +1,38 @@
+{
+"frames": {
+	"btnGray_Down.png": {
+		"frame": {"x":0, "y":5, "w":80, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":80,"h":30},
+		"sourceSize": {"w":80,"h":30}
+	},
+	"btnGray_Up.png": {
+		"frame": {"x":0, "y":36, "w":80, "h":30},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":80,"h":30},
+		"sourceSize": {"w":80,"h":30}
+	},
+	"slider.png": {
+		"frame": {"x":0, "y":67, "w":12, "h":24},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":12,"h":24},
+		"sourceSize": {"w":12,"h":24}
+	},
+	"slider_bg.png": {
+		"frame": {"x":0, "y":0, "w":128, "h":4},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":128,"h":4},
+		"sourceSize": {"w":128,"h":4}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 129, "h": 92},
+	"scale": "1"
+}
+}

@@ -33,7 +33,6 @@ Scene_PreGame.prototype.start = function() {
   for(var a in this.text) {
     this.stage.addChild(this.text[a]);
   }
-
   // Add user input
   Input.mouse.button.LEFT.onPress.add(this.startLevel, this);
 }

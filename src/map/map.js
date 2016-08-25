@@ -357,7 +357,7 @@ Map.prototype.removeTile = function(x, y) {
   var oldTile = this.tiles.splice(index, 1, null)[0];
   if(oldTile instanceof Tile) {
     this.world.removeChild(oldTile.sprite);
-    oldTile.sprite.destroy(true, false);
+    oldTile.sprite.destroy();
     return true;
   }
   return false;

@@ -49,7 +49,7 @@ Game_Lemming.prototype.init = function() {
   this.blockRect        = new Rect(-6, -12, 12, 13);
 
   this.bomber = { count: -1, label: new Text() };
-  this.bomber.label.style.font = "bold 10px Arial";
+  this.bomber.label.style.fontSize = 10;
   this.sprite.addChild(this.bomber.label);
   this.bomber.label.position.set(0, -16);
   this.bomber.label.anchor.set(0.5, 1);

@@ -1,28 +1,35 @@
 {
 "frames": {
+	"bg.png": {
+		"frame": {"x":0, "y":0, "w":200, "h":150},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":200,"h":150},
+		"sourceSize": {"w":200,"h":150}
+	},
 	"frame.png": {
-		"frame": {"x":0, "y":0, "w":32, "h":32},
+		"frame": {"x":0, "y":151, "w":32, "h":32},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 		"sourceSize": {"w":32,"h":32}
 	},
 	"steel.png": {
-		"frame": {"x":17, "y":33, "w":16, "h":16},
+		"frame": {"x":33, "y":151, "w":16, "h":16},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
 		"sourceSize": {"w":16,"h":16}
 	},
 	"tile.png": {
-		"frame": {"x":33, "y":0, "w":16, "h":16},
+		"frame": {"x":17, "y":184, "w":16, "h":16},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
 		"sourceSize": {"w":16,"h":16}
 	},
 	"water.png": {
-		"frame": {"x":0, "y":33, "w":16, "h":16},
+		"frame": {"x":0, "y":184, "w":16, "h":16},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -32,7 +39,7 @@
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 50, "h": 50},
+	"size": {"w": 201, "h": 201},
 	"scale": "1"
 }
 }

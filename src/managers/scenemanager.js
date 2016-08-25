@@ -8,7 +8,8 @@ SceneManager.push = function(scene) {
 }
 
 SceneManager.pop = function() {
-  this._stack.pop();
+  var scene = this._stack.pop();
+  scene.end();
 }
 
 SceneManager.current = function() {
