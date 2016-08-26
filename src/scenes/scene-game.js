@@ -8,12 +8,16 @@ Scene_Game.prototype.constructor = Scene_Game;
 Scene_Game.prototype.init = function() {
   Scene_Base.prototype.init.call(this);
   this.alarm = {
-    doors: new Alarm()
+    doors: new Alarm(),
+    nuke: new Alarm()
   };
+  this.alarm.nuke.onExpire.add(this._nukeLemming, this);
+  this.alarm.nuke.baseTime = 10;
   this.stage.addChild($gameMap.world);
   this.actionSelected = "";
   this.paused = false;
   this.fastForward = false;
+  this.nuked = false;
   this.grid = false;
   this.initUI();
   // Init cursor
@@ -54,6 +58,8 @@ Scene_Game.prototype.init = function() {
   this._calculateZoomBounds();
   // Fade in
   this.fadeIn(this.startMap.bind(this, 0));
+  // Add end of map event
+  $gameMap.onEndOfMap.addOnce(this.endMap, this);
 }
 
 Scene_Game.prototype.create = function() {
@@ -246,6 +252,19 @@ Scene_Game.prototype.createExtraButtons = function(cW) {
   btn.onClick.add(this.toggleFastForward, this, [true]);
   btn.addAnimation("up", "atlGUI", ["Btn_FastForward_0.png"]);
   btn.addAnimation("down", "atlGUI", ["Btn_FastForward_1.png"]);
+  btn.sprite.scale.set(this.uiScale);
+  btn.sprite.playAnimation("up");
+  btn.x = cW;
+  cW += btn.sprite.width;
+  btn.y = Core.resolution.y - btn.sprite.height;
+  this.ui.push(btn);
+  btn.refresh();
+  this.stage.addChild(btn.sprite);
+  // Create nuke button
+  var btn = new UI_Button(0, 0, "nuke");
+  btn.onClick.add(this._buttonNuke, this, [btn]);
+  btn.addAnimation("up", "atlGUI", ["Btn_Nuke_0.png"]);
+  btn.addAnimation("down", "atlGUI", ["Btn_Nuke_1.png"]);
   btn.sprite.scale.set(this.uiScale);
   btn.sprite.playAnimation("up");
   btn.x = cW;
@@ -456,6 +475,34 @@ Scene_Game.prototype.toggleFastForward = function(playSound) {
   if(playSound) AudioManager.playSound("sndUI_Click");
 }
 
+Scene_Game.prototype._buttonNuke = function(btn) {
+  var c = new Date().getTime();
+  if(btn.lastClickTime >= c - 500) {
+    this.nuke();
+  }
+}
+
+Scene_Game.prototype.nuke = function() {
+  this.nuked = true;
+  var elem = this.getUI_Element("nuke");
+  elem.sprite.playAnimation("down");
+  AudioManager.playSound("sndUI_Click");
+  this.alarm.nuke.start();
+  // Prevent lemmings from spawning
+  var arr = $gameMap.getDoors();
+  for(var a = 0;a < arr.length;a++) {
+    var obj = arr[a];
+    obj.value = 0;
+  }
+}
+
+Scene_Game.prototype._nukeLemming = function() {
+  var arr = $gameMap.getLemmings().filter(function(lemming) {
+    return (lemming.bomber.count === -1);
+  });
+  if(arr.length > 0) arr[0].nuke();
+}
+
 Scene_Game.prototype.toggleGrid = function(playSound) {
   this.grid = !this.grid;
   var elem = this.getUI_Element("grid");
@@ -560,4 +607,12 @@ Scene_Game.prototype.updateActionPreview = function() {
         break;
     }
   }
+}
+
+Scene_Game.prototype.endMap = function() {
+  this.fadeOut(function() {
+    AudioManager.stopBgm();
+    this.releaseControls();
+    SceneManager.push(new Scene_PostGame());
+  }.bind(this));
 }

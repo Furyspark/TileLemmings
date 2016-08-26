@@ -24,6 +24,8 @@ Scene_Base.prototype.create = function() {
   this.addListeners();
 }
 
+Scene_Base.prototype.continue = function() {}
+
 Scene_Base.prototype.end = function() {
   this.removeListeners();
 }

@@ -12,41 +12,47 @@ Object.defineProperties(Game_Map.prototype, {
 });
 
 Game_Map.prototype.init = function(src, scene) {
-  this.world             = new Game_World();
-  this.grid              = new PIXI.Container();
-  this.camera            = new Game_Camera(this);
-  this.scene             = scene;
-  this.tilesets          = [];
-  this._expectedAssets   = [];
-  this._expectedTilesets = [];
-  this._usedAssets       = [];
-  this.width             = 1;
-  this.height            = 1;
-  this.tileWidth         = 16;
-  this.tileHeight        = 16;
-  this.tiles             = [];
-  this.objects           = [];
-  this.background        = null;
-  this.needed            = 1;
-  this.saved             = 0;
-  this.totalLemmings     = 0;
-  this.name              = "No Name";
-  this.pool              = {};
-  this.actions           = {};
-  this.maxFallDistance   = 8 * 16;
+  this.grid               = new PIXI.Container();
+  this.camera             = new Game_Camera(this);
+  this.scene              = scene;
+  this.tilesets           = [];
+  this._expectedAssets    = [];
+  this._expectedTilesets  = [];
+  this._usedAssets        = [];
+  this.width              = 1;
+  this.height             = 1;
+  this.tileWidth          = 16;
+  this.tileHeight         = 16;
+  this.background         = null;
+  this.needed             = 1;
+  this.saved              = 0;
+  this.totalLemmings      = 0;
+  this.name               = "No Name";
+  this.pool               = {};
+  this.actions            = {};
+  this.maxFallDistance    = 8 * 16;
+  this.trackVictoryDefeat = true;
 
-  this.grid.z = -1500;
-  this.grid.visible = false;
-  this.world.addChild(this.grid);
-
-  this.onLoad = new Signal();
-  this.onCreate = new Signal();
+  this.onLoad     = new Signal();
+  this.onCreate   = new Signal();
+  this.onEndOfMap = new Signal();
   this.onLoad.addOnce(this.createLevel, this, [], 5);
 
 
   this.baseDir = src.split(/[\/\\]/).slice(0, -1).join("/") + "/";
   var obj = Loader.loadJSON("map", src);
   obj.onComplete.addOnce(this.parseTiledMap, this);
+}
+
+Game_Map.prototype.clear = function() {
+  this.world              = new Game_World();
+  this.tiles              = [];
+  this.objects            = [];
+  this.trackVictoryDefeat = true;
+
+  this.grid.z = -1500;
+  this.grid.visible = false;
+  this.world.addChild(this.grid);
 }
 
 Game_Map.prototype.updateCameraBounds = function() {
@@ -230,6 +236,7 @@ Game_Map.prototype.getTileset = function(uid) {
 }
 
 Game_Map.prototype.createLevel = function() {
+  this.clear();
   this.width = this.data.width;
   this.height = this.data.height;
   this.tileWidth = this.data.tilewidth;
@@ -401,6 +408,20 @@ Game_Map.prototype.update = function() {
   }
   this.world.zOrder();
   this.updateCameraBounds();
+  // Track victory/defeat
+  if(this.trackVictoryDefeat) {
+    var end = true;
+    if(this.getLemmings().length > 0) end = false;
+    var arr = this.getDoors();
+    for(var a = 0;a < arr.length && end;a++) {
+      var obj = arr[a];
+      if(obj.value > 0) end = false;
+    }
+    if(end) {
+      this.trackVictoryDefeat = false;
+      this.onEndOfMap.dispatch();
+    }
+  }
 }
 
 Game_Map.prototype.updateCamera = function() {

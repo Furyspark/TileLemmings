@@ -316,10 +316,7 @@ Game_Lemming.prototype.assignAction = function(actionName) {
     return true;
   }
   else if(actionName === "BOMBER") {
-    this.bomber.count = 5;
-    this.bomber.label.text = this.bomber.count.toString();
-    this.bomber.label.visible = true;
-    this.alarms.bomber.time = this.alarms.bomber.baseTime;
+    this.nuke();
     return true;
   }
   else if(actionName === "BLOCKER") {
@@ -360,6 +357,13 @@ Game_Lemming.prototype.assignAction = function(actionName) {
   return false;
 }
 
+Game_Lemming.prototype.nuke = function() {
+  this.bomber.count = 5;
+  this.bomber.label.text = this.bomber.count.toString();
+  this.bomber.label.visible = true;
+  this.alarms.bomber.time = this.alarms.bomber.baseTime;
+}
+
 Game_Lemming.prototype.explode = function() {
   AudioManager.playSound("sndLemmingExplode");
   var digPoints = [];
@@ -375,7 +379,6 @@ Game_Lemming.prototype.explode = function() {
       this.map.removeTile((this.x + pt.x) >> 4, (this.y + pt.y) >> 4);
     }
   }
-  this.disable();
   this.requestAnimation = "explosion";
 }
 
@@ -431,6 +434,7 @@ Game_Lemming.prototype._bomberStartExplode = function() {
     this.interactive = false;
     AudioManager.playSound("sndOhNo");
     this.action.current = Game_Lemming.ACTION_BOMBER;
+    this.disable();
     this.requestAnimation = "explode";
   }
 }

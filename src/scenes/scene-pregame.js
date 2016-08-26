@@ -10,8 +10,10 @@ Scene_PreGame.prototype.constructor = Scene_PreGame;
 Scene_PreGame.prototype.init = function(src) {
   Scene_Base.prototype.init.call(this);
   this._loading = true;
-  $gameMap = new Game_Map(src, this);
-  $gameMap.onCreate.addOnce(this.start, this, [], 10);
+  if(src) {
+    $gameMap = new Game_Map(src, this);
+    $gameMap.onCreate.addOnce(this.start, this, [], 10);
+  }
 }
 
 Scene_PreGame.prototype.start = function() {
@@ -44,6 +46,13 @@ Scene_PreGame.prototype.update = function() {
   if(!this._loading) {
     this.updateMinimap();
   }
+}
+
+Scene_PreGame.prototype.continue = function() {
+  Scene_Base.prototype.continue.call(this);
+  Input.mouse.button.LEFT.onPress.add(this.startLevel, this);
+  $gameMap.createLevel();
+  this.fadeIn();
 }
 
 Scene_PreGame.prototype.updateMinimap = function() {

@@ -16,11 +16,14 @@ UI_Button.prototype.init = function(x, y, key) {
   this.label.anchor.x = 0.5;
   this.sprite.addChild(this.label);
   this.onClick = new Signal();
+  this.lastClickTime = 0;
   this.z = -10;
 }
 
 UI_Button.prototype.click = function() {
   this.onClick.dispatch();
+  var d = new Date();
+  this.lastClickTime = d.getTime();
 }
 
 UI_Button.prototype.addAnimation = function(name, atlasKey, animKeys) {

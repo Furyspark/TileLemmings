@@ -42,6 +42,7 @@ var data = {
     "src/scenes/scene-mainmenu.js",
     "src/scenes/scene-pregame.js",
     "src/scenes/scene-game.js",
+    "src/scenes/scene-postgame.js",
 
     "src/ui/base.js",
     "src/ui/button.js",
