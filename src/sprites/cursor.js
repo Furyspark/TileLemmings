@@ -14,4 +14,5 @@ Sprite_Cursor.prototype.init = function() {
   this.visible = false;
   this.scale.set(2);
   this.anchor.set(0.5);
+  this.z = -2100;
 }

@@ -51,16 +51,21 @@ Scene_Game.prototype.init = function() {
     },
     focusPoint: new Point()
   };
+  this._calculateZoomBounds();
+  // Fade in
+  this.fadeIn(this.startMap.bind(this, 0));
 }
 
 Scene_Game.prototype.create = function() {
-  this.startMap();
+  Scene_Base.prototype.create.call(this);
   this.initControls();
+  $gameMap.updateCameraBounds();
 }
 
 Scene_Game.prototype.update = function() {
   Scene_Base.prototype.update.call(this);
   // Move camera
+  if(this.minimap) this.minimap.update();
   this.controlCamera();
   if(!this.paused) {
     // Update alarms
@@ -89,7 +94,6 @@ Scene_Game.prototype.update = function() {
     this.cursor.visible = false;
   }
   this.updateActionPreview();
-  if(this.minimap) this.minimap.update();
 }
 
 Scene_Game.prototype.controlCamera = function() {
@@ -126,16 +130,28 @@ Scene_Game.prototype.updateZoom = function() {
   var diffW = r.width - prevW;
   var diffH = r.height - prevH;
   var anchor = new Point((r.x - fp.x) / r.width, (r.y - fp.y) / r.height);
-  // Reposition when camera is larger than map
-  if(r.width > $gameMap.realWidth) r.x = ($gameMap.realWidth / 2) - (r.width / 2);
-  else r.x = r.x + (diffW * anchor.x);
-  if(r.height > $gameMap.realHeight) r.y = ($gameMap.realHeight / 2) - (r.height / 2);
-  else r.y = r.y + (diffH * anchor.y);
+  var pos = new Point(r.x + (diffW * anchor.x), r.y + (diffH * anchor.y));
+  $gameMap.camera.setPosition(pos, new Point(0, 0));
 }
 
-Scene_Game.prototype.startMap = function() {
-  var snd = AudioManager.playSound("sndLetsGo");
-  snd.audio.once("end", this._openDoors.bind(this));
+Scene_Game.prototype.startMap = function(stage) {
+  if(stage === undefined) stage = 0;
+  if(stage === 0) {
+    this.alarm.start = new Alarm();
+    this.alarm.start.onExpire.addOnce(this.startMap, this, [stage+1]);
+    this.alarm.start.time = 60;
+  }
+  else if(stage === 1) {
+    var snd = AudioManager.playSound("sndLetsGo");
+    snd.audio.once("end", this.startMap.bind(this, stage+1));
+  }
+  else if(stage === 2) {
+    this.alarm.start.onExpire.addOnce(this.startMap, this, [stage+1]);
+    this.alarm.start.time = 30;
+  }
+  else if(stage === 3) {
+    this._openDoors();
+  }
 }
 
 Scene_Game.prototype._openDoors = function() {
@@ -155,7 +171,6 @@ Scene_Game.prototype._openDoors = function() {
 }
 
 Scene_Game.prototype.initUI = function() {
-  this.uiHeight = 0;
   this.ui = [];
   this.uiScale = 2;
   this.createPanel();
@@ -170,10 +185,14 @@ Scene_Game.prototype.createPanel = function() {
   this.panel.sprite.playAnimation("idle");
   this.panel.sprite.scale.set(this.uiScale);
   this.panel.y = Core.resolution.y - this.panel.sprite.height;
-  this.panel.z = 100;
+  this.panel.sprite.z = 100;
   this.uiHeight = this.panel.sprite.height;
   this.stage.addChild(this.panel.sprite);
   this.ui.push(this.panel);
+}
+
+Scene_Game.prototype.panelHeight = function() {
+  return this.panel.sprite.height;
 }
 
 Scene_Game.prototype.createActionButtons = function() {
@@ -305,6 +324,9 @@ Scene_Game.prototype.releaseControls = function() {
 Scene_Game.prototype.zoomIn = function(amount, toCursor) {
   if(toCursor === undefined) toCursor = false;
   this.zoom.factor.to = Math.max(this.zoom.factor.minimum, this.zoom.factor.to - amount);
+  // Set to 1.0 if within reach
+  if(this.zoom.factor.to > 1 - amount && this.zoom.factor.to < 1 + amount) this.zoom.factor.to = 1;
+  // Tween
   createjs.Tween.get(this.zoom.factor, { override: true })
     .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
   if(toCursor) {
@@ -320,6 +342,9 @@ Scene_Game.prototype.zoomIn = function(amount, toCursor) {
 Scene_Game.prototype.zoomOut = function(amount, fromCursor) {
   if(fromCursor === undefined) fromCursor = false;
   this.zoom.factor.to = Math.min(this.zoom.factor.maximum, this.zoom.factor.to + amount);
+  // Set to 1.0 if within reach
+  if(this.zoom.factor.to > 1 - amount && this.zoom.factor.to < 1 + amount) this.zoom.factor.to = 1;
+  // Tween
   createjs.Tween.get(this.zoom.factor, { override: true })
     .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
   if(fromCursor) {
@@ -330,6 +355,14 @@ Scene_Game.prototype.zoomOut = function(amount, fromCursor) {
     this.zoom.focusPoint.x = $gameMap.camera.rect.x + ($gameMap.camera.rect.width / 2);
     this.zoom.focusPoint.y = $gameMap.camera.rect.y + ($gameMap.camera.rect.height / 2);
   }
+}
+
+Scene_Game.prototype._calculateZoomBounds = function() {
+  var newMaxSize = new Point(
+    $gameMap.realWidth / $gameMap.camera.baseRect.width,
+    ($gameMap.realHeight + this.panel.sprite.height) / $gameMap.camera.baseRect.height
+  );
+  this.zoom.factor.maximum = Math.min(newMaxSize.x, newMaxSize.y);
 }
 
 Scene_Game.prototype._onMouseLeftDown = function() {
@@ -364,9 +397,7 @@ Scene_Game.prototype.mouseOverUI = function() {
 
 Scene_Game.prototype.sortUI = function() {
   this.ui.sort(function(a, b) {
-    if(a.z > b.z) return 1;
-    if(a.z < b.z) return -1;
-    return 0;
+    return a.z - b.z;
   });
 }
 

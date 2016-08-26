@@ -7,4 +7,5 @@ Sprite_UI.prototype.constructor = Sprite_UI;
 
 Sprite_UI.prototype.init = function() {
   Sprite_Base.prototype.init.call(this);
+  this.z = -100;
 }

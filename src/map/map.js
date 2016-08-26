@@ -26,7 +26,7 @@ Game_Map.prototype.init = function(src, scene) {
   this.tileHeight        = 16;
   this.tiles             = [];
   this.objects           = [];
-  this.background        = { image: null, parallax: new Point(0.5, 0.5), useParallax: true };
+  this.background        = null;
   this.needed            = 1;
   this.saved             = 0;
   this.totalLemmings     = 0;
@@ -47,6 +47,15 @@ Game_Map.prototype.init = function(src, scene) {
   this.baseDir = src.split(/[\/\\]/).slice(0, -1).join("/") + "/";
   var obj = Loader.loadJSON("map", src);
   obj.onComplete.addOnce(this.parseTiledMap, this);
+}
+
+Game_Map.prototype.updateCameraBounds = function() {
+  this.camera.bounds.x = 0;
+  this.camera.bounds.y = 0;
+  this.camera.bounds.width = this.realWidth;
+  this.camera.bounds.height = this.realHeight;
+  var scene = SceneManager.current();
+  if(scene && scene.panelHeight) this.camera.bounds.height += (scene.panelHeight() / this.world.scale.y);
 }
 
 Game_Map.prototype.parseTiledMap = function() {
@@ -390,10 +399,8 @@ Game_Map.prototype.update = function() {
     var o = arr[a];
     o.update();
   }
-  // Apply Z-ordering
-  this.world.children.sort(function(a, b) {
-    return b.z - a.z;
-  });
+  this.world.zOrder();
+  this.updateCameraBounds();
 }
 
 Game_Map.prototype.updateCamera = function() {
@@ -439,7 +446,7 @@ Game_Map.prototype.startMusic = function() {
 }
 
 Game_Map.prototype.tileCollision = function(realX, realY, lem) {
-  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return Tile.COLLISION_ENDOFMAP;
+  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return Game_Tile.COLLISION_ENDOFMAP;
   var tile = this.getTile(realX, realY);
   if(tile) return tile.collisionFunction.call(lem, realX, realY);
   return Game_Tile.COLLISIONFUNC_AIR.call(lem, realX, realY);
@@ -483,8 +490,18 @@ Game_Map.prototype.toWorldSpace = function(screenX, screenY) {
 
 Game_Map.prototype.addBackground = function() {
   if(Cache.hasImage("background")) {
-    this.background.image = new Sprite_Background(Cache.getImage("background"), this.realWidth, this.realHeight);
-    this.world.addChild(this.background.image);
+    // Get Parallax and Tile properties
+    var parallax = new Point(0.5, 0.5);
+    var tile = { x: true, y: true };
+    if(this.data.properties) {
+      parallax.x = typeof this.data.properties.parallaxX === "number" ? this.data.properties.parallaxX : 0.5;
+      parallax.y = typeof this.data.properties.parallaxY === "number" ? this.data.properties.parallaxY : 0.5;
+      tile.x = typeof this.data.properties.tileX === "boolean" ? this.data.properties.tileX : true;
+      tile.y = typeof this.data.properties.tileY === "boolean" ? this.data.properties.tileY : true;
+    }
+    // Create background
+    this.background = new Background("background", this.realWidth, this.realHeight, tile, parallax);
+    this.world.addChild(this.background);
   }
 }
 

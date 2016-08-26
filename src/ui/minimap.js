@@ -51,10 +51,13 @@ UI_Minimap.prototype.addCameraView = function() {
 }
 
 UI_Minimap.prototype.updateCameraView = function() {
+  var scene = SceneManager.current();
+  var subtractHeight = 0;
+  if(scene && scene.panelHeight) subtractHeight = scene.panelHeight() / $gameMap.world.scale.y;
   this.cameraFrame.x = $gameMap.camera.rect.x;
   this.cameraFrame.y = $gameMap.camera.rect.y;
   this.cameraFrame.width = $gameMap.camera.rect.width;
-  this.cameraFrame.height = $gameMap.camera.rect.height;
+  this.cameraFrame.height = $gameMap.camera.rect.height - subtractHeight;
 }
 
 UI_Minimap.prototype.addInteractivity = function() {

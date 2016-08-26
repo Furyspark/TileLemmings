@@ -21,6 +21,7 @@ Scene_PreGame.prototype.start = function() {
   this.stage.addChild(this.bg);
   // Add minimap
   this.minimap = new Sprite_Minimap();
+  this.minimap.z = 0;
   this.stage.addChild(this.minimap);
   this.updateMinimap();
   // Add description
@@ -33,7 +34,8 @@ Scene_PreGame.prototype.start = function() {
   for(var a in this.text) {
     this.stage.addChild(this.text[a]);
   }
-  // Add user input
+  // Fade in
+  this.fadeIn();
   Input.mouse.button.LEFT.onPress.add(this.startLevel, this);
 }
 
@@ -55,5 +57,7 @@ Scene_PreGame.prototype.updateMinimap = function() {
 
 Scene_PreGame.prototype.startLevel = function() {
   Input.mouse.button.LEFT.onPress.remove(this.startLevel, this);
-  SceneManager.push(new Scene_Game());
+  this.fadeOut(function() {
+    SceneManager.push(new Scene_Game());
+  }.bind(this));
 }

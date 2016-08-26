@@ -16,6 +16,7 @@ UI_Button.prototype.init = function(x, y, key) {
   this.label.anchor.x = 0.5;
   this.sprite.addChild(this.label);
   this.onClick = new Signal();
+  this.z = -10;
 }
 
 UI_Button.prototype.click = function() {

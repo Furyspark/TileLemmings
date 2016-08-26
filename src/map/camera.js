@@ -6,6 +6,7 @@ Game_Camera.prototype.init = function(map) {
   this.baseRect = new Rect(0, 0, 640, 360);
   this.rect = new Rect(this.baseRect.x, this.baseRect.y, this.baseRect.width, this.baseRect.height);
   this.map = map;
+  this.bounds = new Rect(0, 0, this.map.realWidth, this.map.realHeight);
 }
 
 Game_Camera.prototype.update = function() {
@@ -19,22 +20,14 @@ Game_Camera.prototype.setPosition = function(position, anchor) {
   // Gather data
   var oldPos = new Point(this.rect.x, this.rect.y);
   var mapPos = new Point(
-    position.x - (this.rect.width * anchor.x),
-    position.y - (this.rect.height * anchor.y)
+    Math.max(this.bounds.x, Math.min(this.bounds.right - this.rect.width, position.x - (this.rect.width * anchor.x))),
+    Math.max(this.bounds.y, Math.min(this.bounds.bottom - this.rect.height, position.y - (this.rect.height * anchor.y)))
   );
-  // Set bounds
-  var scene = SceneManager.current();
-  var bottomIncrease = 0;
-  if(scene.uiHeight) bottomIncrease = scene.uiHeight / $gameMap.world.scale.y;
-  var bounds = new Rect(0, 0, $gameMap.realWidth - this.rect.width, $gameMap.realHeight + bottomIncrease - this.rect.height);
   // Move
-  this.rect.x = Math.max(bounds.left, Math.min(bounds.right, mapPos.x));
-  this.rect.y = Math.max(bounds.top, Math.min(bounds.bottom, mapPos.y));
+  this.rect.x = mapPos.x;
+  this.rect.y = mapPos.y;
   // Update background
-  if($gameMap.background.image) {
-    $gameMap.background.image.tilePosition.x = this.rect.x * $gameMap.background.parallax.x;
-    $gameMap.background.image.tilePosition.y = this.rect.y * $gameMap.background.parallax.y;
-  }
+  this.map.background.refresh();
   // Return data
   var diff = new Point(oldPos.x - this.rect.x, oldPos.y - this.rect.y);
   return diff;

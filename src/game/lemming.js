@@ -518,7 +518,7 @@ Game_Lemming.prototype.dig = function(targetPoints, adjustMovement) {
     var tile    = this.map.getTile(this.x + target.x, this.y + target.y);
     var col     = this.map.tileCollision(this.x + target.x, this.y + target.y);
     // Hit steel
-    if(tile && col === Tile.COLLISION_IMPASSABLE) {
+    if(tile && col === Game_Tile.COLLISION_IMPASSABLE) {
       if(tile.hasProperty("STEEL")) {
         success = Game_Lemming.DIGSUCCESS_STEEL;
         AudioManager.playSound("sndChink");
