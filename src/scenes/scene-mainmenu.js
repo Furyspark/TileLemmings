@@ -24,5 +24,10 @@ Scene_MainMenu.prototype.update = function() {
 Scene_MainMenu.prototype.createCommands = function() {
   Scene_MenuBase.prototype.createCommands.call(this);
   // Options
-  var elem = new UI_Button(0, 0, "btnOptions");
+  var elem = new UI_MenuButton(new Point(Core.resolution.x * 0.8, 400), "Options");
+  elem.x -= elem.sprite.width / 2;
+  elem.onClick.add(this.fadeOut, this, [function() {
+    SceneManager.push(new Scene_Options());
+  }]);
+  this.addUI(elem);
 }

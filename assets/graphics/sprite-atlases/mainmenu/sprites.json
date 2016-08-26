@@ -1,28 +1,49 @@
 {
 "frames": {
-	"btnGray_Down.png": {
-		"frame": {"x":0, "y":5, "w":80, "h":30},
+	"button_blue.png": {
+		"frame": {"x":0, "y":49, "w":192, "h":48},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":80,"h":30},
-		"sourceSize": {"w":80,"h":30}
+		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+		"sourceSize": {"w":192,"h":48}
 	},
-	"btnGray_Up.png": {
-		"frame": {"x":0, "y":36, "w":80, "h":30},
+	"button_green.png": {
+		"frame": {"x":0, "y":0, "w":192, "h":48},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":80,"h":30},
-		"sourceSize": {"w":80,"h":30}
+		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+		"sourceSize": {"w":192,"h":48}
+	},
+	"button_orange.png": {
+		"frame": {"x":0, "y":98, "w":192, "h":48},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+		"sourceSize": {"w":192,"h":48}
+	},
+	"checkbox_marked.png": {
+		"frame": {"x":49, "y":152, "w":48, "h":48},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+		"sourceSize": {"w":48,"h":48}
+	},
+	"checkbox_unmarked.png": {
+		"frame": {"x":0, "y":152, "w":48, "h":48},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+		"sourceSize": {"w":48,"h":48}
 	},
 	"slider.png": {
-		"frame": {"x":0, "y":67, "w":12, "h":24},
+		"frame": {"x":98, "y":152, "w":12, "h":24},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":12,"h":24},
 		"sourceSize": {"w":12,"h":24}
 	},
 	"slider_bg.png": {
-		"frame": {"x":0, "y":0, "w":128, "h":4},
+		"frame": {"x":0, "y":147, "w":128, "h":4},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":128,"h":4},
@@ -32,7 +53,7 @@
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 129, "h": 92},
+	"size": {"w": 193, "h": 201},
 	"scale": "1"
 }
 }

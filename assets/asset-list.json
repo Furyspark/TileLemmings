@@ -29,6 +29,10 @@
     {
       "key": "atlPanels",
       "src": "assets/graphics/sprite-atlases/panels/sprites.json"
+    },
+    {
+      "key": "atlMainMenu",
+      "src": "assets/graphics/sprite-atlases/mainmenu/sprites.json"
     }
   ],
   "audio": [

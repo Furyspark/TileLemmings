@@ -2,6 +2,8 @@ function Options() {}
 
 Options.data          = null;
 Options.SAVE_LOCATION = "config.json";
+Options.onSave = new Signal();
+Options.onLoad = new Signal();
 
 Options.generate = function() {
   this.data = {};
@@ -12,9 +14,6 @@ Options.generate = function() {
     },
     toggleDuringPause: false
   };
-
-  this.onLoad = new Signal();
-  this.onSave = new Signal();
 }
 
 Options.save = function() {
@@ -27,10 +26,10 @@ Options.save = function() {
 }
 
 Options.load = function() {
+  this.generate();
   if(Core.usingElectron) {
     Core.fs.readFile(Options.SAVE_LOCATION, {}, function(err, data) {
-      if(!err) this.data = JSON.parse(data);
-      else this.generate();
+      if(!err) this.data = Object.assign(this.data, JSON.parse(data));
     }.bind(this));
   }
 }

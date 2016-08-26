@@ -13,16 +13,32 @@ Scene_MenuBase.prototype.init = function() {
 }
 
 Scene_MenuBase.prototype.create = function() {
+  Scene_Base.prototype.create.call(this);
   this.fadeIn();
+  this.addListeners();
 }
 
 Scene_MenuBase.prototype.initMembers = function() {
   this.ui = [];
+  this.text = {};
+}
+
+Scene_MenuBase.prototype.continue = function() {
+  Scene_Base.prototype.continue.call(this);
+  this.fadeIn();
+  this.addListeners();
+}
+
+Scene_MenuBase.prototype.leave = function() {
+  Scene_Base.prototype.leave.call(this);
+  this.removeListeners();
 }
 
 Scene_MenuBase.prototype.addUI = function(elem) {
   if(!elem.z) elem.z = 0;
   this.ui.push(elem);
+  if(elem.sprite) this.stage.addChild(elem.sprite);
+  else if(elem.contains(PIXI.DisplayObject)) this.stage.addChild(elem);
 }
 
 Scene_MenuBase.prototype.applyUIZOrdering = function() {
@@ -39,7 +55,7 @@ Scene_MenuBase.prototype.addBackground = function() {
 Scene_MenuBase.prototype.createCommands = function() {}
 
 Scene_MenuBase.prototype.addListeners = function() {
-  Scene_Base.prototype.removeListeners.call(this);
+  Scene_Base.prototype.addListeners.call(this);
   Input.mouse.button.LEFT.onPress.add(this._onMouseLeftDown, this);
 }
 
@@ -49,12 +65,31 @@ Scene_MenuBase.prototype.removeListeners = function() {
 }
 
 Scene_MenuBase.prototype._onMouseLeftDown = function() {
-  this.applyUIZOrdering();
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
-      if(elem.onClick) elem.onClick.dispatch();
-      break;
+  if(this.active) {
+    this.applyUIZOrdering();
+    for(var a = 0;a < this.ui.length;a++) {
+      var elem = this.ui[a];
+      if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
+        if(elem.click) elem.click();
+        break;
+      }
     }
   }
+}
+
+Scene_MenuBase.prototype.createBackButton = function() {
+  var elem = new UI_MenuButton(new Point(40, 40), "Back");
+  elem.onClick.add(this.fadeOut, this, [function() {
+    SceneManager.pop();
+  }]);
+  this.addUI(elem);
+  return elem;
+}
+
+Scene_MenuBase.prototype.getUI_Element = function(key) {
+  for(var a = 0;a < this.ui.length;a++) {
+    var elem = this.ui[a];
+    if(elem.key === key) return elem;
+  }
+  return null;
 }

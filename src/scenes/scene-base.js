@@ -8,6 +8,7 @@ Scene_Base.FADEDURATION_DEFAULT = 500;
 Scene_Base.prototype.init = function() {
   this.stage = new PIXI.Container();
   this.initFadeScreen();
+  this.active = false;
 }
 
 Scene_Base.prototype.update = function() {
@@ -22,9 +23,16 @@ Scene_Base.prototype.render = function() {
 
 Scene_Base.prototype.create = function() {
   this.addListeners();
+  this.active = true;
 }
 
-Scene_Base.prototype.continue = function() {}
+Scene_Base.prototype.continue = function() {
+  this.active = true;
+}
+
+Scene_Base.prototype.leave = function() {
+  this.active = false;
+}
 
 Scene_Base.prototype.end = function() {
   this.removeListeners();
@@ -49,6 +57,8 @@ Scene_Base.prototype.fadeOut = function(callback) {
   if(callback) obj.call(callback);
 }
 
-Scene_Base.prototype.addListeners = function() {}
+Scene_Base.prototype.addListeners = function() {
+  this.removeListeners();
+}
 
 Scene_Base.prototype.removeListeners = function() {}

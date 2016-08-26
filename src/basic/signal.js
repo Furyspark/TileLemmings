@@ -47,7 +47,7 @@ Signal.prototype.sortFunction = function(a, b) {
   return 0;
 }
 
-Signal.prototype.dispatch = function() {
+Signal.prototype.dispatch = function(params) {
   var binds = [];
   for(var a = 0;a < this._bindings.length;a++) {
     var bind = this._bindings[a];
@@ -60,6 +60,7 @@ Signal.prototype.dispatch = function() {
   binds = binds.sort(this.sortFunction);
   for(var a = 0;a < binds.length;a++) {
     var bind = binds[a];
-    bind.callback.apply(bind.context, bind.args);
+    if(params) bind.callback.apply(bind.context, params);
+    else bind.callback.apply(bind.context, bind.args);
   }
 }

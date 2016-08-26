@@ -3,12 +3,15 @@ function SceneManager() {}
 SceneManager._stack = [];
 
 SceneManager.push = function(scene) {
+  var currentScene = this.current();
+  if(currentScene) currentScene.leave();
   this._stack.push(scene);
   scene.create();
 }
 
 SceneManager.pop = function() {
   var scene = this._stack.pop();
+  scene.leave();
   scene.end();
   this.current().continue();
 }

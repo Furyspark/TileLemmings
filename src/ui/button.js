@@ -26,14 +26,9 @@ UI_Button.prototype.click = function() {
   this.lastClickTime = d.getTime();
 }
 
-UI_Button.prototype.addAnimation = function(name, atlasKey, animKeys) {
-  var anim = this.sprite.addAnimation(name);
-  for(var a = 0;a < animKeys.length;a++) {
-    anim.addFrame(atlasKey, animKeys[a]);
-  }
-}
-
 UI_Button.prototype.refresh = function() {
-  this.label.x = (this.sprite.width / this.sprite.scale.y) / 2;
-  this.label.y = 0;
+  if(this.label) {
+    this.label.x = (this.sprite.width / this.sprite.scale.y) / 2;
+    this.label.y = 0;
+  }
 }

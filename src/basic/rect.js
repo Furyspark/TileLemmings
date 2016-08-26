@@ -32,3 +32,7 @@ Rect.prototype.overlap = function(rect) {
   return ((rect.right > this.left && rect.left < this.right) &&
   (rect.bottom > this.top && rect.top < this.bottom));
 }
+
+Rect.prototype.clone = function() {
+  return new Rect(this.x, this.y, this.width, this.height);
+}
