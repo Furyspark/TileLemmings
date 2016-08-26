@@ -21,12 +21,12 @@ Object.defineProperties(Core, {
 
 Core.start = function() {
   this.initMembers();
-
   this.initElectron();
   this.initPixi();
   this.fitToWindow();
   this.startDataObjects();
   this.loadConfig();
+  this.initExternalLibs();
   Input.init();
 
   Loader.onComplete.addOnce(function() {
@@ -36,6 +36,7 @@ Core.start = function() {
 }
 
 Core.initMembers = function() {
+  this.frameRate = 60;
   // Full screen
   this.isFullscreen = false;
   var func = function(e) {
@@ -52,8 +53,7 @@ Core.initElectron = function() {
   this.usingElectron = false;
   if(typeof require === "function") {
     this.usingElectron = true;
-    // this.ipcRenderer = require("electron").ipcRenderer;
-    this.mainWindow = nw.Window.get();
+    this.ipcRenderer = require("electron").ipcRenderer;
     this.initElectronProperties();
   }
 }
@@ -64,6 +64,10 @@ Core.initElectronProperties = function() {
 
 Core.onResize = function(e) {
   Core.fitToWindow();
+}
+
+Core.initExternalLibs = function() {
+  createjs.Ticker.framerate = this.frameRate;
 }
 
 Core.initPixi = function() {
@@ -78,7 +82,9 @@ Core.initPixi = function() {
 }
 
 Core.render = function() {
-  requestAnimationFrame(this.render.bind(this));
+  setTimeout(function() {
+    requestAnimationFrame(this.render.bind(this));
+  }.bind(this), Math.max(1, Math.floor(1000 / this.frameRate)));
   SceneManager.update();
   Input._refreshButtonStates();
   SceneManager.render();
@@ -110,15 +116,13 @@ Core.resizeWindow = function(w, h) {
   if(Core.usingElectron) {
     var diffW = window.outerWidth - window.innerWidth;
     var diffH = window.outerHeight - window.innerHeight;
-    // Core.ipcRenderer.send("window", ["resize", w + diffW, h + diffH]);
-    this.mainWindow.resizeTo(w + diffW, h + diffH);
+    Core.ipcRenderer.send("window", ["resize", w + diffW, h + diffH]);
   }
 }
 
 Core.centerWindow = function() {
   if(Core.usingElectron) {
-    // Core.ipcRenderer.send("window", ["center"]);
-    this.mainWindow.setPosition("center");
+    Core.ipcRenderer.send("window", ["center"]);
   }
 }
 

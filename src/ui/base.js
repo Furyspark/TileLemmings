@@ -31,6 +31,8 @@ UI_Base.prototype.init = function(x, y, key) {
 
 UI_Base.prototype.over = function(x, y) {
   var r = this.rect;
-  if(!r) r = new Rect(this.sprite.x - this.sprite.anchor.x * this.sprite.width, this.sprite.y - this.sprite.anchor.y * this.sprite.height, this.sprite.width, this.sprite.height);
+  var anchor = new Point(0, 0);
+  if(this.sprite.anchor) anchor = this.sprite.anchor;
+  if(!r) r = new Rect(this.sprite.x - anchor.x * this.sprite.width, this.sprite.y - anchor.y * this.sprite.height, this.sprite.width, this.sprite.height);
   return (x >= r.left && x < r.right && y >= r.top && y < r.bottom);
 }

@@ -43,6 +43,7 @@ var data = {
 
     "src/ui/base.js",
     "src/ui/button.js",
+    "src/ui/minimap.js",
 
     "src/map/map.js",
     "src/map/tileset.js",

@@ -1,24 +1,14 @@
-function Minimap() {
+function Sprite_Minimap() {
   this.init.apply(this, arguments);
 }
 
-Minimap.prototype = Object.create(PIXI.Container.prototype);
-Minimap.prototype.constructor = Minimap;
+Sprite_Minimap.prototype = Object.create(PIXI.Container.prototype);
+Sprite_Minimap.prototype.constructor = Sprite_Minimap;
 
-Minimap.prototype.init = function(options) {
+Sprite_Minimap.prototype.init = function() {
   PIXI.Container.prototype.constructor.call(this);
   this.interactive = false;
   this.tiles = [];
-
-  if(options) {
-    if(options.addCameraView) {
-      this.addCameraView();
-      this.updateCameraView();
-      if(options.interactive) {
-        this.addInteractivity();
-      }
-    }
-  }
 
   this.background = new PIXI.Graphics();
   this.background.beginFill(0x0);
@@ -28,7 +18,7 @@ Minimap.prototype.init = function(options) {
   this.addChild(this.background);
 }
 
-Minimap.prototype.update = function() {
+Sprite_Minimap.prototype.update = function() {
   if($gameMap) {
     // Clear and fill tiles array if necessary
     if(this.tiles.length !== $gameMap.tiles.length) {
@@ -67,24 +57,9 @@ Minimap.prototype.update = function() {
     if(a.z < b.z) return 1;
     return 0;
   });
-  if(this.minimapView) this.updateCameraView();
 }
 
-Minimap.prototype.updateTile = function(mapTile, myTile) {
+Sprite_Minimap.prototype.updateTile = function(mapTile, myTile) {
   myTile.playAnimation("ground");
   if(mapTile.hasProperty("STEEL")) myTile.playAnimation("steel");
-}
-
-Minimap.prototype.addCameraView = function() {
-  this.minimapView = new PIXI.Graphics();
-  this.minimapView.z = -100;
-  this.addChild(this.minimapView);
-}
-
-Minimap.prototype.updateCameraView = function() {
-  this.minimapView.lineStyle(2, 0x00ff00, 1);
-  this.minimapView.drawRect(0, 0, $gameMap.camera.width, $gameMap.camera.height);
-}
-
-Minimap.prototype.addInteractivity = function() {
 }

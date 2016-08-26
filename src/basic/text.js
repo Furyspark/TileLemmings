@@ -16,3 +16,7 @@ Text.prototype.init = function(text, style) {
   if(!style) style = Text.defaultStyle;
   PIXI.Text.prototype.constructor.call(this, text, style);
 }
+
+function Meow() {
+  this.init.apply(this, arguments);
+}

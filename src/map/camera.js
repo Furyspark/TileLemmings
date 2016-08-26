@@ -1,20 +1,21 @@
-function Camera() {
+function Game_Camera() {
   this.init.apply(this, arguments);
 }
 
-Camera.prototype.init = function(map) {
-  this.rect = new Rect(0, 0, 640, 360);
+Game_Camera.prototype.init = function(map) {
+  this.baseRect = new Rect(0, 0, 640, 360);
+  this.rect = new Rect(this.baseRect.x, this.baseRect.y, this.baseRect.width, this.baseRect.height);
   this.map = map;
 }
 
-Camera.prototype.update = function() {
+Game_Camera.prototype.update = function() {
   this.map.world.scale.x = Core.resolution.x / this.rect.width;
   this.map.world.scale.y = Core.resolution.y / this.rect.height;
   this.map.world.position.x = -(this.rect.x * this.map.world.scale.x);
   this.map.world.position.y = -(this.rect.y * this.map.world.scale.y);
 }
 
-Camera.prototype.setPosition = function(position, anchor) {
+Game_Camera.prototype.setPosition = function(position, anchor) {
   // Gather data
   var oldPos = new Point(this.rect.x, this.rect.y);
   var mapPos = new Point(
@@ -39,11 +40,11 @@ Camera.prototype.setPosition = function(position, anchor) {
   return diff;
 }
 
-Camera.prototype.move = function(x, y) {
+Game_Camera.prototype.move = function(x, y) {
   return this.setPosition(new Point(this.rect.x + x, this.rect.y + y), new Point(0, 0));
 }
 
-Camera.prototype.contains = function(spr) {
+Game_Camera.prototype.contains = function(spr) {
   var r = new Rect(spr.x - (spr.width * spr.anchor.x), spr.y - (spr.height * spr.anchor.y), spr.width, spr.height);
   return this.rect.overlap(r);
 }

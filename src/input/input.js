@@ -122,6 +122,15 @@ Input._onMouseUp = function(e) {
   }
 }
 
+Input._wheel = function(e) {
+  var btn = null;
+  if(e.deltaY < 0) btn = "WHEELUP";
+  else if(e.deltaY > 0) btn = "WHEELDOWN";
+  if(btn) {
+    this.mouse.button[btn].onPress.dispatch();
+  }
+}
+
 Input.initListeners = function() {
   // Core events
   window.addEventListener("keydown", this._onKeyDown.bind(this));
@@ -129,6 +138,7 @@ Input.initListeners = function() {
   Core.renderer.view.addEventListener("mousemove", this._onMouseMove.bind(this));
   Core.renderer.view.addEventListener("mousedown", this._onMouseDown.bind(this));
   Core.renderer.view.addEventListener("mouseup", this._onMouseUp.bind(this));
+  Core.renderer.view.addEventListener("wheel", this._wheel.bind(this));
   // Misc events
   this.key.F4.onPress.add(function() {
     this.setFullscreen(!this.getFullscreen());

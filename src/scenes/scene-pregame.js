@@ -10,7 +10,7 @@ Scene_PreGame.prototype.constructor = Scene_PreGame;
 Scene_PreGame.prototype.init = function(src) {
   Scene_Base.prototype.init.call(this);
   this._loading = true;
-  $gameMap = new Map(src, this);
+  $gameMap = new Game_Map(src, this);
   $gameMap.onCreate.addOnce(this.start, this, [], 10);
 }
 
@@ -20,7 +20,7 @@ Scene_PreGame.prototype.start = function() {
   this.bg = new Background("bgMainMenu");
   this.stage.addChild(this.bg);
   // Add minimap
-  this.minimap = new Minimap();
+  this.minimap = new Sprite_Minimap();
   this.stage.addChild(this.minimap);
   this.updateMinimap();
   // Add description

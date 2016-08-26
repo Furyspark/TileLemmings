@@ -1,17 +1,12 @@
 {
   "name": "tilelemmings",
   "version": "0.0.5",
-  "main": "index.html",
+  "main": "main.js",
   "private": true,
   "scripts": {
-    "test": "node compile.js & nw ."
+    "test": "node compile.js & electron ."
   },
   "devDependencies": {
     "concatenate-files": "^0.1.1"
-  },
-  "window": {
-    "toolbar": false,
-    "width": 1280,
-    "height": 720
   }
 }

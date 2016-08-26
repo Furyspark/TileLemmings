@@ -24,6 +24,20 @@ Input_Mouse.prototype.init = function() {
       released: false,
       onPress: new Signal(),
       onRelease: new Signal()
+    },
+    WHEELUP: {
+      down: false,
+      pressed: false,
+      released: false,
+      onPress: new Signal(),
+      onRelease: new Signal()
+    },
+    WHEELDOWN: {
+      down: false,
+      pressed: false,
+      released: false,
+      onPress: new Signal(),
+      onRelease: new Signal()
     }
   };
   this.position = {

@@ -41,6 +41,16 @@ Scene_Game.prototype.init = function() {
     this.actionPreview.tiles.push(spr);
     $gameMap.world.addChild(spr);
   }
+  // Zoom
+  this.zoom = {
+    factor: {
+      current: 1,
+      to: 1,
+      maximum: 3,
+      minimum: 0.5
+    },
+    focusPoint: new Point()
+  };
 }
 
 Scene_Game.prototype.create = function() {
@@ -79,7 +89,7 @@ Scene_Game.prototype.update = function() {
     this.cursor.visible = false;
   }
   this.updateActionPreview();
-  this.minimap.update();
+  if(this.minimap) this.minimap.update();
 }
 
 Scene_Game.prototype.controlCamera = function() {
@@ -98,7 +108,29 @@ Scene_Game.prototype.controlCamera = function() {
   else if(Input.isDown("camDown")) {
     $gameMap.camera.move(0, camSpeed);
   }
+  this.updateZoom();
   $gameMap.updateCamera();
+}
+
+Scene_Game.prototype.updateZoom = function() {
+  // Gather data
+  var fp = this.zoom.focusPoint;
+  var br = $gameMap.camera.baseRect;
+  var r = $gameMap.camera.rect;
+  var prevW = r.width;
+  var prevH = r.height;
+  // Apply Zoom
+  r.width = br.width * this.zoom.factor.current;
+  r.height = br.height * this.zoom.factor.current;
+  // Reposition
+  var diffW = r.width - prevW;
+  var diffH = r.height - prevH;
+  var anchor = new Point((r.x - fp.x) / r.width, (r.y - fp.y) / r.height);
+  // Reposition when camera is larger than map
+  if(r.width > $gameMap.realWidth) r.x = ($gameMap.realWidth / 2) - (r.width / 2);
+  else r.x = r.x + (diffW * anchor.x);
+  if(r.height > $gameMap.realHeight) r.y = ($gameMap.realHeight / 2) - (r.height / 2);
+  else r.y = r.y + (diffH * anchor.y);
 }
 
 Scene_Game.prototype.startMap = function() {
@@ -219,18 +251,18 @@ Scene_Game.prototype.createExtraButtons = function(cW) {
 }
 
 Scene_Game.prototype.createMinimap = function() {
-  this.minimap = new Minimap({ addCameraView: true, interactive: true });
+  this.minimap = new UI_Minimap({ addCameraView: true, interactive: true });
   this.updateMinimap();
-  this.stage.addChild(this.minimap);
+  this.stage.addChild(this.minimap.sprite);
 }
 
 Scene_Game.prototype.updateMinimap = function() {
   this.minimap.update();
   var maxWidth = 240;
   var maxHeight = this.panel.height - 1;
-  this.minimap.height = (this.minimap.height / this.minimap.width) * maxWidth;
-  this.minimap.width = maxWidth;
-  this.minimap.position.set(Core.resolution.x - this.minimap.width, Core.resolution.y - this.minimap.height);
+  this.minimap.sprite.height = (this.minimap.sprite.height / this.minimap.sprite.width) * maxWidth;
+  this.minimap.sprite.width = maxWidth;
+  this.minimap.sprite.position.set(Core.resolution.x - this.minimap.sprite.width, Core.resolution.y - this.minimap.sprite.height);
 }
 
 Scene_Game.prototype.initControls = function() {
@@ -247,6 +279,9 @@ Scene_Game.prototype.initControls = function() {
   Input.key.F.onPress.add(this.toggleFastForward, this, [true]);
   Input.key[" "].onPress.add(this.pauseGame, this, [true]);
   Input.key.G.onPress.add(this.toggleGrid, this, [true]);
+  // Zooming
+  Input.mouse.button.WHEELUP.onPress.add(this.zoomIn, this, [0.1, true], 30);
+  Input.mouse.button.WHEELDOWN.onPress.add(this.zoomOut, this, [0.1, true], 30);
 }
 
 Scene_Game.prototype.releaseControls = function() {
@@ -262,6 +297,39 @@ Scene_Game.prototype.releaseControls = function() {
   Input.key.F.onPress.remove(this.toggleFastForward, this);
   Input.key[" "].onPress.remove(this.pauseGame, this);
   Input.key.G.onPress.remove(this.toggleGrid, this, [true]);
+  // Zooming
+  Input.mouse.button.WHEELUP.onPress.remove(this.zoomIn, this);
+  Input.mouse.button.WHEELDOWN.onPress.remove(this.zoomOut, this);
+}
+
+Scene_Game.prototype.zoomIn = function(amount, toCursor) {
+  if(toCursor === undefined) toCursor = false;
+  this.zoom.factor.to = Math.max(this.zoom.factor.minimum, this.zoom.factor.to - amount);
+  createjs.Tween.get(this.zoom.factor, { override: true })
+    .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
+  if(toCursor) {
+    this.zoom.focusPoint.x = Input.mouse.position.world.x;
+    this.zoom.focusPoint.y = Input.mouse.position.world.y;
+  }
+  else {
+    this.zoom.focusPoint.x = $gameMap.camera.rect.x + ($gameMap.camera.rect.width / 2);
+    this.zoom.focusPoint.y = $gameMap.camera.rect.y + ($gameMap.camera.rect.height / 2);
+  }
+}
+
+Scene_Game.prototype.zoomOut = function(amount, fromCursor) {
+  if(fromCursor === undefined) fromCursor = false;
+  this.zoom.factor.to = Math.min(this.zoom.factor.maximum, this.zoom.factor.to + amount);
+  createjs.Tween.get(this.zoom.factor, { override: true })
+    .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
+  if(fromCursor) {
+    this.zoom.focusPoint.x = Input.mouse.position.world.x;
+    this.zoom.focusPoint.y = Input.mouse.position.world.y;
+  }
+  else {
+    this.zoom.focusPoint.x = $gameMap.camera.rect.x + ($gameMap.camera.rect.width / 2);
+    this.zoom.focusPoint.y = $gameMap.camera.rect.y + ($gameMap.camera.rect.height / 2);
+  }
 }
 
 Scene_Game.prototype._onMouseLeftDown = function() {

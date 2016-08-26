@@ -135,17 +135,17 @@ Game_Lemming.prototype.update = function() {
 Game_Lemming.prototype.preMove = function() {
   // Check for ground
   var col = this.map.tileCollision(this.x, this.y + 1, this);
-  if(col === Tile.COLLISION_PASSABLE) {
+  if(col === Game_Tile.COLLISION_PASSABLE) {
     this.onGround = false;
     if(!this.dead) this.fall();
   }
-  else if(col === Tile.COLLISION_IMPASSABLE) {
+  else if(col === Game_Tile.COLLISION_IMPASSABLE) {
     if(!this.onGround) this.y = (((this.y + this.map.tileHeight) >> 4) << 4) - 1;
     this.onGround = true;
     this.checkFallDeath();
     if(!this.dead) this.walk();
   }
-  else if(col === Tile.COLLISION_ENDOFMAP) {
+  else if(col === Game_Tile.COLLISION_ENDOFMAP) {
     this.die(Game_Lemming.DEATH_ENDOFMAP);
   }
 }
@@ -155,11 +155,11 @@ Game_Lemming.prototype.move = function() {
   // Evals
   if(this.action.current === Game_Lemming.ACTION_CLIMBER) {
     defaultAction = false;
-    if(this.map.tileCollision(this.x, this.y - 8, this) !== Tile.COLLISION_IMPASSABLE) {
+    if(this.map.tileCollision(this.x, this.y - 8, this) !== Game_Tile.COLLISION_IMPASSABLE) {
       this.velocity.y = 0;
       this.requestAnimation = 'climb-end';
     }
-    else if(this.map.tileCollision(this.x - (1 * this.dir), this.y + this.velocity.y, this) === Tile.COLLISION_IMPASSABLE) {
+    else if(this.map.tileCollision(this.x - (1 * this.dir), this.y + this.velocity.y, this) === Game_Tile.COLLISION_IMPASSABLE) {
       this.action.current = Game_Lemming.ACTION_FALL;
       this.requestAnimation = 'fall';
     }
@@ -179,9 +179,9 @@ Game_Lemming.prototype.move = function() {
 
 Game_Lemming.prototype.postMove = function() {
   // React to ground
-  if(this.map.tileCollision(this.x, this.y, this) === Tile.COLLISION_IMPASSABLE) {
+  if(this.map.tileCollision(this.x, this.y, this) === Game_Tile.COLLISION_IMPASSABLE) {
     // Slope check
-    if(this.map.tileCollision(this.x, this.y - this.map.tileHeight) === Tile.COLLISION_PASSABLE &&
+    if(this.map.tileCollision(this.x, this.y - this.map.tileHeight) === Game_Tile.COLLISION_PASSABLE &&
       !this.map.tileHasBlocker(this.x, this.y - this.map.tileHeight)) {
       var defaultAction = true;
       // Evals
@@ -299,7 +299,7 @@ Game_Lemming.prototype.build = function(offsetX, offsetY) {
   var yTo = (this.y >> 4) + offsetY;
   var oldTile = this.map.getTile(xTo << 4, yTo << 4);
   if(oldTile === null) {
-    var tile = new Tile(Core.tileset.generic.getTileTexture(0));
+    var tile = new Game_Tile(Core.tileset.generic.getTileTexture(0));
     this.map.replaceTile(xTo, yTo, tile);
   }
 }
@@ -446,8 +446,8 @@ Game_Lemming.prototype._actionTimer = function() {
 }
 
 Game_Lemming.prototype._buildUpdate = function() {
-  if(this.map.tileCollision(this.x, this.y - this.map.tileHeight, this) === Tile.COLLISION_IMPASSABLE ||
-  this.map.tileCollision(this.x + this.map.tileWidth * this.dir, this.y - this.map.tileHeight, this) === Tile.COLLISION_IMPASSABLE) {
+  if(this.map.tileCollision(this.x, this.y - this.map.tileHeight, this) === Game_Tile.COLLISION_IMPASSABLE ||
+  this.map.tileCollision(this.x + this.map.tileWidth * this.dir, this.y - this.map.tileHeight, this) === Game_Tile.COLLISION_IMPASSABLE) {
     this.changeDirection();
     this.alarms.action.stop();
     this._buildEnd();

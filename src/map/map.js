@@ -1,8 +1,8 @@
-function Map() {
+function Game_Map() {
   this.init.apply(this, arguments);
 }
 
-Object.defineProperties(Map.prototype, {
+Object.defineProperties(Game_Map.prototype, {
   realWidth: {
     get: function() { return this.width * this.tileWidth; }
   },
@@ -11,10 +11,10 @@ Object.defineProperties(Map.prototype, {
   }
 });
 
-Map.prototype.init = function(src, scene) {
-  this.world             = new World();
+Game_Map.prototype.init = function(src, scene) {
+  this.world             = new Game_World();
   this.grid              = new PIXI.Container();
-  this.camera            = new Camera(this);
+  this.camera            = new Game_Camera(this);
   this.scene             = scene;
   this.tilesets          = [];
   this._expectedAssets   = [];
@@ -49,7 +49,7 @@ Map.prototype.init = function(src, scene) {
   obj.onComplete.addOnce(this.parseTiledMap, this);
 }
 
-Map.prototype.parseTiledMap = function() {
+Game_Map.prototype.parseTiledMap = function() {
   this.data = Cache.getJSON("map");
   this.parseMapProperties(this.data.properties);
   // Load Tilesets
@@ -66,7 +66,7 @@ Map.prototype.parseTiledMap = function() {
   }
 }
 
-Map.prototype.parseMapProperties = function(properties) {
+Game_Map.prototype.parseMapProperties = function(properties) {
   // Apply Map Properties
   if(properties.needed) this.needed = properties.needed;
   if(properties.name) this.name = properties.name;
@@ -95,9 +95,9 @@ Map.prototype.parseMapProperties = function(properties) {
   }
 }
 
-Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage) {
+Game_Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage) {
   var tsData = Cache.getJSON(key);
-  var ts = new Tileset();
+  var ts = new Game_Tileset();
   ts.margin         = tsData.margin;
   ts.spacing        = tsData.spacing;
   ts.tileWidth      = tsData.tilewidth;
@@ -122,7 +122,7 @@ Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage) {
   this.clearAsset(key);
 }
 
-Map.prototype.parseTileset = function(imageKey, tileset) {
+Game_Map.prototype.parseTileset = function(imageKey, tileset) {
   tileset.texture = Cache.getImage(imageKey);
   this.tilesets.push(tileset);
 
@@ -130,7 +130,7 @@ Map.prototype.parseTileset = function(imageKey, tileset) {
   this.clearAsset(imageKey);
 }
 
-Map.prototype.loadUsedGameObjectAssets = function() {
+Game_Map.prototype.loadUsedGameObjectAssets = function() {
   var objects = this.getUsedGameObjects();
   for(var a = 0;a < objects.length;a++) {
     var obj = objects[a];
@@ -145,7 +145,7 @@ Map.prototype.loadUsedGameObjectAssets = function() {
   }
 }
 
-Map.prototype.getUsedGameObjects = function() {
+Game_Map.prototype.getUsedGameObjects = function() {
   var result = [];
   for(var a = 0;a < this.data.layers.length;a++) {
     var layer = this.data.layers[a];
@@ -159,7 +159,7 @@ Map.prototype.getUsedGameObjects = function() {
   return result;
 }
 
-Map.prototype.loadGameObjectAsset = function(props) {
+Game_Map.prototype.loadGameObjectAsset = function(props) {
   // Load files
   for(var assetType in props.assets) {
     for(var assetKey in props.assets[assetType]) {
@@ -184,7 +184,7 @@ Map.prototype.loadGameObjectAsset = function(props) {
   }
 }
 
-Map.prototype.clearAsset = function(key) {
+Game_Map.prototype.clearAsset = function(key) {
   // Clear tileset
   this.clearTileset(key);
   // Check if done loading, and if so, create level
@@ -202,7 +202,7 @@ Map.prototype.clearAsset = function(key) {
   }
 }
 
-Map.prototype.clearTileset = function(key) {
+Game_Map.prototype.clearTileset = function(key) {
   var a = this._expectedTilesets.indexOf(key);
   if(a !== -1) {
     this._expectedTilesets.splice(a, 1);
@@ -212,7 +212,7 @@ Map.prototype.clearTileset = function(key) {
   }
 }
 
-Map.prototype.getTileset = function(uid) {
+Game_Map.prototype.getTileset = function(uid) {
   for(var a = this.tilesets.length - 1;a >= 0;a--) {
     var ts = this.tilesets[a];
     if(uid >= ts.firstGid) return ts;
@@ -220,7 +220,7 @@ Map.prototype.getTileset = function(uid) {
   return null;
 }
 
-Map.prototype.createLevel = function() {
+Game_Map.prototype.createLevel = function() {
   this.width = this.data.width;
   this.height = this.data.height;
   this.tileWidth = this.data.tilewidth;
@@ -251,7 +251,7 @@ Map.prototype.createLevel = function() {
   this.onCreate.dispatch();
 }
 
-Map.prototype.parseTileLayer = function(layer) {
+Game_Map.prototype.parseTileLayer = function(layer) {
   for(var a = 0;a < layer.data.length;a++) {
     var uid = layer.data[a];
     if(uid > 0) {
@@ -261,7 +261,7 @@ Map.prototype.parseTileLayer = function(layer) {
   }
 }
 
-Map.prototype.parseObjectLayer = function(layer) {
+Game_Map.prototype.parseObjectLayer = function(layer) {
   for(var a = 0;a < layer.objects.length;a++) {
     var objData = layer.objects[a];
     var props = this.getObjectProperties(objData);
@@ -274,7 +274,7 @@ Map.prototype.parseObjectLayer = function(layer) {
   }
 }
 
-Map.prototype.getObjectProperties = function(objectData) {
+Game_Map.prototype.getObjectProperties = function(objectData) {
   var ts = this.getTileset(objectData.gid);
   if(ts) {
     var props = ts.getTileProperties(objectData.gid - ts.firstGid);
@@ -283,7 +283,7 @@ Map.prototype.getObjectProperties = function(objectData) {
   return null;
 }
 
-Map.prototype.addGrid = function() {
+Game_Map.prototype.addGrid = function() {
   for(var a = 0;a < this.width;a++) {
     for(var b = 0;b < this.height;b++) {
       var spr = new Sprite_Base();
@@ -296,7 +296,7 @@ Map.prototype.addGrid = function() {
   }
 }
 
-Map.prototype.addProp = function(x, y, key, data) {
+Game_Map.prototype.addProp = function(x, y, key, data) {
   // Create object
   var obj = new Game_Prop(key, this);
   obj.map = this;
@@ -325,14 +325,14 @@ Map.prototype.addProp = function(x, y, key, data) {
   this.world.addChild(obj.sprite);
 }
 
-Map.prototype.addTile = function(x, y, uid, flags, data) {
+Game_Map.prototype.addTile = function(x, y, uid, flags, data) {
   if(!data) data = {};
   if(!flags) flags = 0;
   var ts = this.getTileset(uid);
   if(ts) {
     var index = this.getTileIndex(x, y);
     // Add new tile
-    var tile = new Tile(ts.getTileTexture(uid - ts.firstGid));
+    var tile = new Game_Tile(ts.getTileTexture(uid - ts.firstGid));
     tile.x = x * this.tileWidth;
     tile.y = y * this.tileHeight;
     this.world.addChild(tile.sprite);
@@ -348,14 +348,14 @@ Map.prototype.addTile = function(x, y, uid, flags, data) {
     }
     // Remove old tile
     var oldTile = this.tiles.splice(index, 1, tile)[0];
-    if(oldTile instanceof Tile) oldTile.sprite.destroy(true);
+    if(oldTile instanceof Game_Tile) oldTile.sprite.destroy(true);
   }
 }
 
-Map.prototype.removeTile = function(x, y) {
+Game_Map.prototype.removeTile = function(x, y) {
   var index = this.getTileIndex(x, y);
   var oldTile = this.tiles.splice(index, 1, null)[0];
-  if(oldTile instanceof Tile) {
+  if(oldTile instanceof Game_Tile) {
     this.world.removeChild(oldTile.sprite);
     oldTile.sprite.destroy();
     return true;
@@ -363,27 +363,27 @@ Map.prototype.removeTile = function(x, y) {
   return false;
 }
 
-Map.prototype.getTileIndex = function(x, y) {
+Game_Map.prototype.getTileIndex = function(x, y) {
   return x + (y * this.width);
 }
 
-Map.prototype.getTilePosition = function(index) {
+Game_Map.prototype.getTilePosition = function(index) {
   return new Point(
     Math.floor(index % this.width),
     Math.floor(index / this.width)
   );
 }
 
-Map.prototype.getTile = function(realX, realY) {
+Game_Map.prototype.getTile = function(realX, realY) {
   if(realX < 0 || realY >= this.realWidth || realY < 0 || realY >= this.realHeight) return null;
   return this.tiles[this.getTileIndex(realX >> 4, realY >> 4)];
 }
 
-Map.prototype.setStage = function(stage) {
+Game_Map.prototype.setStage = function(stage) {
   stage.addChild(this.world);
 }
 
-Map.prototype.update = function() {
+Game_Map.prototype.update = function() {
   // Update objects
   var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
   for(var a = 0;a < arr.length;a++) {
@@ -392,13 +392,11 @@ Map.prototype.update = function() {
   }
   // Apply Z-ordering
   this.world.children.sort(function(a, b) {
-    if(a.z !== undefined && b.z !== undefined && a.z > b.z) return -1;
-    if(a.z !== undefined && b.z !== undefined && a.z < b.z) return 1;
-    return 0;
+    return b.z - a.z;
   });
 }
 
-Map.prototype.updateCamera = function() {
+Game_Map.prototype.updateCamera = function() {
   this.camera.update();
   // Update tiles
   var arr = this.tiles.slice();
@@ -418,36 +416,36 @@ Map.prototype.updateCamera = function() {
   }
 }
 
-Map.prototype.getLemmings = function() {
+Game_Map.prototype.getLemmings = function() {
   return this.objects.filter(function(obj) {
     return (obj instanceof Game_Lemming && obj.exists);
   });
 }
 
-Map.prototype.getDoors = function() {
+Game_Map.prototype.getDoors = function() {
   return this.objects.filter(function(obj) {
     return (obj instanceof Game_Prop && obj.type === "door" && obj.exists);
   });
 }
 
-Map.prototype.getExits = function() {
+Game_Map.prototype.getExits = function() {
   return this.objects.filter(function(obj) {
     return (obj instanceof Game_Prop && obj.type === "exit" && obj.exists);
   });
 }
 
-Map.prototype.startMusic = function() {
+Game_Map.prototype.startMusic = function() {
   AudioManager.playBgm("music");
 }
 
-Map.prototype.tileCollision = function(realX, realY, lem) {
+Game_Map.prototype.tileCollision = function(realX, realY, lem) {
   if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return Tile.COLLISION_ENDOFMAP;
   var tile = this.getTile(realX, realY);
   if(tile) return tile.collisionFunction.call(lem, realX, realY);
-  return Tile.COLLISIONFUNC_AIR.call(lem, realX, realY);
+  return Game_Tile.COLLISIONFUNC_AIR.call(lem, realX, realY);
 }
 
-Map.prototype.tileHasBlocker = function(realX, realY) {
+Game_Map.prototype.tileHasBlocker = function(realX, realY) {
   if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return false;
   var r = new Rect((realX >> 4) << 4, (realY >> 4) << 4, this.tileWidth, this.tileHeight);
   var arr = this.getLemmings().slice().filter(function(lemming) { return lemming.action.current === Game_Lemming.ACTION_BLOCKER; } );
@@ -458,14 +456,14 @@ Map.prototype.tileHasBlocker = function(realX, realY) {
   return false;
 }
 
-Map.prototype.toScreenSpace = function(mapX, mapY) {
+Game_Map.prototype.toScreenSpace = function(mapX, mapY) {
   return new Point(
     (mapX - this.camera.rect.left) * this.world.scale.x,
     (mapY - this.camera.rect.top) * this.world.scale.y
   );
 }
 
-Map.prototype.replaceTile = function(x, y, tile) {
+Game_Map.prototype.replaceTile = function(x, y, tile) {
   var index = this.getTileIndex(x, y);
   if(index >= 0 && index < this.tiles.length) {
     var oldTile = this.tiles.splice(index, 1, tile)[0];
@@ -476,25 +474,25 @@ Map.prototype.replaceTile = function(x, y, tile) {
   }
 }
 
-Map.prototype.toWorldSpace = function(screenX, screenY) {
+Game_Map.prototype.toWorldSpace = function(screenX, screenY) {
   return new Point(
     (screenX / this.world.scale.x) + this.camera.rect.left,
     (screenY / this.world.scale.y) + this.camera.rect.top
   );
 }
 
-Map.prototype.addBackground = function() {
+Game_Map.prototype.addBackground = function() {
   if(Cache.hasImage("background")) {
     this.background.image = new Sprite_Background(Cache.getImage("background"), this.realWidth, this.realHeight);
     this.world.addChild(this.background.image);
   }
 }
 
-Map.prototype.end = function() {
+Game_Map.prototype.end = function() {
   this.clearLevelAssets();
 }
 
-Map.prototype.clearLevelAssets = function() {
+Game_Map.prototype.clearLevelAssets = function() {
   for(var a = 0;a < this._usedAssets.length;a++) {
     var asset = this._usedAssets[a];
     switch(asset.type) {
