@@ -92,6 +92,7 @@ Game_Lemming.prototype.initTriggers = function() {
     this.map.saved++;
     this.exists = false;
   }, this);
+  this.sprite.animations["explosion"].onEnd.add(this.remove, this);
 }
 
 Game_Lemming.prototype.actionInitEval = function(key) {
@@ -374,7 +375,8 @@ Game_Lemming.prototype.explode = function() {
       this.map.removeTile((this.x + pt.x) >> 4, (this.y + pt.y) >> 4);
     }
   }
-  this.remove();
+  this.disable();
+  this.requestAnimation = "explosion";
 }
 
 Game_Lemming.prototype.assignProperty = function(name) {
@@ -427,9 +429,9 @@ Game_Lemming.prototype._bomberStartExplode = function() {
     this.alarms.bomber.stop();
     this.bomber.label.visible = false;
     this.interactive = false;
-    AudioManager.playSound('sndOhNo');
+    AudioManager.playSound("sndOhNo");
     this.action.current = Game_Lemming.ACTION_BOMBER;
-    this.requestAnimation = 'explode';
+    this.requestAnimation = "explode";
   }
 }
 
@@ -541,11 +543,15 @@ Game_Lemming.prototype.dig = function(targetPoints, adjustMovement) {
 
 Game_Lemming.prototype.exit = function() {
   this.requestAnimation = "exit";
-  this.cancelBomber();
-  this.interactive = false;
-  this.physicsEnabled = false;
+  this.disable();
 }
 
 Game_Lemming.prototype.canExit = function() {
   return (this.physicsEnabled && !this.sprite.isAnimationPlaying("explode"));
+}
+
+Game_Lemming.prototype.disable = function() {
+  this.cancelBomber();
+  this.interactive = false;
+  this.physicsEnabled = false;
 }

@@ -19,6 +19,7 @@ Sprite_Lemming.prototype.initAnimations = function() {
   this.addAnimationExt("atlLemming", "drown", 16, "sprLemming_Drown_%s.png");
   this.addAnimationExt("atlLemming", "exit", 8, "sprLemming_Exit_%s.png");
   this.addAnimationExt("atlLemming", "explode", 16, "sprLemming_Explode_%s.png");
+  this.addAnimationExt("atlLemming", "explosion", 1, "sprLemming_Explosion_%s.png");
   this.addAnimationExt("atlLemming", "fall-death", 16, "sprLemming_FallDeath_%s.png");
   this.addAnimationExt("atlLemming", "fall", 4, "sprLemming_Fall_%s.png");
   this.addAnimationExt("atlLemming", "walk", 10, "sprLemming_Move_%s.png");

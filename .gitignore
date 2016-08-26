@@ -3,6 +3,5 @@ node_modules
 *.sublime*
 .atom-build.json
 *.bak
-lib/app.js
-lib/main.js
+lib/game.js
 *.sublime-*
