@@ -29,10 +29,13 @@ Scene_Boot.prototype.loadAssets = function() {
     var asset = assetList.audio[a];
     Loader.loadAudio(asset.key, asset.src);
   }
+  // Load options
+  Options.load();
 }
 
 Scene_Boot.prototype.start = function() {
   Core.tileset.generic = new Game_Tileset();
   Core.tileset.generic.texture = Cache.getImage("tsGeneric");
+  // SceneManager.push(new Scene_MainMenu());
   SceneManager.push(new Scene_PreGame("assets/levels/testlevel.json"));
 }

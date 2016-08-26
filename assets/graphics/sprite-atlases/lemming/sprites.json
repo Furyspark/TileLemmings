@@ -1,1508 +1,1557 @@
 {
 "frames": {
 	"sprLemming_Bash_0.png": {
-		"frame": {"x":185, "y":176, "w":14, "h":18},
+		"frame": {"x":205, "y":0, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_1.png": {
-		"frame": {"x":185, "y":212, "w":14, "h":18},
+		"frame": {"x":218, "y":95, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":0,"w":14,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":10,"y":2,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_10.png": {
-		"frame": {"x":73, "y":238, "w":20, "h":18},
+		"frame": {"x":0, "y":64, "w":32, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":0,"y":2,"w":32,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_11.png": {
-		"frame": {"x":50, "y":238, "w":22, "h":18},
+		"frame": {"x":81, "y":221, "w":22, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":22,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":22,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_12.png": {
-		"frame": {"x":96, "y":177, "w":18, "h":18},
+		"frame": {"x":31, "y":139, "w":25, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":18,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":3,"y":2,"w":25,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_13.png": {
-		"frame": {"x":153, "y":0, "w":16, "h":18},
+		"frame": {"x":29, "y":180, "w":26, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":0,"y":2,"w":26,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_14.png": {
-		"frame": {"x":153, "y":0, "w":16, "h":18},
+		"frame": {"x":171, "y":23, "w":16, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":16,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_15.png": {
-		"frame": {"x":185, "y":90, "w":14, "h":18},
+		"frame": {"x":217, "y":76, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_16.png": {
-		"frame": {"x":185, "y":90, "w":14, "h":18},
+		"frame": {"x":218, "y":150, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_17.png": {
-		"frame": {"x":185, "y":231, "w":14, "h":18},
+		"frame": {"x":218, "y":131, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":0,"w":14,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":10,"y":2,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_18.png": {
-		"frame": {"x":185, "y":195, "w":14, "h":16},
+		"frame": {"x":202, "y":219, "w":15, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":10,"y":2,"w":14,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":11,"y":4,"w":15,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_19.png": {
-		"frame": {"x":75, "y":164, "w":20, "h":16},
+		"frame": {"x":109, "y":0, "w":20, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":2,"w":20,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":10,"y":4,"w":20,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_2.png": {
-		"frame": {"x":170, "y":158, "w":14, "h":16},
+		"frame": {"x":218, "y":114, "w":14, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":10,"y":2,"w":14,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":12,"y":4,"w":14,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_20.png": {
-		"frame": {"x":29, "y":146, "w":22, "h":16},
+		"frame": {"x":82, "y":104, "w":22, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":2,"w":22,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":4,"w":22,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_21.png": {
-		"frame": {"x":27, "y":238, "w":22, "h":14},
+		"frame": {"x":80, "y":269, "w":22, "h":14},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":22,"h":14},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":6,"y":6,"w":22,"h":14},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_22.png": {
-		"frame": {"x":27, "y":191, "w":24, "h":14},
+		"frame": {"x":32, "y":83, "w":24, "h":14},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":24,"h":14},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":4,"y":6,"w":24,"h":14},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_23.png": {
-		"frame": {"x":200, "y":9, "w":14, "h":16},
+		"frame": {"x":33, "y":64, "w":24, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":2,"w":14,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":4,"y":4,"w":24,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_24.png": {
-		"frame": {"x":153, "y":59, "w":16, "h":18},
+		"frame": {"x":29, "y":199, "w":26, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":2,"y":2,"w":26,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_25.png": {
-		"frame": {"x":77, "y":21, "w":20, "h":18},
+		"frame": {"x":0, "y":120, "w":30, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":0,"y":2,"w":30,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_26.png": {
-		"frame": {"x":94, "y":215, "w":20, "h":18},
+		"frame": {"x":32, "y":98, "w":24, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":24,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_27.png": {
-		"frame": {"x":153, "y":19, "w":16, "h":18},
+		"frame": {"x":30, "y":160, "w":26, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":4,"y":2,"w":26,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_28.png": {
-		"frame": {"x":96, "y":141, "w":18, "h":18},
+		"frame": {"x":29, "y":243, "w":26, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":18,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":2,"y":2,"w":26,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_29.png": {
-		"frame": {"x":168, "y":183, "w":16, "h":18},
+		"frame": {"x":185, "y":63, "w":16, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":10,"y":2,"w":16,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_3.png": {
-		"frame": {"x":96, "y":160, "w":18, "h":16},
+		"frame": {"x":166, "y":185, "w":18, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":10,"y":2,"w":18,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":12,"y":4,"w":18,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_30.png": {
-		"frame": {"x":168, "y":183, "w":16, "h":18},
+		"frame": {"x":185, "y":82, "w":16, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":16,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_31.png": {
-		"frame": {"x":185, "y":71, "w":14, "h":18},
+		"frame": {"x":219, "y":188, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":2,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_4.png": {
-		"frame": {"x":31, "y":54, "w":22, "h":16},
+		"frame": {"x":82, "y":121, "w":22, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":2,"w":22,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":8,"y":4,"w":22,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_5.png": {
-		"frame": {"x":52, "y":200, "w":22, "h":14},
+		"frame": {"x":56, "y":246, "w":22, "h":14},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":4,"w":22,"h":14},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":6,"y":6,"w":22,"h":14},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_6.png": {
-		"frame": {"x":27, "y":223, "w":24, "h":14},
+		"frame": {"x":56, "y":231, "w":24, "h":14},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":24,"h":14},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":4,"y":6,"w":24,"h":14},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_7.png": {
-		"frame": {"x":29, "y":163, "w":22, "h":16},
+		"frame": {"x":28, "y":262, "w":26, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":22,"h":16},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":2,"y":4,"w":26,"h":16},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_8.png": {
-		"frame": {"x":136, "y":84, "w":16, "h":18},
+		"frame": {"x":57, "y":160, "w":24, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":4,"y":2,"w":24,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Bash_9.png": {
-		"frame": {"x":54, "y":86, "w":20, "h":18},
+		"frame": {"x":0, "y":180, "w":28, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
-		"sourceSize": {"w":32,"h":34}
+		"spriteSourceSize": {"x":2,"y":2,"w":28,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_0.png": {
-		"frame": {"x":96, "y":40, "w":20, "h":20},
+	"sprLemming_Blocker_0.png": {
+		"frame": {"x":109, "y":17, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_1.png": {
-		"frame": {"x":56, "y":21, "w":20, "h":20},
+	"sprLemming_Blocker_1.png": {
+		"frame": {"x":124, "y":263, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_10.png": {
-		"frame": {"x":94, "y":234, "w":20, "h":20},
+	"sprLemming_Blocker_10.png": {
+		"frame": {"x":145, "y":220, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_11.png": {
-		"frame": {"x":75, "y":143, "w":20, "h":20},
+	"sprLemming_Blocker_11.png": {
+		"frame": {"x":145, "y":241, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_12.png": {
-		"frame": {"x":75, "y":63, "w":20, "h":20},
+	"sprLemming_Blocker_12.png": {
+		"frame": {"x":104, "y":168, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_13.png": {
-		"frame": {"x":75, "y":63, "w":20, "h":20},
+	"sprLemming_Blocker_13.png": {
+		"frame": {"x":104, "y":189, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_14.png": {
-		"frame": {"x":96, "y":99, "w":20, "h":20},
+	"sprLemming_Blocker_14.png": {
+		"frame": {"x":146, "y":143, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_15.png": {
-		"frame": {"x":96, "y":99, "w":20, "h":20},
+	"sprLemming_Blocker_15.png": {
+		"frame": {"x":146, "y":164, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_2.png": {
-		"frame": {"x":75, "y":105, "w":20, "h":20},
+	"sprLemming_Blocker_2.png": {
+		"frame": {"x":109, "y":38, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_3.png": {
-		"frame": {"x":75, "y":84, "w":20, "h":20},
+	"sprLemming_Blocker_3.png": {
+		"frame": {"x":125, "y":59, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_4.png": {
-		"frame": {"x":77, "y":0, "w":20, "h":20},
+	"sprLemming_Blocker_4.png": {
+		"frame": {"x":125, "y":130, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_5.png": {
-		"frame": {"x":77, "y":0, "w":20, "h":20},
+	"sprLemming_Blocker_5.png": {
+		"frame": {"x":125, "y":130, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_6.png": {
-		"frame": {"x":96, "y":99, "w":20, "h":20},
+	"sprLemming_Blocker_6.png": {
+		"frame": {"x":145, "y":262, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_7.png": {
-		"frame": {"x":96, "y":99, "w":20, "h":20},
+	"sprLemming_Blocker_7.png": {
+		"frame": {"x":105, "y":109, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_8.png": {
-		"frame": {"x":56, "y":0, "w":20, "h":20},
+	"sprLemming_Blocker_8.png": {
+		"frame": {"x":130, "y":0, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Block_9.png": {
-		"frame": {"x":96, "y":120, "w":20, "h":20},
+	"sprLemming_Blocker_9.png": {
+		"frame": {"x":130, "y":21, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
-		"sourceSize": {"w":20,"h":38}
+		"spriteSourceSize": {"x":6,"y":0,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_BuildEnd_0.png": {
-		"frame": {"x":246, "y":110, "w":8, "h":20},
+		"frame": {"x":271, "y":121, "w":8, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":16,"y":8,"w":8,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_BuildEnd_1.png": {
-		"frame": {"x":246, "y":131, "w":8, "h":18},
+		"frame": {"x":272, "y":140, "w":8, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":2,"w":8,"h":18},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":16,"y":6,"w":8,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_BuildEnd_2.png": {
-		"frame": {"x":237, "y":112, "w":8, "h":20},
+		"frame": {"x":232, "y":44, "w":14, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":14,"y":6,"w":14,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_BuildEnd_3.png": {
-		"frame": {"x":170, "y":137, "w":14, "h":20},
+		"frame": {"x":185, "y":204, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":14,"h":20},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":12,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_BuildEnd_4.png": {
-		"frame": {"x":153, "y":38, "w":16, "h":20},
+		"frame": {"x":202, "y":198, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":12,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_BuildEnd_5.png": {
-		"frame": {"x":153, "y":120, "w":16, "h":20},
+		"frame": {"x":201, "y":101, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":12,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_BuildEnd_6.png": {
-		"frame": {"x":136, "y":63, "w":16, "h":20},
+		"frame": {"x":185, "y":42, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":12,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_BuildEnd_7.png": {
-		"frame": {"x":136, "y":63, "w":16, "h":20},
+		"frame": {"x":185, "y":246, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_BuildEnd_8.png": {
-		"frame": {"x":153, "y":141, "w":16, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_BuildEnd_9.png": {
-		"frame": {"x":153, "y":141, "w":16, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
+		"spriteSourceSize": {"x":12,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_0.png": {
-		"frame": {"x":200, "y":26, "w":12, "h":18},
+		"frame": {"x":248, "y":0, "w":12, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":12,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_1.png": {
-		"frame": {"x":200, "y":167, "w":12, "h":18},
+		"frame": {"x":233, "y":103, "w":13, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":13,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_10.png": {
-		"frame": {"x":151, "y":241, "w":16, "h":14},
+		"frame": {"x":185, "y":267, "w":16, "h":14},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":12,"w":16,"h":14},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":12,"w":16,"h":14},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_11.png": {
-		"frame": {"x":170, "y":78, "w":14, "h":18},
+		"frame": {"x":201, "y":122, "w":16, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":14,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":16,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_12.png": {
-		"frame": {"x":200, "y":207, "w":12, "h":18},
+		"frame": {"x":167, "y":164, "w":16, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":16,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_13.png": {
-		"frame": {"x":200, "y":79, "w":12, "h":18},
+		"frame": {"x":184, "y":164, "w":16, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":16,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_14.png": {
-		"frame": {"x":170, "y":19, "w":14, "h":20},
+		"frame": {"x":217, "y":55, "w":14, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":14,"h":20},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":10,"y":6,"w":14,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_15.png": {
-		"frame": {"x":213, "y":45, "w":12, "h":20},
+		"frame": {"x":233, "y":122, "w":12, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":12,"h":20},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":12,"y":6,"w":12,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_2.png": {
-		"frame": {"x":213, "y":66, "w":12, "h":18},
+		"frame": {"x":247, "y":160, "w":12, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":12,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_3.png": {
-		"frame": {"x":213, "y":26, "w":12, "h":18},
+		"frame": {"x":259, "y":119, "w":11, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":11,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_4.png": {
-		"frame": {"x":226, "y":165, "w":10, "h":18},
+		"frame": {"x":260, "y":159, "w":11, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":10,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":11,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_5.png": {
-		"frame": {"x":228, "y":0, "w":10, "h":18},
+		"frame": {"x":235, "y":0, "w":12, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":10,"h":18},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":8,"w":12,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_6.png": {
-		"frame": {"x":237, "y":53, "w":10, "h":20},
+		"frame": {"x":247, "y":19, "w":12, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":10,"h":20},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":6,"w":12,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_7.png": {
-		"frame": {"x":185, "y":0, "w":14, "h":26},
+		"frame": {"x":232, "y":240, "w":14, "h":26},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":14,"h":26},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":0,"w":14,"h":26},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_8.png": {
-		"frame": {"x":153, "y":162, "w":16, "h":20},
+		"frame": {"x":188, "y":0, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":16,"h":20},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Build_9.png": {
-		"frame": {"x":117, "y":119, "w":18, "h":14},
+		"frame": {"x":126, "y":115, "w":16, "h":14},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":12,"w":18,"h":14},
-		"sourceSize": {"w":20,"h":50}
+		"spriteSourceSize": {"x":8,"y":12,"w":16,"h":14},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Burn_0.png": {
-		"frame": {"x":239, "y":21, "w":8, "h":20},
+		"frame": {"x":272, "y":161, "w":8, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":4,"w":8,"h":20},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":14,"y":6,"w":8,"h":20},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_1.png": {
-		"frame": {"x":170, "y":0, "w":14, "h":18},
+		"frame": {"x":202, "y":236, "w":15, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":3,"y":6,"w":14,"h":18},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":10,"y":6,"w":15,"h":18},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_10.png": {
-		"frame": {"x":136, "y":103, "w":16, "h":24},
+		"frame": {"x":201, "y":156, "w":16, "h":24},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":16,"h":24},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":10,"y":2,"w":16,"h":24},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_11.png": {
-		"frame": {"x":73, "y":215, "w":20, "h":22},
+		"frame": {"x":88, "y":0, "w":20, "h":26},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":20,"h":22},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":8,"y":0,"w":20,"h":26},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_12.png": {
-		"frame": {"x":96, "y":196, "w":18, "h":18},
+		"frame": {"x":56, "y":179, "w":24, "h":24},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":1,"y":2,"w":18,"h":18},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":6,"y":2,"w":24,"h":24},
+		"sourceSize": {"w":32,"h":54}
+	},
+	"sprLemming_Burn_13.png": {
+		"frame": {"x":103, "y":272, "w":18, "h":10},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":2,"w":18,"h":10},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_2.png": {
-		"frame": {"x":134, "y":134, "w":18, "h":18},
+		"frame": {"x":166, "y":227, "w":18, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":1,"y":6,"w":18,"h":18},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":8,"y":8,"w":18,"h":18},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_3.png": {
-		"frame": {"x":96, "y":82, "w":20, "h":16},
+		"frame": {"x":126, "y":80, "w":20, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":8,"y":10,"w":20,"h":16},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_4.png": {
-		"frame": {"x":75, "y":198, "w":20, "h":16},
+		"frame": {"x":126, "y":97, "w":20, "h":17},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":8,"y":11,"w":20,"h":17},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_5.png": {
-		"frame": {"x":75, "y":181, "w":20, "h":16},
+		"frame": {"x":125, "y":203, "w":20, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":8,"y":12,"w":20,"h":16},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_6.png": {
-		"frame": {"x":75, "y":126, "w":20, "h":16},
+		"frame": {"x":130, "y":42, "w":20, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":8,"y":12,"w":20,"h":16},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_7.png": {
-		"frame": {"x":75, "y":42, "w":20, "h":20},
+		"frame": {"x":105, "y":88, "w":20, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":20,"h":20},
-		"sourceSize": {"w":22,"h":46}
+		"spriteSourceSize": {"x":8,"y":8,"w":20,"h":20},
+		"sourceSize": {"w":32,"h":54}
 	},
 	"sprLemming_Burn_8.png": {
-		"frame": {"x":151, "y":220, "w":16, "h":20},
+		"frame": {"x":184, "y":101, "w":16, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":8,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":54}
+	},
+	"sprLemming_Burn_9.png": {
+		"frame": {"x":171, "y":0, "w":16, "h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":6,"w":16,"h":22},
+		"sourceSize": {"w":32,"h":54}
+	},
+	"sprLemming_Climb_0.png": {
+		"frame": {"x":246, "y":141, "w":12, "h":18},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":6,"w":12,"h":18},
+		"sourceSize": {"w":32,"h":46}
+	},
+	"sprLemming_Climb_1.png": {
+		"frame": {"x":247, "y":179, "w":12, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":4,"w":12,"h":20},
+		"sourceSize": {"w":32,"h":46}
+	},
+	"sprLemming_Climb_2.png": {
+		"frame": {"x":234, "y":169, "w":12, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":4,"w":12,"h":20},
+		"sourceSize": {"w":32,"h":46}
+	},
+	"sprLemming_Climb_3.png": {
+		"frame": {"x":202, "y":42, "w":14, "h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":2,"w":14,"h":22},
+		"sourceSize": {"w":32,"h":46}
+	},
+	"sprLemming_Climb_4.png": {
+		"frame": {"x":188, "y":21, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":2,"y":4,"w":16,"h":20},
-		"sourceSize": {"w":22,"h":46}
-	},
-	"sprLemming_Burn_9.png": {
-		"frame": {"x":151, "y":197, "w":16, "h":22},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":16,"h":22},
-		"sourceSize": {"w":22,"h":46}
-	},
-	"sprLemming_Climb_0.png": {
-		"frame": {"x":200, "y":139, "w":12, "h":18},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":4,"w":12,"h":18},
-		"sourceSize": {"w":32,"h":42}
-	},
-	"sprLemming_Climb_1.png": {
-		"frame": {"x":200, "y":186, "w":12, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":2,"w":12,"h":20},
-		"sourceSize": {"w":32,"h":42}
-	},
-	"sprLemming_Climb_2.png": {
-		"frame": {"x":200, "y":226, "w":12, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":2,"w":12,"h":20},
-		"sourceSize": {"w":32,"h":42}
-	},
-	"sprLemming_Climb_3.png": {
-		"frame": {"x":170, "y":114, "w":14, "h":22},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":14,"h":22},
-		"sourceSize": {"w":32,"h":42}
-	},
-	"sprLemming_Climb_4.png": {
-		"frame": {"x":136, "y":42, "w":16, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":16,"h":20},
-		"sourceSize": {"w":32,"h":42}
+		"sourceSize": {"w":32,"h":46}
 	},
 	"sprLemming_Climb_5.png": {
-		"frame": {"x":134, "y":178, "w":18, "h":18},
+		"frame": {"x":167, "y":59, "w":17, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":18,"h":18},
-		"sourceSize": {"w":32,"h":42}
+		"spriteSourceSize": {"x":1,"y":6,"w":17,"h":18},
+		"sourceSize": {"w":32,"h":46}
 	},
 	"sprLemming_Climb_6.png": {
-		"frame": {"x":134, "y":197, "w":16, "h":16},
+		"frame": {"x":202, "y":181, "w":16, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":16,"h":16},
-		"sourceSize": {"w":32,"h":42}
+		"spriteSourceSize": {"x":2,"y":8,"w":16,"h":16},
+		"sourceSize": {"w":32,"h":46}
 	},
 	"sprLemming_Climb_7.png": {
-		"frame": {"x":170, "y":97, "w":14, "h":16},
+		"frame": {"x":205, "y":19, "w":14, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":14,"h":16},
-		"sourceSize": {"w":32,"h":42}
+		"spriteSourceSize": {"x":4,"y":8,"w":14,"h":16},
+		"sourceSize": {"w":32,"h":46}
 	},
 	"sprLemming_Climb_End_0.png": {
-		"frame": {"x":200, "y":98, "w":12, "h":18},
+		"frame": {"x":233, "y":143, "w":12, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":12,"h":18},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Climb_End_1.png": {
-		"frame": {"x":237, "y":74, "w":10, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":10,"h":16},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Climb_End_2.png": {
-		"frame": {"x":226, "y":241, "w":10, "h":14},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":10,"h":14},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Climb_End_3.png": {
-		"frame": {"x":237, "y":152, "w":8, "h":12},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":8,"h":12},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Climb_End_4.png": {
-		"frame": {"x":237, "y":133, "w":8, "h":18},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":8,"h":18},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Climb_End_5.png": {
-		"frame": {"x":226, "y":226, "w":10, "h":14},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":10,"h":14},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Climb_End_6.png": {
-		"frame": {"x":226, "y":150, "w":10, "h":14},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":10,"h":14},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Climb_End_7.png": {
-		"frame": {"x":226, "y":184, "w":10, "h":18},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":10,"h":18},
-		"sourceSize": {"w":18,"h":40}
-	},
-	"sprLemming_Dig_0.png": {
-		"frame": {"x":52, "y":175, "w":22, "h":24},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":22,"h":24},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Dig_1.png": {
-		"frame": {"x":52, "y":148, "w":22, "h":26},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":22,"h":26},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Dig_2.png": {
-		"frame": {"x":52, "y":119, "w":22, "h":28},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":22,"h":28},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Dig_3.png": {
-		"frame": {"x":29, "y":119, "w":22, "h":26},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":22,"h":26},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Dig_4.png": {
-		"frame": {"x":115, "y":141, "w":18, "h":22},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":2,"w":18,"h":22},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Dig_5.png": {
-		"frame": {"x":96, "y":61, "w":20, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":20,"h":20},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Dig_6.png": {
-		"frame": {"x":31, "y":71, "w":22, "h":18},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":22,"h":18},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Dig_7.png": {
-		"frame": {"x":33, "y":27, "w":22, "h":22},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":22,"h":22},
-		"sourceSize": {"w":28,"h":46}
-	},
-	"sprLemming_Drown_0.png": {
-		"frame": {"x":226, "y":112, "w":10, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":0,"w":10,"h":16},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_1.png": {
-		"frame": {"x":200, "y":45, "w":12, "h":14},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":2,"w":12,"h":14},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_10.png": {
-		"frame": {"x":117, "y":134, "w":14, "h":6},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":10,"y":10,"w":14,"h":6},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_11.png": {
-		"frame": {"x":200, "y":247, "w":12, "h":8},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":10,"y":8,"w":12,"h":8},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_12.png": {
-		"frame": {"x":200, "y":158, "w":12, "h":8},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":8,"w":12,"h":8},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_13.png": {
-		"frame": {"x":98, "y":33, "w":12, "h":6},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":10,"w":12,"h":6},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_14.png": {
-		"frame": {"x":15, "y":251, "w":10, "h":4},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":12,"w":10,"h":4},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_15.png": {
-		"frame": {"x":215, "y":19, "w":10, "h":6},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":10,"w":10,"h":6},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_2.png": {
-		"frame": {"x":200, "y":126, "w":12, "h":12},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":4,"w":12,"h":12},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_3.png": {
-		"frame": {"x":200, "y":117, "w":12, "h":8},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":8,"w":12,"h":8},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_4.png": {
-		"frame": {"x":183, "y":250, "w":12, "h":6},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":10,"w":12,"h":6},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_5.png": {
-		"frame": {"x":134, "y":248, "w":14, "h":8},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":8,"w":14,"h":8},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_6.png": {
-		"frame": {"x":153, "y":183, "w":14, "h":10},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":14,"h":10},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_7.png": {
-		"frame": {"x":168, "y":244, "w":14, "h":10},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":14,"h":10},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_8.png": {
-		"frame": {"x":200, "y":0, "w":14, "h":8},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":8,"w":14,"h":8},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Drown_9.png": {
-		"frame": {"x":170, "y":176, "w":12, "h":6},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":10,"w":12,"h":6},
-		"sourceSize": {"w":28,"h":30}
-	},
-	"sprLemming_Exit_0.png": {
-		"frame": {"x":239, "y":0, "w":8, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":8,"h":20},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Exit_1.png": {
-		"frame": {"x":226, "y":203, "w":10, "h":22},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":10,"h":22},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Exit_2.png": {
-		"frame": {"x":237, "y":234, "w":8, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":8,"h":20},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Exit_3.png": {
-		"frame": {"x":237, "y":217, "w":8, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":8,"h":16},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Exit_4.png": {
-		"frame": {"x":237, "y":204, "w":8, "h":12},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":8,"h":12},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Exit_5.png": {
-		"frame": {"x":237, "y":193, "w":8, "h":10},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":8,"h":10},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Exit_6.png": {
-		"frame": {"x":237, "y":184, "w":8, "h":8},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":8,"h":8},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Exit_7.png": {
-		"frame": {"x":56, "y":42, "w":8, "h":4},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":6,"w":8,"h":4},
-		"sourceSize": {"w":12,"h":50}
-	},
-	"sprLemming_Explode_0.png": {
-		"frame": {"x":237, "y":91, "w":8, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_1.png": {
-		"frame": {"x":237, "y":91, "w":8, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_10.png": {
-		"frame": {"x":226, "y":36, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_11.png": {
-		"frame": {"x":213, "y":239, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_12.png": {
-		"frame": {"x":226, "y":36, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_13.png": {
-		"frame": {"x":213, "y":239, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_14.png": {
-		"frame": {"x":226, "y":36, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_15.png": {
-		"frame": {"x":213, "y":239, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_2.png": {
-		"frame": {"x":213, "y":218, "w":12, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":12,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_3.png": {
-		"frame": {"x":134, "y":214, "w":16, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_4.png": {
-		"frame": {"x":136, "y":21, "w":16, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_5.png": {
-		"frame": {"x":136, "y":0, "w":16, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_6.png": {
-		"frame": {"x":213, "y":178, "w":12, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":12,"h":20},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_7.png": {
-		"frame": {"x":226, "y":19, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_8.png": {
-		"frame": {"x":213, "y":239, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explode_9.png": {
-		"frame": {"x":226, "y":19, "w":12, "h":16},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":4,"w":12,"h":16},
-		"sourceSize": {"w":16,"h":38}
-	},
-	"sprLemming_Explosion_0.png": {
-		"frame": {"x":0, "y":21, "w":32, "h":32},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+		"spriteSourceSize": {"x":8,"y":14,"w":12,"h":18},
 		"sourceSize": {"w":32,"h":62}
 	},
-	"sprLemming_FallDeath_0.png": {
-		"frame": {"x":213, "y":85, "w":12, "h":14},
+	"sprLemming_Climb_End_1.png": {
+		"frame": {"x":259, "y":266, "w":10, "h":17},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":10,"y":6,"w":12,"h":14},
+		"spriteSourceSize": {"x":10,"y":8,"w":10,"h":17},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Climb_End_2.png": {
+		"frame": {"x":260, "y":34, "w":10, "h":14},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":6,"w":10,"h":14},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Climb_End_3.png": {
+		"frame": {"x":271, "y":107, "w":8, "h":13},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":5,"w":8,"h":13},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Climb_End_4.png": {
+		"frame": {"x":271, "y":237, "w":8, "h":17},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":1,"w":8,"h":17},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Climb_End_5.png": {
+		"frame": {"x":260, "y":19, "w":10, "h":14},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":2,"w":10,"h":14},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Climb_End_6.png": {
+		"frame": {"x":260, "y":93, "w":10, "h":14},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":2,"w":10,"h":14},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Climb_End_7.png": {
+		"frame": {"x":260, "y":237, "w":10, "h":18},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":10,"h":18},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Dig_0.png": {
+		"frame": {"x":125, "y":178, "w":20, "h":24},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":0,"w":20,"h":24},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_1.png": {
+		"frame": {"x":125, "y":151, "w":20, "h":26},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":20,"h":26},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_10.png": {
+		"frame": {"x":58, "y":106, "w":23, "h":28},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":3,"y":0,"w":23,"h":28},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_11.png": {
+		"frame": {"x":64, "y":0, "w":23, "h":26},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":3,"y":0,"w":23,"h":26},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_12.png": {
+		"frame": {"x":64, "y":54, "w":22, "h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":2,"w":22,"h":22},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_13.png": {
+		"frame": {"x":57, "y":139, "w":24, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":4,"w":24,"h":20},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_14.png": {
+		"frame": {"x":31, "y":120, "w":26, "h":18},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":6,"w":26,"h":18},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_15.png": {
+		"frame": {"x":81, "y":198, "w":22, "h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":8,"y":2,"w":22,"h":22},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_2.png": {
+		"frame": {"x":151, "y":30, "w":19, "h":28},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":13,"y":0,"w":19,"h":28},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_3.png": {
+		"frame": {"x":104, "y":61, "w":20, "h":26},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":20,"h":26},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_4.png": {
+		"frame": {"x":167, "y":78, "w":17, "h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":11,"y":2,"w":17,"h":22},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_5.png": {
+		"frame": {"x":87, "y":27, "w":21, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":9,"y":4,"w":21,"h":20},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_6.png": {
+		"frame": {"x":81, "y":179, "w":22, "h":18},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":8,"y":6,"w":22,"h":18},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_7.png": {
+		"frame": {"x":80, "y":246, "w":22, "h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":8,"y":2,"w":22,"h":22},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_8.png": {
+		"frame": {"x":57, "y":81, "w":23, "h":24},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":23,"h":24},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Dig_9.png": {
+		"frame": {"x":81, "y":77, "w":22, "h":26},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":4,"y":0,"w":22,"h":26},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Drown_0.png": {
+		"frame": {"x":261, "y":0, "w":10, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":14,"y":4,"w":10,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_1.png": {
+		"frame": {"x":246, "y":267, "w":12, "h":14},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":14,"y":6,"w":12,"h":14},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_10.png": {
+		"frame": {"x":104, "y":233, "w":14, "h":6},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":18,"y":14,"w":14,"h":6},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_11.png": {
+		"frame": {"x":218, "y":240, "w":12, "h":8},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":18,"y":12,"w":12,"h":8},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_12.png": {
+		"frame": {"x":202, "y":274, "w":12, "h":8},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":16,"y":12,"w":12,"h":8},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_13.png": {
+		"frame": {"x":105, "y":130, "w":12, "h":6},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":14,"y":14,"w":12,"h":6},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_14.png": {
+		"frame": {"x":220, "y":30, "w":10, "h":5},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":14,"y":15,"w":10,"h":5},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_15.png": {
+		"frame": {"x":220, "y":23, "w":11, "h":6},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":14,"y":14,"w":11,"h":6},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_2.png": {
+		"frame": {"x":233, "y":226, "w":12, "h":12},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":14,"y":8,"w":12,"h":12},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_3.png": {
+		"frame": {"x":247, "y":238, "w":12, "h":8},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":12,"w":12,"h":8},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_4.png": {
+		"frame": {"x":219, "y":207, "w":12, "h":7},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":13,"w":12,"h":7},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_5.png": {
+		"frame": {"x":202, "y":87, "w":14, "h":8},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":8,"y":12,"w":14,"h":8},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_6.png": {
+		"frame": {"x":202, "y":65, "w":14, "h":10},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":10,"w":14,"h":10},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_7.png": {
+		"frame": {"x":202, "y":76, "w":14, "h":10},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":10,"w":14,"h":10},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_8.png": {
+		"frame": {"x":146, "y":210, "w":14, "h":8},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":14,"y":12,"w":14,"h":8},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Drown_9.png": {
+		"frame": {"x":233, "y":162, "w":12, "h":6},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":16,"y":14,"w":12,"h":6},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Exit_0.png": {
+		"frame": {"x":272, "y":182, "w":8, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":6,"w":8,"h":20},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Exit_1.png": {
+		"frame": {"x":260, "y":49, "w":10, "h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":2,"w":10,"h":22},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Exit_2.png": {
+		"frame": {"x":271, "y":69, "w":8, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":8,"h":20},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Exit_3.png": {
+		"frame": {"x":271, "y":90, "w":8, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":8,"h":16},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Exit_4.png": {
+		"frame": {"x":271, "y":56, "w":8, "h":12},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":8,"h":12},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Exit_5.png": {
+		"frame": {"x":260, "y":108, "w":8, "h":10},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":8,"h":10},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Exit_6.png": {
+		"frame": {"x":260, "y":256, "w":8, "h":8},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":2,"w":8,"h":8},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Exit_7.png": {
+		"frame": {"x":202, "y":96, "w":8, "h":4},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":6,"w":8,"h":4},
+		"sourceSize": {"w":32,"h":50}
+	},
+	"sprLemming_Explode_0.png": {
+		"frame": {"x":270, "y":256, "w":10, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":13,"y":0,"w":10,"h":20},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_1.png": {
+		"frame": {"x":260, "y":72, "w":10, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":13,"y":0,"w":10,"h":20},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_10.png": {
+		"frame": {"x":171, "y":42, "w":13, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":13,"y":4,"w":13,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_11.png": {
+		"frame": {"x":232, "y":267, "w":13, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":4,"w":13,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_12.png": {
+		"frame": {"x":171, "y":42, "w":13, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":13,"y":4,"w":13,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_13.png": {
+		"frame": {"x":232, "y":267, "w":13, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":4,"w":13,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_14.png": {
+		"frame": {"x":171, "y":42, "w":13, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":13,"y":4,"w":13,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_15.png": {
+		"frame": {"x":232, "y":267, "w":13, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":4,"w":13,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_2.png": {
+		"frame": {"x":247, "y":200, "w":12, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":12,"h":20},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_3.png": {
+		"frame": {"x":167, "y":101, "w":16, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":0,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_4.png": {
+		"frame": {"x":167, "y":122, "w":16, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":0,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_5.png": {
+		"frame": {"x":167, "y":143, "w":16, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":0,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_6.png": {
+		"frame": {"x":247, "y":98, "w":12, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":0,"w":12,"h":20},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_7.png": {
+		"frame": {"x":247, "y":221, "w":12, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":4,"w":12,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_8.png": {
+		"frame": {"x":232, "y":267, "w":13, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":10,"y":4,"w":13,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explode_9.png": {
+		"frame": {"x":247, "y":221, "w":12, "h":16},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":4,"w":12,"h":16},
+		"sourceSize": {"w":32,"h":38}
+	},
+	"sprLemming_Explosion_0.png": {
+		"frame": {"x":0, "y":0, "w":63, "h":63},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":1,"y":1,"w":63,"h":63},
+		"sourceSize": {"w":64,"h":94}
+	},
+	"sprLemming_FallDeath_0.png": {
+		"frame": {"x":234, "y":190, "w":12, "h":14},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":12,"y":6,"w":12,"h":14},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_1.png": {
-		"frame": {"x":134, "y":235, "w":16, "h":12},
+		"frame": {"x":125, "y":220, "w":16, "h":12},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":8,"w":16,"h":12},
+		"spriteSourceSize": {"x":10,"y":8,"w":16,"h":12},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_10.png": {
-		"frame": {"x":0, "y":54, "w":30, "h":16},
+		"frame": {"x":0, "y":83, "w":31, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":4,"w":30,"h":16},
+		"spriteSourceSize": {"x":1,"y":2,"w":31,"h":16},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_11.png": {
-		"frame": {"x":0, "y":176, "w":28, "h":14},
+		"frame": {"x":201, "y":141, "w":16, "h":14},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":28,"h":14},
+		"spriteSourceSize": {"x":6,"y":6,"w":16,"h":14},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_12.png": {
-		"frame": {"x":0, "y":191, "w":26, "h":8},
+		"frame": {"x":82, "y":157, "w":21, "h":11},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":12,"w":26,"h":8},
+		"spriteSourceSize": {"x":1,"y":9,"w":21,"h":11},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_13.png": {
-		"frame": {"x":0, "y":200, "w":26, "h":4},
+		"frame": {"x":50, "y":279, "w":21, "h":4},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":16,"w":26,"h":4},
+		"spriteSourceSize": {"x":1,"y":16,"w":21,"h":4},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_14.png": {
-		"frame": {"x":0, "y":251, "w":14, "h":4},
+		"frame": {"x":28, "y":279, "w":21, "h":4},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":16,"w":14,"h":4},
+		"spriteSourceSize": {"x":1,"y":16,"w":21,"h":4},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_15.png": {
-		"frame": {"x":26, "y":253, "w":2, "h":2},
+		"frame": {"x":247, "y":119, "w":2, "h":2},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":16,"y":18,"w":2,"h":2},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_2.png": {
-		"frame": {"x":54, "y":105, "w":16, "h":10},
+		"frame": {"x":87, "y":61, "w":16, "h":10},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":10,"w":16,"h":10},
+		"spriteSourceSize": {"x":10,"y":10,"w":16,"h":10},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_3.png": {
-		"frame": {"x":29, "y":180, "w":16, "h":8},
+		"frame": {"x":82, "y":169, "w":16, "h":8},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":12,"w":16,"h":8},
+		"spriteSourceSize": {"x":10,"y":12,"w":16,"h":8},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_4.png": {
-		"frame": {"x":54, "y":73, "w":20, "h":12},
+		"frame": {"x":87, "y":48, "w":21, "h":12},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":8,"w":20,"h":12},
+		"spriteSourceSize": {"x":7,"y":8,"w":21,"h":12},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_5.png": {
-		"frame": {"x":27, "y":206, "w":24, "h":16},
+		"frame": {"x":55, "y":262, "w":24, "h":16},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":4,"w":24,"h":16},
+		"spriteSourceSize": {"x":6,"y":4,"w":24,"h":16},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_6.png": {
-		"frame": {"x":0, "y":115, "w":28, "h":18},
+		"frame": {"x":0, "y":222, "w":28, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":28,"h":18},
+		"spriteSourceSize": {"x":4,"y":2,"w":28,"h":18},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_7.png": {
-		"frame": {"x":0, "y":0, "w":32, "h":20},
+		"frame": {"x":0, "y":160, "w":29, "h":19},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":32,"h":20},
+		"spriteSourceSize": {"x":2,"y":1,"w":29,"h":19},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_8.png": {
-		"frame": {"x":0, "y":155, "w":28, "h":20},
+		"frame": {"x":0, "y":100, "w":31, "h":19},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":28,"h":20},
+		"spriteSourceSize": {"x":1,"y":1,"w":31,"h":19},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_FallDeath_9.png": {
-		"frame": {"x":0, "y":205, "w":26, "h":20},
+		"frame": {"x":0, "y":262, "w":27, "h":19},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":0,"w":26,"h":20},
+		"spriteSourceSize": {"x":3,"y":1,"w":27,"h":19},
 		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Fall_0.png": {
-		"frame": {"x":213, "y":159, "w":12, "h":18},
+		"frame": {"x":247, "y":247, "w":12, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":12,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":0,"w":12,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Fall_1.png": {
-		"frame": {"x":213, "y":140, "w":12, "h":18},
+		"frame": {"x":247, "y":79, "w":12, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":12,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":0,"w":12,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Fall_2.png": {
-		"frame": {"x":213, "y":119, "w":12, "h":20},
+		"frame": {"x":247, "y":58, "w":12, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":12,"h":20},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":0,"w":12,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Fall_3.png": {
-		"frame": {"x":213, "y":100, "w":12, "h":18},
+		"frame": {"x":247, "y":40, "w":12, "h":17},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":12,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":0,"w":12,"h":17},
+		"sourceSize": {"w":32,"h":38}
 	},
 	"sprLemming_Float_0.png": {
-		"frame": {"x":98, "y":0, "w":18, "h":32},
+		"frame": {"x":103, "y":240, "w":20, "h":31},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":18,"h":32},
-		"sourceSize": {"w":20,"h":62}
+		"spriteSourceSize": {"x":7,"y":1,"w":20,"h":31},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Float_1.png": {
-		"frame": {"x":115, "y":164, "w":18, "h":30},
+		"frame": {"x":104, "y":138, "w":20, "h":29},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":18,"h":30},
-		"sourceSize": {"w":20,"h":62}
+		"spriteSourceSize": {"x":7,"y":1,"w":20,"h":29},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Float_2.png": {
-		"frame": {"x":115, "y":195, "w":18, "h":30},
+		"frame": {"x":124, "y":233, "w":20, "h":29},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":18,"h":30},
-		"sourceSize": {"w":20,"h":62}
+		"spriteSourceSize": {"x":7,"y":1,"w":20,"h":29},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Float_3.png": {
-		"frame": {"x":115, "y":226, "w":18, "h":28},
+		"frame": {"x":146, "y":115, "w":20, "h":27},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":0,"w":18,"h":28},
-		"sourceSize": {"w":20,"h":62}
+		"spriteSourceSize": {"x":7,"y":1,"w":20,"h":27},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Float_4.png": {
+		"frame": {"x":124, "y":233, "w":20, "h":29},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":7,"y":0,"w":20,"h":29},
+		"sourceSize": {"w":32,"h":62}
+	},
+	"sprLemming_Float_5.png": {
+		"frame": {"x":104, "y":138, "w":20, "h":29},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":7,"y":0,"w":20,"h":29},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Float_Start_0.png": {
-		"frame": {"x":170, "y":40, "w":14, "h":18},
+		"frame": {"x":202, "y":255, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":10,"w":14,"h":18},
-		"sourceSize": {"w":20,"h":54}
+		"spriteSourceSize": {"x":10,"y":12,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Float_Start_1.png": {
-		"frame": {"x":200, "y":60, "w":12, "h":18},
+		"frame": {"x":246, "y":122, "w":12, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":10,"w":12,"h":18},
-		"sourceSize": {"w":20,"h":54}
+		"spriteSourceSize": {"x":12,"y":12,"w":12,"h":18},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Float_Start_2.png": {
-		"frame": {"x":170, "y":59, "w":14, "h":18},
+		"frame": {"x":217, "y":36, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":10,"w":14,"h":18},
-		"sourceSize": {"w":20,"h":54}
+		"spriteSourceSize": {"x":12,"y":12,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Float_Start_3.png": {
-		"frame": {"x":117, "y":0, "w":18, "h":28},
+		"frame": {"x":151, "y":0, "w":19, "h":29},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":18,"h":28},
-		"sourceSize": {"w":20,"h":54}
+		"spriteSourceSize": {"x":9,"y":2,"w":19,"h":29},
+		"sourceSize": {"w":32,"h":62}
 	},
 	"sprLemming_Mine_0.png": {
-		"frame": {"x":134, "y":153, "w":18, "h":24},
+		"frame": {"x":146, "y":185, "w":19, "h":24},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":18,"h":24},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":0,"y":0,"w":19,"h":24},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_1.png": {
-		"frame": {"x":117, "y":29, "w":18, "h":24},
+		"frame": {"x":166, "y":202, "w":18, "h":24},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":14,"y":2,"w":18,"h":24},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":12,"y":0,"w":18,"h":24},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_10.png": {
-		"frame": {"x":0, "y":71, "w":30, "h":20},
+		"frame": {"x":0, "y":139, "w":30, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":8,"w":30,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":0,"y":6,"w":30,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_11.png": {
-		"frame": {"x":0, "y":134, "w":28, "h":20},
+		"frame": {"x":0, "y":241, "w":28, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":8,"w":28,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":2,"y":6,"w":28,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_12.png": {
-		"frame": {"x":168, "y":223, "w":16, "h":20},
+		"frame": {"x":185, "y":225, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":16,"y":8,"w":16,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":14,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_13.png": {
-		"frame": {"x":153, "y":78, "w":16, "h":20},
+		"frame": {"x":185, "y":183, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":16,"y":8,"w":16,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":14,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_14.png": {
-		"frame": {"x":153, "y":99, "w":16, "h":20},
+		"frame": {"x":184, "y":143, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":16,"y":8,"w":16,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":14,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_15.png": {
-		"frame": {"x":185, "y":27, "w":14, "h":22},
+		"frame": {"x":220, "y":0, "w":14, "h":22},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":16,"y":8,"w":14,"h":22},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":12,"y":4,"w":14,"h":22},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_16.png": {
-		"frame": {"x":185, "y":50, "w":14, "h":20},
+		"frame": {"x":232, "y":23, "w":14, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":14,"y":8,"w":14,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":12,"y":6,"w":14,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_17.png": {
-		"frame": {"x":185, "y":109, "w":14, "h":18},
+		"frame": {"x":219, "y":169, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":14,"y":8,"w":14,"h":18},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":12,"y":8,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_18.png": {
-		"frame": {"x":185, "y":109, "w":14, "h":18},
+		"frame": {"x":232, "y":65, "w":14, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":14,"y":8,"w":14,"h":18},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":12,"y":8,"w":14,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_19.png": {
-		"frame": {"x":185, "y":128, "w":14, "h":20},
+		"frame": {"x":218, "y":219, "w":14, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":14,"y":6,"w":14,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":12,"y":6,"w":14,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_2.png": {
-		"frame": {"x":52, "y":215, "w":20, "h":18},
+		"frame": {"x":82, "y":138, "w":21, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":16,"y":12,"w":20,"h":18},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":11,"y":8,"w":21,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_20.png": {
-		"frame": {"x":168, "y":202, "w":16, "h":20},
+		"frame": {"x":184, "y":122, "w":16, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":12,"y":6,"w":16,"h":20},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":10,"y":6,"w":16,"h":20},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_21.png": {
-		"frame": {"x":185, "y":149, "w":14, "h":26},
+		"frame": {"x":217, "y":255, "w":14, "h":26},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":12,"y":0,"w":14,"h":26},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":10,"y":0,"w":14,"h":26},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_22.png": {
-		"frame": {"x":117, "y":54, "w":18, "h":26},
+		"frame": {"x":147, "y":59, "w":19, "h":26},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":18,"h":26},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":0,"y":0,"w":19,"h":26},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_23.png": {
-		"frame": {"x":117, "y":54, "w":18, "h":26},
+		"frame": {"x":147, "y":86, "w":19, "h":26},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":18,"h":26},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":0,"y":0,"w":19,"h":26},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_3.png": {
-		"frame": {"x":117, "y":81, "w":18, "h":18},
+		"frame": {"x":166, "y":265, "w":18, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":16,"y":12,"w":18,"h":18},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":14,"y":8,"w":18,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_4.png": {
-		"frame": {"x":117, "y":100, "w":18, "h":18},
+		"frame": {"x":166, "y":246, "w":18, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":14,"y":12,"w":18,"h":18},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":12,"y":8,"w":18,"h":18},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_5.png": {
-		"frame": {"x":54, "y":50, "w":20, "h":22},
+		"frame": {"x":104, "y":210, "w":20, "h":22},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":12,"y":10,"w":20,"h":22},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":10,"y":4,"w":20,"h":22},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_6.png": {
-		"frame": {"x":33, "y":0, "w":22, "h":26},
+		"frame": {"x":64, "y":27, "w":22, "h":26},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":10,"y":4,"w":22,"h":26},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":8,"y":0,"w":22,"h":26},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_7.png": {
-		"frame": {"x":29, "y":92, "w":24, "h":26},
+		"frame": {"x":56, "y":204, "w":24, "h":26},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":8,"y":2,"w":24,"h":26},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":6,"y":0,"w":24,"h":26},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_8.png": {
-		"frame": {"x":0, "y":226, "w":26, "h":24},
+		"frame": {"x":29, "y":218, "w":26, "h":24},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":6,"y":4,"w":26,"h":24},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":4,"y":2,"w":26,"h":24},
+		"sourceSize": {"w":32,"h":50}
 	},
 	"sprLemming_Mine_9.png": {
-		"frame": {"x":0, "y":92, "w":28, "h":22},
+		"frame": {"x":0, "y":199, "w":28, "h":22},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":4,"y":6,"w":28,"h":22},
-		"sourceSize": {"w":36,"h":50}
+		"spriteSourceSize": {"x":2,"y":4,"w":28,"h":22},
+		"sourceSize": {"w":32,"h":50}
 	},
-	"sprLemming_Move_0.png": {
-		"frame": {"x":237, "y":165, "w":8, "h":18},
+	"sprLemming_Walk_0.png": {
+		"frame": {"x":271, "y":17, "w":9, "h":19},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":8,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":11,"y":1,"w":9,"h":19},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Move_1.png": {
-		"frame": {"x":226, "y":129, "w":10, "h":20},
+	"sprLemming_Walk_1.png": {
+		"frame": {"x":259, "y":138, "w":11, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":10,"h":20},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":11,"y":0,"w":11,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Move_2.png": {
-		"frame": {"x":215, "y":0, "w":12, "h":18},
+	"sprLemming_Walk_2.png": {
+		"frame": {"x":233, "y":84, "w":13, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":12,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":2,"w":13,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Move_3.png": {
-		"frame": {"x":226, "y":93, "w":10, "h":18},
+	"sprLemming_Walk_3.png": {
+		"frame": {"x":260, "y":178, "w":11, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":10,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":2,"w":11,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Move_4.png": {
-		"frame": {"x":246, "y":91, "w":8, "h":18},
+	"sprLemming_Walk_4.png": {
+		"frame": {"x":271, "y":37, "w":9, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":8,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":12,"y":2,"w":9,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Move_5.png": {
-		"frame": {"x":226, "y":72, "w":10, "h":20},
+	"sprLemming_Walk_5.png": {
+		"frame": {"x":260, "y":216, "w":11, "h":20},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":10,"h":20},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":11,"y":0,"w":11,"h":20},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Move_6.png": {
-		"frame": {"x":213, "y":199, "w":12, "h":18},
+	"sprLemming_Walk_6.png": {
+		"frame": {"x":233, "y":207, "w":13, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":12,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":2,"w":13,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	},
-	"sprLemming_Move_7.png": {
-		"frame": {"x":226, "y":53, "w":10, "h":18},
+	"sprLemming_Walk_7.png": {
+		"frame": {"x":260, "y":197, "w":11, "h":18},
 		"rotated": false,
 		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":2,"w":10,"h":18},
-		"sourceSize": {"w":12,"h":38}
-	},
-	"sprLemming_Move_8.png": {
-		"frame": {"x":246, "y":110, "w":8, "h":20},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":0,"w":8,"h":20},
-		"sourceSize": {"w":12,"h":38}
-	},
-	"sprLemming_Move_9.png": {
-		"frame": {"x":246, "y":131, "w":8, "h":18},
-		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":8,"h":18},
-		"sourceSize": {"w":12,"h":38}
+		"spriteSourceSize": {"x":10,"y":2,"w":11,"h":18},
+		"sourceSize": {"w":32,"h":38}
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 255, "h": 257},
+	"size": {"w": 281, "h": 284},
 	"scale": "1"
 }
 }

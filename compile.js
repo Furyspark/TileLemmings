@@ -24,6 +24,7 @@ var data = {
 
     "src/managers/audiomanager.js",
     "src/managers/scenemanager.js",
+    "src/managers/options.js",
 
     "src/sprites/base.js",
     "src/sprites/lemming.js",
@@ -37,6 +38,7 @@ var data = {
 
     "src/scenes/scene-base.js",
     "src/scenes/scene-boot.js",
+    "src/scenes/scene-menubase.js",
     "src/scenes/scene-mainmenu.js",
     "src/scenes/scene-pregame.js",
     "src/scenes/scene-game.js",

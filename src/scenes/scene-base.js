@@ -20,9 +20,13 @@ Scene_Base.prototype.render = function() {
   Core.renderer.render(this.stage);
 }
 
-Scene_Base.prototype.create = function() {}
+Scene_Base.prototype.create = function() {
+  this.addListeners();
+}
 
-Scene_Base.prototype.end = function() {}
+Scene_Base.prototype.end = function() {
+  this.removeListeners();
+}
 
 Scene_Base.prototype.initFadeScreen = function() {
   this._fadeScreen = new PIXI.Graphics();
@@ -42,3 +46,7 @@ Scene_Base.prototype.fadeOut = function(callback) {
   var obj = createjs.Tween.get(this._fadeScreen, { override: true }).set({ visible: true }).to({ alpha: 1 }, Scene_Base.FADEDURATION_DEFAULT);
   if(callback) obj.call(callback);
 }
+
+Scene_Base.prototype.addListeners = function() {}
+
+Scene_Base.prototype.removeListeners = function() {}

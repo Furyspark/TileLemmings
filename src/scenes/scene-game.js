@@ -435,8 +435,16 @@ Scene_Game.prototype.getActionButton = function(actionName) {
 Scene_Game.prototype.pauseGame = function(playSound) {
   this.paused = !this.paused;
   var elem = this.getUI_Element("pause");
-  if(this.paused) elem.sprite.playAnimation("down");
-  else elem.sprite.playAnimation("up");
+  // Now paused
+  if(this.paused) {
+    elem.sprite.playAnimation("down");
+    if(Options.data.audio.toggleDuringPause) AudioManager.pauseBgm();
+  }
+  // Now unpaused
+  else {
+    elem.sprite.playAnimation("up");
+    AudioManager.resumeBgm();
+  }
   if(playSound) AudioManager.playSound("sndUI_Click");
 }
 

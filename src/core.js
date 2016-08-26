@@ -54,6 +54,7 @@ Core.initElectron = function() {
   if(typeof require === "function") {
     this.usingElectron = true;
     this.ipcRenderer = require("electron").ipcRenderer;
+    this.fs = require("fs");
     this.initElectronProperties();
   }
 }

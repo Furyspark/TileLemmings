@@ -17,8 +17,8 @@ Scene_PreGame.prototype.init = function(src) {
 Scene_PreGame.prototype.start = function() {
   this._loading = false;
   // Add background
-  this.bg = new Background("bgMainMenu");
-  this.stage.addChild(this.bg);
+  this.background = new Background("bgMainMenu");
+  this.stage.addChild(this.background);
   // Add minimap
   this.minimap = new Sprite_Minimap();
   this.minimap.z = 0;
