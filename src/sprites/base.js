@@ -58,6 +58,10 @@ Sprite_Base.prototype.isAnimationPlaying = function(key) {
   return (this.animation === this.animations[key]);
 }
 
+Sprite_Base.prototype.hasAnimation = function(key) {
+  return (this.animations[key] instanceof Animation);
+}
+
 Sprite_Base.prototype.update = function() {
   // Update animation
   if(this.animation) {

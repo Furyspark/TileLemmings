@@ -2,6 +2,10 @@ function Game_Map() {
   this.init.apply(this, arguments);
 }
 
+Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+Game_Map.TILE_FLIPPED_VERTICALLY_FLAG   = 0x40000000;
+Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG   = 0x20000000;
+
 Object.defineProperties(Game_Map.prototype, {
   realWidth: {
     get: function() { return this.width * this.tileWidth; }
@@ -10,6 +14,7 @@ Object.defineProperties(Game_Map.prototype, {
     get: function() { return this.height * this.tileHeight; }
   }
 });
+
 
 Game_Map.prototype.init = function(src, scene) {
   this.grid               = new PIXI.Container();
@@ -282,6 +287,18 @@ Game_Map.prototype.parseTileLayer = function(layer) {
 Game_Map.prototype.parseObjectLayer = function(layer) {
   for(var a = 0;a < layer.objects.length;a++) {
     var objData = layer.objects[a];
+    // Determine flipping
+    objData.flip = {
+      horizontal: (objData.gid & Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG),
+      vertical: (objData.gid & Game_Map.TILE_FLIPPED_VERTICALLY_FLAG),
+      diagonal: (objData.gid & Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG)
+    };
+    objData.gid &= ~(
+      Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
+      Game_Map.TILE_FLIPPED_VERTICALLY_FLAG |
+      Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG
+    );
+    // Get data
     var props = this.getObjectProperties(objData);
     if(props) {
       var obj;
@@ -328,16 +345,11 @@ Game_Map.prototype.addProp = function(x, y, key, data) {
   // Apply Properties
   if(data.properties) {
     obj.applyProperties(data.properties);
-    // Door
-    if(obj.type === "door") {
-      // Value/Lemming Count
-      if(data.properties.value) {
-        this.totalLemmings += data.properties.value;
-        obj.value = data.properties.value;
-      }
-      // Rate
-      if(data.properties.rate) obj.rate = data.properties.rate;
-    }
+  }
+  // Flip
+  if(data.flip.horizontal) {
+    obj.flipH();
+    obj.x += data.width;
   }
   // Add to world
   this.world.addChild(obj.sprite);

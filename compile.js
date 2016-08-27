@@ -18,12 +18,15 @@ var data = {
 
     "src/core.js",
 
+    "src/data/temp.js",
+
     "src/input/input.js",
     "src/input/input-key.js",
     "src/input/input-mouse.js",
 
     "src/managers/audiomanager.js",
     "src/managers/scenemanager.js",
+    "src/managers/savemanager.js",
     "src/managers/options.js",
 
     "src/sprites/base.js",

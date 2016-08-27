@@ -11,6 +11,10 @@ Scene_PostGame.prototype.init = function() {
   this.saved = $gameMap.saved;
   this.totalLemmings = $gameMap.totalLemmings;
   this.success = this.saved >= this.needed;
+  // Save game
+  if($gameTemp.currentMap) {
+    SaveManager.addMapCompletion($gameTemp.currentMap.world, $gameTemp.currentMap.key, true);
+  }
 }
 
 Scene_PostGame.prototype.create = function() {

@@ -45,6 +45,7 @@ Game_Lemming.prototype.init = function() {
   this.dead             = false;
   this.interactive      = true;
   this.physicsEnabled   = true;
+  this.disabled         = false;
   this.clickArea        = new Rect(-8, -16, 16, 16);
   this.blockRect        = new Rect(-6, -12, 12, 13);
 
@@ -80,6 +81,7 @@ Game_Lemming.prototype.spawn = function(x, y) {
   this.dead                 = false;
   this.interactive          = true;
   this.physicsEnabled       = true;
+  this.disabled             = false;
   this.bomber.label.visible = false;
   this.bomber.count = -1;
 }
@@ -93,6 +95,7 @@ Game_Lemming.prototype.initTriggers = function() {
     this.exists = false;
   }, this);
   this.sprite.animations["explosion"].onEnd.add(this.remove, this);
+  this.sprite.animations["burn"].onEnd.add(this.remove, this);
 }
 
 Game_Lemming.prototype.actionInitEval = function(key) {
@@ -556,6 +559,7 @@ Game_Lemming.prototype.canExit = function() {
 
 Game_Lemming.prototype.disable = function() {
   this.cancelBomber();
+  this.disabled = true;
   this.interactive = false;
   this.physicsEnabled = false;
 }

@@ -12,7 +12,12 @@ Scene_Boot.prototype.init = function() {
 }
 
 Scene_Boot.prototype.loadAssets = function() {
-  Loader.onComplete.addOnce(this.start, this);
+  this._loadStage = { assets: false, options: false, save: false };
+
+  Loader.onComplete.addOnce(function() {
+    this._loadStage.assets = true;
+    this._checkLoadCompletion();
+  }, this);
   var assetList = Cache.getJSON("assetList");
   // Load Images
   for(var a = 0;a < assetList.images.length;a++) {
@@ -30,7 +35,24 @@ Scene_Boot.prototype.loadAssets = function() {
     Loader.loadAudio(asset.key, asset.src);
   }
   // Load options
+  Options.onLoad.addOnce(function() {
+    this._loadStage.options = true;
+    this._checkLoadCompletion();
+  }, this);
   Options.load();
+  // Load save game
+  SaveManager.onLoad.addOnce(function() {
+    this._loadStage.save = true;
+    this._checkLoadCompletion();
+  }, this);
+  SaveManager.load();
+}
+
+Scene_Boot.prototype._checkLoadCompletion = function() {
+  for(var a in this._loadStage) {
+    if(this._loadStage[a] === false) return;
+  }
+  this.start();
 }
 
 Scene_Boot.prototype.start = function() {

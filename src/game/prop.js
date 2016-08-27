@@ -46,6 +46,16 @@ Game_Prop.prototype.applySource = function() {
     this.sprite.playAnimation("idle");
     this.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
   }
+  // TYPE: Trap
+  else if(this.type === "trap") {
+    this.sprite.playAnimation("idle");
+    this.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
+    if(this.sprite.hasAnimation("kill")) {
+      this.sprite.getAnimation("kill").onEnd.add(function() {
+        this.sprite.playAnimation("idle");
+      }, this);
+    }
+  }
 }
 
 Game_Prop.prototype.applyProperties = function(props) {
@@ -57,8 +67,10 @@ Game_Prop.prototype.applyProperties = function(props) {
     }
     if(props.rate) this.rate = props.rate;
   }
-  // TYPE: exit
+  // TYPE: Exit
   else if(this.type === "exit") {}
+  // TYPE: Trap
+  else if(this.type === "trap") {}
 }
 
 Game_Prop.prototype.update = function() {
@@ -66,7 +78,7 @@ Game_Prop.prototype.update = function() {
   // TYPE: Exit
   if(this.type === "exit") {
     var arr = this.map.getLemmings();
-    for(let a = 0;a < arr.length;a++) {
+    for(var a = 0;a < arr.length;a++) {
       var lemming = arr[a];
       if(this.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && lemming.canExit()) {
         // Lemming exit
@@ -74,6 +86,33 @@ Game_Prop.prototype.update = function() {
         lemming.exit();
       }
     }
+  }
+  // TYPE: Trap
+  else if(this.type === "trap" && !this.sprite.isAnimationPlaying("kill")) {
+    var arr = this.map.getLemmings();
+    for(var a = 0;a < arr.length;a++) {
+      var lemming = arr[a];
+      if(this.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && !lemming.disabled) {
+        // Kill lemming
+        if(this.sounds.kill) AudioManager.playSound(this.sounds.kill);
+        // Animation
+        if(this.src.deathAnimation) {
+          lemming.disable();
+          lemming.requestAnimation = this.src.deathAnimation;
+        }
+        else if(this.sprite.hasAnimation("kill")) {
+          lemming.exists = false;
+          this.sprite.playAnimation("kill");
+        }
+      }
+    }
+  }
+}
+
+Game_Prop.prototype.flipH = function() {
+  this.sprite.scale.x = -this.sprite.scale.x;
+  if(this.hitArea) {
+    this.hitArea.x = -(this.hitArea.x + this.hitArea.width);
   }
 }
 

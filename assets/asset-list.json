@@ -89,6 +89,10 @@
       "src": "assets/audio/sfx/sndOhNo.ogg"
     },
     {
+      "key": "sndPounder",
+      "src": "assets/audio/sfx/sndLightning.ogg"
+    },
+    {
       "key": "sndUI_Click",
       "src": "assets/audio/sfx/sndUI_Click.ogg"
     },

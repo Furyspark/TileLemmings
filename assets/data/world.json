@@ -24,6 +24,22 @@
           "x": 3,
           "y": 4
         }
+      },
+      {
+        "type": "map",
+        "key": "level2.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 2,
+          "y": 3
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level1.json"
+          }
+        ]
       }
     ]
   }

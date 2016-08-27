@@ -1,21 +1,49 @@
 {
 "frames": {
+	"button-bg_level-incomplete.png": {
+		"frame": {"x":262, "y":262, "w":128, "h":128},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
+		"sourceSize": {"w":132,"h":132}
+	},
+	"button-bg_level-locked.png": {
+		"frame": {"x":262, "y":133, "w":128, "h":128},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
+		"sourceSize": {"w":132,"h":132}
+	},
 	"button-bg_level.png": {
-		"frame": {"x":133, "y":217, "w":128, "h":128},
+		"frame": {"x":266, "y":0, "w":128, "h":128},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
 		"sourceSize": {"w":132,"h":132}
 	},
 	"button-bg_world.png": {
-		"frame": {"x":133, "y":88, "w":128, "h":128},
+		"frame": {"x":133, "y":340, "w":128, "h":128},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
 		"sourceSize": {"w":132,"h":132}
 	},
-	"button-fg_level.png": {
+	"button-fg_level-incomplete.png": {
 		"frame": {"x":0, "y":0, "w":132, "h":132},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
+		"sourceSize": {"w":132,"h":132}
+	},
+	"button-fg_level-locked.png": {
+		"frame": {"x":0, "y":266, "w":132, "h":132},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
+		"sourceSize": {"w":132,"h":132}
+	},
+	"button-fg_level.png": {
+		"frame": {"x":133, "y":0, "w":132, "h":132},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
@@ -29,17 +57,31 @@
 		"sourceSize": {"w":132,"h":132}
 	},
 	"icon-cave.png": {
-		"frame": {"x":133, "y":0, "w":128, "h":87},
+		"frame": {"x":133, "y":133, "w":128, "h":87},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":21,"w":128,"h":87},
+		"sourceSize": {"w":128,"h":128}
+	},
+	"icon-classic.png": {
+		"frame": {"x":133, "y":221, "w":128, "h":118},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":5,"w":128,"h":118},
+		"sourceSize": {"w":128,"h":128}
+	},
+	"icon-egyptian.png": {
+		"frame": {"x":0, "y":399, "w":128, "h":80},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":24,"w":128,"h":80},
 		"sourceSize": {"w":128,"h":128}
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 262, "h": 346},
+	"size": {"w": 395, "h": 480},
 	"scale": "1"
 }
 }

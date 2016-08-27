@@ -657,5 +657,126 @@
         "exit5.png"
       ]
     }
+  },
+  "trapFlamethrower": {
+    "type": "trap",
+    "anchor": {
+      "x": 0,
+      "y": -0.5
+    },
+    "hitArea": {
+      "x": 0,
+      "y": 0,
+      "width": 128,
+      "height": 16
+    },
+    "assets": {
+      "audio": {
+        "kill": "assets/audio/sfx/sndBurn.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-traps/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "flamethrower0.png",
+        "flamethrower1.png",
+        "flamethrower2.png",
+        "flamethrower3.png",
+        "flamethrower4.png",
+        "flamethrower5.png",
+        "flamethrower6.png",
+        "flamethrower7.png",
+        "flamethrower8.png",
+        "flamethrower9.png"
+      ]
+    },
+    "deathAnimation": "burn"
+  },
+  "trapFlameTurret": {
+    "type": "trap",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -20,
+      "y": -32,
+      "width": 40,
+      "height": 32
+    },
+    "assets": {
+      "audio": {
+        "kill": "assets/audio/sfx/sndBurn.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-traps/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "flameturret0.png",
+        "flameturret1.png",
+        "flameturret2.png",
+        "flameturret3.png",
+        "flameturret4.png",
+        "flameturret5.png",
+        "flameturret6.png",
+        "flameturret7.png",
+        "flameturret8.png",
+        "flameturret9.png",
+        "flameturret10.png",
+        "flameturret11.png",
+        "flameturret12.png",
+        "flameturret13.png",
+        "flameturret14.png",
+        "flameturret15.png"
+      ]
+    },
+    "deathAnimation": "burn"
+  },
+  "trapPinkPounder": {
+    "type": "trap",
+    "anchor": {
+      "x": 0.5,
+      "y": 0
+    },
+    "hitArea": {
+      "x": -4,
+      "y": -4,
+      "width": 8,
+      "height": 4
+    },
+    "assets": {
+      "audio": {
+        "kill": "assets/audio/sfx/sndPounder.ogg"
+      },
+      "textureAtlases": {
+        "base": "assets/graphics/sprite-atlases/props-traps/sprites.json"
+      }
+    },
+    "animations": {
+      "idle": [
+        "pounder_idle0.png"
+      ],
+      "kill": [
+        "pounder_kill0.png",
+        "pounder_kill1.png",
+        "pounder_kill2.png",
+        "pounder_kill3.png",
+        "pounder_kill4.png",
+        "pounder_kill5.png",
+        "pounder_kill6.png",
+        "pounder_kill7.png",
+        "pounder_kill8.png",
+        "pounder_kill9.png",
+        "pounder_kill10.png",
+        "pounder_kill11.png",
+        "pounder_kill12.png",
+        "pounder_kill13.png",
+        "pounder_kill14.png"
+      ]
+    }
   }
 }

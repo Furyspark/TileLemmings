@@ -57,7 +57,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "properties":
     {
@@ -95,6 +95,10 @@
         {
          "firstgid":40,
          "source":"..\/..\/tilesets\/generic\/exits.json"
+        }, 
+        {
+         "firstgid":52,
+         "source":"..\/..\/tilesets\/generic\/traps.json"
         }],
  "tilewidth":16,
  "version":1,
