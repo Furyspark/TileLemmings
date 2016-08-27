@@ -4,9 +4,6 @@ Core._dataObjects = [
   { name: "$dataProps", key: "dataProps", src: "assets/data/props.json" },
   { name: "$dataActions", key: "dataActions", src: "assets/data/actions.json" }
 ];
-Core._config = [
-  { key: "cfgVideo", src: "config/video.json" }
-];
 
 Core.tileset = {};
 
@@ -25,7 +22,6 @@ Core.start = function() {
   this.initPixi();
   this.fitToWindow();
   this.startDataObjects();
-  this.loadConfig();
   this.initExternalLibs();
   Input.init();
 
@@ -98,13 +94,6 @@ Core.startDataObjects = function() {
     obj.onComplete.addOnce(function(dataObject) {
       window[dataObject.name] = Cache.getJSON(dataObject.key);
     }, this, [dObj], 20);
-  }
-}
-
-Core.loadConfig = function() {
-  for(var a = 0;a < this._config.length;a++) {
-    var cfg = this._config[a];
-    Loader.loadJSON(cfg.key, cfg.src);
   }
 }
 

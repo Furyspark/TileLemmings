@@ -23,6 +23,10 @@ Options.save = function() {
       this.onSave.dispatch();
     }.bind(this));
   }
+  else {
+    localStorage.setItem("config", json);
+    this.onSave.dispatch();
+  }
 }
 
 Options.load = function() {
@@ -32,5 +36,10 @@ Options.load = function() {
       if(!err) this.data = Object.assign(this.data, JSON.parse(data));
       this.onLoad.dispatch();
     }.bind(this));
+  }
+  else {
+    var data = localStorage.getItem("config");
+    if(data) this.data = JSON.parse(data);
+    this.onLoad.dispatch();
   }
 }

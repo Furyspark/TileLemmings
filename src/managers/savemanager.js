@@ -29,6 +29,10 @@ SaveManager.save = function() {
       this.onSave.dispatch();
     }.bind(this));
   }
+  else {
+    localStorage.setItem("save", json);
+    this.onSave.dispatch();
+  }
 }
 
 SaveManager.load = function() {
@@ -38,5 +42,10 @@ SaveManager.load = function() {
       if(!err) this.data = Object.assign(this.data, JSON.parse(data));
       this.onLoad.dispatch();
     }.bind(this));
+  }
+  else {
+    var data = localStorage.getItem("save");
+    if(data) this.data = JSON.parse(data);
+    this.onLoad.dispatch();
   }
 }
