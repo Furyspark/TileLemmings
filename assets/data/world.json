@@ -10,6 +10,15 @@
           "x": 0,
           "y": 2
         }
+      },
+      {
+        "type": "world",
+        "key": "egyptian",
+        "icon": "icon-egyptian.png",
+        "position": {
+          "x": 1,
+          "y": 2
+        }
       }
     ]
   },
@@ -54,6 +63,36 @@
             "type": "map-completion",
             "dir": "cave",
             "key": "level2.json"
+          }
+        ]
+      }
+    ]
+  },
+  "egyptian": {
+    "previous": "root",
+    "contents": [
+      {
+        "type": "map",
+        "key": "level1.json",
+        "icon": "icon-egyptian.png",
+        "position": {
+          "x": 0,
+          "y": 3
+        }
+      },
+      {
+        "type": "map",
+        "key": "level2.json",
+        "icon": "icon-egyptian.png",
+        "position": {
+          "x": 1,
+          "y": 2
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "egyptian",
+            "key": "level1.json"
           }
         ]
       }

@@ -60,6 +60,14 @@ UI_WorldButton.prototype.initGraphics = function(iconFrames) {
   this.subSprites.icon.position.set(this.subSprites.background.width / 2, this.subSprites.background.height / 2);
   this.subSprites.icon.z = 0;
   this.sprite.addChild(this.subSprites.icon);
+  // Add icon mask
+  this.subSprites.iconMask = new PIXI.Graphics();
+  this.subSprites.iconMask.beginFill(0x000000)
+    .drawRect(4, 4, this.subSprites.background.width - 8, this.subSprites.background.height - 8)
+    .endFill();
+  this.subSprites.iconMask.z = 0;
+  this.sprite.addChild(this.subSprites.iconMask);
+  this.subSprites.icon.mask = this.subSprites.iconMask;
   // Add frame
   this.createFrame();
 
@@ -92,21 +100,61 @@ UI_WorldButton.prototype.setCompletion = function(completion) {
   }
 }
 
+UI_WorldButton.prototype.checkCompletion = function() {
+  if(this.type === UI_WorldButton.TYPE_WORLD) {
+    if(this.subSprites.check) this.sprite.removeChild(this.subSprites.check);
+
+    var dir = $gameWorld[this.key];
+    var success = true;
+    // Determine completion
+    for(var a = 0;a < dir.contents.length;a++) {
+      var mapKey = dir.contents[a].key;
+      if(!SaveManager.data.mapCompletion[this.key] || !SaveManager.data.mapCompletion[this.key][mapKey]) {
+        success = false;
+        break;
+      }
+    }
+    // Create graphical check
+    if(success) {
+      this.subSprites.check = new Sprite_Base();
+      this.subSprites.check.addAnimationExt("atlWorldMap", "idle", 1, "world-completion.png");
+      this.subSprites.check.playAnimation("idle");
+      this.subSprites.check.z = -15;
+      this.subSprites.check.anchor.set(1, 1);
+      this.subSprites.check.position.set(this.subSprites.background.width, this.subSprites.background.height);
+      this.sprite.addChild(this.subSprites.check);
+    }
+  }
+  else if(this.type === UI_WorldButton.TYPE_MAP) {
+    if(this.subSprites.check) this.sprite.removeChild(this.subSprites.check);
+
+    var createdSprite = false;
+    if(this.complete === UI_WorldButton.COMPLETE_COMPLETE) {
+      createdSprite = true;
+      this.subSprites.check = new Sprite_Base();
+      this.subSprites.check.addAnimationExt("atlWorldMap", "idle", 1, "world-completion.png");
+    }
+    else if(this.complete === UI_WorldButton.COMPLETE_LOCKED) {
+      createdSprite = true;
+      this.subSprites.check = new Sprite_Base();
+      this.subSprites.check.addAnimationExt("atlWorldMap", "idle", 1, "world-locked.png");
+    }
+
+    if(createdSprite) {
+      this.subSprites.check.playAnimation("idle");
+      this.subSprites.check.z = -15;
+      this.subSprites.check.anchor.set(1, 1);
+      this.subSprites.check.position.set(this.subSprites.background.width, this.subSprites.background.height);
+      this.sprite.addChild(this.subSprites.check);
+    }
+  }
+}
+
 UI_WorldButton.prototype.createBackground = function() {
   if(this.subSprites.background) this.sprite.removeChild(this.subSprites.background);
 
   var spriteKey = "button-bg_world.png";
-  if(this.type === UI_WorldButton.TYPE_MAP) {
-    // Locked
-    if(this.complete === UI_WorldButton.COMPLETE_LOCKED) spriteKey = "button-bg_level-locked.png";
-    // Incomplete
-    else if(this.complete === UI_WorldButton.COMPLETE_INCOMPLETE) spriteKey = "button-bg_level-incomplete.png";
-    // Complete
-    else if(this.complete === UI_WorldButton.COMPLETE_COMPLETE) spriteKey = "button-bg_level.png";
-  }
-  else if(this.type === UI_WorldButton.TYPE_WORLD) {
-    
-  }
+  if(this.type === UI_WorldButton.TYPE_MAP) spriteKey = "button-bg_level.png";
 
   this.subSprites.background = new Sprite_Base();
   this.subSprites.background.addAnimationExt("atlWorldMap", "idle", 1, spriteKey);
@@ -119,14 +167,7 @@ UI_WorldButton.prototype.createFrame = function() {
   if(this.subSprites.frame) this.sprite.removeChild(this.subSprites.frame);
 
   var spriteKey = "button-fg_world.png";
-  if(this.type === UI_WorldButton.TYPE_MAP) {
-    // Locked
-    if(this.complete === UI_WorldButton.COMPLETE_LOCKED) spriteKey = "button-fg_level-locked.png";
-    // Incomplete
-    else if(this.complete === UI_WorldButton.COMPLETE_INCOMPLETE) spriteKey = "button-fg_level-incomplete.png";
-    // Complete
-    else if(this.complete === UI_WorldButton.COMPLETE_COMPLETE) spriteKey = "button-fg_level.png";
-  }
+  if(this.type === UI_WorldButton.TYPE_MAP) spriteKey = "button-fg_level.png";
 
   this.subSprites.frame = new Sprite_Base();
   this.subSprites.frame.addAnimationExt("atlWorldMap", "idle", 1, spriteKey);

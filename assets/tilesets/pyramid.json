@@ -1,0 +1,11 @@
+{ "columns":7,
+ "image":"..\/graphics\/tilesets\/pyramid.png",
+ "imageheight":120,
+ "imagewidth":140,
+ "margin":2,
+ "name":"pyramid",
+ "spacing":4,
+ "tilecount":42,
+ "tileheight":16,
+ "tilewidth":16
+}

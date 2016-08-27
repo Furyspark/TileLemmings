@@ -19,6 +19,6 @@ Point.prototype.distanceTo = function(toPos) {
 
 Point.prototype.rotationTo = function(toPos) {
   var delta = new Point(toPos.x - this.x, toPos.y - this.y);
-  var radians = Math.atan(delta.y / delta.x);
+  var radians = Math.atan2(delta.y, delta.x);
   return radians;
 }

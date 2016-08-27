@@ -23,7 +23,7 @@ Scene_WorldMap.prototype.init = function() {
 }
 
 Scene_WorldMap.prototype.start = function() {
-  this.worldData = Cache.getJSON("world");
+  $gameWorld = Cache.getJSON("world");
   this.generateContent(this.current);
   this.fadeIn();
 }
@@ -49,7 +49,7 @@ Scene_WorldMap.prototype.clearData = function() {
 }
 
 Scene_WorldMap.prototype.getDir = function(key) {
-  return this.worldData[key];
+  return $gameWorld[key];
 }
 
 Scene_WorldMap.prototype.generateContent = function(key) {
@@ -113,6 +113,7 @@ Scene_WorldMap.prototype.parseWorldButtonRequirements = function() {
     }
     else if(meetsRequirements) btn.setCompletion(UI_WorldButton.COMPLETE_INCOMPLETE);
     else btn.setCompletion(UI_WorldButton.COMPLETE_LOCKED);
+    btn.checkCompletion();
   }
 }
 
