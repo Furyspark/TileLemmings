@@ -14,6 +14,10 @@ Scene_MenuBase.prototype.init = function() {
 
 Scene_MenuBase.prototype.create = function() {
   Scene_Base.prototype.create.call(this);
+  for(var a = 0;a < this.ui.length;a++) {
+    var elem = this.ui[a];
+    elem.addListeners();
+  }
   this.addListeners();
 }
 
@@ -24,11 +28,19 @@ Scene_MenuBase.prototype.initMembers = function() {
 
 Scene_MenuBase.prototype.continue = function() {
   Scene_Base.prototype.continue.call(this);
+  for(var a = 0;a < this.ui.length;a++) {
+    var elem = this.ui[a];
+    elem.addListeners();
+  }
   this.addListeners();
 }
 
 Scene_MenuBase.prototype.leave = function() {
   Scene_Base.prototype.leave.call(this);
+  for(var a = 0;a < this.ui.length;a++) {
+    var elem = this.ui[a];
+    elem.remove();
+  }
   this.removeListeners();
 }
 

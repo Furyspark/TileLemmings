@@ -60,6 +60,8 @@ Scene_Game.prototype.init = function() {
   this.fadeIn(this.startMap.bind(this, 0));
   // Add end of map event
   $gameMap.onEndOfMap.addOnce(this.endMap, this);
+  // Apply player config
+  if(Options.data.gameplay.startWithGrid) this.toggleGrid(false);
 }
 
 Scene_Game.prototype.create = function() {

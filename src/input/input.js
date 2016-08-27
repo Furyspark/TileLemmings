@@ -95,7 +95,7 @@ Input._onKeyUp = function(e) {
 }
 
 Input._onMouseMove = function(e) {
-  this.mouse.updatePosition(e);
+  this.mouse.onMove.dispatch([e]);
 }
 
 Input._onMouseDown = function(e) {

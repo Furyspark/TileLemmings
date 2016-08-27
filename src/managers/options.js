@@ -14,6 +14,9 @@ Options.generate = function() {
     },
     toggleDuringPause: false
   };
+  this.data.gameplay = {
+    startWithGrid: false
+  };
 }
 
 Options.save = function() {

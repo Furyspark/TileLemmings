@@ -50,6 +50,8 @@ Input_Mouse.prototype.init = function() {
       y: 0
     }
   };
+  this.onMove = new Signal();
+  this.onMove.add(this.updatePosition, this, [], 100);
 }
 
 Input_Mouse.prototype.updatePosition = function(e) {

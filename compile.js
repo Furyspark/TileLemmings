@@ -54,6 +54,7 @@ var data = {
     "src/ui/menu-button.js",
     "src/ui/world-button.js",
     "src/ui/checkbox.js",
+    "src/ui/slider.js",
     "src/ui/minimap.js",
 
     "src/map/map.js",

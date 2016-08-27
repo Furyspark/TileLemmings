@@ -41,10 +41,30 @@ Scene_Options.prototype.createText = function() {
 
 Scene_Options.prototype.createUI = function() {
   this.createBackButton();
+  // Audio
   // Checkbox: Toggle music pausing on game pausing
   var elem = new UI_CheckBox(new Point(96, 128), "Pause music when pausing the game", Options.data.audio.toggleDuringPause);
   elem.onToggle.add(function(value) {
     Options.data.audio.toggleDuringPause = value;
+  }, this);
+  this.addUI(elem);
+  // Slider: Music volume
+  var elem = new UI_Slider(new Point(96, 240), "Music Volume", 240, Options.data.audio.volume.bgm);
+  elem.onChange.add(function(value) {
+    Options.data.audio.volume.bgm = value;
+  }, this);
+  this.addUI(elem);
+  // Slider: Sound volume
+  var elem = new UI_Slider(new Point(96, 320), "Sound Volume", 240, Options.data.audio.volume.sfx);
+  elem.onChange.add(function(value) {
+    Options.data.audio.volume.sfx = value;
+  }, this);
+  this.addUI(elem);
+  // Gameplay
+  // Checkbox: Start with Grid On
+  var elem = new UI_CheckBox(new Point(480, 128), "Start level with grid visible", Options.data.gameplay.startWithGrid);
+  elem.onToggle.add(function(value) {
+    Options.data.gameplay.startWithGrid = value;
   }, this);
   this.addUI(elem);
 }

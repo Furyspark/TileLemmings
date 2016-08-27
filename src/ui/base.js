@@ -60,3 +60,11 @@ UI_Base.prototype.addAnimation = function(name, atlasKey, animKeys) {
     }
   }
 }
+
+UI_Base.prototype.addListeners = function() {}
+
+UI_Base.prototype.removeListeners = function() {}
+
+UI_Base.prototype.remove = function() {
+  this.removeListeners();
+}

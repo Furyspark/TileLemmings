@@ -1,1 +1,1 @@
-{"audio":{"volume":{"bgm":0.9,"sfx":0.9},"toggleDuringPause":false}}
+{"audio":{"volume":{"bgm":0.775,"sfx":0.9166666666666666},"toggleDuringPause":false,"startWithGrid":true},"gameplay":{"startWithGrid":false}}
