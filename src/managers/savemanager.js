@@ -45,7 +45,7 @@ SaveManager.load = function() {
   }
   else {
     var data = localStorage.getItem("save");
-    if(data) this.data = JSON.parse(data);
+    if(data) this.data = Object.assign(this.data, JSON.parse(data));
     this.onLoad.dispatch();
   }
 }

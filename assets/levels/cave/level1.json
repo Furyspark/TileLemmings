@@ -90,15 +90,11 @@
         }, 
         {
          "firstgid":31,
-         "source":"..\/..\/tilesets\/generic\/doors.json"
+         "source":"..\/..\/tilesets\/objects\/doors.json"
         }, 
         {
          "firstgid":40,
-         "source":"..\/..\/tilesets\/generic\/exits.json"
-        }, 
-        {
-         "firstgid":52,
-         "source":"..\/..\/tilesets\/generic\/traps.json"
+         "source":"..\/..\/tilesets\/objects\/exits.json"
         }],
  "tilewidth":16,
  "version":1,

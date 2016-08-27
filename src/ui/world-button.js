@@ -104,6 +104,9 @@ UI_WorldButton.prototype.createBackground = function() {
     // Complete
     else if(this.complete === UI_WorldButton.COMPLETE_COMPLETE) spriteKey = "button-bg_level.png";
   }
+  else if(this.type === UI_WorldButton.TYPE_WORLD) {
+    
+  }
 
   this.subSprites.background = new Sprite_Base();
   this.subSprites.background.addAnimationExt("atlWorldMap", "idle", 1, spriteKey);

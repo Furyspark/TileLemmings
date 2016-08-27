@@ -43,4 +43,13 @@ Scene_MainMenu.prototype.createCommands = function() {
     SceneManager.push(new Scene_WorldMap());
   }]);
   this.addUI(elem);
+  // Exit
+  if(Core.usingElectron) {
+    var elem = new UI_MenuButton(new Point(Core.resolution.x * 0.5, 600), "Exit");
+    elem.x -= elem.sprite.width / 2;
+    elem.onClick.add(this.fadeOut, this, [function() {
+      close();
+    }]);
+    this.addUI(elem);
+  }
 }

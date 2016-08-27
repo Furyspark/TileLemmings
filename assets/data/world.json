@@ -8,7 +8,7 @@
         "icon": "icon-cave.png",
         "position": {
           "x": 0,
-          "y": 1
+          "y": 2
         }
       }
     ]
@@ -22,7 +22,7 @@
         "icon": "icon-cave.png",
         "position": {
           "x": 3,
-          "y": 4
+          "y": 3
         }
       },
       {
@@ -31,13 +31,29 @@
         "icon": "icon-cave.png",
         "position": {
           "x": 2,
-          "y": 3
+          "y": 2
         },
         "require": [
           {
             "type": "map-completion",
             "dir": "cave",
             "key": "level1.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level3.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 2,
+          "y": 1
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level2.json"
           }
         ]
       }

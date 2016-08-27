@@ -5,10 +5,10 @@ function Scene_WorldMap() {
 Scene_WorldMap.prototype = Object.create(Scene_MenuBase.prototype);
 Scene_WorldMap.prototype.constructor = Scene_WorldMap;
 
-Scene_WorldMap.CONTENT_OFFSET     = new Point(120, 40);
+Scene_WorldMap.CONTENT_OFFSET     = new Point(112, 96);
 Scene_WorldMap.CONTENT_BUTTONSIZE = new Point(128, 128);
-Scene_WorldMap.CONTENT_DATASIZE   = new Point(8, 5);
-Scene_WorldMap.CONTENT_PADDING    = 8;
+Scene_WorldMap.CONTENT_DATASIZE   = new Point(8, 4);
+Scene_WorldMap.CONTENT_PADDING    = 16;
 
 
 Scene_WorldMap.prototype.init = function() {
@@ -95,35 +95,31 @@ Scene_WorldMap.prototype.parseWorldButtonRequirements = function() {
   for(var a = 0;a < dir.contents.length;a++) {
     var src = dir.contents[a];
     var btn = this.getWorldButton(src.key);
-    // Map already completed
+    var meetsRequirements = true;
+    // Determine requirements
+    if(btn && src && src.require) {
+      for(var b = 0;b < src.require.length;b++) {
+        var requirement = src.require[b];
+        // Map completion
+        if(requirement.type === "map-completion") {
+          var result = this.parseWorldButtonRequirement_MapCompletion(btn, requirement);
+          if(meetsRequirements === true) meetsRequirements = result;
+        }
+      }
+    }
+    // Set map completion
     if(SaveManager.getMapCompletion(this.current, src.key)) {
       btn.setCompletion(UI_WorldButton.COMPLETE_COMPLETE);
     }
-    // Determine requirements
-    else {
-      var meetsRequirements = true;
-      // Determine requirements
-      if(btn && src && src.require) {
-        for(var a = 0;a < src.require.length;a++) {
-          var requirement = src.require[a];
-          // Map completion
-          if(requirement.type === "map-completion") {
-            var result = this.parseWorldButtonRequirement_MapCompletion(btn, requirement);
-            if(meetsRequirements === true) meetsRequirements = result;
-          }
-        }
-      }
-      // Set map completion
-      if(meetsRequirements) btn.setCompletion(UI_WorldButton.COMPLETE_INCOMPLETE);
-      else btn.setCompletion(UI_WorldButton.COMPLETE_LOCKED);
-    }
+    else if(meetsRequirements) btn.setCompletion(UI_WorldButton.COMPLETE_INCOMPLETE);
+    else btn.setCompletion(UI_WorldButton.COMPLETE_LOCKED);
   }
 }
 
 Scene_WorldMap.prototype.parseWorldButtonRequirement_MapCompletion = function(btn, requirement) {
   if(requirement.dir === this.current) {
     var btnTo = this.getWorldButton(requirement.key);
-    var arrow = this.createArrow(btn.centerPos, btnTo.centerPos, 0x0000ff, 0x0000aa);
+    var arrow = this.createArrow(btn.centerPos, btnTo.centerPos, 0x00ffff, 0x00aaaa);
   }
   if(SaveManager.getMapCompletion(requirement.dir, requirement.key)) return true;
   return false;

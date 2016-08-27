@@ -80,7 +80,7 @@ Game_Map.prototype.parseTiledMap = function() {
     var tsBaseDir = this.baseDir + ts.source.split(/[\/\\]/).slice(0, -1).join("/") + "/";
     var args = [key, ts.firstgid, tsBaseDir, true];
 
-    if(ts.source.split(/[\/\\]/).indexOf("generic") !== -1) args[3] = false;
+    if(ts.source.split(/[\/\\]/).indexOf("objects") !== -1) args[3] = false;
     this._expectedAssets.push(key);
     var obj = Loader.loadJSON(key, this.baseDir + ts.source);
     obj.onComplete.addOnce(this.parseTilesetData, this, args, 20);
@@ -108,11 +108,6 @@ Game_Map.prototype.parseMapProperties = function(properties) {
       this.clearAsset("background");
       this._usedAssets.push({ type: "image", key: "background" });
     }, this, [], 20);
-  }
-  // Apply actions
-  for(var a in $dataActions) {
-    var action = $dataActions[a];
-    if(properties[action.key]) this.actions[a] = { amount: properties[action.key] };
   }
 }
 
@@ -244,6 +239,12 @@ Game_Map.prototype.getTileset = function(uid) {
 
 Game_Map.prototype.createLevel = function() {
   this.clear();
+  // Apply actions
+  for(var a in $dataActions) {
+    var action = $dataActions[a];
+    if(this.data.properties[action.key]) this.actions[a] = { amount: this.data.properties[action.key] };
+  }
+  // Apply basic map data
   this.width = this.data.width;
   this.height = this.data.height;
   this.tileWidth = this.data.tilewidth;
