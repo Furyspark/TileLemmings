@@ -9,10 +9,20 @@ Scene_Options.prototype.init = function() {
   Scene_MenuBase.prototype.init.call(this);
 }
 
+Scene_Options.prototype.create = function() {
+  Scene_MenuBase.prototype.create.call(this);
+  this.fadeIn();
+}
+
 Scene_Options.prototype.createCommands = function() {
   Scene_MenuBase.prototype.createCommands.call(this);
   this.createText();
   this.createUI();
+}
+
+Scene_Options.prototype.continue = function() {
+  Scene_MenuBase.prototype.continue.call(this);
+  this.fadeIn();
 }
 
 Scene_Options.prototype.leave = function() {

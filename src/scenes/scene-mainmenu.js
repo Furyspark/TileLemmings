@@ -15,6 +15,12 @@ Scene_MainMenu.prototype.initMembers = function() {
 
 Scene_MainMenu.prototype.create = function() {
   Scene_MenuBase.prototype.create.call(this);
+  this.fadeIn();
+}
+
+Scene_MainMenu.prototype.continue = function() {
+  Scene_MenuBase.prototype.continue.call(this);
+  this.fadeIn();
 }
 
 Scene_MainMenu.prototype.update = function() {
@@ -28,6 +34,13 @@ Scene_MainMenu.prototype.createCommands = function() {
   elem.x -= elem.sprite.width / 2;
   elem.onClick.add(this.fadeOut, this, [function() {
     SceneManager.push(new Scene_Options());
+  }]);
+  this.addUI(elem);
+  // Play
+  var elem = new UI_MenuButton(new Point(Core.resolution.x * 0.2, 400), "Play");
+  elem.x -= elem.sprite.width / 2;
+  elem.onClick.add(this.fadeOut, this, [function() {
+    SceneManager.push(new Scene_WorldMap());
   }]);
   this.addUI(elem);
 }

@@ -59,8 +59,9 @@ Loader.loadAudio = function(key, src) {
 Loader.loadImage = function(key, src) {
   if(this.isLoading("image", key) || Cache.hasImage(key)) return null;
   var file;
-  PIXI.loader.add(key, src);
-  PIXI.loader.on("complete", function(loader, resources) {
+  var loader = new PIXI.loaders.Loader();
+  loader.add(key, src);
+  loader.on("complete", function(loader, resources) {
     for(var a in resources) {
       if(file.key === a) {
         file.dataObject = resources[a].texture;
@@ -80,7 +81,7 @@ Loader.loadImage = function(key, src) {
   };
   this._loading.push(file);
   file.onComplete.addOnce(this._finishImage, this, [file], 10);
-  PIXI.loader.load();
+  loader.load();
 
   return file;
 }

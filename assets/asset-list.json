@@ -33,6 +33,10 @@
     {
       "key": "atlMainMenu",
       "src": "assets/graphics/sprite-atlases/mainmenu/sprites.json"
+    },
+    {
+      "key": "atlWorldMap",
+      "src": "assets/graphics/sprite-atlases/worldmap/sprites.json"
     }
   ],
   "audio": [

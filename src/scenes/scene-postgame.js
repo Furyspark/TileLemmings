@@ -37,10 +37,15 @@ Scene_PostGame.prototype.create = function() {
 
 Scene_PostGame.prototype.continueGame = function() {
   if(this.success) {
+    this.fadeOut(function() {
+      while(!(SceneManager.current() instanceof Scene_MainMenu) && !(SceneManager.current() instanceof Scene_WorldMap)) {
+        SceneManager.pop();
+      }
+    }.bind(this));
   }
   else {
     this.fadeOut(function() {
-      while(!(SceneManager.current() instanceof Scene_PreGame) && !(SceneManager.current() instanceof Scene_MainMenu)) {
+      while(!(SceneManager.current() instanceof Scene_PreGame) && !(SceneManager.current() instanceof Scene_MainMenu) && !(SceneManager.current() instanceof Scene_WorldMap)) {
         SceneManager.pop();
       }
     }.bind(this));

@@ -30,7 +30,7 @@ Object.defineProperties(UI_Base.prototype, {
 });
 
 UI_Base.prototype.click = function() {
-  if(this.enabled) this.onClick.dispatch();
+  if(this.enabled && this.onClick) this.onClick.dispatch();
 }
 
 UI_Base.prototype.init = function(x, y, key) {

@@ -44,10 +44,12 @@ var data = {
     "src/scenes/scene-pregame.js",
     "src/scenes/scene-game.js",
     "src/scenes/scene-postgame.js",
+    "src/scenes/scene-worldmap.js",
 
     "src/ui/base.js",
     "src/ui/button.js",
     "src/ui/menu-button.js",
+    "src/ui/world-button.js",
     "src/ui/checkbox.js",
     "src/ui/minimap.js",
 

@@ -14,7 +14,6 @@ Scene_MenuBase.prototype.init = function() {
 
 Scene_MenuBase.prototype.create = function() {
   Scene_Base.prototype.create.call(this);
-  this.fadeIn();
   this.addListeners();
 }
 
@@ -25,7 +24,6 @@ Scene_MenuBase.prototype.initMembers = function() {
 
 Scene_MenuBase.prototype.continue = function() {
   Scene_Base.prototype.continue.call(this);
-  this.fadeIn();
   this.addListeners();
 }
 
@@ -65,16 +63,19 @@ Scene_MenuBase.prototype.removeListeners = function() {
 }
 
 Scene_MenuBase.prototype._onMouseLeftDown = function() {
+  var returnElem = null;
   if(this.active) {
     this.applyUIZOrdering();
     for(var a = 0;a < this.ui.length;a++) {
       var elem = this.ui[a];
       if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
+        returnElem = elem;
         if(elem.click) elem.click();
         break;
       }
     }
   }
+  return returnElem;
 }
 
 Scene_MenuBase.prototype.createBackButton = function() {

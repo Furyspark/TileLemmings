@@ -32,6 +32,7 @@ Game_Map.prototype.init = function(src, scene) {
   this.actions            = {};
   this.maxFallDistance    = 8 * 16;
   this.trackVictoryDefeat = true;
+  this.loaded             = false;
 
   this.onLoad     = new Signal();
   this.onCreate   = new Signal();
@@ -212,6 +213,7 @@ Game_Map.prototype.clearAsset = function(key) {
         if(a.firstGid > b.firstGid) return 1;
         return 0;
       });
+      this.loaded = true;
       this.onLoad.dispatch();
     }
   }
@@ -526,13 +528,14 @@ Game_Map.prototype.addBackground = function() {
   }
 }
 
-Game_Map.prototype.end = function() {
+Game_Map.prototype.destroy = function() {
   this.clearLevelAssets();
+  Cache.removeJSON("map");
 }
 
 Game_Map.prototype.clearLevelAssets = function() {
-  for(var a = 0;a < this._usedAssets.length;a++) {
-    var asset = this._usedAssets[a];
+  while(this._usedAssets.length > 0) {
+    var asset = this._usedAssets.pop();
     switch(asset.type) {
       case "json":
         Cache.removeJSON(asset.key);
@@ -546,7 +549,9 @@ Game_Map.prototype.clearLevelAssets = function() {
       case "textureAtlas":
         Cache.removeTextureAtlas(asset.key);
         break;
+      default:
+        console.log("Failed to remove asset: " + asset.key);
+        break;
     }
   }
-  this._usedAssets = [];
 }

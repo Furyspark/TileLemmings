@@ -1,0 +1,11 @@
+{ "columns":21,
+ "image":"..\/graphics\/tilesets\/volcano.png",
+ "imageheight":120,
+ "imagewidth":420,
+ "margin":2,
+ "name":"volcano",
+ "spacing":4,
+ "tilecount":126,
+ "tileheight":16,
+ "tilewidth":16
+}

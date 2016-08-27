@@ -1,0 +1,11 @@
+{ "columns":6,
+ "image":"..\/graphics\/tilesets\/cave.png",
+ "imageheight":80,
+ "imagewidth":120,
+ "margin":2,
+ "name":"cave",
+ "spacing":4,
+ "tilecount":24,
+ "tileheight":16,
+ "tilewidth":16
+}

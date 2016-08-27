@@ -1,0 +1,45 @@
+{
+"frames": {
+	"button-bg_level.png": {
+		"frame": {"x":133, "y":217, "w":128, "h":128},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
+		"sourceSize": {"w":132,"h":132}
+	},
+	"button-bg_world.png": {
+		"frame": {"x":133, "y":88, "w":128, "h":128},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
+		"sourceSize": {"w":132,"h":132}
+	},
+	"button-fg_level.png": {
+		"frame": {"x":0, "y":0, "w":132, "h":132},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
+		"sourceSize": {"w":132,"h":132}
+	},
+	"button-fg_world.png": {
+		"frame": {"x":0, "y":133, "w":132, "h":132},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
+		"sourceSize": {"w":132,"h":132}
+	},
+	"icon-cave.png": {
+		"frame": {"x":133, "y":0, "w":128, "h":87},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":21,"w":128,"h":87},
+		"sourceSize": {"w":128,"h":128}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 262, "h": 346},
+	"scale": "1"
+}
+}
