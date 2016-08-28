@@ -93,8 +93,22 @@
             "type": "map-completion",
             "dir": "egyptian",
             "key": "level1.json"
+          },
+          {
+            "type": "map-completion",
+            "dir": "egyptian",
+            "key": "level3.json"
           }
         ]
+      },
+      {
+        "type": "map",
+        "key": "level3.json",
+        "icon": "icon-egyptian.png",
+        "position": {
+          "x": 3,
+          "y": 3
+        }
       }
     ]
   }
