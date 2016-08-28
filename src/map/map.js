@@ -120,6 +120,7 @@ Game_Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage
   ts.tileHeight     = tsData.tileheight;
   ts.firstGid       = firstGid;
   ts.tileProperties = tsData.tileproperties ? tsData.tileproperties : null;
+  ts.tiles          = tsData.tiles ? tsData.tiles : null;
 
   // Load tileset texture
   if(loadImage) {
@@ -372,9 +373,25 @@ Game_Map.prototype.addTile = function(x, y, uid, flags, data) {
     if(properties) {
       for(var a in properties) {
         var property = properties[a];
+        // Tile Property
         if(a.match(/PROPERTY_([a-zA-Z0-9]+)/i)) {
           tile.assignProperty(RegExp.$1);
         }
+        // Tile Collision
+        if(a.match(/COLLISION_([a-zA-Z0-9]+)/i)) {
+          tile.collisionFunction = Game_Tile["COLLISIONFUNC_" + RegExp.$1.toUpperCase()];
+        }
+      }
+    }
+    // Add extra properties
+    var extraProperties = ts.getTileExtraProperties(uid - ts.firstGid);
+    if(extraProperties) {
+      // Add animation
+      if(extraProperties.animation) {
+        for(var a = 0;a < extraProperties.animation.length;a++) {
+          tile.sprite.addAnimationFrame("idle", ts, extraProperties.animation[a].tileid);
+        }
+        tile.sprite.playAnimation("idle");
       }
     }
     // Remove old tile
@@ -420,6 +437,11 @@ Game_Map.prototype.update = function() {
   for(var a = 0;a < arr.length;a++) {
     var o = arr[a];
     o.update();
+  }
+  // Update tiles
+  for(var a = 0;a < this.tiles.length;a++) {
+    var tile = this.tiles[a];
+    if(tile) tile.update();
   }
   this.world.zOrder();
   this.updateCameraBounds();

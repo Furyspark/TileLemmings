@@ -62,4 +62,5 @@ Sprite_Minimap.prototype.update = function() {
 Sprite_Minimap.prototype.updateTile = function(mapTile, myTile) {
   myTile.playAnimation("ground");
   if(mapTile.hasProperty("STEEL")) myTile.playAnimation("steel");
+  if(mapTile.collisionFunction === Game_Tile.COLLISIONFUNC_LIQUID) myTile.playAnimation("liquid");
 }

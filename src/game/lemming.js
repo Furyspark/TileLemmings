@@ -96,6 +96,7 @@ Game_Lemming.prototype.initTriggers = function() {
   }, this);
   this.sprite.animations["explosion"].onEnd.add(this.remove, this);
   this.sprite.animations["burn"].onEnd.add(this.remove, this);
+  this.sprite.animations["drown"].onEnd.add(this.remove, this);
 }
 
 Game_Lemming.prototype.actionInitEval = function(key) {
@@ -149,13 +150,20 @@ Game_Lemming.prototype.preMove = function() {
     this.checkFallDeath();
     if(!this.dead) this.walk();
   }
-  else if(col === Game_Tile.COLLISION_ENDOFMAP) {
-    this.die(Game_Lemming.DEATH_ENDOFMAP);
-  }
 }
 
 Game_Lemming.prototype.move = function() {
   var defaultAction = true;
+  // Check for special tiles
+  var col = this.map.tileCollision(this.x, this.y, this);
+  if(col === Game_Tile.COLLISION_ENDOFMAP) {
+    this.die(Game_Lemming.DEATH_ENDOFMAP);
+  }
+  else if(col === Game_Tile.COLLISION_LIQUID) {
+    this.disable();
+    this.requestAnimation = "drown";
+    AudioManager.playSound("sndDrown");
+  }
   // Evals
   if(this.action.current === Game_Lemming.ACTION_CLIMBER) {
     defaultAction = false;

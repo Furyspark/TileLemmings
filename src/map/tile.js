@@ -5,12 +5,16 @@ function Game_Tile() {
 Game_Tile.COLLISION_PASSABLE   = 0;
 Game_Tile.COLLISION_IMPASSABLE = 1;
 Game_Tile.COLLISION_ENDOFMAP   = 2;
+Game_Tile.COLLISION_LIQUID     = 3;
 
 Game_Tile.COLLISIONFUNC_AIR = function(realX, realY) {
   return Game_Tile.COLLISION_PASSABLE;
 }
 Game_Tile.COLLISIONFUNC_GROUND = function(realX, realY) {
   return Game_Tile.COLLISION_IMPASSABLE;
+}
+Game_Tile.COLLISIONFUNC_LIQUID = function(realX, realY) {
+  return Game_Tile.COLLISION_LIQUID;
 }
 
 Game_Tile.PROPERTY_STEEL = Math.pow(2, 0);
@@ -49,4 +53,8 @@ Game_Tile.prototype.hasProperty = function(name) {
 
 Game_Tile.prototype.removeProperty = function(name) {
   this.property = this.property & ~(Game_Tile["PROPERTY_" + name.toUpperCase()]);
+}
+
+Game_Tile.prototype.update = function() {
+  this.sprite.update();
 }

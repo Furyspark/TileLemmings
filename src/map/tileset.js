@@ -44,3 +44,8 @@ Game_Tileset.prototype.getTileProperties = function(index) {
   if(this.tileProperties && this.tileProperties[index.toString()]) return this.tileProperties[index.toString()];
   return null;
 }
+
+Game_Tileset.prototype.getTileExtraProperties = function(index) {
+  if(this.tiles && this.tiles[index.toString()]) return this.tiles[index.toString()];
+  return null;
+}
