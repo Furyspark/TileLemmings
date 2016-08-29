@@ -74,6 +74,15 @@
             "key": "level2.json"
           }
         ]
+      },
+      {
+        "type": "map",
+        "key": "level4.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 2,
+          "y": 0
+        }
       }
     ]
   },

@@ -36,3 +36,18 @@ Rect.prototype.overlap = function(rect) {
 Rect.prototype.clone = function() {
   return new Rect(this.x, this.y, this.width, this.height);
 }
+
+Rect.prototype.rotate = function(angle) {
+  var tl = new Point(this.x, this.y);
+  var tr = new Point(this.x + this.width, this.y);
+  var bl = new Point(this.x, this.y + this.height);
+  var br = new Point(this.x + this.width, this.y + this.height);
+  tl.rotate(angle);
+  tr.rotate(angle);
+  bl.rotate(angle);
+  br.rotate(angle);
+  this.x = Math.min(tl.x, tr.x, bl.x, br.x);
+  this.y = Math.min(tl.y, tr.y, bl.y, br.y);
+  this.width = Math.max(tl.x, tr.x, bl.x, br.x) - Math.min(tl.x, tr.x, bl.x, br.x);
+  this.height = Math.max(tl.y, tr.y, bl.y, br.y) - Math.min(tl.y, tr.y, br.y, br.y);
+}

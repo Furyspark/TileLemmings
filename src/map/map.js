@@ -340,10 +340,15 @@ Game_Map.prototype.addProp = function(x, y, key, data) {
   obj.x = x;
   obj.y = y;
   this.objects.push(obj);
-  // Reposition
+  // Rotate
   var src = $dataProps[obj.key];
-  obj.x += (data.width * src.anchor.x);
-  obj.y += (data.height * src.anchor.y);
+  var origin = new Point(data.width * src.anchor.x, data.height * src.anchor.y);
+  var angle = Math.degtorad(data.rotation);
+  origin.rotate(angle);
+  obj.rotation = angle;
+  // Reposition
+  obj.x += origin.x;
+  obj.y += origin.y;
   // Apply Properties
   if(data.properties) {
     obj.applyProperties(data.properties);

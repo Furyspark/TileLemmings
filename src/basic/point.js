@@ -22,3 +22,13 @@ Point.prototype.rotationTo = function(toPos) {
   var radians = Math.atan2(delta.y, delta.x);
   return radians;
 }
+
+Point.prototype.rotate = function(angle) {
+  var x = this.x;
+  var y = this.y;
+  this.set(
+    Math.round((x * Math.cos(angle) - y * Math.sin(angle)) * 100) / 100,
+    Math.round((x * Math.sin(angle) + y * Math.cos(angle)) * 100) / 100
+  );
+  return this;
+}

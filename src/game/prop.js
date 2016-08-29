@@ -5,11 +5,27 @@ function Game_Prop() {
 Game_Prop.prototype = Object.create(Game_Base.prototype);
 Game_Prop.prototype.constructor = Game_Prop;
 
+Object.defineProperties(Game_Prop.prototype, {
+  rotation: {
+    get: function() { return Object.getOwnPropertyDescriptor(Game_Base.prototype, "rotation").get.call(this); },
+    set: function(value) {
+      var old = this._rotation;
+      Object.getOwnPropertyDescriptor(Game_Base.prototype, "rotation").set.call(this, value);
+      this._rotation = value;
+      for(var a in this.offsetPoint) {
+        this.offsetPoint[a].rotate(value - old);
+      }
+    },
+    configurable: true
+  }
+});
+
 Game_Prop.prototype.init = function(key, map) {
   Game_Base.prototype.init.call(this);
   this.key = key;
   this.map = map;
   this.src = null;
+  this.offsetPoint = {};
   this.sprite = new Sprite_Prop();
   this.type = undefined;
   this.applySource();
@@ -39,7 +55,7 @@ Game_Prop.prototype.applySource = function() {
     this.value = 0;
     this.sprite.playAnimation("closed");
     this.alarms.door = new Alarm();
-    this.dropOffset = new Point(this.src.dropOffset.x, this.src.dropOffset.y);
+    this.offsetPoint.drop = new Point(this.src.dropOffset.x, this.src.dropOffset.y);
   }
   // TYPE: Exit
   else if(this.type === "exit") {
@@ -80,7 +96,7 @@ Game_Prop.prototype.update = function() {
     var arr = this.map.getLemmings();
     for(var a = 0;a < arr.length;a++) {
       var lemming = arr[a];
-      if(this.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && lemming.canExit()) {
+      if(this.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && lemming.rotation === this.rotation && lemming.canExit()) {
         // Lemming exit
         if(this.sounds.exit) AudioManager.playSound(this.sounds.exit);
         lemming.exit();
@@ -137,7 +153,8 @@ Game_Prop.prototype._doorStart = function() {
 Game_Prop.prototype._doorAct = function() {
   if(this.value > 0) {
     this.value--;
-    this.map.pool.lemming.spawn(this.x + this.dropOffset.x, this.y + this.dropOffset.y);
+    var lemming = this.map.pool.lemming.spawn(this.x + this.offsetPoint.drop.x, this.y + this.offsetPoint.drop.y);
+    lemming.rotation = this.rotation;
     if(this.value === 0) this.alarms.door.stop();
   }
 }

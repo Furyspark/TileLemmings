@@ -93,8 +93,9 @@ Scene_Game.prototype.update = function() {
   // Lemming control
   this.lemmingSelect = this.getLemmingUnderCursor();
   if(this.lemmingSelect) {
-    var pt = $gameMap.toScreenSpace(this.lemmingSelect.x, this.lemmingSelect.y - 8);
+    var pt = $gameMap.toScreenSpace(this.lemmingSelect.x - (this.lemmingSelect.offsetPoint.down.x * 8), this.lemmingSelect.y - (this.lemmingSelect.offsetPoint.down.y * 8));
     this.cursor.position.set(pt.x, pt.y);
+    this.cursor.scale.set(2 / this.zoom.factor.current);
     this.cursor.playAnimation("over");
     this.cursor.visible = true;
   }
@@ -581,30 +582,30 @@ Scene_Game.prototype.updateActionPreview = function() {
         break;
       case "builder":
         var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x + $gameMap.tileWidth * this.lemmingSelect.dir) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y) >> 4) << 4;
+        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
         spr.visible = true;
         break;
       case "basher":
         var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x + $gameMap.tileWidth * this.lemmingSelect.dir) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y) >> 4) << 4;
+        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
         spr.visible = true;
         break;
       case "miner":
         var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x + $gameMap.tileWidth * this.lemmingSelect.dir) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y) >> 4) << 4;
+        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
         spr.visible = true;
         var spr = this.actionPreview.tiles[1];
-        spr.x = ((this.lemmingSelect.x + $gameMap.tileWidth * this.lemmingSelect.dir) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y + $gameMap.tileHeight) >> 4) << 4;
+        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir) + (this.lemmingSelect.offsetPoint.down.x * 16)) >> 4) << 4;
+        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir) + (this.lemmingSelect.offsetPoint.down.y * 16)) >> 4) << 4;
         spr.visible = true;
         break;
       case "digger":
         var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y + $gameMap.tileHeight) >> 4) << 4;
+        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.down.x * 16)) >> 4) << 4;
+        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.down.y * 16)) >> 4) << 4;
         spr.visible = true;
         break;
     }
