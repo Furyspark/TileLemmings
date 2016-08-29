@@ -27,7 +27,7 @@ Game_Camera.prototype.setPosition = function(position, anchor) {
   this.rect.x = mapPos.x;
   this.rect.y = mapPos.y;
   // Update background
-  this.map.background.refresh();
+  if(this.map.background) this.map.background.refresh();
   // Return data
   var diff = new Point(oldPos.x - this.rect.x, oldPos.y - this.rect.y);
   return diff;

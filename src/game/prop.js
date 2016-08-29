@@ -15,6 +15,9 @@ Object.defineProperties(Game_Prop.prototype, {
       for(var a in this.offsetPoint) {
         this.offsetPoint[a].rotate(value - old);
       }
+      for(var a in this.offsetRect) {
+        this.offsetRect[a].rotate(value - old);
+      }
     },
     configurable: true
   }
@@ -26,6 +29,7 @@ Game_Prop.prototype.init = function(key, map) {
   this.map = map;
   this.src = null;
   this.offsetPoint = {};
+  this.offsetRect = {};
   this.sprite = new Sprite_Prop();
   this.type = undefined;
   this.applySource();
@@ -60,12 +64,12 @@ Game_Prop.prototype.applySource = function() {
   // TYPE: Exit
   else if(this.type === "exit") {
     this.sprite.playAnimation("idle");
-    this.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
+    this.offsetRect.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
   }
   // TYPE: Trap
   else if(this.type === "trap") {
     this.sprite.playAnimation("idle");
-    this.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
+    this.offsetRect.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
     if(this.sprite.hasAnimation("kill")) {
       this.sprite.getAnimation("kill").onEnd.add(function() {
         this.sprite.playAnimation("idle");
@@ -96,7 +100,7 @@ Game_Prop.prototype.update = function() {
     var arr = this.map.getLemmings();
     for(var a = 0;a < arr.length;a++) {
       var lemming = arr[a];
-      if(this.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && lemming.rotation === this.rotation && lemming.canExit()) {
+      if(this.offsetRect.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && (lemming.rotation % (Math.PI * 2)) === (this.rotation % (Math.PI * 2)) && lemming.canExit()) {
         // Lemming exit
         if(this.sounds.exit) AudioManager.playSound(this.sounds.exit);
         lemming.exit();
@@ -108,7 +112,7 @@ Game_Prop.prototype.update = function() {
     var arr = this.map.getLemmings();
     for(var a = 0;a < arr.length;a++) {
       var lemming = arr[a];
-      if(this.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && !lemming.disabled) {
+      if(this.offsetRect.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && !lemming.disabled) {
         // Kill lemming
         if(this.sounds.kill) AudioManager.playSound(this.sounds.kill);
         // Animation
@@ -127,8 +131,8 @@ Game_Prop.prototype.update = function() {
 
 Game_Prop.prototype.flipH = function() {
   this.sprite.scale.x = -this.sprite.scale.x;
-  if(this.hitArea) {
-    this.hitArea.x = -(this.hitArea.x + this.hitArea.width);
+  if(this.offsetRect.hitArea) {
+    this.offsetRect.hitArea.x = -(this.offsetRect.hitArea.x + this.offsetRect.hitArea.width);
   }
 }
 

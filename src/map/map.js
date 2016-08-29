@@ -245,6 +245,15 @@ Game_Map.prototype.createLevel = function() {
     var action = $dataActions[a];
     if(this.data.properties[action.key]) this.actions[a] = { amount: this.data.properties[action.key] };
   }
+  // Set initial camera position
+  if(this.data.properties.initialCameraPos) {
+    if(this.data.properties.initialCameraPos.match(/([0-9]+)[,]([0-9]+)/)) {
+      this.camera.setPosition(new Point(
+        parseInt(RegExp.$1) * this.tileWidth,
+        parseInt(RegExp.$2) * this.tileHeight
+      ), new Point(0.5, 0.5));
+    }
+  }
   // Apply basic map data
   this.width = this.data.width;
   this.height = this.data.height;
