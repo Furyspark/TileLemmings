@@ -10,6 +10,7 @@ AudioManager.playBgm = function(key) {
     this._bgm = { audio: snd, id: 0, channel: "bgm", paused: false };
     this._bgm.id = this._bgm.audio.play();
     this._bgm.audio.volume(Options.data.audio.volume.bgm, this._bgm.id);
+    this._bgm.audio.loop(true, this._bgm.id);
     this._sounds.push(this._bgm);
     return this._bgm;
   }

@@ -423,7 +423,7 @@ Game_Map.prototype.getTilePosition = function(index) {
 }
 
 Game_Map.prototype.getTile = function(realX, realY) {
-  if(realX < 0 || realY >= this.realWidth || realY < 0 || realY >= this.realHeight) return null;
+  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return null;
   return this.tiles[this.getTileIndex(realX >> 4, realY >> 4)];
 }
 

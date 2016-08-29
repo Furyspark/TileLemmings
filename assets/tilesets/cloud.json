@@ -1,0 +1,11 @@
+{ "columns":10,
+ "image":"..\/graphics\/tilesets\/cloud.png",
+ "imageheight":120,
+ "imagewidth":200,
+ "margin":2,
+ "name":"cloud",
+ "spacing":4,
+ "tilecount":60,
+ "tileheight":16,
+ "tilewidth":16
+}

@@ -35,7 +35,7 @@ Sprite_Minimap.prototype.update = function() {
 
       // Remove tile
       if(mapTile === null && myTile !== null) {
-        var spr = this.tiles.splice(a, 1, 0)[0];
+        var spr = this.tiles.splice(a, 1, null)[0];
         this.removeChild(spr);
       }
       // Add tile

@@ -63,9 +63,6 @@ Game_Lemming.prototype.init = function() {
   this.alarms.action.onExpire.add(this._actionTimer, this);
   this.alarms.action.baseTime = 90;
   this.action.builder = { value: 0 };
-  this.sprite.animations["build-end"].onEnd.add(this._buildEnd, this);
-
-  this.sprite.animations["climb-end"].onEnd.add(this._climbEndAnim, this);
   this.initTriggers();
 }
 
@@ -77,7 +74,6 @@ Game_Lemming.prototype.spawn = function(x, y) {
   this.onGround             = false;
   this.stopAction();
   this.fallDistance         = 0;
-  this.onGround             = false;
   this.dead                 = false;
   this.interactive          = true;
   this.physicsEnabled       = true;
@@ -97,6 +93,8 @@ Game_Lemming.prototype.initTriggers = function() {
   this.sprite.animations["explosion"].onEnd.add(this.remove, this);
   this.sprite.animations["burn"].onEnd.add(this.remove, this);
   this.sprite.animations["drown"].onEnd.add(this.remove, this);
+  this.sprite.animations["build-end"].onEnd.add(this._buildEnd, this);
+  this.sprite.animations["climb-end"].onEnd.add(this._climbEndAnim, this);
 }
 
 Game_Lemming.prototype.actionInitEval = function(key) {
@@ -138,17 +136,23 @@ Game_Lemming.prototype.update = function() {
 }
 
 Game_Lemming.prototype.preMove = function() {
-  // Check for ground
-  var col = this.map.tileCollision(this.x, this.y + 1, this);
-  if(col === Game_Tile.COLLISION_PASSABLE) {
-    this.onGround = false;
-    if(!this.dead) this.fall();
+  var defaultAction = true;
+  if(this.action.current === Game_Lemming.ACTION_CLIMBER) {
+    defaultAction = false;
   }
-  else if(col === Game_Tile.COLLISION_IMPASSABLE) {
-    if(!this.onGround) this.y = (((this.y + this.map.tileHeight) >> 4) << 4) - 1;
-    this.onGround = true;
-    this.checkFallDeath();
-    if(!this.dead) this.walk();
+  if(defaultAction) {
+    // Check for ground
+    var col = this.map.tileCollision(this.x, this.y + 1, this);
+    if(col === Game_Tile.COLLISION_PASSABLE) {
+      this.onGround = false;
+      if(!this.dead) this.fall();
+    }
+    else if(col === Game_Tile.COLLISION_IMPASSABLE) {
+      if(!this.onGround) this.y = (((this.y + this.map.tileHeight) >> 4) << 4) - 1;
+      this.onGround = true;
+      this.checkFallDeath();
+      if(!this.dead) this.walk();
+    }
   }
 }
 
@@ -167,13 +171,16 @@ Game_Lemming.prototype.move = function() {
   // Evals
   if(this.action.current === Game_Lemming.ACTION_CLIMBER) {
     defaultAction = false;
-    if(this.map.tileCollision(this.x, this.y - 8, this) !== Game_Tile.COLLISION_IMPASSABLE) {
+    // Check for ceiling
+    if(this.map.tileCollision(this.x, this.y - 1 - this.map.tileHeight, this) === Game_Tile.COLLISION_IMPASSABLE) {
+      this.fall();
+      this.changeDirection();
+      defaultAction = true;
+    }
+    // Check for ledge
+    else if(this.map.tileCollision(this.x + (1 * this.dir), this.y - 8, this) !== Game_Tile.COLLISION_IMPASSABLE) {
       this.velocity.y = 0;
       this.requestAnimation = 'climb-end';
-    }
-    else if(this.map.tileCollision(this.x - (1 * this.dir), this.y + this.velocity.y, this) === Game_Tile.COLLISION_IMPASSABLE) {
-      this.action.current = Game_Lemming.ACTION_FALL;
-      this.requestAnimation = 'fall';
     }
     else {
       this.y += this.velocity.y;
@@ -206,11 +213,13 @@ Game_Lemming.prototype.postMove = function() {
     else {
       var defaultAction = true;
       // Evals
-      if(this.hasProperty("CLIMBER")) {
+      if(this.hasProperty("CLIMBER") && this.onGround) {
         defaultAction = false;
         if(this.action.current !== Game_Lemming.ACTION_CLIMBER) {
           this.action.current = Game_Lemming.ACTION_CLIMBER;
           this.requestAnimation = "climb";
+          if(this.dir === Game_Lemming.DIR_RIGHT) this.x = (this.x >> 4 << 4) - 1;
+          else if(this.dir === Game_Lemming.DIR_LEFT) this.x = ((this.x + this.map.tileWidth) >> 4 << 4);
           this.velocity.y = -0.25;
         }
       }
@@ -416,6 +425,7 @@ Game_Lemming.prototype.stopAction = function() {
 }
 
 Game_Lemming.prototype._climbEndAnim = function() {
+  this.x = this.x + (1 * this.dir);
   this.y -= 8;
   this.action.current = Game_Lemming.ACTION_WALK;
   this.requestAnimation = "walk";
