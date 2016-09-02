@@ -82,7 +82,110 @@
         "position": {
           "x": 2,
           "y": 0
-        }
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level5.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level5.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 1,
+          "y": 1
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level3.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level6.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 3,
+          "y": 1
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level2.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level7.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 4,
+          "y": 0
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level6.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level8.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 5,
+          "y": 0
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level7.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level9.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 5,
+          "y": 1
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level8.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level10.json",
+        "icon": "icon-cave.png",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cave",
+            "key": "level5.json"
+          }
+        ]
       }
     ]
   },

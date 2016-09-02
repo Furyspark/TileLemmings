@@ -559,7 +559,8 @@ Game_Lemming.prototype._buildEnd = function() {
 
 Game_Lemming.prototype._bashUpdate = function() {
   var success = this.dig([new Point(this.offsetPoint.right.x * 16 * this.dir, this.offsetPoint.right.y * 16 * this.dir)],
-    new Point(this.offsetPoint.right.x * 16 * this.dir, this.offsetPoint.right.y * 16 * this.dir));
+    new Point(this.offsetPoint.right.x * 16 * this.dir, this.offsetPoint.right.y * 16 * this.dir),
+    [this.dir === Game_Lemming.DIR_RIGHT ? "right" : "left"]);
   if(success !== Game_Lemming.DIGSUCCESS_NORMAL) this.stopAction();
 }
 
@@ -567,16 +568,17 @@ Game_Lemming.prototype._mineUpdate = function() {
   var success = this.dig([
     new Point(this.offsetPoint.right.x * 16 * this.dir, this.offsetPoint.right.y * 16 * this.dir),
     new Point((this.offsetPoint.right.x * 16 * this.dir) + (this.offsetPoint.down.x * 16), (this.offsetPoint.right.y * 16 * this.dir) + (this.offsetPoint.down.y * 16))
-  ], new Point((this.offsetPoint.right.x * 16 * this.dir) + (this.offsetPoint.down.x * 16), (this.offsetPoint.right.y * 16 * this.dir) + (this.offsetPoint.down.y * 16)));
+  ], new Point((this.offsetPoint.right.x * 16 * this.dir) + (this.offsetPoint.down.x * 16), (this.offsetPoint.right.y * 16 * this.dir) + (this.offsetPoint.down.y * 16)),
+  ["down", this.dir === Game_Lemming.DIR_RIGHT ? "right" : "left"]);
   if(success === Game_Lemming.DIGSUCCESS_STEEL) this.stopAction();
 }
 
 Game_Lemming.prototype._digUpdate = function() {
-  var success = this.dig([new Point(this.offsetPoint.down.x * 16, this.offsetPoint.down.y * 16)], new Point(this.offsetPoint.down.x * 16, this.offsetPoint.down.y * 16));
+  var success = this.dig([new Point(this.offsetPoint.down.x * 16, this.offsetPoint.down.y * 16)], new Point(this.offsetPoint.down.x * 16, this.offsetPoint.down.y * 16), ["down"]);
   if(success !== Game_Lemming.DIGSUCCESS_NORMAL) this.stopAction();
 }
 
-Game_Lemming.prototype.dig = function(targetPoints, adjustMovement) {
+Game_Lemming.prototype.dig = function(targetPoints, adjustMovement, dirs) {
   if(!adjustMovement) adjustMovement = new Point(0, 0);
   var success = Game_Lemming.DIGSUCCESS_NORMAL;
   var airTiles = 0;
@@ -601,7 +603,12 @@ Game_Lemming.prototype.dig = function(targetPoints, adjustMovement) {
     var col     = this.map.tileCollision(this.x + target.x, this.y + target.y);
     // Hit steel
     if(tile && col === Game_Tile.COLLISION_IMPASSABLE) {
-      if(tile.hasProperty("STEEL")) {
+      if(tile.hasProperty("STEEL") ||
+      (dirs.indexOf("right") !== -1 && tile.hasProperty("DIG_NORIGHT")) ||
+      (dirs.indexOf("left") !== -1 && tile.hasProperty("DIG_NOLEFT")) ||
+      (dirs.indexOf("down") !== -1 && tile.hasProperty("DIG_NODOWN")) ||
+      (dirs.indexOf("up") !== -1 && tile.hasProperty("DIG_NOUP"))
+    ) {
         success = Game_Lemming.DIGSUCCESS_STEEL;
         AudioManager.playSound("sndChink");
       }

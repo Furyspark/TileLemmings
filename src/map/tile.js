@@ -17,7 +17,11 @@ Game_Tile.COLLISIONFUNC_LIQUID = function(realX, realY) {
   return Game_Tile.COLLISION_LIQUID;
 }
 
-Game_Tile.PROPERTY_STEEL = Math.pow(2, 0);
+Game_Tile.PROPERTY_STEEL       = Math.pow(2, 0);
+Game_Tile.PROPERTY_DIG_NOLEFT  = Math.pow(2, 1);
+Game_Tile.PROPERTY_DIG_NORIGHT = Math.pow(2, 2);
+Game_Tile.PROPERTY_DIG_NODOWN  = Math.pow(2, 3);
+Game_Tile.PROPERTY_DIG_NOUP    = Math.pow(2, 4);
 
 Object.defineProperties(Game_Tile.prototype, {
   x: {

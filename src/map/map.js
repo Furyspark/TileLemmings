@@ -35,7 +35,7 @@ Game_Map.prototype.init = function(src, scene) {
   this.name               = "No Name";
   this.pool               = {};
   this.actions            = {};
-  this.maxFallDistance    = 8 * 16;
+  this.maxFallDistance    = 10 * 16;
   this.trackVictoryDefeat = true;
   this.loaded             = false;
 
@@ -245,6 +245,13 @@ Game_Map.prototype.createLevel = function() {
     var action = $dataActions[a];
     if(this.data.properties[action.key]) this.actions[a] = { amount: this.data.properties[action.key] };
   }
+  // Apply basic map data
+  this.width = this.data.width;
+  this.height = this.data.height;
+  this.tileWidth = this.data.tilewidth;
+  this.tileHeight = this.data.tileheight;
+  this.updateCameraBounds();
+  this.addBackground();
   // Set initial camera position
   if(this.data.properties.initialCameraPos) {
     if(this.data.properties.initialCameraPos.match(/([0-9]+)[,]([0-9]+)/)) {
@@ -254,27 +261,27 @@ Game_Map.prototype.createLevel = function() {
       ), new Point(0.5, 0.5));
     }
   }
-  // Apply basic map data
-  this.width = this.data.width;
-  this.height = this.data.height;
-  this.tileWidth = this.data.tilewidth;
-  this.tileHeight = this.data.tileheight;
-  this.addBackground();
   // Resize
   while(this.tiles.length < this.width * this.height) {
     this.tiles.push(null);
   }
-  // Parse layers
-  for(var a = 0;a < this.data.layers.length;a++) {
-    var layer = this.data.layers[a];
-    // Tile Layer
-    if(layer.type === "tilelayer") {
-      this.parseTileLayer(layer);
-    }
-    // Object Layer
-    else if(layer.type === "objectgroup") {
-      this.parseObjectLayer(layer);
-    }
+  // Parse Tile layer(s)
+  var arr = this.data.layers.filter(function(layer) { return (layer.name.toUpperCase() === "TILES"); });
+  for(var a = 0;a < arr.length;a++) {
+    var layer = arr[a];
+    this.parseTileLayer(layer, "tiles");
+  }
+  // Parse Tile Modifier layer(s)
+  var arr = this.data.layers.filter(function(layer) { return (layer.name.match(/modifier[s]?[0-9]?/i)); });
+  for(var a = 0;a < arr.length;a++) {
+    var layer = arr[a];
+    this.parseTileLayer(layer, "modifiers");
+  }
+  // Parse Object layer(s)
+  var arr = this.data.layers.filter(function(layer) { return (layer.name.match(/object[s]?/i)); });
+  for(var a = 0;a < arr.length;a++) {
+    var layer = arr[a];
+    this.parseObjectLayer(layer);
   }
   // Create lemming pool
   this.pool.lemming = new Pool("Game_Lemming", this, [], this.totalLemmings);
@@ -285,12 +292,13 @@ Game_Map.prototype.createLevel = function() {
   this.onCreate.dispatch();
 }
 
-Game_Map.prototype.parseTileLayer = function(layer) {
+Game_Map.prototype.parseTileLayer = function(layer, type) {
   for(var a = 0;a < layer.data.length;a++) {
     var uid = layer.data[a];
     if(uid > 0) {
       var pos = this.getTilePosition(a);
-      this.addTile(pos.x, pos.y, uid, 0);
+      if(type === "tiles") this.addTile(pos.x, pos.y, uid, 0);
+      else if(type === "modifiers") this.addTileModifier(pos.x, pos.y, uid);
     }
   }
 }
@@ -321,9 +329,14 @@ Game_Map.prototype.parseObjectLayer = function(layer) {
 }
 
 Game_Map.prototype.getObjectProperties = function(objectData) {
-  var ts = this.getTileset(objectData.gid);
+  var gid = objectData.gid & ~(
+    Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
+    Game_Map.TILE_FLIPPED_VERTICALLY_FLAG |
+    Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG
+  );
+  var ts = this.getTileset(gid);
   if(ts) {
-    var props = ts.getTileProperties(objectData.gid - ts.firstGid);
+    var props = ts.getTileProperties(gid - ts.firstGid);
     if(props) return props;
   }
   return null;
@@ -411,6 +424,32 @@ Game_Map.prototype.addTile = function(x, y, uid, flags, data) {
     // Remove old tile
     var oldTile = this.tiles.splice(index, 1, tile)[0];
     if(oldTile instanceof Game_Tile) oldTile.sprite.destroy(true);
+  }
+}
+
+Game_Map.prototype.addTileModifier = function(x, y, uid) {
+  var ts = this.getTileset(uid);
+  if(ts) {
+    var modProperties = ts.getTileProperties(uid - ts.firstGid);
+    var extraProperties = ts.getTileExtraProperties(uid - ts.firstGid);
+    var index = this.getTileIndex(x, y);
+    var tile = this.tiles[index];
+    if(tile) {
+      // Add modifier property
+      if(modProperties.tile_property) tile.assignProperty(modProperties.tile_property);
+      // Add modifier sprite
+      var spr = new Sprite_Tile();
+      spr.z = -50;
+      if(extraProperties.animation) {
+        for(var a = 0;a < extraProperties.animation.length;a++) {
+          var animSrc = extraProperties.animation[a];
+          spr.addAnimationFrame("idle", ts, animSrc.tileid);
+        }
+      }
+      else spr.addAnimationFrame("idle", ts, uid - ts.firstGid);
+      spr.playAnimation("idle");
+      tile.sprite.addChild(spr);
+    }
   }
 }
 

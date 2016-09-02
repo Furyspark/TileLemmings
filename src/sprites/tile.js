@@ -16,3 +16,11 @@ Sprite_Tile.prototype.addAnimationFrame = function(animKey, tileset, index) {
   var tex = tileset.getTileTexture(index);
   anim.frames.push(tex);
 }
+
+Sprite_Tile.prototype.update = function() {
+  Sprite_Base.prototype.update.call(this);
+  var arr = this.children.slice();
+  for(var a = 0;a < arr.length;a++) {
+    if(arr[a].update) arr[a].update();
+  }
+}
