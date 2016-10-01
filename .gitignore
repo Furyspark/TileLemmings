@@ -4,4 +4,5 @@ node_modules
 .atom-build.json
 *.bak
 lib/game.js
+config.json
 *.sublime-*
