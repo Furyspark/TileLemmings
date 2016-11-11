@@ -611,7 +611,7 @@
         "exit": "assets/audio/sfx/sndYippie.ogg"
       },
       "textureAtlases": {
-        "base": "assets/graphics/sprite-atlases/props-circus/sprites.json"
+        "base": "assets/graphics/sprite-atlases/props-space/sprites.json"
       }
     },
     "animations": {
