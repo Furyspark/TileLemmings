@@ -28,6 +28,15 @@
           "x": 2,
           "y": 2
         }
+      },
+      {
+        "type": "world",
+        "key": "bonus",
+        "icon": "icon-bonus.png",
+        "position": {
+          "x": 5,
+          "y": 2
+        }
       }
     ]
   },
@@ -256,6 +265,20 @@
         "type": "map",
         "key": "level1.json",
         "icon": "icon-sky.png",
+        "position": {
+          "x": 3,
+          "y": 2
+        }
+      }
+    ]
+  },
+  "bonus": {
+    "previous": "root",
+    "contents": [
+      {
+        "type": "map",
+        "key": "level3.json",
+        "icon": "icon-bonus.png",
         "position": {
           "x": 3,
           "y": 2

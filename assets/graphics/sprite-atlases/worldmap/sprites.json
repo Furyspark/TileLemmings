@@ -28,22 +28,29 @@
 		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
 		"sourceSize": {"w":132,"h":132}
 	},
+	"icon-bonus.png": {
+		"frame": {"x":355, "y":336, "w":84, "h":112},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":22,"y":8,"w":84,"h":112},
+		"sourceSize": {"w":128,"h":128}
+	},
 	"icon-cave.png": {
-		"frame": {"x":129, "y":331, "w":128, "h":87},
+		"frame": {"x":133, "y":129, "w":128, "h":87},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":21,"w":128,"h":87},
 		"sourceSize": {"w":128,"h":128}
 	},
 	"icon-classic.png": {
-		"frame": {"x":133, "y":129, "w":128, "h":118},
+		"frame": {"x":258, "y":217, "w":128, "h":118},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":5,"w":128,"h":118},
 		"sourceSize": {"w":128,"h":128}
 	},
 	"icon-egyptian.png": {
-		"frame": {"x":258, "y":248, "w":128, "h":80},
+		"frame": {"x":129, "y":331, "w":128, "h":80},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":24,"w":128,"h":80},
@@ -71,14 +78,14 @@
 		"sourceSize": {"w":128,"h":128}
 	},
 	"world-completion.png": {
-		"frame": {"x":258, "y":329, "w":96, "h":90},
+		"frame": {"x":258, "y":336, "w":96, "h":90},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":6,"w":96,"h":90},
 		"sourceSize": {"w":96,"h":96}
 	},
 	"world-locked.png": {
-		"frame": {"x":262, "y":129, "w":66, "h":94},
+		"frame": {"x":387, "y":129, "w":66, "h":94},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":1,"y":1,"w":66,"h":94},
@@ -88,7 +95,7 @@
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 391, "h": 426},
+	"size": {"w": 454, "h": 449},
 	"scale": "1"
 }
 }
