@@ -92,10 +92,10 @@ Core.render = function() {
   }
   this.lastTime = nowTime;
   // Set new timeout
-  setTimeout(function() {
-    // requestAnimationFrame(this.render.bind(this));
-    this.render();
-  }.bind(this), Math.max(1, 1000 / this.frameRate));
+  // setTimeout(function() {
+    requestAnimationFrame(this.render.bind(this));
+  //   this.render();
+  // }.bind(this), Math.max(1, 1000 / this.frameRate));
   // Update scene
   SceneManager.update();
   Input._refreshButtonStates();
