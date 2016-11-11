@@ -32,7 +32,10 @@ Core.start = function() {
 }
 
 Core.initMembers = function() {
+  this.lastTime = new Date;
+  this.fps = 0;
   this.frameRate = 60;
+  this.debugMode = true;
   // Full screen
   this.isFullscreen = false;
   var func = function(e) {
@@ -68,8 +71,11 @@ Core.initExternalLibs = function() {
 }
 
 Core.initPixi = function() {
-  // this.renderer = new PIXI.CanvasRenderer(this.resolution.x, this.resolution.y);
-  this.renderer = new PIXI.WebGLRenderer(this.resolution.x, this.resolution.y);
+  if(PIXI.utils.isWebGLSupported()) {
+    this.renderer = new PIXI.WebGLRenderer(this.resolution.x, this.resolution.y);
+  } else {
+    this.renderer = new PIXI.CanvasRenderer(this.resolution.x, this.resolution.y);
+  }
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
   document.body.appendChild(this.renderer.view);
   if(this.usingElectron) {
@@ -79,9 +85,18 @@ Core.initPixi = function() {
 }
 
 Core.render = function() {
+  // Update FPS
+  var nowTime = new Date;
+  if(nowTime.getSeconds() !== this.lastTime.getSeconds()) {
+    this.fps = Math.floor(1000 / (nowTime - this.lastTime));
+  }
+  this.lastTime = nowTime;
+  // Set new timeout
   setTimeout(function() {
-    requestAnimationFrame(this.render.bind(this));
-  }.bind(this), Math.max(1, Math.floor(1000 / this.frameRate)));
+    // requestAnimationFrame(this.render.bind(this));
+    this.render();
+  }.bind(this), Math.max(1, 1000 / this.frameRate));
+  // Update scene
   SceneManager.update();
   Input._refreshButtonStates();
   SceneManager.render();

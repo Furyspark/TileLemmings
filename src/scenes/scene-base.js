@@ -9,9 +9,15 @@ Scene_Base.prototype.init = function() {
   this.stage = new PIXI.Container();
   this.initFadeScreen();
   this.active = false;
+  if(Core.debugMode) {
+    this.startDebug();
+  }
 }
 
 Scene_Base.prototype.update = function() {
+  if(Core.debugMode) {
+    this.debug.fpsCounter.text = Core.fps.toString();
+  }
 }
 
 Scene_Base.prototype.render = function() {
@@ -19,6 +25,13 @@ Scene_Base.prototype.render = function() {
     return b.z - a.z;
   });
   Core.renderer.render(this.stage);
+}
+
+Scene_Base.prototype.startDebug = function() {
+  this.debug = {};
+  this.debug.fpsCounter = new Text(Core.fps.toString());
+  this.debug.fpsCounter.position.set(8, 8);
+  this.stage.addChild(this.debug.fpsCounter);
 }
 
 Scene_Base.prototype.create = function() {
