@@ -21,9 +21,14 @@ UI_Button.prototype.init = function(x, y, key) {
 }
 
 UI_Button.prototype.click = function() {
-  this.onClick.dispatch();
+  // this.onClick.dispatch();
+
   var d = new Date();
   this.lastClickTime = d.getTime();
+}
+
+UI_Button.prototype.unclick = function() {
+  this.onClick.dispatch();
 }
 
 UI_Button.prototype.refresh = function() {

@@ -29,10 +29,6 @@ Object.defineProperties(UI_Base.prototype, {
   }
 });
 
-UI_Base.prototype.click = function() {
-  if(this.enabled && this.onClick) this.onClick.dispatch();
-}
-
 UI_Base.prototype.init = function(x, y, key) {
   this.position = new Point();
   this.sprite = new Sprite_UI();
@@ -43,6 +39,14 @@ UI_Base.prototype.init = function(x, y, key) {
   this.key = key;
   this.z = 0;
 }
+
+UI_Base.prototype.click = function() {
+  if(this.enabled && this.onClick) this.onClick.dispatch();
+}
+
+UI_Base.prototype.unclick = function() {}
+
+UI_Base.prototype.release = function() {}
 
 UI_Base.prototype.over = function(x, y) {
   var r = this.rect;

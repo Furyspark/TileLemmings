@@ -67,11 +67,13 @@ Scene_MenuBase.prototype.createCommands = function() {}
 Scene_MenuBase.prototype.addListeners = function() {
   Scene_Base.prototype.addListeners.call(this);
   Input.mouse.button.LEFT.onPress.add(this._onMouseLeftDown, this);
+  Input.mouse.button.LEFT.onRelease.add(this._onMouseLeftUp, this);
 }
 
 Scene_MenuBase.prototype.removeListeners = function() {
   Scene_Base.prototype.removeListeners.call(this);
   Input.mouse.button.LEFT.onPress.remove(this._onMouseLeftDown, this);
+  Input.mouse.button.LEFT.onRelease.remove(this._onMouseLeftUp, this);
 }
 
 Scene_MenuBase.prototype._onMouseLeftDown = function() {
@@ -88,6 +90,23 @@ Scene_MenuBase.prototype._onMouseLeftDown = function() {
     }
   }
   return returnElem;
+}
+
+Scene_MenuBase.prototype._onMouseLeftUp = function() {
+  if(this.active) {
+    this.ui.forEach(function(obj) {
+      obj.release();
+    });
+
+    this.applyUIZOrdering();
+    for(var a = 0;a < this.ui.length;a++) {
+      var elem = this.ui[a];
+      if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
+        if(elem.unclick) elem.unclick();
+        break;
+      }
+    }
+  }
 }
 
 Scene_MenuBase.prototype.createBackButton = function() {
