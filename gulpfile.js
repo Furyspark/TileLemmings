@@ -33,6 +33,8 @@ var compile = {
       "src/managers/savemanager.js",
       "src/managers/options.js",
 
+      "src/filters/filter-colorreplace.js",
+
       "src/sprites/base.js",
       "src/sprites/lemming.js",
       "src/sprites/tile.js",

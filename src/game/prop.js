@@ -159,6 +159,16 @@ Game_Prop.prototype._doorAct = function() {
     this.value--;
     var lemming = this.map.pool.lemming.spawn(this.x + this.offsetPoint.drop.x, this.y + this.offsetPoint.drop.y);
     lemming.rotation = this.rotation;
+    // Lemming colors
+    var colors = this.src.lemmingColor;
+    if(colors) {
+      lemming.setHairColor(eval("0x" + colors.hair[0]), eval("0x" + colors.hair[1]));
+      lemming.setBodyColor(eval("0x" + colors.body[0]), eval("0x" + colors.body[1]));
+    } else {
+      lemming.setHairColor_Default();
+      lemming.setBodyColor_Default();
+    }
+    // Stop spawning eventually
     if(this.value === 0) this.alarms.door.stop();
   }
 }

@@ -50,6 +50,12 @@ Game_Lemming.DIGSUCCESS_AIR    = 0;
 Game_Lemming.DIGSUCCESS_NORMAL = 1;
 Game_Lemming.DIGSUCCESS_STEEL  = 2;
 
+Game_Lemming.COLOR_HAIR1 = 0x00b000;
+Game_Lemming.COLOR_HAIR2 = 0x057000;
+Game_Lemming.COLOR_BODY1 = 0x5f60ff;
+Game_Lemming.COLOR_BODY2 = 0x2025ff;
+
+
 Game_Lemming.prototype.init = function() {
   Game_Base.prototype.init.call(this);
   this.sprite           = new Sprite_Lemming();
@@ -99,6 +105,7 @@ Game_Lemming.prototype.init = function() {
   this.alarms.action.baseTime = 90;
   this.action.builder = { value: 0 };
   this.initTriggers();
+  this.initFilters();
 }
 
 Game_Lemming.prototype.spawn = function(x, y) {
@@ -133,6 +140,64 @@ Game_Lemming.prototype.initTriggers = function() {
   this.sprite.animations["climb-end"].onEnd.add(this._climbEndAnim, this);
 }
 
+Game_Lemming.prototype.initFilters = function() {
+  this.sprite.filters = [];
+  this.filters = {
+    bodyColor: [],
+    hairColor: []
+  };
+}
+
+Game_Lemming.prototype.addFilter = function(filter) {
+  var arr = this.sprite.filters.slice();
+  arr.push(filter);
+  this.sprite.filters = arr;
+}
+
+Game_Lemming.prototype.setHairColor_Default = function() {
+  var arr = this.sprite.filters.slice();
+  while(this.filters.hairColor.length > 0) {
+    var filter = this.filters.hairColor.pop();
+    var index = arr.indexOf(filter);
+    if(index !== -1) arr.splice(index, 1);
+  }
+  this.sprite.filters = arr;
+}
+
+Game_Lemming.prototype.setHairColor = function(c1, c2) {
+  this.setHairColor_Default();
+  // Color 1
+  var filter = new Filter_ColorReplace(Game_Lemming.COLOR_HAIR1, c1);
+  this.filters.hairColor.push(filter);
+  this.addFilter(filter);
+  // Color 2
+  var filter = new Filter_ColorReplace(Game_Lemming.COLOR_HAIR2, c2);
+  this.filters.hairColor.push(filter);
+  this.addFilter(filter);
+}
+
+Game_Lemming.prototype.setBodyColor_Default = function() {
+  var arr = this.sprite.filters.slice();
+  while(this.filters.bodyColor.length > 0) {
+    var filter = this.filters.bodyColor.pop();
+    var index = arr.indexOf(filter);
+    if(index !== -1) arr.splice(index, 1);
+  }
+  this.sprite.filters = arr;
+}
+
+Game_Lemming.prototype.setBodyColor = function(c1, c2) {
+  this.setBodyColor_Default();
+  // Color 1
+  var filter = new Filter_ColorReplace(Game_Lemming.COLOR_BODY1, c1);
+  this.filters.bodyColor.push(filter);
+  this.addFilter(filter);
+  // Color 2
+  var filter = new Filter_ColorReplace(Game_Lemming.COLOR_BODY2, c2);
+  this.filters.bodyColor.push(filter);
+  this.addFilter(filter);
+}
+
 Game_Lemming.prototype.actionInitEval = function(key) {
   for(var a in $dataActions) {
     var action = $dataActions[a];
@@ -160,6 +225,8 @@ Game_Lemming.prototype.changeDirection = function() {
 
 Game_Lemming.prototype.update = function() {
   Game_Base.prototype.update.call(this);
+  // this.shaderCount += 0.01;
+  // this.shader.uniforms.time = this.shaderCount;
   // Do physics
   if(this.physicsEnabled) {
     if(!this.dead) this.preMove();

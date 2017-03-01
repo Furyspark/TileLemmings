@@ -34,6 +34,16 @@
       "open": [
         "door0.png"
       ]
+    },
+    "lemmingColor": {
+      "hair": [
+        "5E5E5E",
+        "1A1A1A"
+      ],
+      "body": [
+        "F7941D",
+        "AC6714"
+      ]
     }
   },
   "doorCircus": {
@@ -69,6 +79,16 @@
       ],
       "open": [
         "door8.png"
+      ]
+    },
+    "lemmingColor": {
+      "hair": [
+        "DD2626",
+        "9A1A1A"
+      ],
+      "body": [
+        "7BFF14",
+        "56B20E"
       ]
     }
   },
@@ -179,6 +199,16 @@
       ],
       "open": [
         "door8.png"
+      ]
+    },
+    "lemmingColor": {
+      "hair": [
+        "5E5E5E",
+        "1A1A1A"
+      ],
+      "body": [
+        "1F6FFF",
+        "154DB2"
       ]
     }
   },
