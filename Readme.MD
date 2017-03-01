@@ -12,3 +12,5 @@ P or Space Bar: Toggle pause
 F: Toggle fast forward
 
 G: Toggle grid
+
+WASD or Right Mouse button and drag: Scroll camera
