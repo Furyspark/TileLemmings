@@ -46,6 +46,10 @@ Core.initMembers = function() {
   else if(document.onmozfullscreenchange !== undefined) document.addEventListener("mozfullscreenchange", func.bind(this));
   // Resolution
   this.resolution = new Point(1280, 720);
+  this.aspectRatio = this.resolution.x / this.resolution.y;
+  // View
+  this.rendererLeft = 0;
+  this.rendererTop = 0;
 }
 
 Core.initElectron = function() {
@@ -113,8 +117,24 @@ Core.startDataObjects = function() {
 }
 
 Core.fitToWindow = function() {
-  Core.renderer.view.style.width = window.innerWidth.toString() + "px";
-  Core.renderer.view.style.height = window.innerHeight.toString() + "px";
+  // Core.renderer.view.style.width = window.innerWidth.toString() + "px";
+  // Core.renderer.view.style.height = window.innerHeight.toString() + "px";
+  var ww = window.innerWidth;
+  var wh = window.innerHeight;
+  var nw = ww;
+  var nh = wh;
+  if(ww / wh >= Core.aspectRatio) {
+    nw = Math.floor(nh * Core.aspectRatio);
+  } else {
+    nh = Math.floor(nw / Core.aspectRatio);
+  }
+  Core.renderer.view.style.position = "absolute";
+  Core.renderer.view.style.width = nw.toString() + "px";
+  Core.renderer.view.style.height = nh.toString() + "px";
+  Core.rendererLeft = Math.floor(ww / 2 - nw / 2);
+  Core.rendererTop = Math.floor(wh / 2 - nh / 2);
+  Core.renderer.view.style.left = Core.rendererLeft.toString() + "px";
+  Core.renderer.view.style.top = Core.rendererTop.toString() + "px";
 }
 
 Core.resizeWindow = function(w, h) {
