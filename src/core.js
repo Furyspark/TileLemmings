@@ -117,8 +117,6 @@ Core.startDataObjects = function() {
 }
 
 Core.fitToWindow = function() {
-  // Core.renderer.view.style.width = window.innerWidth.toString() + "px";
-  // Core.renderer.view.style.height = window.innerHeight.toString() + "px";
   var ww = window.innerWidth;
   var wh = window.innerHeight;
   var nw = ww;
