@@ -17,7 +17,7 @@
          "name":"objects",
          "objects":[
                 {
-                 "gid":139,
+                 "gid":149,
                  "height":32,
                  "id":1,
                  "name":"",
@@ -39,7 +39,7 @@
                  "y":272
                 }, 
                 {
-                 "gid":139,
+                 "gid":149,
                  "height":32,
                  "id":2,
                  "name":"",
@@ -61,7 +61,7 @@
                  "y":240
                 }, 
                 {
-                 "gid":156,
+                 "gid":166,
                  "height":32,
                  "id":3,
                  "name":"",
@@ -73,7 +73,7 @@
                  "y":576
                 }, 
                 {
-                 "gid":149,
+                 "gid":159,
                  "height":64,
                  "id":4,
                  "name":"",
@@ -133,15 +133,15 @@
          "source":"..\/..\/tilesets\/liquids.json"
         }, 
         {
-         "firstgid":135,
+         "firstgid":145,
          "source":"..\/..\/tilesets\/objects\/doors.json"
         }, 
         {
-         "firstgid":144,
+         "firstgid":154,
          "source":"..\/..\/tilesets\/objects\/exits.json"
         }, 
         {
-         "firstgid":156,
+         "firstgid":166,
          "source":"..\/..\/tilesets\/objects\/traps.json"
         }],
  "tilewidth":16,

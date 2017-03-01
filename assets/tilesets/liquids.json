@@ -1,11 +1,11 @@
 { "columns":10,
  "image":"..\/graphics\/tilesets\/generic\/liquids.png",
- "imageheight":40,
+ "imageheight":60,
  "imagewidth":200,
  "margin":2,
  "name":"liquids",
  "spacing":4,
- "tilecount":20,
+ "tilecount":30,
  "tileheight":16,
  "tileproperties":
     {
@@ -117,6 +117,30 @@
                 {
                  "duration":100,
                  "tileid":19
+                }, 
+                {
+                 "duration":100,
+                 "tileid":20
+                }, 
+                {
+                 "duration":100,
+                 "tileid":21
+                }, 
+                {
+                 "duration":100,
+                 "tileid":22
+                }, 
+                {
+                 "duration":100,
+                 "tileid":23
+                }, 
+                {
+                 "duration":100,
+                 "tileid":24
+                }, 
+                {
+                 "duration":100,
+                 "tileid":25
                 }]
         }
     },
