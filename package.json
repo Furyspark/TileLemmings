@@ -4,9 +4,10 @@
   "main": "main.js",
   "private": true,
   "scripts": {
-    "test": "node compile.js & electron ."
+    "test": "gulp && electron ."
   },
   "devDependencies": {
-    "concatenate-files": "^0.1.1"
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1"
   }
 }
