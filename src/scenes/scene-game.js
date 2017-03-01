@@ -62,6 +62,7 @@ Scene_Game.prototype.init = function() {
   $gameMap.onEndOfMap.addOnce(this.endMap, this);
   // Apply player config
   if(Options.data.gameplay.startWithGrid) this.toggleGrid(false);
+  this._mouseScrolling = false;
 }
 
 Scene_Game.prototype.create = function() {
@@ -73,8 +74,8 @@ Scene_Game.prototype.create = function() {
 Scene_Game.prototype.update = function() {
   Scene_Base.prototype.update.call(this);
   // Move camera
-  if(this.minimap) this.minimap.update();
   this.controlCamera();
+  if(this.minimap) this.minimap.update();
   if(!this.paused) {
     // Update alarms
     for(var a in this.alarm) {
@@ -105,7 +106,24 @@ Scene_Game.prototype.update = function() {
   this.updateActionPreview();
 }
 
+Scene_Game.prototype.startMouseScroll = function() {
+  this._mouseScrolling = true;
+}
+
+Scene_Game.prototype.stopMouseScroll = function() {
+  this._mouseScrolling = false;
+}
+
 Scene_Game.prototype.controlCamera = function() {
+  // Mouse scrolling
+  if(this._mouseScrolling) {
+    var spdFactor = 0.5;
+    var hspd = (Input.mouse.position.screenPrev.x - Input.mouse.position.screen.x) * spdFactor;
+    var vspd = (Input.mouse.position.screenPrev.y - Input.mouse.position.screen.y) * spdFactor;
+    $gameMap.camera.move(hspd, vspd);
+  }
+
+  // Keyboard scrolling
   var camSpeed = 3;
   if(Input.key.SHIFT.down) camSpeed *= 2;
 
@@ -121,6 +139,8 @@ Scene_Game.prototype.controlCamera = function() {
   else if(Input.isDown("camDown")) {
     $gameMap.camera.move(0, camSpeed);
   }
+
+  // Update
   this.updateZoom();
   $gameMap.updateCamera();
 }
@@ -323,6 +343,9 @@ Scene_Game.prototype.initControls = function() {
   // Zooming
   Input.mouse.button.WHEELUP.onPress.add(this.zoomIn, this, [0.1, true], 30);
   Input.mouse.button.WHEELDOWN.onPress.add(this.zoomOut, this, [0.1, true], 30);
+  // Scrolling
+  Input.mouse.button.RIGHT.onPress.add(this.startMouseScroll, this);
+  Input.mouse.button.RIGHT.onRelease.add(this.stopMouseScroll, this);
 }
 
 Scene_Game.prototype.releaseControls = function() {
@@ -341,6 +364,9 @@ Scene_Game.prototype.releaseControls = function() {
   // Zooming
   Input.mouse.button.WHEELUP.onPress.remove(this.zoomIn, this);
   Input.mouse.button.WHEELDOWN.onPress.remove(this.zoomOut, this);
+  // Scrolling
+  Input.mouse.button.RIGHT.onPress.remove(this.startMouseScroll, this);
+  Input.mouse.button.RIGHT.onRelease.remove(this.stopMouseScroll, this);
 }
 
 Scene_Game.prototype.zoomIn = function(amount, toCursor) {

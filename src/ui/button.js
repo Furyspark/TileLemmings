@@ -7,6 +7,7 @@ UI_Button.prototype.constructor = UI_Button;
 
 UI_Button.prototype.init = function(x, y, key) {
   UI_Base.prototype.init.call(this, x, y, key);
+  this.actOnPress = true;
   this.label = new Text("", {
     fill: "white",
     stroke: "black",
@@ -21,14 +22,14 @@ UI_Button.prototype.init = function(x, y, key) {
 }
 
 UI_Button.prototype.click = function() {
-  // this.onClick.dispatch();
+  if(this.actOnPress) this.onClick.dispatch();
 
   var d = new Date();
   this.lastClickTime = d.getTime();
 }
 
 UI_Button.prototype.unclick = function() {
-  this.onClick.dispatch();
+  if(!this.actOnPress) this.onClick.dispatch();
 }
 
 UI_Button.prototype.refresh = function() {

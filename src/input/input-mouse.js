@@ -45,7 +45,19 @@ Input_Mouse.prototype.init = function() {
       x: 0,
       y: 0
     },
+    screenPrev: {
+      x: 0,
+      y: 0
+    },
     world: {
+      x: 0,
+      y: 0
+    },
+    worldPrev: {
+      x: 0,
+      y: 0
+    },
+    realTime: {
       x: 0,
       y: 0
     }
@@ -54,11 +66,20 @@ Input_Mouse.prototype.init = function() {
   this.onMove.add(this.updatePosition, this, [], 100);
 }
 
-Input_Mouse.prototype.updatePosition = function(e) {
-  this.position.screen.x = Math.floor((e.clientX - Core.rendererLeft) * Core.hRes);
-  this.position.screen.y = Math.floor((e.clientY - Core.rendererTop) * Core.vRes);
+Input_Mouse.prototype.update = function() {
+  this.position.screenPrev.x = this.position.screen.x;
+  this.position.screenPrev.y = this.position.screen.y;
+  this.position.screen.x = Math.floor((this.position.realTime.x - Core.rendererLeft) * Core.hRes);
+  this.position.screen.y = Math.floor((this.position.realTime.y - Core.rendererTop) * Core.vRes);
   if($gameMap && $gameMap.world) {
-    this.position.world.x = Math.floor((e.clientX - Core.rendererLeft) * Core.hRes / $gameMap.world.scale.x) + $gameMap.camera.rect.left;
-    this.position.world.y = Math.floor((e.clientY - Core.rendererTop) * Core.vRes / $gameMap.world.scale.y) + $gameMap.camera.rect.top;
+    this.position.worldPrev.x = this.position.world.x;
+    this.position.worldPrev.y = this.position.world.y;
+    this.position.world.x = Math.floor((this.position.realTime.x - Core.rendererLeft) * Core.hRes / $gameMap.world.scale.x) + $gameMap.camera.rect.left;
+    this.position.world.y = Math.floor((this.position.realTime.y - Core.rendererTop) * Core.vRes / $gameMap.world.scale.y) + $gameMap.camera.rect.top;
   }
+}
+
+Input_Mouse.prototype.updatePosition = function(e) {
+  this.position.realTime.x = e.clientX;
+  this.position.realTime.y = e.clientY;
 }

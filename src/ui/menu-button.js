@@ -9,6 +9,7 @@ UI_MenuButton.prototype.init = function(position, label, frames, downFrames) {
   if(!frames) frames = ["button_blue.png"];
   if(!downFrames) downFrames = ["button_blue_down.png"];
   UI_Button.prototype.init.call(this);
+  this.actOnPress = false;
   this.label.text = label;
   this.label.style.align = "center";
   this.label.anchor.set(0.5, 0.5);

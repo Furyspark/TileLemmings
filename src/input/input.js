@@ -131,6 +131,11 @@ Input._wheel = function(e) {
   }
 }
 
+Input.update = function() {
+  this._refreshButtonStates();
+  this.mouse.update();
+}
+
 Input.initListeners = function() {
   // Core events
   window.addEventListener("keydown", this._onKeyDown.bind(this));

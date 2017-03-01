@@ -41,7 +41,7 @@ UI_WorldButton.prototype.playSound_Click = function() {
   AudioManager.playSound("sndUI_Click");
 }
 
-UI_WorldButton.prototype.unclick = function() {
+UI_WorldButton.prototype.click = function() {
   if(this.complete && this.complete !== UI_WorldButton.COMPLETE_LOCKED) this.onClick.dispatch();
 }
 

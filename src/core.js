@@ -80,7 +80,7 @@ Core.initPixi = function() {
   } else {
     this.renderer = new PIXI.CanvasRenderer(this.resolution.x, this.resolution.y);
   }
-  PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   document.body.appendChild(this.renderer.view);
   if(this.usingElectron) {
     this.resizeWindow(this.resolution.x, this.resolution.y);
@@ -101,8 +101,8 @@ Core.render = function() {
   //   this.render();
   // }.bind(this), Math.max(1, 1000 / this.frameRate));
   // Update scene
+  Input.update();
   SceneManager.update();
-  Input._refreshButtonStates();
   SceneManager.render();
 }
 
