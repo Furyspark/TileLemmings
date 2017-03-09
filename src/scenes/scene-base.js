@@ -30,6 +30,7 @@ Scene_Base.prototype.render = function() {
 Scene_Base.prototype.startDebug = function() {
   this.debug = {};
   this.debug.fpsCounter = new Text(Core.fps.toString());
+  this.debug.fpsCounter.style.fontSize = 14;
   this.debug.fpsCounter.position.set(8, 8);
   this.stage.addChild(this.debug.fpsCounter);
 }
