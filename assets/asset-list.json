@@ -99,6 +99,10 @@
     {
       "key": "sndYippie",
       "src": "assets/audio/sfx/sndYippie.ogg"
+    },
+    {
+      "key": "bgmTitle",
+      "src": "assets/audio/bgm/title.ogg"
     }
   ]
 }

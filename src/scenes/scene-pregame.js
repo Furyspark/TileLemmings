@@ -18,6 +18,8 @@ Scene_PreGame.prototype.init = function(src) {
 
 Scene_PreGame.prototype.start = function() {
   this._loading = false;
+  // Stop Bgm
+  AudioManager.stopBgm();
   // Add background
   this.background = new Background("bgMainMenu");
   this.stage.addChild(this.background);

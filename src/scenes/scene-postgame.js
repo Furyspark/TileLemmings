@@ -18,6 +18,8 @@ Scene_PostGame.prototype.init = function() {
 }
 
 Scene_PostGame.prototype.create = function() {
+  // Stop Bgm
+  AudioManager.stopBgm();
   // Add background
   this.bg = new Background("bgMainMenu");
   this.stage.addChild(this.bg);

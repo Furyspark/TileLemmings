@@ -23,6 +23,7 @@ Scene_WorldMap.prototype.init = function() {
 }
 
 Scene_WorldMap.prototype.start = function() {
+  AudioManager.playBgm("bgmTitle");
   $gameWorld = Cache.getJSON("world");
   this.generateContent(this.current);
   this.fadeIn();
@@ -30,6 +31,7 @@ Scene_WorldMap.prototype.start = function() {
 
 Scene_WorldMap.prototype.continue = function() {
   Scene_MenuBase.prototype.continue.call(this);
+  AudioManager.playBgm("bgmTitle");
   this.generateContent(this.current);
   this.fadeIn();
 }

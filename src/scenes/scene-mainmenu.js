@@ -15,11 +15,13 @@ Scene_MainMenu.prototype.initMembers = function() {
 
 Scene_MainMenu.prototype.create = function() {
   Scene_MenuBase.prototype.create.call(this);
+  AudioManager.playBgm("bgmTitle");
   this.fadeIn();
 }
 
 Scene_MainMenu.prototype.continue = function() {
   Scene_MenuBase.prototype.continue.call(this);
+  AudioManager.playBgm("bgmTitle");
   this.fadeIn();
 }
 
