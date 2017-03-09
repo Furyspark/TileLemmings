@@ -253,6 +253,27 @@
             "type": "map-completion",
             "dir": "egyptian",
             "key": "level2.json"
+          },
+          {
+            "type": "map-completion",
+            "dir": "egyptian",
+            "key": "level5.json"
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "key": "level5.json",
+        "icon": "icon-egyptian.png",
+        "position": {
+          "x": 3,
+          "y": 2
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "egyptian",
+            "key": "level3.json"
           }
         ]
       }
