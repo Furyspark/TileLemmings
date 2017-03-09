@@ -4,10 +4,11 @@ AudioManager._bgm = null;
 AudioManager._sounds = [];
 
 AudioManager.playBgm = function(key) {
+  if(this._bgm && this._bgm.key === key) return this._bgm;
   this.stopBgm();
   var snd = Cache.getAudio(key);
   if(snd) {
-    this._bgm = { audio: snd, id: 0, channel: "bgm", paused: false };
+    this._bgm = { audio: snd, id: 0, channel: "bgm", paused: false, key: key };
     this._bgm.id = this._bgm.audio.play();
     this._bgm.audio.volume(Options.data.audio.volume.bgm, this._bgm.id);
     this._bgm.audio.loop(true, this._bgm.id);
@@ -39,7 +40,7 @@ AudioManager.resumeBgm = function() {
 AudioManager.playSound = function(key) {
   var snd = Cache.getAudio(key);
   if(snd) {
-    var sndObj = { audio: snd, id: snd.play(), channel: "snd" };
+    var sndObj = { audio: snd, id: snd.play(), channel: "snd", key: key };
     snd.volume(Options.data.audio.volume.sfx, sndObj.id);
     this._sounds.push(sndObj);
     sndObj.audio.once("end", this._onSoundEnd.bind(this, sndObj));
