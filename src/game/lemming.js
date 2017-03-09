@@ -701,7 +701,12 @@ Game_Lemming.prototype.exit = function() {
 }
 
 Game_Lemming.prototype.canExit = function() {
-  return (this.physicsEnabled && !this.sprite.isAnimationPlaying("explode"));
+  if(this.dead) return false;
+  if(this.disabled) return false;
+  if(!this.physicsEnabled) return false;
+  if(this.sprite.isAnimationPlaying("explode")) return false;
+  if(!this.onGround) return false;
+  return true;
 }
 
 Game_Lemming.prototype.disable = function() {
