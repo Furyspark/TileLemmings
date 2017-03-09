@@ -1,101 +1,115 @@
 {
 "frames": {
 	"button-bg_level.png": {
-		"frame": {"x":133, "y":0, "w":128, "h":128},
+		"frame": {"x":133, "y":81, "w":128, "h":128},
+		"spriteSourceSize": {"x":2,"y":2,"w":132,"h":132},
+		"sourceSize": {"w":132,"h":132},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
-		"sourceSize": {"w":132,"h":132}
+		"trimmed": true
 	},
 	"button-bg_world.png": {
-		"frame": {"x":262, "y":0, "w":128, "h":128},
+		"frame": {"x":0, "y":266, "w":128, "h":128},
+		"spriteSourceSize": {"x":2,"y":2,"w":132,"h":132},
+		"sourceSize": {"w":132,"h":132},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
-		"sourceSize": {"w":132,"h":132}
+		"trimmed": true
 	},
 	"button-fg_level.png": {
 		"frame": {"x":0, "y":0, "w":132, "h":132},
-		"rotated": false,
-		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
-		"sourceSize": {"w":132,"h":132}
+		"sourceSize": {"w":132,"h":132},
+		"rotated": false,
+		"trimmed": true
 	},
 	"button-fg_world.png": {
 		"frame": {"x":0, "y":133, "w":132, "h":132},
-		"rotated": false,
-		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
-		"sourceSize": {"w":132,"h":132}
+		"sourceSize": {"w":132,"h":132},
+		"rotated": false,
+		"trimmed": true
 	},
 	"icon-bonus.png": {
-		"frame": {"x":355, "y":336, "w":84, "h":112},
+		"frame": {"x":262, "y":91, "w":84, "h":112},
+		"spriteSourceSize": {"x":22,"y":8,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":22,"y":8,"w":84,"h":112},
-		"sourceSize": {"w":128,"h":128}
+		"trimmed": true
 	},
 	"icon-cave.png": {
-		"frame": {"x":133, "y":129, "w":128, "h":87},
+		"frame": {"x":129, "y":266, "w":128, "h":87},
+		"spriteSourceSize": {"x":0,"y":21,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":21,"w":128,"h":87},
-		"sourceSize": {"w":128,"h":128}
+		"trimmed": true
 	},
 	"icon-classic.png": {
-		"frame": {"x":258, "y":217, "w":128, "h":118},
+		"frame": {"x":258, "y":210, "w":128, "h":118},
+		"spriteSourceSize": {"x":0,"y":5,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":5,"w":128,"h":118},
-		"sourceSize": {"w":128,"h":128}
+		"trimmed": true
+	},
+	"icon-cyber.png": {
+		"frame": {"x":359, "y":0, "w":94, "h":128},
+		"spriteSourceSize": {"x":17,"y":0,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
+		"rotated": false,
+		"trimmed": true
 	},
 	"icon-egyptian.png": {
-		"frame": {"x":129, "y":331, "w":128, "h":80},
+		"frame": {"x":133, "y":0, "w":128, "h":80},
+		"spriteSourceSize": {"x":0,"y":24,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":24,"w":128,"h":80},
-		"sourceSize": {"w":128,"h":128}
+		"trimmed": true
+	},
+	"icon-jungle.png": {
+		"frame": {"x":258, "y":394, "w":123, "h":72},
+		"spriteSourceSize": {"x":2,"y":32,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
+		"rotated": false,
+		"trimmed": true
 	},
 	"icon-mountain.png": {
-		"frame": {"x":129, "y":266, "w":128, "h":64},
+		"frame": {"x":258, "y":329, "w":128, "h":64},
+		"spriteSourceSize": {"x":0,"y":32,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":32,"w":128,"h":64},
-		"sourceSize": {"w":128,"h":128}
+		"trimmed": true
 	},
 	"icon-sky.png": {
-		"frame": {"x":0, "y":353, "w":128, "h":72},
+		"frame": {"x":0, "y":395, "w":128, "h":72},
+		"spriteSourceSize": {"x":0,"y":28,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":28,"w":128,"h":72},
-		"sourceSize": {"w":128,"h":128}
+		"trimmed": true
 	},
 	"icon-urban.png": {
-		"frame": {"x":0, "y":266, "w":128, "h":86},
+		"frame": {"x":129, "y":354, "w":128, "h":86},
+		"spriteSourceSize": {"x":0,"y":42,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":42,"w":128,"h":86},
-		"sourceSize": {"w":128,"h":128}
+		"trimmed": true
 	},
 	"world-completion.png": {
-		"frame": {"x":258, "y":336, "w":96, "h":90},
+		"frame": {"x":262, "y":0, "w":96, "h":90},
+		"spriteSourceSize": {"x":0,"y":6,"w":96,"h":96},
+		"sourceSize": {"w":96,"h":96},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":0,"y":6,"w":96,"h":90},
-		"sourceSize": {"w":96,"h":96}
+		"trimmed": true
 	},
 	"world-locked.png": {
 		"frame": {"x":387, "y":129, "w":66, "h":94},
+		"spriteSourceSize": {"x":1,"y":1,"w":68,"h":96},
+		"sourceSize": {"w":68,"h":96},
 		"rotated": false,
-		"trimmed": true,
-		"spriteSourceSize": {"x":1,"y":1,"w":66,"h":94},
-		"sourceSize": {"w":68,"h":96}
+		"trimmed": true
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 454, "h": 449},
+	"size": {"w": 454, "h": 468},
 	"scale": "1"
 }
 }

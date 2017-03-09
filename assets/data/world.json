@@ -8,7 +8,7 @@
         "icon": "icon-cave.png",
         "position": {
           "x": 0,
-          "y": 2
+          "y": 1
         }
       },
       {
@@ -17,13 +17,58 @@
         "icon": "icon-egyptian.png",
         "position": {
           "x": 1,
-          "y": 2
+          "y": 1
         }
       },
       {
         "type": "world",
         "key": "cloud",
         "icon": "icon-sky.png",
+        "position": {
+          "x": 2,
+          "y": 1
+        }
+      },
+      {
+        "type": "world",
+        "key": "jungle",
+        "icon": "icon-jungle.png",
+        "position": {
+          "x": 3,
+          "y": 1
+        }
+      },
+      {
+        "type": "world",
+        "key": "mountain",
+        "icon": "icon-mountain.png",
+        "position": {
+          "x": 4,
+          "y": 1
+        }
+      },
+      {
+        "type": "world",
+        "key": "urban",
+        "icon": "icon-urban.png",
+        "position": {
+          "x": 0,
+          "y": 2
+        }
+      },
+      {
+        "type": "world",
+        "key": "classic",
+        "icon": "icon-classic.png",
+        "position": {
+          "x": 1,
+          "y": 2
+        }
+      },
+      {
+        "type": "world",
+        "key": "cyber",
+        "icon": "icon-cyber.png",
         "position": {
           "x": 2,
           "y": 2
@@ -35,7 +80,7 @@
         "icon": "icon-bonus.png",
         "position": {
           "x": 5,
-          "y": 2
+          "y": 1
         }
       }
     ]
@@ -291,6 +336,31 @@
           "y": 2
         }
       }
+    ]
+  },
+  "jungle": {
+    "previous": "root",
+    "contents": [
+    ]
+  },
+  "mountain": {
+    "previous": "root",
+    "contents": [
+    ]
+  },
+  "urban": {
+    "previous": "root",
+    "contents": [
+    ]
+  },
+  "classic": {
+    "previous": "root",
+    "contents": [
+    ]
+  },
+  "cyber": {
+    "previous": "root",
+    "contents": [
     ]
   },
   "bonus": {
