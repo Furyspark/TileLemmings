@@ -354,6 +354,16 @@
       "open": [
         "door8.png"
       ]
+    },
+    "lemmingColor": {
+      "hair": [
+        "D1B7EE",
+        "9280A6"
+      ],
+      "body": [
+        "B9EEB7",
+        "81A680"
+      ]
     }
   },
   "exitCave": {
