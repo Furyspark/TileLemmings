@@ -321,6 +321,15 @@
             "key": "level3.json"
           }
         ]
+      },
+      {
+        "type": "map",
+        "key": "level6.json",
+        "icon": "icon-egyptian.png",
+        "position": {
+          "x": 4,
+          "y": 3
+        }
       }
     ]
   },
