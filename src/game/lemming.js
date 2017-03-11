@@ -505,6 +505,10 @@ Game_Lemming.prototype.nuke = function() {
 }
 
 Game_Lemming.prototype.explode = function() {
+  this.disable();
+  this.alarms.bomber.stop();
+  this.bomber.label.visible = false;
+  this.interactive = false;
   AudioManager.playSound("sndLemmingExplode");
   var digPoints = [];
   for(var a = -1;a < 2;a++) {
