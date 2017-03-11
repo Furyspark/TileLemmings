@@ -319,6 +319,11 @@
             "type": "map-completion",
             "dir": "egyptian",
             "key": "level3.json"
+          },
+          {
+            "type": "map-completion",
+            "dir": "egyptian",
+            "key": "level6.json"
           }
         ]
       },
