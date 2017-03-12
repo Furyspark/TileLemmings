@@ -335,6 +335,15 @@
           "x": 4,
           "y": 3
         }
+      },
+      {
+        "type": "map",
+        "key": "level7.json",
+        "icon": "icon-egyptian.png",
+        "position": {
+          "x": 6,
+          "y": 3
+        }
       }
     ]
   },
