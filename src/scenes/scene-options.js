@@ -51,13 +51,13 @@ Scene_Options.prototype.createUI = function() {
   // Slider: Music volume
   var elem = new UI_Slider(new Point(96, 240), "Music Volume", 240, Options.data.audio.volume.bgm);
   elem.onChange.add(function(value) {
-    Options.data.audio.volume.bgm = value;
+    AudioManager.setVolume("bgm", value);
   }, this);
   this.addUI(elem);
   // Slider: Sound volume
-  var elem = new UI_Slider(new Point(96, 320), "Sound Volume", 240, Options.data.audio.volume.sfx);
+  var elem = new UI_Slider(new Point(96, 320), "Sound Volume", 240, Options.data.audio.volume.snd);
   elem.onChange.add(function(value) {
-    Options.data.audio.volume.sfx = value;
+    AudioManager.setVolume("snd", value);
   }, this);
   this.addUI(elem);
   // Gameplay

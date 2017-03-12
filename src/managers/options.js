@@ -10,7 +10,7 @@ Options.generate = function() {
   this.data.audio = {
     volume: {
       bgm: 0.9,
-      sfx: 0.9
+      snd: 0.9
     },
     toggleDuringPause: false
   };

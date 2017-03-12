@@ -41,7 +41,7 @@ AudioManager.playSound = function(key) {
   var snd = Cache.getAudio(key);
   if(snd) {
     var sndObj = { audio: snd, id: snd.play(), channel: "snd", key: key };
-    snd.volume(Options.data.audio.volume.sfx, sndObj.id);
+    snd.volume(Options.data.audio.volume.snd, sndObj.id);
     this._sounds.push(sndObj);
     sndObj.audio.once("end", this._onSoundEnd.bind(this, sndObj));
     return sndObj;
