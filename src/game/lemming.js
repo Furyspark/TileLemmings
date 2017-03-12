@@ -597,8 +597,9 @@ Game_Lemming.prototype._actionTimer = function() {
 }
 
 Game_Lemming.prototype._buildUpdate = function() {
-  if(this.map.tileCollision(this.x - (this.offsetPoint.down.x * 16), this.y - (this.offsetPoint.down.y * 16), this) === Game_Tile.COLLISION_IMPASSABLE ||
-  this.map.tileCollision(this.x + (this.offsetPoint.right.x * 16 * this.dir), this.y + (this.offsetPoint.right.y * 16 * this.dir), this) === Game_Tile.COLLISION_IMPASSABLE) {
+  var blockedRight = (this.map.tileCollision(this.x + (16 * this.dir), this.y, this) === Game_Tile.COLLISION_IMPASSABLE);
+  var blockedTopRight = (this.map.tileCollision(this.x + (16 * this.dir), this.y - 16, this) === Game_Tile.COLLISION_IMPASSABLE);
+  if(blockedRight || blockedTopRight) {
     this.changeDirection();
     this.alarms.action.stop();
     this._buildEnd();
