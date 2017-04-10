@@ -77,7 +77,7 @@ var compile = {
     ],
     target: {
       fn: "game.js",
-      dir: "lib/"
+      dir: "build/lib/"
     }
   }
 };
@@ -88,4 +88,10 @@ gulp.task("client", function() {
     .pipe(gulp.dest(compile.client.target.dir));
 });
 
+gulp.task("build-electron", function() {
+
+});
+
 gulp.task("default", ["client"]);
+
+gulp.task("compile", ["client", "build-electron"]);
