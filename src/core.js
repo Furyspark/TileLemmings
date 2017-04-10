@@ -35,7 +35,7 @@ Core.initMembers = function() {
   this.lastTime = new Date;
   this.fps = 0;
   this.frameRate = 60;
-  this.debugMode = true;
+  this.debugMode = false;
   // Full screen
   this.isFullscreen = false;
   var func = function(e) {
@@ -64,6 +64,14 @@ Core.initElectron = function() {
 
 Core.initElectronProperties = function() {
   window.addEventListener("resize", Core.onResize);
+  this.ipcRenderer.on("core", function(ev, args) {
+    var cmd = args.splice(0, 1)[0];
+    switch(cmd.toUpperCase()) {
+      case "DEBUG":
+        Core.debugMode = true;
+        break;
+    }
+  });
 }
 
 Core.onResize = function(e) {

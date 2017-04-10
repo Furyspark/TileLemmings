@@ -49,7 +49,12 @@ app.on('ready', function() {
   mainWindow.webContents.on("devtools-opened", function() {
     mainWindow.focus();
   });
-  if(cliOptions.debug) mainWindow.webContents.openDevTools({ mode: "detach" });
+  if(cliOptions.debug) {
+    mainWindow.webContents.openDevTools({ mode: "detach" });
+    mainWindow.webContents.on("dom-ready", function() {
+      mainWindow.webContents.send("core", ["debug"]);
+    });
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
