@@ -1,3 +1,14 @@
+// Read CLI parameters
+var args = process.argv.slice(2);
+var cliOptions = {
+  debug: false
+};
+for(var a = 0;a < args.length;a++) {
+  var arg = args[a];
+  if(arg === "--debug") cliOptions.debug = true;
+}
+
+
 var electron = require("electron");  // Module to control application life.
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
@@ -38,7 +49,7 @@ app.on('ready', function() {
   mainWindow.webContents.on("devtools-opened", function() {
     mainWindow.focus();
   });
-  mainWindow.webContents.openDevTools({ mode: "detach" });
+  if(cliOptions.debug) mainWindow.webContents.openDevTools({ mode: "detach" });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

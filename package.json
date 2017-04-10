@@ -4,7 +4,7 @@
   "main": "main.js",
   "private": true,
   "scripts": {
-    "test": "gulp && electron ."
+    "test": "gulp && electron . --debug"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
