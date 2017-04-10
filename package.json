@@ -1,7 +1,7 @@
 {
   "name": "tilelemmings",
   "version": "0.0.5",
-  "main": "build/main.js",
+  "main": "main.js",
   "private": true,
   "scripts": {
     "test": "gulp && electron ."

@@ -1,5 +1,6 @@
 var gulp = require("gulp");
 var concat = require("gulp-concat");
+var exec = require("child_process").exec;
 
 var compile = {
   client: {
@@ -77,10 +78,19 @@ var compile = {
     ],
     target: {
       fn: "game.js",
-      dir: "build/lib/"
+      dir: "lib/"
     }
   }
 };
+
+function buildClient(platform, arch) {
+  exec("electron-packager . tile-lemmings --overwrite --platform=" + platform + " --arch=" + arch + " --out=dist --electron-version=1.6.6 --prune" +
+  "--ignore=.gitignore --ignore=Readme.md --ignore=save.json --ignore=.atom-build.json --ignore=config.json --ignore=gulpfile.json --ignore=src" +
+  "--ignore=workplace", function(error, stdout, stderr) {
+    if(error) console.log(error);
+    else console.log("Done building for " + platform + " " + arch + "!");
+  });
+}
 
 gulp.task("client", function() {
   gulp.src(compile.client.sources)
@@ -89,7 +99,7 @@ gulp.task("client", function() {
 });
 
 gulp.task("build-electron", function() {
-
+  buildClient("linux,win32", "x64,ia32");
 });
 
 gulp.task("default", ["client"]);
