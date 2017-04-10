@@ -84,8 +84,8 @@ var compile = {
 };
 
 function buildClient(platform, arch) {
-  exec("electron-packager . tile-lemmings --overwrite --platform=" + platform + " --arch=" + arch + " --out=dist --electron-version=1.6.6 --prune" +
-  "--ignore=.gitignore --ignore=Readme.md --ignore=save.json --ignore=.atom-build.json --ignore=config.json --ignore=gulpfile.json --ignore=src" +
+  exec("electron-packager . tile-lemmings --overwrite --platform=" + platform + " --arch=" + arch + " --out=dist --electron-version=1.6.6 --prune " +
+  "--ignore=.gitignore --ignore=Readme.md --ignore=save.json --ignore=.atom-build.json --ignore=config.json --ignore=gulpfile.json --ignore=src " +
   "--ignore=workplace", function(error, stdout, stderr) {
     if(error) console.log(error);
     else console.log("Done building for " + platform + " " + arch + "!");
