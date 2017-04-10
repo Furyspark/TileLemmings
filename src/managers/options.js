@@ -1,7 +1,7 @@
 function Options() {}
 
 Options.data          = null;
-Options.SAVE_LOCATION = "config.json";
+Options.SAVE_LOCATION = __dirname + "/config.json";
 Options.onSave        = new Signal();
 Options.onLoad        = new Signal();
 
