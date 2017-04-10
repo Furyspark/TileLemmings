@@ -611,7 +611,7 @@ Game_Lemming.prototype._buildUpdate = function() {
       this.changeDirection();
     }
     this.build((this.offsetPoint.right.x * 16 * this.dir), (this.offsetPoint.right.y * 16 * this.dir), true);
-    this.x += (this.offsetPoint.right.x * 16 * this.dir) - (this.offsetPoint.down.x * 16);
+    this.x = (Math.floor(this.x / 16) + this.dir) * 16 + 8;
     this.y += (this.offsetPoint.right.y * 16 * this.dir) - (this.offsetPoint.down.y * 16);
     this.action.builder.value--;
     if(this.action.builder.value < 2) {
