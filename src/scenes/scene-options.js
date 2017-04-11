@@ -53,12 +53,14 @@ Scene_Options.prototype.createUI = function() {
   elem.onChange.add(function(value) {
     AudioManager.setVolume("bgm", value);
   }, this);
+  elem.valueInterval = 0.05;
   this.addUI(elem);
   // Slider: Sound volume
   var elem = new UI_Slider(new Point(96, 320), "Sound Volume", 240, Options.data.audio.volume.snd);
   elem.onChange.add(function(value) {
     AudioManager.setVolume("snd", value);
   }, this);
+  elem.valueInterval = 0.05;
   this.addUI(elem);
   // Gameplay
   // Checkbox: Start with Grid On
