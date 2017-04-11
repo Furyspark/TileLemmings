@@ -9,9 +9,10 @@ Object.defineProperties(UI_Slider.prototype, {
   value: {
     get: function() { return this._value; },
     set: function(value) {
-      this._value = value;
+      var newValue = Math.floor((value - this.valueMin) / this.valueInterval) * this.valueInterval + this.valueMin;
+      this._value = Math.min(this.valueMax, Math.max(this.valueMin, newValue));
       this.refresh();
-      this.onChange.dispatch([value]);
+      this.onChange.dispatch([this._value]);
     }
   }
 });
@@ -32,6 +33,9 @@ UI_Slider.prototype.init = function(position, label, length, value) {
   this.initGraphics();
   this.createLabel(label);
 
+  this.valueMin = 0;
+  this.valueMax = 1;
+  this.valueInterval = 0.01;
   this.value = value;
 
   this.x = position.x;
