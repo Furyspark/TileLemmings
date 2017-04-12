@@ -72,7 +72,6 @@ Game_Lemming.prototype.init = function() {
   this.physicsEnabled   = true;
   this.disabled         = false;
 
-  this.sprite.playAnimation("fall");
   this.offsetPoint = {
     floor: new Point(0, 1),
     ceiling: new Point(0, -17),
@@ -114,6 +113,7 @@ Game_Lemming.prototype.spawn = function(x, y) {
   this.dir                  = Game_Lemming.DIR_RIGHT;
   this.rotation             = 0;
   this.sprite.scale.x       = 1;
+  this.sprite.playAnimation("fall");
   this.property             = 0;
   this.onGround             = false;
   this.stopAction();
