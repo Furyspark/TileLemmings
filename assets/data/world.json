@@ -358,6 +358,22 @@
           "x": 3,
           "y": 2
         }
+      },
+      {
+        "type": "map",
+        "key": "level2.json",
+        "icon": "icon-sky.png",
+        "position": {
+          "x": 2,
+          "y": 2
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cloud",
+            "key": "level1.json"
+          }
+        ]
       }
     ]
   },
