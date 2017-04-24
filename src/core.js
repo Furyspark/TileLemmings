@@ -111,6 +111,7 @@ Core.render = function() {
   // Update scene
   Input.update();
   SceneManager.update();
+  Input._refreshButtonStates();
   SceneManager.render();
 }
 

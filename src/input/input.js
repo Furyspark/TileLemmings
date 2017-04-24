@@ -132,7 +132,6 @@ Input._wheel = function(e) {
 }
 
 Input.update = function() {
-  this._refreshButtonStates();
   this.mouse.update();
 }
 
