@@ -27,6 +27,7 @@ Scene_MainMenu.prototype.continue = function() {
 
 Scene_MainMenu.prototype.update = function() {
   Scene_MenuBase.prototype.update.call(this);
+  this.updateCheat();
 }
 
 Scene_MainMenu.prototype.createCommands = function() {
@@ -53,5 +54,26 @@ Scene_MainMenu.prototype.createCommands = function() {
       close();
     }]);
     this.addUI(elem);
+  }
+}
+
+Scene_MainMenu.prototype.updateCheat = function() {
+  // Complete all levels with Shift+F9
+  if(Input.key.F9.pressed && Input.key.SHIFT.down) {
+    if(Cache.hasJSON("world")) Cache.removeJSON("world");
+    var obj = Loader.loadJSON("world", "assets/data/world.json");
+    obj.onComplete.addOnce(function() {
+      var world = Cache.getJSON("world");
+      for(var worldName in world) {
+        var subworld = world[worldName];
+        for(var b = 0;b < subworld.contents.length;b++) {
+          var map = subworld.contents[b];
+          if(map.type !== "map") continue;
+          SaveManager.addMapCompletion(worldName, map.key, true);
+        }
+      }
+      // console.log(world);
+      AudioManager.playSound("sndOhNo");
+    }, this);
   }
 }
