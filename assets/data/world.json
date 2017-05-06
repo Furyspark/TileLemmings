@@ -390,6 +390,22 @@
             "key": "level2.json"
           }
         ]
+      },
+      {
+        "type": "map",
+        "key": "level4.json",
+        "icon": "icon-sky.png",
+        "position": {
+          "x": 3,
+          "y": 1
+        },
+        "require": [
+          {
+            "type": "map-completion",
+            "dir": "cloud",
+            "key": "level3.json"
+          }
+        ]
       }
     ]
   },
