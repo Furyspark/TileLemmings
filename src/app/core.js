@@ -1,8 +1,8 @@
 function Core() {}
 
 Core._dataObjects = [
-  { name: "$dataProps", key: "dataProps", src: "assets/data/props.json" },
-  { name: "$dataActions", key: "dataActions", src: "assets/data/actions.json" }
+  { name: "$dataProps", key: "dataProps", src: "assets/data/props.yaml" },
+  { name: "$dataActions", key: "dataActions", src: "assets/data/actions.yaml" }
 ];
 
 Core.tileset = {};
@@ -118,7 +118,7 @@ Core.render = function() {
 Core.startDataObjects = function() {
   for(var a = 0;a < this._dataObjects.length;a++) {
     var dObj = this._dataObjects[a];
-    var obj = Loader.loadJSON(dObj.key, dObj.src);
+    var obj = Loader.loadYAML(dObj.key, dObj.src);
     obj.onComplete.addOnce(function(dataObject) {
       window[dataObject.name] = Cache.getJSON(dataObject.key);
     }, this, [dObj], 20);

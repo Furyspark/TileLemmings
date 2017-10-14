@@ -15,7 +15,7 @@ Loader.loadJSON = function(key, src) {
     else if(xobj.readyState === 4 && xobj.status !== 200) { // Fail loading
       file.onFail.dispatch();
     }
-  }
+  };
   xobj.send(null);
 
   var file = {
@@ -31,6 +31,34 @@ Loader.loadJSON = function(key, src) {
 
   return file;
 }
+
+Loader.loadYAML = function(key, src) {
+  if(this.isLoading("json", key) || Cache.hasJSON(key)) return null;
+  let xobj = new XMLHttpRequest();
+  xobj.open("GET", src);
+  xobj.onreadystatechange = function() {
+    if(xobj.readyState === 4 && xobj.status === 200) { // Done loading
+      file.onComplete.dispatch();
+    }
+    else if(xobj.readyState === 4 && xobj.status !== 200) { // Fail loading
+      file.onFail.dispatch();
+    }
+  };
+  xobj.send(null);
+
+  let file = {
+    key: key,
+    src: src,
+    type: "json",
+    onComplete: new Signal(),
+    onFail: new Signal(),
+    dataObject: xobj
+  };
+  this._loading.push(file);
+  file.onComplete.addOnce(this._finishYAML, this, [file], 10);
+
+  return file;
+};
 
 Loader.loadAudio = function(key, src) {
   if(this.isLoading("audio", key) || Cache.hasAudio(key)) return null;
@@ -122,6 +150,11 @@ Loader.loadTextureAtlas = function(key, src) {
 
 Loader._finishJSON = function(file) {
   Cache.addJSON(file.key, JSON.parse(file.dataObject.responseText));
+  this._finishFile(file);
+}
+
+Loader._finishYAML = function(file) {
+  Cache.addJSON(file.key, jsyaml.load(file.dataObject.responseText));
   this._finishFile(file);
 }
 

@@ -233,8 +233,8 @@ Scene_Game.prototype.createActionButtons = function() {
     var btn = new UI_Button(0, 0, "action" + cA.toString());
 
     btn.onClick.add(this.selectAction, this, [cA]);
-    btn.addAnimation("up", "atlGUI", actionSrc.button.up);
-    btn.addAnimation("down", "atlGUI", actionSrc.button.down);
+    btn.addAnimation("up", "atlGUI", [actionSrc.button.up]);
+    btn.addAnimation("down", "atlGUI", [actionSrc.button.down]);
     btn.sprite.scale.set(this.uiScale);
     btn.sprite.playAnimation("up");
     if(cA === 0) {

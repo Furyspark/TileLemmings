@@ -18,7 +18,7 @@ Scene_WorldMap.prototype.init = function() {
   this.volatileGraphics = [];
 
   if(Cache.hasJSON("world")) Cache.removeJSON("world");
-  var obj = Loader.loadJSON("world", "assets/data/world.json");
+  var obj = Loader.loadYAML("world", "assets/data/world.yaml");
   obj.onComplete.addOnce(this.start, this);
 }
 

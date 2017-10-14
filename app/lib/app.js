@@ -590,7 +590,7 @@ Loader.loadJSON = function(key, src) {
     else if(xobj.readyState === 4 && xobj.status !== 200) { // Fail loading
       file.onFail.dispatch();
     }
-  }
+  };
   xobj.send(null);
 
   var file = {
@@ -606,6 +606,34 @@ Loader.loadJSON = function(key, src) {
 
   return file;
 }
+
+Loader.loadYAML = function(key, src) {
+  if(this.isLoading("json", key) || Cache.hasJSON(key)) return null;
+  let xobj = new XMLHttpRequest();
+  xobj.open("GET", src);
+  xobj.onreadystatechange = function() {
+    if(xobj.readyState === 4 && xobj.status === 200) { // Done loading
+      file.onComplete.dispatch();
+    }
+    else if(xobj.readyState === 4 && xobj.status !== 200) { // Fail loading
+      file.onFail.dispatch();
+    }
+  };
+  xobj.send(null);
+
+  let file = {
+    key: key,
+    src: src,
+    type: "json",
+    onComplete: new Signal(),
+    onFail: new Signal(),
+    dataObject: xobj
+  };
+  this._loading.push(file);
+  file.onComplete.addOnce(this._finishYAML, this, [file], 10);
+
+  return file;
+};
 
 Loader.loadAudio = function(key, src) {
   if(this.isLoading("audio", key) || Cache.hasAudio(key)) return null;
@@ -700,6 +728,11 @@ Loader._finishJSON = function(file) {
   this._finishFile(file);
 }
 
+Loader._finishYAML = function(file) {
+  Cache.addJSON(file.key, jsyaml.load(file.dataObject.responseText));
+  this._finishFile(file);
+}
+
 Loader._finishAudio = function(file) {
   Cache.addAudio(file.key, file.dataObject);
   this._finishFile(file);
@@ -743,8 +776,8 @@ Loader.isLoading = function(type, key) {
 function Core() {}
 
 Core._dataObjects = [
-  { name: "$dataProps", key: "dataProps", src: "assets/data/props.json" },
-  { name: "$dataActions", key: "dataActions", src: "assets/data/actions.json" }
+  { name: "$dataProps", key: "dataProps", src: "assets/data/props.yaml" },
+  { name: "$dataActions", key: "dataActions", src: "assets/data/actions.yaml" }
 ];
 
 Core.tileset = {};
@@ -860,7 +893,7 @@ Core.render = function() {
 Core.startDataObjects = function() {
   for(var a = 0;a < this._dataObjects.length;a++) {
     var dObj = this._dataObjects[a];
-    var obj = Loader.loadJSON(dObj.key, dObj.src);
+    var obj = Loader.loadYAML(dObj.key, dObj.src);
     obj.onComplete.addOnce(function(dataObject) {
       window[dataObject.name] = Cache.getJSON(dataObject.key);
     }, this, [dObj], 20);
@@ -2476,8 +2509,8 @@ Scene_Game.prototype.createActionButtons = function() {
     var btn = new UI_Button(0, 0, "action" + cA.toString());
 
     btn.onClick.add(this.selectAction, this, [cA]);
-    btn.addAnimation("up", "atlGUI", actionSrc.button.up);
-    btn.addAnimation("down", "atlGUI", actionSrc.button.down);
+    btn.addAnimation("up", "atlGUI", [actionSrc.button.up]);
+    btn.addAnimation("down", "atlGUI", [actionSrc.button.down]);
     btn.sprite.scale.set(this.uiScale);
     btn.sprite.playAnimation("up");
     if(cA === 0) {
@@ -2986,7 +3019,7 @@ Scene_WorldMap.prototype.init = function() {
   this.volatileGraphics = [];
 
   if(Cache.hasJSON("world")) Cache.removeJSON("world");
-  var obj = Loader.loadJSON("world", "assets/data/world.json");
+  var obj = Loader.loadYAML("world", "assets/data/world.yaml");
   obj.onComplete.addOnce(this.start, this);
 }
 

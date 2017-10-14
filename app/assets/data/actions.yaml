@@ -1,0 +1,40 @@
+climber:
+  key: "action_climber"
+  button:
+    up: "Btn_Climber_0.png"
+    down: "Btn_Climber_1.png"
+floater:
+  key: "action_floater"
+  button:
+    up: "Btn_Floater_0.png"
+    down: "Btn_Floater_1.png"
+bomber:
+  key: "action_bomber"
+  button:
+    up: "Btn_Bomber_0.png"
+    down: "Btn_Bomber_1.png"
+blocker:
+  key: "action_blocker"
+  button:
+    up: "Btn_Blocker_0.png"
+    down: "Btn_Blocker_1.png"
+builder:
+  key: "action_builder"
+  button:
+    up: "Btn_Builder_0.png"
+    down: "Btn_Builder_1.png"
+basher:
+  key: "action_basher"
+  button:
+    up: "Btn_Basher_0.png"
+    down: "Btn_Basher_1.png"
+miner:
+  key: "action_miner"
+  button:
+    up: "Btn_Miner_0.png"
+    down: "Btn_Miner_1.png"
+digger:
+  key: "action_digger"
+  button:
+    up: "Btn_Digger_0.png"
+    down: "Btn_Digger_1.png"
