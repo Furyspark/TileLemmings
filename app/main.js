@@ -41,9 +41,13 @@ ipcMain.on("window", function(event, args) {
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 1280, height: 720, autoHideMenuBar: true });
+  mainWindow.center();
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
+
+  // Remove menu bar
+  mainWindow.setMenu(null);
 
   // Open the devtools.
   mainWindow.webContents.on("devtools-opened", function() {
