@@ -90,10 +90,6 @@ Core.initPixi = function() {
   }
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   document.body.appendChild(this.renderer.view);
-  if(this.usingElectron) {
-    this.resizeWindow(this.resolution.x, this.resolution.y);
-    this.centerWindow();
-  }
 }
 
 Core.render = function() {

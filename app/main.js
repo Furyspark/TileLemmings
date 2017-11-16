@@ -9,14 +9,18 @@ for(var a = 0;a < args.length;a++) {
 }
 
 
-var electron = require("electron");  // Module to control application life.
-var app = electron.app;
+var electron      = require("electron");  // Module to control application life.
+var app           = electron.app;
 var BrowserWindow = electron.BrowserWindow;
-var ipcMain = electron.ipcMain;
+var ipcMain       = electron.ipcMain;
+var fs            = require("fs");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
 var mainWindow = null;
+
+// Keep a global reference to the config file.
+var config = null;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -39,9 +43,53 @@ ipcMain.on("window", function(event, args) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
+  loadConfig()
+  .then(() => {
+    startApp();
+  })
+  .catch(err => {
+    console.log(err);
+  });
+});
+
+function loadConfig() {
+  return new Promise(function(resolve, reject) {
+    fs.readFile(__dirname + "/main-config.json", function(err, data) {
+      if(err && err.code === "ENOENT") {
+        createDefaultConfig();
+        resolve();
+      }
+      else if(err) {
+        reject(err);
+      }
+      else {
+        config = JSON.parse(data.toString());
+        resolve();
+      }
+    });
+  });
+};
+
+function createDefaultConfig() {
+  let primaryDisplay = electron.screen.getPrimaryDisplay();
+  let workArea       = primaryDisplay.workArea;
+  let windowWidth    = 1280;
+  let windowHeight   = 720;
+
+  config = {
+    window: {
+      width: windowWidth,
+      height: windowHeight,
+      x: workArea.x + Math.floor(workArea.width / 2 - windowWidth / 2),
+      y: workArea.y + Math.floor(workArea.height / 2 - windowHeight / 2),
+      fullscreen: false
+    }
+  };
+};
+
+function startApp() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 1280, height: 720, autoHideMenuBar: true });
-  mainWindow.center();
+  mainWindow = new BrowserWindow({ width: config.window.width, height: config.window.height, x: config.window.x, y: config.window.y });
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
@@ -61,10 +109,20 @@ app.on('ready', function() {
   }
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
+  mainWindow.on('close', function() {
+    let size = mainWindow.getSize();
+    let pos  = mainWindow.getPosition();
+
+    config.window.width  = size[0];
+    config.window.height = size[1];
+    config.window.x      = pos[0];
+    config.window.y      = pos[1];
+
+    fs.writeFileSync(__dirname + "/main-config.json", JSON.stringify(config));
+
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-});
+};

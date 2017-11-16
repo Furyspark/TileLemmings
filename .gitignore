@@ -11,3 +11,4 @@ dist
 *.sublime-*
 save.json
 .vimrc
+app/main-config.json
