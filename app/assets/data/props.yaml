@@ -136,23 +136,24 @@ doorEgyptian:
       open: "assets/audio/sfx/sndDoor.ogg"
     textureAtlases:
       base: "assets/graphics/sprite-atlases/props-egyptian/sprites.json"
-    animations:
-      closed:
-        - "door0.png"
-      opening:
-        - "door1.png"
-        - "door2.png"
-        - "door3.png"
-        - "door4.png"
-        - "door5.png"
-        - "door6.png"
-        - "door7.png"
-      open:
-        - "door8.png"
+  animations:
+    closed:
+      - "door0.png"
+    opening:
+      - "door1.png"
+      - "door2.png"
+      - "door3.png"
+      - "door4.png"
+      - "door5.png"
+      - "door6.png"
+      - "door7.png"
+    open:
+      - "door8.png"
   lemmingColor:
     hair:
       - "5E5E5E"
       - "1A1A1A"
+    body:
       - "FFCC00"
       - "B28E00"
 
