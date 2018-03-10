@@ -21,10 +21,18 @@ SceneManager.current = function() {
   return this._stack.slice(-1)[0];
 }
 
-SceneManager.update = function() {
-  if(this.current()) this.current().update();
+SceneManager.update = function(dt) {
+  if(this.current()) this.current().update(dt);
 }
 
-SceneManager.render = function() {
-  if(this.current()) this.current().render();
+SceneManager.render = function(dt) {
+  if(this.current()) this.current().render(dt);
 }
+
+SceneManager.getSceneByType = function(type) {
+    for(var a = 0;a < this._stack.length;a++) {
+        var scene = this._stack[a];
+        if(scene instanceof type) return scene;
+    }
+    return null;
+};

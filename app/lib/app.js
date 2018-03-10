@@ -776,174 +776,175 @@ Loader.isLoading = function(type, key) {
 function Core() {}
 
 Core._dataObjects = [
-  { name: "$dataProps", key: "dataProps", src: "assets/data/props.yaml" },
-  { name: "$dataActions", key: "dataActions", src: "assets/data/actions.yaml" }
+    { name: "$dataProps", key: "dataProps", src: "assets/data/props.yaml" },
+    { name: "$dataActions", key: "dataActions", src: "assets/data/actions.yaml" }
 ];
 
 Core.tileset = {};
 
 Object.defineProperties(Core, {
-  hRes: {
-    get: function() { return Core.resolution.x / parseInt(Core.renderer.view.style.width.slice(0, -2)); }
-  },
-  vRes: {
-    get: function() { return Core.resolution.y / parseInt(Core.renderer.view.style.height.slice(0, -2)); }
-  }
+    hRes: {
+        get: function() { return Core.resolution.x / parseInt(Core.renderer.view.style.width.slice(0, -2)); }
+    },
+    vRes: {
+        get: function() { return Core.resolution.y / parseInt(Core.renderer.view.style.height.slice(0, -2)); }
+    }
 });
 
 Core.start = function() {
-  this.initMembers();
-  this.initElectron();
-  this.initPixi();
-  this.fitToWindow();
-  this.startDataObjects();
-  this.initExternalLibs();
-  Input.init();
+    this.initMembers();
+    this.initElectron();
+    this.initPixi();
+    this.fitToWindow();
+    this.startDataObjects();
+    this.initExternalLibs();
+    Input.init();
 
-  Loader.onComplete.addOnce(function() {
-    SceneManager.push(new Scene_Boot());
-    this.render();
-  }, this);
+    Loader.onComplete.addOnce(function() {
+        SceneManager.push(new Scene_Boot());
+        this.render();
+    }, this);
 }
 
 Core.initMembers = function() {
-  this.lastTime = new Date;
-  this.fps = 0;
-  this.frameRate = 60;
-  this.debugMode = false;
-  // Full screen
-  this.isFullscreen = false;
-  var func = function(e) {
-    this.isFullscreen = !this.isFullscreen;
-  };
-  if(document.onfullscreenchange !== undefined) document.addEventListener("fullscreenchange", func.bind(this));
-  else if(document.onwebkitfullscreenchange !== undefined) document.addEventListener("webkitfullscreenchange", func.bind(this));
-  else if(document.onmozfullscreenchange !== undefined) document.addEventListener("mozfullscreenchange", func.bind(this));
-  // Resolution
-  this.resolution = new Point(1280, 720);
-  this.aspectRatio = this.resolution.x / this.resolution.y;
-  // View
-  this.rendererLeft = 0;
-  this.rendererTop = 0;
+    this.lastTime = new Date;
+    this.fps = 0;
+    this.frameRate = 60;
+    this.debugMode = false;
+    // Full screen
+    this.isFullscreen = false;
+    var func = function(e) {
+        this.isFullscreen = !this.isFullscreen;
+    };
+    if(document.onfullscreenchange !== undefined) document.addEventListener("fullscreenchange", func.bind(this));
+    else if(document.onwebkitfullscreenchange !== undefined) document.addEventListener("webkitfullscreenchange", func.bind(this));
+    else if(document.onmozfullscreenchange !== undefined) document.addEventListener("mozfullscreenchange", func.bind(this));
+    // Resolution
+    this.resolution = new Point(1280, 720);
+    this.aspectRatio = this.resolution.x / this.resolution.y;
+    // View
+    this.rendererLeft = 0;
+    this.rendererTop = 0;
 }
 
 Core.initElectron = function() {
-  this.usingElectron = false;
-  if(typeof require === "function") {
-    this.usingElectron = true;
-    this.ipcRenderer = require("electron").ipcRenderer;
-    this.fs = require("fs");
-    this.initElectronProperties();
-  }
+    this.usingElectron = false;
+    if(typeof require === "function") {
+        this.usingElectron = true;
+        this.ipcRenderer = require("electron").ipcRenderer;
+        this.fs = require("fs");
+        this.initElectronProperties();
+    }
 }
 
 Core.initElectronProperties = function() {
-  window.addEventListener("resize", Core.onResize);
-  this.ipcRenderer.on("core", function(ev, args) {
-    var cmd = args.splice(0, 1)[0];
-    switch(cmd.toUpperCase()) {
-      case "DEBUG":
-        Core.debugMode = true;
-        break;
-    }
-  });
+    window.addEventListener("resize", Core.onResize);
+    this.ipcRenderer.on("core", function(ev, args) {
+        var cmd = args.splice(0, 1)[0];
+        switch(cmd.toUpperCase()) {
+            case "DEBUG":
+                Core.debugMode = true;
+                break;
+        }
+    });
 }
 
 Core.onResize = function(e) {
-  Core.fitToWindow();
+    Core.fitToWindow();
 }
 
 Core.initExternalLibs = function() {
-  createjs.Ticker.framerate = this.frameRate;
+    createjs.Ticker.framerate = this.frameRate;
 }
 
 Core.initPixi = function() {
-  if(PIXI.utils.isWebGLSupported()) {
-    this.renderer = new PIXI.WebGLRenderer(this.resolution.x, this.resolution.y);
-  } else {
-    this.renderer = new PIXI.CanvasRenderer(this.resolution.x, this.resolution.y);
-  }
-  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-  document.body.appendChild(this.renderer.view);
+    if(PIXI.utils.isWebGLSupported()) {
+        this.renderer = new PIXI.WebGLRenderer(this.resolution.x, this.resolution.y);
+    } else {
+        this.renderer = new PIXI.CanvasRenderer(this.resolution.x, this.resolution.y);
+    }
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+    document.body.appendChild(this.renderer.view);
 }
 
 Core.render = function() {
-  // Update FPS
-  var nowTime = new Date;
-  if(nowTime.getSeconds() !== this.lastTime.getSeconds()) {
-    this.fps = Math.floor(1000 / (nowTime - this.lastTime));
-  }
-  this.lastTime = nowTime;
-  // Set new timeout
-  // setTimeout(function() {
+    // Update FPS
+    var nowTime = new Date;
+    if(nowTime.getSeconds() !== this.lastTime.getSeconds()) {
+        this.fps = Math.floor(1000 / (nowTime - this.lastTime));
+    }
+    var dt = 100 * ((nowTime - this.lastTime) / 1000);
+    this.lastTime = nowTime;
+    // Set new timeout
+    // setTimeout(function() {
     requestAnimationFrame(this.render.bind(this));
-  //   this.render();
-  // }.bind(this), Math.max(1, 1000 / this.frameRate));
-  // Update scene
-  Input.update();
-  SceneManager.update();
-  Input._refreshButtonStates();
-  SceneManager.render();
+    // this.render();
+    // }.bind(this), Math.max(1, 1000 / this.frameRate));
+    // Update scene
+    Input.update();
+    SceneManager.update(dt);
+    Input._refreshButtonStates();
+    SceneManager.render(dt);
 }
 
 Core.startDataObjects = function() {
-  for(var a = 0;a < this._dataObjects.length;a++) {
-    var dObj = this._dataObjects[a];
-    var obj = Loader.loadYAML(dObj.key, dObj.src);
-    obj.onComplete.addOnce(function(dataObject) {
-      window[dataObject.name] = Cache.getJSON(dataObject.key);
-    }, this, [dObj], 20);
-  }
+    for(var a = 0;a < this._dataObjects.length;a++) {
+        var dObj = this._dataObjects[a];
+        var obj = Loader.loadYAML(dObj.key, dObj.src);
+        obj.onComplete.addOnce(function(dataObject) {
+            window[dataObject.name] = Cache.getJSON(dataObject.key);
+        }, this, [dObj], 20);
+    }
 }
 
 Core.fitToWindow = function() {
-  var ww = window.innerWidth;
-  var wh = window.innerHeight;
-  var nw = ww;
-  var nh = wh;
-  if(ww / wh >= Core.aspectRatio) {
-    nw = Math.floor(nh * Core.aspectRatio);
-  } else {
-    nh = Math.floor(nw / Core.aspectRatio);
-  }
-  Core.renderer.view.style.position = "absolute";
-  Core.renderer.view.style.width = nw.toString() + "px";
-  Core.renderer.view.style.height = nh.toString() + "px";
-  Core.rendererLeft = Math.floor(ww / 2 - nw / 2);
-  Core.rendererTop = Math.floor(wh / 2 - nh / 2);
-  Core.renderer.view.style.left = Core.rendererLeft.toString() + "px";
-  Core.renderer.view.style.top = Core.rendererTop.toString() + "px";
+    var ww = window.innerWidth;
+    var wh = window.innerHeight;
+    var nw = ww;
+    var nh = wh;
+    if(ww / wh >= Core.aspectRatio) {
+        nw = Math.floor(nh * Core.aspectRatio);
+    } else {
+        nh = Math.floor(nw / Core.aspectRatio);
+    }
+    Core.renderer.view.style.position = "absolute";
+    Core.renderer.view.style.width = nw.toString() + "px";
+    Core.renderer.view.style.height = nh.toString() + "px";
+    Core.rendererLeft = Math.floor(ww / 2 - nw / 2);
+    Core.rendererTop = Math.floor(wh / 2 - nh / 2);
+    Core.renderer.view.style.left = Core.rendererLeft.toString() + "px";
+    Core.renderer.view.style.top = Core.rendererTop.toString() + "px";
 }
 
 Core.resizeWindow = function(w, h) {
-  if(Core.usingElectron) {
-    var diffW = window.outerWidth - window.innerWidth;
-    var diffH = window.outerHeight - window.innerHeight;
-    Core.ipcRenderer.send("window", ["resize", w + diffW, h + diffH]);
-  }
+    if(Core.usingElectron) {
+        var diffW = window.outerWidth - window.innerWidth;
+        var diffH = window.outerHeight - window.innerHeight;
+        Core.ipcRenderer.send("window", ["resize", w + diffW, h + diffH]);
+    }
 }
 
 Core.centerWindow = function() {
-  if(Core.usingElectron) {
-    Core.ipcRenderer.send("window", ["center"]);
-  }
+    if(Core.usingElectron) {
+        Core.ipcRenderer.send("window", ["center"]);
+    }
 }
 
 Core.setFullscreen = function(state) {
-  if(state === true) {
-    if(Core.renderer.view.requestFullscreen) Core.renderer.view.requestFullscreen();
-    else if(Core.renderer.view.webkitRequestFullscreen) Core.renderer.view.webkitRequestFullscreen();
-    else if(Core.renderer.view.mozRequestFullScreen) Core.renderer.view.mozRequestFullScreen();
-  }
-  else {
-    if(document.exitFullscreen) document.exitFullscreen();
-    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-    else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
-  }
+    if(state === true) {
+        if(Core.renderer.view.requestFullscreen) Core.renderer.view.requestFullscreen();
+        else if(Core.renderer.view.webkitRequestFullscreen) Core.renderer.view.webkitRequestFullscreen();
+        else if(Core.renderer.view.mozRequestFullScreen) Core.renderer.view.mozRequestFullScreen();
+    }
+    else {
+        if(document.exitFullscreen) document.exitFullscreen();
+        else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
+    }
 }
 
 Core.getFullscreen = function() {
-  return this.isFullscreen;
+    return this.isFullscreen;
 }
 
 var $gameTemp = {};
@@ -1296,13 +1297,21 @@ SceneManager.current = function() {
   return this._stack.slice(-1)[0];
 }
 
-SceneManager.update = function() {
-  if(this.current()) this.current().update();
+SceneManager.update = function(dt) {
+  if(this.current()) this.current().update(dt);
 }
 
-SceneManager.render = function() {
-  if(this.current()) this.current().render();
+SceneManager.render = function(dt) {
+  if(this.current()) this.current().render(dt);
 }
+
+SceneManager.getSceneByType = function(type) {
+    for(var a = 0;a < this._stack.length;a++) {
+        var scene = this._stack[a];
+        if(scene instanceof type) return scene;
+    }
+    return null;
+};
 
 function SaveManager() {}
 
@@ -1470,77 +1479,77 @@ Filter_ColorReplace.prototype.initialize = function(findColor, replaceWithColor,
 }
 
 function Sprite_Base() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Sprite_Base.prototype = Object.create(PIXI.Sprite.prototype);
 Sprite_Base.prototype.constructor = Sprite_Base;
 
 Object.defineProperties(Sprite_Base.prototype, {
-  x: {
-    get: function() { return this.position.x; },
-    set: function(value) { this.position.x = Math.floor(value); }
-  },
-  y: {
-    get: function() { return this.position.y; },
-    set: function(value) { this.position.y = Math.floor(value); }
-  }
+    x: {
+        get: function() { return this.position.x; },
+        set: function(value) { this.position.x = Math.floor(value); }
+    },
+    y: {
+        get: function() { return this.position.y; },
+        set: function(value) { this.position.y = Math.floor(value); }
+    }
 });
 
 Sprite_Base.prototype.init = function(texture) {
-  if(!texture) texture = null;
-  PIXI.Sprite.prototype.constructor.call(this, texture);
-  this.atlasData = null;
-  this.animations = {};
-  this.animation = null
-  this.animFrame = 0;
-  this.animSpeed = 1;
-  this.z = 0;
+    if(!texture) texture = null;
+    PIXI.Sprite.prototype.constructor.call(this, texture);
+    this.atlasData = null;
+    this.animations = {};
+    this.animation = null
+    this.animFrame = 0;
+    this.animSpeed = 1;
+    this.z = 0;
 }
 
 Sprite_Base.prototype.playAnimation = function(key) {
-  if(this.animations[key] && !this.animation || (this.animation && this.animation.name !== key)) {
-    this.animation = this.animations[key];
-    this.animFrame = 0;
-    this.texture = this.animation.frames[Math.floor(this.animFrame)];
-    return this.animation;
-  }
-  return null;
+    if(this.animations[key] && !this.animation || (this.animation && this.animation.name !== key)) {
+        this.animation = this.animations[key];
+        this.animFrame = 0;
+        this.texture = this.animation.frames[Math.floor(this.animFrame)];
+        return this.animation;
+    }
+    return null;
 }
 
 Sprite_Base.prototype.addAnimation = function(name) {
-  var anim = new Animation(name);
-  this.animations[name] = anim;
-  return anim;
+    var anim = new Animation(name);
+    this.animations[name] = anim;
+    return anim;
 }
 
 Sprite_Base.prototype.addAnimationExt = function(atlas, name, frames, str) {
-  var anim = this.addAnimation(name);
-  for(var a = 0;a < frames;a++) {
-    anim.addFrame(atlas, str.replace("%s", String(a)));
-  }
+    var anim = this.addAnimation(name);
+    for(var a = 0;a < frames;a++) {
+        anim.addFrame(atlas, str.replace("%s", String(a)));
+    }
 }
 
 Sprite_Base.prototype.getAnimation = function(key) {
-  return this.animations[key];
+    return this.animations[key];
 }
 
 Sprite_Base.prototype.isAnimationPlaying = function(key) {
-  return (this.animation === this.animations[key]);
+    return (this.animation === this.animations[key]);
 }
 
 Sprite_Base.prototype.hasAnimation = function(key) {
-  return (this.animations[key] instanceof Animation);
+    return (this.animations[key] instanceof Animation);
 }
 
 Sprite_Base.prototype.update = function() {
-  // Update animation
-  if(this.animation) {
-    var oldFrame = this.animFrame;
-    this.animFrame = (this.animFrame + this.animSpeed) % this.animation.frames.length;
-    this.texture = this.animation.frames[Math.floor(this.animFrame)];
-    if(oldFrame > this.animFrame) this.animation.onEnd.dispatch();
-  }
+    // Update animation
+    if(this.animation) {
+        var oldFrame = this.animFrame;
+        this.animFrame = (this.animFrame + this.animSpeed) % this.animation.frames.length;
+        this.texture = this.animation.frames[Math.floor(this.animFrame)];
+        if(oldFrame > this.animFrame) this.animation.onEnd.dispatch();
+    }
 }
 
 function Sprite_Lemming() {
@@ -1759,80 +1768,82 @@ Sprite_Background.prototype.init = function(tex, w, h) {
 }
 
 function Scene_Base() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Scene_Base.FADEDURATION_DEFAULT = 500;
 
 
 Scene_Base.prototype.init = function() {
-  this.stage = new PIXI.Container();
-  this.initFadeScreen();
-  this.active = false;
-  if(Core.debugMode) {
-    this.startDebug();
-  }
+    this.stage = new PIXI.Container();
+    this.initFadeScreen();
+    this.active = false;
+    if(Core.debugMode) {
+        this.startDebug();
+    }
 }
 
-Scene_Base.prototype.update = function() {
-  if(Core.debugMode) {
-    this.debug.fpsCounter.text = Core.fps.toString();
-  }
+Scene_Base.prototype.update = function(dt) {
+    if(Core.debugMode) {
+        this.debug.fpsCounter.text = Core.fps.toString();
+    }
 }
 
-Scene_Base.prototype.render = function() {
-  this.stage.children.sort(function(a, b) {
-    return b.z - a.z;
-  });
-  Core.renderer.render(this.stage);
+Scene_Base.prototype.render = function(dt) {
+    // Depth sorting
+    this.stage.children.sort(function(a, b) {
+        return b.z - a.z;
+    });
+    // Render stage
+    Core.renderer.render(this.stage);
 }
 
 Scene_Base.prototype.startDebug = function() {
-  this.debug = {};
-  this.debug.fpsCounter = new Text(Core.fps.toString());
-  this.debug.fpsCounter.style.fontSize = 14;
-  this.debug.fpsCounter.position.set(8, 8);
-  this.stage.addChild(this.debug.fpsCounter);
+    this.debug = {};
+    this.debug.fpsCounter = new Text(Core.fps.toString());
+    this.debug.fpsCounter.style.fontSize = 14;
+    this.debug.fpsCounter.position.set(8, 8);
+    this.stage.addChild(this.debug.fpsCounter);
 }
 
 Scene_Base.prototype.create = function() {
-  this.addListeners();
-  this.active = true;
+    this.addListeners();
+    this.active = true;
 }
 
 Scene_Base.prototype.continue = function() {
-  this.active = true;
+    this.active = true;
 }
 
 Scene_Base.prototype.leave = function() {
-  this.active = false;
+    this.active = false;
 }
 
 Scene_Base.prototype.end = function() {
-  this.removeListeners();
+    this.removeListeners();
 }
 
 Scene_Base.prototype.initFadeScreen = function() {
-  this._fadeScreen = new PIXI.Graphics();
-  this._fadeScreen.beginFill(0x000000);
-  this._fadeScreen.drawRect(0, 0, Core.resolution.x, Core.resolution.y);
-  this._fadeScreen.endFill();
-  this._fadeScreen.z = -3000;
-  this.stage.addChild(this._fadeScreen);
+    this._fadeScreen = new PIXI.Graphics();
+    this._fadeScreen.beginFill(0x000000);
+    this._fadeScreen.drawRect(0, 0, Core.resolution.x, Core.resolution.y);
+    this._fadeScreen.endFill();
+    this._fadeScreen.z = -3000;
+    this.stage.addChild(this._fadeScreen);
 }
 
 Scene_Base.prototype.fadeIn = function(callback) {
-  var obj = createjs.Tween.get(this._fadeScreen, { override: true }).to({ alpha: 0 }, Scene_Base.FADEDURATION_DEFAULT).set({ visible: false });
-  if(callback) obj.call(callback);
+    var obj = createjs.Tween.get(this._fadeScreen, { override: true }).to({ alpha: 0 }, Scene_Base.FADEDURATION_DEFAULT).set({ visible: false });
+    if(callback) obj.call(callback);
 }
 
 Scene_Base.prototype.fadeOut = function(callback) {
-  var obj = createjs.Tween.get(this._fadeScreen, { override: true }).set({ visible: true }).to({ alpha: 1 }, Scene_Base.FADEDURATION_DEFAULT);
-  if(callback) obj.call(callback);
+    var obj = createjs.Tween.get(this._fadeScreen, { override: true }).set({ visible: true }).to({ alpha: 1 }, Scene_Base.FADEDURATION_DEFAULT);
+    if(callback) obj.call(callback);
 }
 
 Scene_Base.prototype.addListeners = function() {
-  this.removeListeners();
+    this.removeListeners();
 }
 
 Scene_Base.prototype.removeListeners = function() {}
@@ -1902,131 +1913,131 @@ Scene_Boot.prototype.start = function() {
 }
 
 function Scene_MenuBase() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Scene_MenuBase.prototype = Object.create(Scene_Base.prototype);
 Scene_MenuBase.prototype.constructor = Scene_MenuBase;
 
 Scene_MenuBase.prototype.init = function() {
-  Scene_Base.prototype.init.call(this);
-  this.initMembers();
-  this.addBackground();
-  this.createCommands();
+    Scene_Base.prototype.init.call(this);
+    this.initMembers();
+    this.addBackground();
+    this.createCommands();
 }
 
 Scene_MenuBase.prototype.create = function() {
-  Scene_Base.prototype.create.call(this);
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    elem.addListeners();
-  }
-  this.addListeners();
+    Scene_Base.prototype.create.call(this);
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        elem.addListeners();
+    }
+    this.addListeners();
 }
 
 Scene_MenuBase.prototype.initMembers = function() {
-  this.ui = [];
-  this.text = {};
+    this.ui = [];
+    this.text = {};
 }
 
 Scene_MenuBase.prototype.continue = function() {
-  Scene_Base.prototype.continue.call(this);
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    elem.addListeners();
-  }
-  this.addListeners();
+    Scene_Base.prototype.continue.call(this);
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        elem.addListeners();
+    }
+    this.addListeners();
 }
 
 Scene_MenuBase.prototype.leave = function() {
-  Scene_Base.prototype.leave.call(this);
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    elem.remove();
-  }
-  this.removeListeners();
+    Scene_Base.prototype.leave.call(this);
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        elem.remove();
+    }
+    this.removeListeners();
 }
 
 Scene_MenuBase.prototype.addUI = function(elem) {
-  if(!elem.z) elem.z = 0;
-  this.ui.push(elem);
-  if(elem.sprite) this.stage.addChild(elem.sprite);
-  else if(elem.contains(PIXI.DisplayObject)) this.stage.addChild(elem);
+    if(!elem.z) elem.z = 0;
+    this.ui.push(elem);
+    if(elem.sprite) this.stage.addChild(elem.sprite);
+    else if(elem.contains(PIXI.DisplayObject)) this.stage.addChild(elem);
 }
 
 Scene_MenuBase.prototype.applyUIZOrdering = function() {
-  this.ui.sort(function(a, b) {
-    return a.z - b.z;
-  });
+    this.ui.sort(function(a, b) {
+        return a.z - b.z;
+    });
 }
 
 Scene_MenuBase.prototype.addBackground = function() {
-  this.background = new Background("bgMainMenu");
-  this.stage.addChild(this.background);
+    this.background = new Background("bgMainMenu");
+    this.stage.addChild(this.background);
 }
 
 Scene_MenuBase.prototype.createCommands = function() {}
 
 Scene_MenuBase.prototype.addListeners = function() {
-  Scene_Base.prototype.addListeners.call(this);
-  Input.mouse.button.LEFT.onPress.add(this._onMouseLeftDown, this);
-  Input.mouse.button.LEFT.onRelease.add(this._onMouseLeftUp, this);
+    Scene_Base.prototype.addListeners.call(this);
+    Input.mouse.button.LEFT.onPress.add(this._onMouseLeftDown, this);
+    Input.mouse.button.LEFT.onRelease.add(this._onMouseLeftUp, this);
 }
 
 Scene_MenuBase.prototype.removeListeners = function() {
-  Scene_Base.prototype.removeListeners.call(this);
-  Input.mouse.button.LEFT.onPress.remove(this._onMouseLeftDown, this);
-  Input.mouse.button.LEFT.onRelease.remove(this._onMouseLeftUp, this);
+    Scene_Base.prototype.removeListeners.call(this);
+    Input.mouse.button.LEFT.onPress.remove(this._onMouseLeftDown, this);
+    Input.mouse.button.LEFT.onRelease.remove(this._onMouseLeftUp, this);
 }
 
 Scene_MenuBase.prototype._onMouseLeftDown = function() {
-  var returnElem = null;
-  if(this.active) {
-    this.applyUIZOrdering();
-    for(var a = 0;a < this.ui.length;a++) {
-      var elem = this.ui[a];
-      if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
-        returnElem = elem;
-        if(elem.click) elem.click();
-        break;
-      }
+    var returnElem = null;
+    if(this.active) {
+        this.applyUIZOrdering();
+        for(var a = 0;a < this.ui.length;a++) {
+            var elem = this.ui[a];
+            if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
+                returnElem = elem;
+                if(elem.click) elem.click();
+                break;
+            }
+        }
     }
-  }
-  return returnElem;
+    return returnElem;
 }
 
 Scene_MenuBase.prototype._onMouseLeftUp = function() {
-  if(this.active) {
-    this.ui.forEach(function(obj) {
-      obj.release();
-    });
+    if(this.active) {
+        this.ui.forEach(function(obj) {
+            obj.release();
+        });
 
-    this.applyUIZOrdering();
-    for(var a = 0;a < this.ui.length;a++) {
-      var elem = this.ui[a];
-      if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
-        if(elem.unclick) elem.unclick();
-        break;
-      }
+        this.applyUIZOrdering();
+        for(var a = 0;a < this.ui.length;a++) {
+            var elem = this.ui[a];
+            if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) {
+                if(elem.unclick) elem.unclick();
+                break;
+            }
+        }
     }
-  }
 }
 
 Scene_MenuBase.prototype.createBackButton = function() {
-  var elem = new UI_MenuButton(new Point(40, 40), "Back");
-  elem.onClick.add(this.fadeOut, this, [function() {
-    SceneManager.pop();
-  }]);
-  this.addUI(elem);
-  return elem;
+    var elem = new UI_MenuButton(new Point(40, 40), "Back");
+    elem.onClick.add(this.fadeOut, this, [function() {
+        SceneManager.pop();
+    }]);
+    this.addUI(elem);
+    return elem;
 }
 
 Scene_MenuBase.prototype.getUI_Element = function(key) {
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    if(elem.key === key) return elem;
-  }
-  return null;
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        if(elem.key === key) return elem;
+    }
+    return null;
 }
 
 function Scene_MainMenu() {
@@ -2183,7 +2194,7 @@ Scene_Options.prototype.createUI = function() {
 }
 
 function Scene_PreGame() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Scene_PreGame.TEXT_OBJECTIVE = "%l Lemmings\n%p% to be saved";
@@ -2192,807 +2203,853 @@ Scene_PreGame.prototype = Object.create(Scene_MenuBase.prototype);
 Scene_PreGame.prototype.constructor = Scene_PreGame;
 
 Scene_PreGame.prototype.init = function(src) {
-  Scene_MenuBase.prototype.init.call(this);
-  this._loading = true;
-  if(src) {
-    $gameMap = new Game_Map(src, this);
-    $gameMap.onCreate.addOnce(this.start, this, [], 10);
-  }
+    Scene_MenuBase.prototype.init.call(this);
+    this._loading = true;
+    this.replay = null;
+    if(src) {
+        $gameMap = new Game_Map(src, this);
+        $gameMap.onCreate.addOnce(this.start, this, [], 10);
+    }
 }
 
 Scene_PreGame.prototype.start = function() {
-  this._loading = false;
-  // Stop Bgm
-  AudioManager.stopBgm();
-  // Add background
-  this.background = new Background("bgMainMenu");
-  this.stage.addChild(this.background);
-  // Add minimap
-  this.minimap = new Sprite_Minimap();
-  this.minimap.z = 0;
-  this.stage.addChild(this.minimap);
-  this.updateMinimap();
-  // Add description
-  this.text = {
-    mapName: new Text($gameMap.name),
-    objective: new Text(Scene_PreGame.TEXT_OBJECTIVE.replace("%l", $gameMap.totalLemmings).replace("%p", Math.floor($gameMap.needed / $gameMap.totalLemmings * 100)))
-  };
-  this.text.mapName.position.set(100, 120);
-  this.text.objective.position.set(100, 160 + this.text.mapName.height);
-  for(var a in this.text) {
-    this.stage.addChild(this.text[a]);
-  }
-  // Fade in
-  this.fadeIn();
-  // Add back button
-  this.createBackButton();
+    this._loading = false;
+    // Stop Bgm
+    AudioManager.stopBgm();
+    // Add background
+    this.background = new Background("bgMainMenu");
+    this.stage.addChild(this.background);
+    // Add minimap
+    this.minimap = new Sprite_Minimap();
+    this.minimap.z = 0;
+    this.stage.addChild(this.minimap);
+    this.updateMinimap();
+    // Add description
+    this.text = {
+        mapName: new Text($gameMap.name),
+        objective: new Text(Scene_PreGame.TEXT_OBJECTIVE.replace("%l", $gameMap.totalLemmings).replace("%p", Math.floor($gameMap.needed / $gameMap.totalLemmings * 100)))
+    };
+    this.text.mapName.position.set(100, 120);
+    this.text.objective.position.set(100, 160 + this.text.mapName.height);
+    for(var a in this.text) {
+        this.stage.addChild(this.text[a]);
+    }
+    // Fade in
+    this.fadeIn();
+    // Add back button
+    this.createBackButton();
 }
 
 Scene_PreGame.prototype.update = function() {
-  Scene_MenuBase.prototype.update.call(this);
-  if(!this._loading) {
-    this.updateMinimap();
-  }
+    Scene_MenuBase.prototype.update.call(this);
+    if(!this._loading) {
+        this.updateMinimap();
+    }
 }
 
 Scene_PreGame.prototype.continue = function() {
-  Scene_MenuBase.prototype.continue.call(this);
-  $gameMap.createLevel();
-  this.fadeIn();
+    Scene_MenuBase.prototype.continue.call(this);
+    $gameMap.createLevel();
+    this.fadeIn();
 }
 
 Scene_PreGame.prototype.end = function() {
-  Scene_MenuBase.prototype.end.call(this);
-  $gameMap.destroy();
+    Scene_MenuBase.prototype.end.call(this);
+    $gameMap.destroy();
 }
 
 Scene_PreGame.prototype.updateMinimap = function() {
-  this.minimap.update();
-  // Reposition minimap
-  var maxWidth = 360;
-  this.minimap.height = (this.minimap.height / this.minimap.width) * maxWidth;
-  this.minimap.width = maxWidth;
-  this.minimap.position.set(Core.resolution.x - 40 - this.minimap.width, 40);
+    this.minimap.update();
+    // Reposition minimap
+    var maxWidth = 360;
+    this.minimap.height = (this.minimap.height / this.minimap.width) * maxWidth;
+    this.minimap.width = maxWidth;
+    this.minimap.position.set(Core.resolution.x - 40 - this.minimap.width, 40);
 }
 
 Scene_PreGame.prototype.startLevel = function() {
-  this.fadeOut(function() {
-    SceneManager.push(new Scene_Game());
-  }.bind(this));
+    this.fadeOut(function() {
+        SceneManager.push(new Scene_Game());
+    }.bind(this));
 }
 
 Scene_PreGame.prototype._onMouseLeftDown = function() {
-  if($gameMap && $gameMap.loaded) {
-    var elem = Scene_MenuBase.prototype._onMouseLeftDown.call(this);
-    if(!elem) {
-      this.startLevel();
+    if($gameMap && $gameMap.loaded) {
+        var elem = Scene_MenuBase.prototype._onMouseLeftDown.call(this);
+        if(!elem) {
+            this.startLevel();
+        }
     }
-  }
 }
 
 function Scene_Game() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Scene_Game.prototype = Object.create(Scene_Base.prototype);
 Scene_Game.prototype.constructor = Scene_Game;
 
 Scene_Game.prototype.init = function() {
-  Scene_Base.prototype.init.call(this);
-  this.alarm = {
-    doors: new Alarm(),
-    nuke: new Alarm()
-  };
-  this.alarm.nuke.onExpire.add(this._nukeLemming, this);
-  this.alarm.nuke.baseTime = 10;
-  this.stage.addChild($gameMap.world);
-  this.actionSelected = "";
-  this.paused = false;
-  this.fastForward = false;
-  this.nuked = false;
-  this.grid = false;
-  this.initUI();
-  // Init cursor
-  this.cursor = new Sprite_Cursor();
-  this.lemmingSelect = null;
-  this.stage.addChild(this.cursor);
-  // Init action preview
-  this.actionPreview = [];
-  this.actionPreview = {
-    tiles: [],
-    alpha: {
-      value: 0.9,
-      speed: -0.05,
-      min: 0.5,
-      max: 0.9
+    Scene_Base.prototype.init.call(this);
+    this.alarm = {
+        doors: new Alarm(),
+        nuke: new Alarm()
+    };
+    // Update replay
+    $gameMap.updateReplay();
+    // Set vars
+    this.alarm.nuke.onExpire.add(this._nukeLemming, this);
+    this.alarm.nuke.baseTime = 10;
+    this.stage.addChild($gameMap.world);
+    this.actionSelected = "";
+    this.paused = false;
+    this.fastForward = false;
+    this.nuked = false;
+    this.grid = false;
+    this._mapStarted = false;
+    this.initUI();
+    // Init cursor
+    this.cursor = new Sprite_Cursor();
+    this.lemmingSelect = null;
+    this.stage.addChild(this.cursor);
+    // Init action preview
+    this.actionPreview = [];
+    this.actionPreview = {
+        tiles: [],
+        alpha: {
+            value: 0.9,
+            speed: -0.05,
+            min: 0.5,
+            max: 0.9
+        }
+    };
+    for(var a = 0;a < 5;a++) {
+        var spr = new Sprite_Base();
+        var anim = spr.addAnimation("idle");
+        anim.addFrame("atlMisc", "previewTile.png");
+        spr.playAnimation("idle");
+        spr.visible = false;
+        spr.z = -1510;
+        this.actionPreview.tiles.push(spr);
+        $gameMap.world.addChild(spr);
     }
-  };
-  for(var a = 0;a < 5;a++) {
-    var spr = new Sprite_Base();
-    var anim = spr.addAnimation("idle");
-    anim.addFrame("atlMisc", "previewTile.png");
-    spr.playAnimation("idle");
-    spr.visible = false;
-    spr.z = -1510;
-    this.actionPreview.tiles.push(spr);
-    $gameMap.world.addChild(spr);
-  }
-  // Zoom
-  this.zoom = {
-    factor: {
-      current: 1,
-      to: 1,
-      maximum: 3,
-      minimum: 0.5
-    },
-    focusPoint: new Point()
-  };
-  this._calculateZoomBounds();
-  // Fade in
-  this.fadeIn(this.startMap.bind(this, 0));
-  // Add end of map event
-  $gameMap.onEndOfMap.addOnce(this.endMap, this);
-  // Apply player config
-  if(Options.data.gameplay.startWithGrid) this.toggleGrid(false);
-  this._mouseScrolling = false;
+    // Zoom
+    this.zoom = {
+        factor: {
+            current: 1,
+            to: 1,
+            maximum: 3,
+            minimum: 0.5
+        },
+        focusPoint: new Point()
+    };
+    this._calculateZoomBounds();
+    // Fade in
+    this.fadeIn(this.startMap.bind(this, 0));
+    // Add end of map event
+    $gameMap.onEndOfMap.addOnce(this.endMap, this);
+    // Apply player config
+    if(Options.data.gameplay.startWithGrid) this.toggleGrid(false);
+    this._mouseScrolling = false;
 }
 
 Scene_Game.prototype.create = function() {
-  Scene_Base.prototype.create.call(this);
-  this.initControls();
-  $gameMap.updateCameraBounds();
+    Scene_Base.prototype.create.call(this);
+    this.initControls();
+    $gameMap.updateCameraBounds();
 }
 
 Scene_Game.prototype.update = function() {
-  Scene_Base.prototype.update.call(this);
-  // Move camera
-  this.controlCamera();
-  if(this.minimap) this.minimap.update();
-  if(!this.paused) {
-    // Update alarms
-    for(var a in this.alarm) {
-      this.alarm[a].update();
+    Scene_Base.prototype.update.call(this);
+    // Move camera
+    this.controlCamera();
+    if(this.minimap) this.minimap.update();
+    if(!this.paused) {
+        // Update map
+        var updateCount = 1;
+        if(this.fastForward) updateCount = 4;
+        for(var a = 0;a < updateCount;a++) {
+            for(var b in this.alarm) {
+                this.alarm[b].update();
+            }
+            if(this._mapStarted) $gameMap.update();
+        }
     }
-    // Update map
-    var updateCount = 1;
-    if(this.fastForward) updateCount = 4;
-    for(var a = 0;a < updateCount;a++) {
-      for(var b in this.alarm) {
-        this.alarm[b].update();
-      }
-      $gameMap.update();
+    // Lemming control
+    this.lemmingSelect = this.getLemmingUnderCursor();
+    if(this.lemmingSelect) {
+        var pt = $gameMap.toScreenSpace(this.lemmingSelect.x - (this.lemmingSelect.offsetPoint.down.x * 8), this.lemmingSelect.y - (this.lemmingSelect.offsetPoint.down.y * 8));
+        this.cursor.position.set(pt.x, pt.y);
+        this.cursor.scale.set(2 / this.zoom.factor.current);
+        this.cursor.playAnimation("over");
+        this.cursor.visible = true;
     }
-  }
-  // Lemming control
-  this.lemmingSelect = this.getLemmingUnderCursor();
-  if(this.lemmingSelect) {
-    var pt = $gameMap.toScreenSpace(this.lemmingSelect.x - (this.lemmingSelect.offsetPoint.down.x * 8), this.lemmingSelect.y - (this.lemmingSelect.offsetPoint.down.y * 8));
-    this.cursor.position.set(pt.x, pt.y);
-    this.cursor.scale.set(2 / this.zoom.factor.current);
-    this.cursor.playAnimation("over");
-    this.cursor.visible = true;
-  }
-  else {
-    this.cursor.visible = false;
-  }
-  this.updateActionPreview();
+    else {
+        this.cursor.visible = false;
+    }
+    this.updateActionPreview();
+    // Update replay icon
+    if(this.replayIcon != null) this.replayIcon.sprite.update();
 }
 
 Scene_Game.prototype.startMouseScroll = function() {
-  this._mouseScrolling = true;
+    this._mouseScrolling = true;
 }
 
 Scene_Game.prototype.stopMouseScroll = function() {
-  this._mouseScrolling = false;
+    this._mouseScrolling = false;
 }
 
 Scene_Game.prototype.controlCamera = function() {
-  // Mouse scrolling
-  if(this._mouseScrolling) {
-    var spdFactor = 0.5;
-    var hspd = (Input.mouse.position.screenPrev.x - Input.mouse.position.screen.x) * spdFactor;
-    var vspd = (Input.mouse.position.screenPrev.y - Input.mouse.position.screen.y) * spdFactor;
-    $gameMap.camera.move(hspd, vspd);
-  }
+    // Mouse scrolling
+    if(this._mouseScrolling) {
+        var spdFactor = 0.5;
+        var hspd = (Input.mouse.position.screenPrev.x - Input.mouse.position.screen.x) * spdFactor;
+        var vspd = (Input.mouse.position.screenPrev.y - Input.mouse.position.screen.y) * spdFactor;
+        $gameMap.camera.move(hspd, vspd);
+    }
 
-  // Keyboard scrolling
-  var camSpeed = 3;
-  if(Input.key.SHIFT.down) camSpeed *= 2;
+    // Keyboard scrolling
+    var camSpeed = 3;
+    if(Input.key.SHIFT.down) camSpeed *= 2;
 
-  if(Input.isDown("camLeft")) {
-    $gameMap.camera.move(-camSpeed, 0);
-  }
-  else if(Input.isDown("camRight")) {
-    $gameMap.camera.move(camSpeed, 0);
-  }
-  if(Input.isDown("camUp")) {
-    $gameMap.camera.move(0, -camSpeed);
-  }
-  else if(Input.isDown("camDown")) {
-    $gameMap.camera.move(0, camSpeed);
-  }
+    if(Input.isDown("camLeft")) {
+        $gameMap.camera.move(-camSpeed, 0);
+    }
+    else if(Input.isDown("camRight")) {
+        $gameMap.camera.move(camSpeed, 0);
+    }
+    if(Input.isDown("camUp")) {
+        $gameMap.camera.move(0, -camSpeed);
+    }
+    else if(Input.isDown("camDown")) {
+        $gameMap.camera.move(0, camSpeed);
+    }
 
-  // Update
-  this.updateZoom();
-  $gameMap.updateCamera();
+    // Update
+    this.updateZoom();
+    $gameMap.updateCamera();
 }
 
 Scene_Game.prototype.updateZoom = function() {
-  // Gather data
-  var fp = this.zoom.focusPoint;
-  var br = $gameMap.camera.baseRect;
-  var r = $gameMap.camera.rect;
-  var prevW = r.width;
-  var prevH = r.height;
-  // Apply Zoom
-  r.width = br.width * this.zoom.factor.current;
-  r.height = br.height * this.zoom.factor.current;
-  // Reposition
-  var diffW = r.width - prevW;
-  var diffH = r.height - prevH;
-  var anchor = new Point((r.x - fp.x) / r.width, (r.y - fp.y) / r.height);
-  var pos = new Point(r.x + (diffW * anchor.x), r.y + (diffH * anchor.y));
-  $gameMap.camera.setPosition(pos, new Point(0, 0));
+    // Gather data
+    var fp = this.zoom.focusPoint;
+    var br = $gameMap.camera.baseRect;
+    var r = $gameMap.camera.rect;
+    var prevW = r.width;
+    var prevH = r.height;
+    // Apply Zoom
+    r.width = br.width * this.zoom.factor.current;
+    r.height = br.height * this.zoom.factor.current;
+    // Reposition
+    var diffW = r.width - prevW;
+    var diffH = r.height - prevH;
+    var anchor = new Point((r.x - fp.x) / r.width, (r.y - fp.y) / r.height);
+    var pos = new Point(r.x + (diffW * anchor.x), r.y + (diffH * anchor.y));
+    $gameMap.camera.setPosition(pos, new Point(0, 0));
 }
 
 Scene_Game.prototype.startMap = function(stage) {
-  if(stage === undefined) stage = 0;
-  if(stage === 0) {
-    this.alarm.start = new Alarm();
-    this.alarm.start.onExpire.addOnce(this.startMap, this, [stage+1]);
-    this.alarm.start.time = 60;
-  }
-  else if(stage === 1) {
-    var snd = AudioManager.playSound("sndLetsGo");
-    snd.audio.once("end", this.startMap.bind(this, stage+1));
-  }
-  else if(stage === 2) {
-    this.alarm.start.onExpire.addOnce(this.startMap, this, [stage+1]);
-    this.alarm.start.time = 30;
-  }
-  else if(stage === 3) {
-    this._openDoors();
-  }
+    if(stage === undefined) stage = 0;
+    if(stage === 0) {
+        this.alarm.start = new Alarm();
+        this.alarm.start.onExpire.addOnce(this.startMap, this, [stage+1]);
+        this.alarm.start.time = 60;
+    }
+    else if(stage === 1) {
+        var snd = AudioManager.playSound("sndLetsGo");
+        snd.audio.once("end", this.startMap.bind(this, stage+1));
+    }
+    else if(stage === 2) {
+        this.alarm.start.onExpire.addOnce(this.startMap, this, [stage+1]);
+        this.alarm.start.time = 30;
+    }
+    else if(stage === 3) {
+        this._openDoors();
+    }
 }
 
 Scene_Game.prototype._openDoors = function() {
-  this.alarm.doors.time = 30;
-  this.alarm.doors.onExpire.addOnce(function () {
-    var arr = $gameMap.getDoors();
-    var playedSound = false;
-    for(var a = 0;a < arr.length;a++) {
-      var obj = arr[a];
-      if(!playedSound && obj.sounds && obj.sounds.open) {
-        AudioManager.playSound(obj.sounds.open);
-        playedSound = true;
-      }
-      obj.doorOpen();
-    }
-  }, this);
+    this.alarm.doors.time = 30;
+    this.alarm.doors.onExpire.addOnce(function () {
+        var arr = $gameMap.getDoors();
+        var playedSound = false;
+        for(var a = 0;a < arr.length;a++) {
+            var obj = arr[a];
+            if(!playedSound && obj.sounds && obj.sounds.open) {
+                AudioManager.playSound(obj.sounds.open);
+                playedSound = true;
+            }
+            obj.doorOpen();
+            this._mapStarted = true;
+        }
+    }, this);
 }
 
 Scene_Game.prototype.initUI = function() {
-  this.ui = [];
-  this.uiScale = 2;
-  this.createPanel();
-  var cW = this.createActionButtons();
-  this.createExtraButtons(cW);
-  this.createMinimap();
+    this.ui = [];
+    this.uiScale = 2;
+    this.createPanel();
+    var cW = this.createActionButtons();
+    this.createExtraButtons(cW);
+    this.createMinimap();
+    this.createReplayIcon();
 }
 
 Scene_Game.prototype.createPanel = function() {
-  this.panel = new UI_Base(0, 0, "panel");
-  this.panel.sprite.addAnimationExt("atlPanels", "idle", 1, "panel_classic.png");
-  this.panel.sprite.playAnimation("idle");
-  this.panel.sprite.scale.set(this.uiScale);
-  this.panel.y = Core.resolution.y - this.panel.sprite.height;
-  this.panel.sprite.z = 100;
-  this.uiHeight = this.panel.sprite.height;
-  this.stage.addChild(this.panel.sprite);
-  this.ui.push(this.panel);
+    this.panel = new UI_Base(0, 0, "panel");
+    this.panel.sprite.addAnimationExt("atlPanels", "idle", 1, "panel_classic.png");
+    this.panel.sprite.playAnimation("idle");
+    this.panel.sprite.scale.set(this.uiScale);
+    this.panel.y = Core.resolution.y - this.panel.sprite.height;
+    this.panel.sprite.z = 100;
+    this.uiHeight = this.panel.sprite.height;
+    this.stage.addChild(this.panel.sprite);
+    this.ui.push(this.panel);
 }
 
 Scene_Game.prototype.panelHeight = function() {
-  return this.panel.sprite.height;
+    return this.panel.sprite.height;
 }
 
 Scene_Game.prototype.createActionButtons = function() {
-  var cA = 0;
-  var cW = 0;
-  for(var a in $gameMap.actions) {
-    var action = $gameMap.actions[a];
-    var actionSrc = $dataActions[a];
-    var btn = new UI_Button(0, 0, "action" + cA.toString());
+    var cA = 0;
+    var cW = 0;
+    for(var a in $gameMap.actions) {
+        var action = $gameMap.actions[a];
+        var actionSrc = $dataActions[a];
+        var btn = new UI_Button(0, 0, "action" + cA.toString());
 
-    btn.onClick.add(this.selectAction, this, [cA]);
-    btn.addAnimation("up", "atlGUI", [actionSrc.button.up]);
-    btn.addAnimation("down", "atlGUI", [actionSrc.button.down]);
-    btn.sprite.scale.set(this.uiScale);
-    btn.sprite.playAnimation("up");
-    if(cA === 0) {
-      this.actionSelected = a;
-      btn.sprite.playAnimation("down");
+        btn.onClick.add(this.selectAction, this, [cA]);
+        btn.addAnimation("up", "atlGUI", [actionSrc.button.up]);
+        btn.addAnimation("down", "atlGUI", [actionSrc.button.down]);
+        btn.sprite.scale.set(this.uiScale);
+        btn.sprite.playAnimation("up");
+        if(cA === 0) {
+            this.actionSelected = a;
+            btn.sprite.playAnimation("down");
+        }
+        btn.actionName = a;
+        btn.label.text = action.amount.toString();
+
+        btn.x = cW;
+        cW += btn.sprite.width;
+        btn.y = Core.resolution.y - btn.sprite.height;
+
+        this.ui.push(btn);
+        btn.refresh();
+        this.stage.addChild(btn.sprite);
+        cA++;
     }
-    btn.actionName = a;
-    btn.label.text = action.amount.toString();
-
-    btn.x = cW;
-    cW += btn.sprite.width;
-    btn.y = Core.resolution.y - btn.sprite.height;
-
-    this.ui.push(btn);
-    btn.refresh();
-    this.stage.addChild(btn.sprite);
-    cA++;
-  }
-  return cW;
+    return cW;
 }
 
 Scene_Game.prototype.createExtraButtons = function(cW) {
-  // Create pause button
-  var btn = new UI_Button(0, 0, "pause");
-  btn.onClick.add(this.pauseGame, this, [true]);
-  btn.addAnimation("up", "atlGUI", ["Btn_Pause_0.png"]);
-  btn.addAnimation("down", "atlGUI", ["Btn_Pause_1.png"]);
-  btn.sprite.scale.set(this.uiScale);
-  btn.sprite.playAnimation("up");
-  btn.x = cW;
-  cW += btn.sprite.width;
-  btn.y = Core.resolution.y - btn.sprite.height;
-  this.ui.push(btn);
-  btn.refresh();
-  this.stage.addChild(btn.sprite);
-  // Create fast forward button
-  var btn = new UI_Button(0, 0, "fastforward");
-  btn.onClick.add(this.toggleFastForward, this, [true]);
-  btn.addAnimation("up", "atlGUI", ["Btn_FastForward_0.png"]);
-  btn.addAnimation("down", "atlGUI", ["Btn_FastForward_1.png"]);
-  btn.sprite.scale.set(this.uiScale);
-  btn.sprite.playAnimation("up");
-  btn.x = cW;
-  cW += btn.sprite.width;
-  btn.y = Core.resolution.y - btn.sprite.height;
-  this.ui.push(btn);
-  btn.refresh();
-  this.stage.addChild(btn.sprite);
-  // Create nuke button
-  var btn = new UI_Button(0, 0, "nuke");
-  btn.onClick.add(this._buttonNuke, this, [btn]);
-  btn.addAnimation("up", "atlGUI", ["Btn_Nuke_0.png"]);
-  btn.addAnimation("down", "atlGUI", ["Btn_Nuke_1.png"]);
-  btn.sprite.scale.set(this.uiScale);
-  btn.sprite.playAnimation("up");
-  btn.x = cW;
-  cW += btn.sprite.width;
-  btn.y = Core.resolution.y - btn.sprite.height;
-  this.ui.push(btn);
-  btn.refresh();
-  this.stage.addChild(btn.sprite);
-  // Create grid button
-  var btn = new UI_Button(0, 0, "grid");
-  btn.onClick.add(this.toggleGrid, this, [true]);
-  btn.addAnimation("up", "atlGUI", ["Btn_Grid_0.png"]);
-  btn.addAnimation("down", "atlGUI", ["Btn_Grid_1.png"]);
-  btn.sprite.scale.set(this.uiScale);
-  btn.sprite.playAnimation("up");
-  btn.x = cW;
-  cW += btn.sprite.width;
-  btn.y = Core.resolution.y - btn.sprite.height;
-  this.ui.push(btn);
-  btn.refresh();
-  this.stage.addChild(btn.sprite);
+    // Create pause button
+    var btn = new UI_Button(0, 0, "pause");
+    btn.onClick.add(this.pauseGame, this, [true]);
+    btn.addAnimation("up", "atlGUI", ["Btn_Pause_0.png"]);
+    btn.addAnimation("down", "atlGUI", ["Btn_Pause_1.png"]);
+    btn.sprite.scale.set(this.uiScale);
+    btn.sprite.playAnimation("up");
+    btn.x = cW;
+    cW += btn.sprite.width;
+    btn.y = Core.resolution.y - btn.sprite.height;
+    this.ui.push(btn);
+    btn.refresh();
+    this.stage.addChild(btn.sprite);
+    // Create fast forward button
+    var btn = new UI_Button(0, 0, "fastforward");
+    btn.onClick.add(this.toggleFastForward, this, [true]);
+    btn.addAnimation("up", "atlGUI", ["Btn_FastForward_0.png"]);
+    btn.addAnimation("down", "atlGUI", ["Btn_FastForward_1.png"]);
+    btn.sprite.scale.set(this.uiScale);
+    btn.sprite.playAnimation("up");
+    btn.x = cW;
+    cW += btn.sprite.width;
+    btn.y = Core.resolution.y - btn.sprite.height;
+    this.ui.push(btn);
+    btn.refresh();
+    this.stage.addChild(btn.sprite);
+    // Create nuke button
+    var btn = new UI_Button(0, 0, "nuke");
+    btn.onClick.add(this._buttonNuke, this, [btn]);
+    btn.addAnimation("up", "atlGUI", ["Btn_Nuke_0.png"]);
+    btn.addAnimation("down", "atlGUI", ["Btn_Nuke_1.png"]);
+    btn.sprite.scale.set(this.uiScale);
+    btn.sprite.playAnimation("up");
+    btn.x = cW;
+    cW += btn.sprite.width;
+    btn.y = Core.resolution.y - btn.sprite.height;
+    this.ui.push(btn);
+    btn.refresh();
+    this.stage.addChild(btn.sprite);
+    // Create grid button
+    var btn = new UI_Button(0, 0, "grid");
+    btn.onClick.add(this.toggleGrid, this, [true]);
+    btn.addAnimation("up", "atlGUI", ["Btn_Grid_0.png"]);
+    btn.addAnimation("down", "atlGUI", ["Btn_Grid_1.png"]);
+    btn.sprite.scale.set(this.uiScale);
+    btn.sprite.playAnimation("up");
+    btn.x = cW;
+    cW += btn.sprite.width;
+    btn.y = Core.resolution.y - btn.sprite.height;
+    this.ui.push(btn);
+    btn.refresh();
+    this.stage.addChild(btn.sprite);
 }
 
 Scene_Game.prototype.createMinimap = function() {
-  this.minimap = new UI_Minimap({ addCameraView: true, interactive: true });
-  this.updateMinimap();
-  this.stage.addChild(this.minimap.sprite);
+    this.minimap = new UI_Minimap({ addCameraView: true, interactive: true });
+    this.updateMinimap();
+    this.stage.addChild(this.minimap.sprite);
 }
 
+Scene_Game.prototype.createReplayIcon = function() {
+    if(this.replayIcon == null) {
+        this.replayIcon = new UI_Base(16, 16, "replayIcon");
+        this.replayIcon.addAnimation("idle", "atlMisc", ["replay_0.png", "replay_1.png"]);
+        this.replayIcon.sprite.playAnimation("idle");
+        this.replayIcon.sprite.animSpeed = 1 / 45;
+        this.stage.addChild(this.replayIcon.sprite);
+    }
+    this.replayIcon.sprite.alpha = 1;
+};
+
 Scene_Game.prototype.updateMinimap = function() {
-  this.minimap.update();
-  var maxWidth = 240;
-  var maxHeight = this.panel.height - 1;
-  this.minimap.sprite.height = (this.minimap.sprite.height / this.minimap.sprite.width) * maxWidth;
-  this.minimap.sprite.width = maxWidth;
-  this.minimap.sprite.position.set(Core.resolution.x - this.minimap.sprite.width, Core.resolution.y - this.minimap.sprite.height);
+    this.minimap.update();
+    var maxWidth = 240;
+    var maxHeight = this.panel.height - 1;
+    this.minimap.sprite.height = (this.minimap.sprite.height / this.minimap.sprite.width) * maxWidth;
+    this.minimap.sprite.width = maxWidth;
+    this.minimap.sprite.position.set(Core.resolution.x - this.minimap.sprite.width, Core.resolution.y - this.minimap.sprite.height);
 }
 
 Scene_Game.prototype.initControls = function() {
-  Input.mouse.button.LEFT.onPress.add(this._onMouseLeftDown, this);
-  // Action select
-  Input.key["1"].onPress.add(this.selectAction, this, [0]);
-  Input.key["2"].onPress.add(this.selectAction, this, [1]);
-  Input.key["3"].onPress.add(this.selectAction, this, [2]);
-  Input.key["4"].onPress.add(this.selectAction, this, [3]);
-  Input.key["5"].onPress.add(this.selectAction, this, [4]);
-  Input.key["6"].onPress.add(this.selectAction, this, [5]);
-  Input.key["7"].onPress.add(this.selectAction, this, [6]);
-  Input.key["8"].onPress.add(this.selectAction, this, [7]);
-  Input.key.F.onPress.add(this.toggleFastForward, this, [true]);
-  Input.key[" "].onPress.add(this.pauseGame, this, [true]);
-  Input.key.G.onPress.add(this.toggleGrid, this, [true]);
-  // Zooming
-  Input.mouse.button.WHEELUP.onPress.add(this.zoomIn, this, [0.1, true], 30);
-  Input.mouse.button.WHEELDOWN.onPress.add(this.zoomOut, this, [0.1, true], 30);
-  // Scrolling
-  Input.mouse.button.RIGHT.onPress.add(this.startMouseScroll, this);
-  Input.mouse.button.RIGHT.onRelease.add(this.stopMouseScroll, this);
+    Input.mouse.button.LEFT.onPress.add(this._onMouseLeftDown, this);
+    // Action select
+    Input.key["1"].onPress.add(this.selectAction, this, [0]);
+    Input.key["2"].onPress.add(this.selectAction, this, [1]);
+    Input.key["3"].onPress.add(this.selectAction, this, [2]);
+    Input.key["4"].onPress.add(this.selectAction, this, [3]);
+    Input.key["5"].onPress.add(this.selectAction, this, [4]);
+    Input.key["6"].onPress.add(this.selectAction, this, [5]);
+    Input.key["7"].onPress.add(this.selectAction, this, [6]);
+    Input.key["8"].onPress.add(this.selectAction, this, [7]);
+    Input.key.F.onPress.add(this.toggleFastForward, this, [true]);
+    Input.key[" "].onPress.add(this.pauseGame, this, [true]);
+    Input.key.G.onPress.add(this.toggleGrid, this, [true]);
+    // Zooming
+    Input.mouse.button.WHEELUP.onPress.add(this.zoomIn, this, [0.1, true], 30);
+    Input.mouse.button.WHEELDOWN.onPress.add(this.zoomOut, this, [0.1, true], 30);
+    // Scrolling
+    Input.mouse.button.RIGHT.onPress.add(this.startMouseScroll, this);
+    Input.mouse.button.RIGHT.onRelease.add(this.stopMouseScroll, this);
 }
 
 Scene_Game.prototype.releaseControls = function() {
-  Input.mouse.button.LEFT.onPress.remove(this._onMouseLeftDown, this);
-  Input.key["1"].onPress.remove(this.selectAction, this);
-  Input.key["2"].onPress.remove(this.selectAction, this);
-  Input.key["3"].onPress.remove(this.selectAction, this);
-  Input.key["4"].onPress.remove(this.selectAction, this);
-  Input.key["5"].onPress.remove(this.selectAction, this);
-  Input.key["6"].onPress.remove(this.selectAction, this);
-  Input.key["7"].onPress.remove(this.selectAction, this);
-  Input.key["8"].onPress.remove(this.selectAction, this);
-  Input.key.F.onPress.remove(this.toggleFastForward, this);
-  Input.key[" "].onPress.remove(this.pauseGame, this);
-  Input.key.G.onPress.remove(this.toggleGrid, this, [true]);
-  // Zooming
-  Input.mouse.button.WHEELUP.onPress.remove(this.zoomIn, this);
-  Input.mouse.button.WHEELDOWN.onPress.remove(this.zoomOut, this);
-  // Scrolling
-  Input.mouse.button.RIGHT.onPress.remove(this.startMouseScroll, this);
-  Input.mouse.button.RIGHT.onRelease.remove(this.stopMouseScroll, this);
+    Input.mouse.button.LEFT.onPress.remove(this._onMouseLeftDown, this);
+    Input.key["1"].onPress.remove(this.selectAction, this);
+    Input.key["2"].onPress.remove(this.selectAction, this);
+    Input.key["3"].onPress.remove(this.selectAction, this);
+    Input.key["4"].onPress.remove(this.selectAction, this);
+    Input.key["5"].onPress.remove(this.selectAction, this);
+    Input.key["6"].onPress.remove(this.selectAction, this);
+    Input.key["7"].onPress.remove(this.selectAction, this);
+    Input.key["8"].onPress.remove(this.selectAction, this);
+    Input.key.F.onPress.remove(this.toggleFastForward, this);
+    Input.key[" "].onPress.remove(this.pauseGame, this);
+    Input.key.G.onPress.remove(this.toggleGrid, this, [true]);
+    // Zooming
+    Input.mouse.button.WHEELUP.onPress.remove(this.zoomIn, this);
+    Input.mouse.button.WHEELDOWN.onPress.remove(this.zoomOut, this);
+    // Scrolling
+    Input.mouse.button.RIGHT.onPress.remove(this.startMouseScroll, this);
+    Input.mouse.button.RIGHT.onRelease.remove(this.stopMouseScroll, this);
 }
 
 Scene_Game.prototype.zoomIn = function(amount, toCursor) {
-  if(toCursor === undefined) toCursor = false;
-  this.zoom.factor.to = Math.max(this.zoom.factor.minimum, this.zoom.factor.to - amount);
-  // Set to 1.0 if within reach
-  if(this.zoom.factor.to > 1 - amount && this.zoom.factor.to < 1 + amount) this.zoom.factor.to = 1;
-  // Tween
-  createjs.Tween.get(this.zoom.factor, { override: true })
-    .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
-  if(toCursor) {
-    this.zoom.focusPoint.x = Input.mouse.position.world.x;
-    this.zoom.focusPoint.y = Input.mouse.position.world.y;
-  }
-  else {
-    this.zoom.focusPoint.x = $gameMap.camera.rect.x + ($gameMap.camera.rect.width / 2);
-    this.zoom.focusPoint.y = $gameMap.camera.rect.y + ($gameMap.camera.rect.height / 2);
-  }
+    if(toCursor === undefined) toCursor = false;
+    this.zoom.factor.to = Math.max(this.zoom.factor.minimum, this.zoom.factor.to - amount);
+    // Set to 1.0 if within reach
+    if(this.zoom.factor.to > 1 - amount && this.zoom.factor.to < 1 + amount) this.zoom.factor.to = 1;
+    // Tween
+    createjs.Tween.get(this.zoom.factor, { override: true })
+        .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
+    if(toCursor) {
+        this.zoom.focusPoint.x = Input.mouse.position.world.x;
+        this.zoom.focusPoint.y = Input.mouse.position.world.y;
+    }
+    else {
+        this.zoom.focusPoint.x = $gameMap.camera.rect.x + ($gameMap.camera.rect.width / 2);
+        this.zoom.focusPoint.y = $gameMap.camera.rect.y + ($gameMap.camera.rect.height / 2);
+    }
 }
 
 Scene_Game.prototype.zoomOut = function(amount, fromCursor) {
-  if(fromCursor === undefined) fromCursor = false;
-  this.zoom.factor.to = Math.min(this.zoom.factor.maximum, this.zoom.factor.to + amount);
-  // Set to 1.0 if within reach
-  if(this.zoom.factor.to > 1 - amount && this.zoom.factor.to < 1 + amount) this.zoom.factor.to = 1;
-  // Tween
-  createjs.Tween.get(this.zoom.factor, { override: true })
-    .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
-  if(fromCursor) {
-    this.zoom.focusPoint.x = Input.mouse.position.world.x;
-    this.zoom.focusPoint.y = Input.mouse.position.world.y;
-  }
-  else {
-    this.zoom.focusPoint.x = $gameMap.camera.rect.x + ($gameMap.camera.rect.width / 2);
-    this.zoom.focusPoint.y = $gameMap.camera.rect.y + ($gameMap.camera.rect.height / 2);
-  }
+    if(fromCursor === undefined) fromCursor = false;
+    this.zoom.factor.to = Math.min(this.zoom.factor.maximum, this.zoom.factor.to + amount);
+    // Set to 1.0 if within reach
+    if(this.zoom.factor.to > 1 - amount && this.zoom.factor.to < 1 + amount) this.zoom.factor.to = 1;
+    // Tween
+    createjs.Tween.get(this.zoom.factor, { override: true })
+        .to({ current: this.zoom.factor.to }, 500, createjs.Ease.getPowOut(2.5));
+    if(fromCursor) {
+        this.zoom.focusPoint.x = Input.mouse.position.world.x;
+        this.zoom.focusPoint.y = Input.mouse.position.world.y;
+    }
+    else {
+        this.zoom.focusPoint.x = $gameMap.camera.rect.x + ($gameMap.camera.rect.width / 2);
+        this.zoom.focusPoint.y = $gameMap.camera.rect.y + ($gameMap.camera.rect.height / 2);
+    }
 }
 
 Scene_Game.prototype._calculateZoomBounds = function() {
-  var newMaxSize = new Point(
-    $gameMap.realWidth / $gameMap.camera.baseRect.width,
-    ($gameMap.realHeight + this.panel.sprite.height) / $gameMap.camera.baseRect.height
-  );
-  this.zoom.factor.maximum = Math.min(newMaxSize.x, newMaxSize.y);
+    var newMaxSize = new Point(
+        $gameMap.realWidth / $gameMap.camera.baseRect.width,
+        ($gameMap.realHeight + this.panel.sprite.height) / $gameMap.camera.baseRect.height
+    );
+    this.zoom.factor.maximum = Math.min(newMaxSize.x, newMaxSize.y);
 }
 
 Scene_Game.prototype._onMouseLeftDown = function() {
-  var elem = this.mouseOverUI();
-  if(elem && elem.click) elem.click();
-  else if(!elem && this.lemmingSelect) {
-    if(this.actionSelected !== "" && $gameMap.actions[this.actionSelected]) {
-      if($gameMap.actions[this.actionSelected].amount > 0) {
-        var result = this.lemmingSelect.assignAction(this.actionSelected);
-        if(result) {
-          AudioManager.playSound("sndAction");
-          $gameMap.actions[this.actionSelected].amount--;
-          var elem = this.getActionButton(this.actionSelected);
-          if(elem) {
-            elem.label.text = $gameMap.actions[this.actionSelected].amount.toString();
-            elem.refresh();
-          }
+    var elem = this.mouseOverUI();
+    if(elem && elem.click) elem.click();
+    else if(!elem) {
+        this.stopReplay();
+        if(this.lemmingSelect) {
+            if(this.actionSelected !== "" && $gameMap.actions[this.actionSelected]) {
+                if($gameMap.actions[this.actionSelected].amount > 0) {
+                    this.assignAction(this.lemmingSelect, this.actionSelected, true);
+                }
+            }
         }
-      }
     }
-  }
 }
 
+Scene_Game.prototype.assignAction = function(lemming, action, playSound) {
+    if(playSound == null) playSound = false;
+    var result = lemming.assignAction(action);
+    if(result) {
+        // Subtract action count
+        $gameMap.actions[action].amount--;
+        // Action depletion visual and audio update
+        if(playSound === true) AudioManager.playSound("sndAction");
+        var elem = this.getActionButton(action);
+        if(elem) {
+            elem.label.text = $gameMap.actions[action].amount.toString();
+            elem.refresh();
+        }
+        // Add to replay
+        var replayAction = $gameMap.replay.addAction($gameMap.frame);
+        var lemmingIndex = $gameMap.getLemmings().indexOf(lemming);
+        replayAction.query = "map.getLemmings()[" + lemmingIndex + "];";
+        replayAction.action = "scene.assignAction(object, \"" + action + "\");";
+    }
+    return result;
+};
+
 Scene_Game.prototype.mouseOverUI = function() {
-  this.sortUI();
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) return elem;
-  }
-  return null;
+    this.sortUI();
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        if(elem.over(Input.mouse.position.screen.x, Input.mouse.position.screen.y)) return elem;
+    }
+    return null;
 }
 
 Scene_Game.prototype.sortUI = function() {
-  this.ui.sort(function(a, b) {
-    return a.z - b.z;
-  });
+    this.ui.sort(function(a, b) {
+        return a.z - b.z;
+    });
 }
 
 Scene_Game.prototype.selectAction = function(index) {
-  var key = "action" + index.toString();
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    if(elem.key === key) {
-      elem.sprite.playAnimation("down");
-      this.actionSelected = elem.actionName;
-      AudioManager.playSound("sndUI_Click");
+    var key = "action" + index.toString();
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        if(elem.key === key) {
+            elem.sprite.playAnimation("down");
+            this.actionSelected = elem.actionName;
+            AudioManager.playSound("sndUI_Click");
+        }
+        else if(elem.actionName) {
+            elem.sprite.playAnimation("up");
+        }
     }
-    else if(elem.actionName) {
-      elem.sprite.playAnimation("up");
-    }
-  }
 }
 
 Scene_Game.prototype.getUI_Element = function(key) {
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    if(elem.key === key) return elem;
-  }
-  return null;
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        if(elem.key === key) return elem;
+    }
+    return null;
 }
 
 Scene_Game.prototype.getActionButton = function(actionName) {
-  for(var a = 0;a < this.ui.length;a++) {
-    var elem = this.ui[a];
-    if(elem.actionName && elem.actionName === actionName) return elem;
-  }
-  return false;
+    for(var a = 0;a < this.ui.length;a++) {
+        var elem = this.ui[a];
+        if(elem.actionName && elem.actionName === actionName) return elem;
+    }
+    return false;
 }
 
 Scene_Game.prototype.pauseGame = function(playSound) {
-  this.paused = !this.paused;
-  var elem = this.getUI_Element("pause");
-  // Now paused
-  if(this.paused) {
-    elem.sprite.playAnimation("down");
-    if(Options.data.audio.toggleDuringPause) AudioManager.pauseBgm();
-  }
-  // Now unpaused
-  else {
-    elem.sprite.playAnimation("up");
-    AudioManager.resumeBgm();
-  }
-  if(playSound) AudioManager.playSound("sndUI_Click");
+    this.paused = !this.paused;
+    var elem = this.getUI_Element("pause");
+    // Now paused
+    if(this.paused) {
+        elem.sprite.playAnimation("down");
+        if(Options.data.audio.toggleDuringPause) AudioManager.pauseBgm();
+    }
+    // Now unpaused
+    else {
+        elem.sprite.playAnimation("up");
+        AudioManager.resumeBgm();
+    }
+    if(playSound) AudioManager.playSound("sndUI_Click");
 }
 
 Scene_Game.prototype.toggleFastForward = function(playSound) {
-  this.fastForward = !this.fastForward;
-  var elem = this.getUI_Element("fastforward");
-  if(this.fastForward) elem.sprite.playAnimation("down");
-  else elem.sprite.playAnimation("up");
-  if(playSound) AudioManager.playSound("sndUI_Click");
+    this.fastForward = !this.fastForward;
+    var elem = this.getUI_Element("fastforward");
+    if(this.fastForward) elem.sprite.playAnimation("down");
+    else elem.sprite.playAnimation("up");
+    if(playSound) AudioManager.playSound("sndUI_Click");
 }
 
 Scene_Game.prototype._buttonNuke = function(btn) {
-  var c = new Date().getTime();
-  if(btn.lastClickTime >= c - 500) {
-    this.nuke();
-  }
+    var c = new Date().getTime();
+    if(btn.lastClickTime >= c - 500) {
+        this.nuke();
+    }
 }
 
 Scene_Game.prototype.nuke = function() {
-  this.nuked = true;
-  var elem = this.getUI_Element("nuke");
-  elem.sprite.playAnimation("down");
-  AudioManager.playSound("sndUI_Click");
-  this.alarm.nuke.start();
-  // Prevent lemmings from spawning
-  var arr = $gameMap.getDoors();
-  for(var a = 0;a < arr.length;a++) {
-    var obj = arr[a];
-    obj.value = 0;
-  }
+    // Track for replay
+    var replayAction = $gameMap.replay.addAction($gameMap.frame);
+    replayAction.query = "null";
+    replayAction.action = "scene.nuke();";
+    // Stop replay
+    this.stopReplay();
+    // Nuke
+    this.nuked = true;
+    var elem = this.getUI_Element("nuke");
+    elem.sprite.playAnimation("down");
+    AudioManager.playSound("sndUI_Click");
+    this.alarm.nuke.start();
+    // Prevent lemmings from spawning
+    var arr = $gameMap.getDoors();
+    for(var a = 0;a < arr.length;a++) {
+        var obj = arr[a];
+        obj.value = 0;
+    }
 }
 
 Scene_Game.prototype._nukeLemming = function() {
-  var arr = $gameMap.getLemmings().filter(function(lemming) {
-    return (lemming.bomber.count === -1);
-  });
-  if(arr.length > 0) arr[0].nuke();
+    var arr = $gameMap.getLemmings().filter(function(lemming) {
+        return (lemming.bomber.count === -1);
+    });
+    if(arr.length > 0) arr[0].nuke();
 }
 
 Scene_Game.prototype.toggleGrid = function(playSound) {
-  this.grid = !this.grid;
-  var elem = this.getUI_Element("grid");
-  if(this.grid) {
-    elem.sprite.playAnimation("down");
-    $gameMap.grid.visible = true;
-  }
-  else {
-    elem.sprite.playAnimation("up");
-    $gameMap.grid.visible = false;
-  }
-  if(playSound) AudioManager.playSound("sndUI_Click");
+    this.grid = !this.grid;
+    var elem = this.getUI_Element("grid");
+    if(this.grid) {
+        elem.sprite.playAnimation("down");
+        $gameMap.grid.visible = true;
+    }
+    else {
+        elem.sprite.playAnimation("up");
+        $gameMap.grid.visible = false;
+    }
+    if(playSound) AudioManager.playSound("sndUI_Click");
 }
 
 Scene_Game.prototype.getLemmingUnderCursor = function() {
-  var arr = $gameMap.getLemmings();
-  // Filters
-  if(Input.key.Q.down) arr = arr.filter(function(obj) {
-    if(obj.rotation % (Math.PI * 2) === Math.degtorad(180)) return obj.dir === Game_Lemming.DIR_RIGHT;
-    return obj.dir === Game_Lemming.DIR_LEFT;
-  });
-  else if(Input.key.E.down) arr = arr.filter(function(obj) {
-    if(obj.rotation % (Math.PI * 2) === Math.degtorad(180)) return obj.dir === Game_Lemming.DIR_LEFT;
-    return obj.dir === Game_Lemming.DIR_RIGHT;
-  });
-  arr = arr.filter(function(obj) { return obj.interactive; } );
-  // Action filters
-  switch(this.actionSelected.toUpperCase()) {
-    case "CLIMBER":
-      arr = arr.filter(function(lemming) { return (!lemming.hasProperty("CLIMBER")); });
-      break;
-    case "FLOATER":
-      arr = arr.filter(function(lemming) { return (!lemming.hasProperty("FLOATER")); });
-      break;
-    case "BOMBER":
-      arr = arr.filter(function(lemming) { return (lemming.bomber.count === -1); } );
-      break;
-    case "BLOCKER":
-      arr = arr.filter(function(lemming) { return (lemming.action !== Game_Lemming.ACTION_BLOCKER && lemming.onGround); } );
-      break;
-    case "BUILDER":
-      arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_BUILDER || lemming.sprite.isAnimationPlaying('build-end')) && lemming.onGround); } );
-      break;
-    case "BASHER":
-      arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_BASHER) && lemming.onGround); } );
-      break;
-    case "MINER":
-      arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_MINER) && lemming.onGround); } );
-      break;
-    case "DIGGER":
-      arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_DIGGER) && lemming.onGround); } );
-      break;
-  }
-  // Sort by priority
-  arr.sort(function(a, b) {
-    var baseActions = [Game_Lemming.ACTION_WALK, Game_Lemming.ACTION_FALL];
-    if(baseActions.indexOf(a.action.current) !== -1 && baseActions.indexOf(b.action.current) === -1) return 1;
-    if(baseActions.indexOf(a.action.current) === -1 && baseActions.indexOf(b.action.current) !== -1) return -1;
-    return 0;
-  });
-  // Select
-  for(var a = 0;a < arr.length;a++) {
-    var lem = arr[a];
-    if(lem.mouseOver()) return lem;
-  }
-  return null;
+    var arr = $gameMap.getLemmings();
+    // Filters
+    if(Input.key.Q.down) arr = arr.filter(function(obj) {
+        if(obj.rotation % (Math.PI * 2) === Math.degtorad(180)) return obj.dir === Game_Lemming.DIR_RIGHT;
+        return obj.dir === Game_Lemming.DIR_LEFT;
+    });
+    else if(Input.key.E.down) arr = arr.filter(function(obj) {
+        if(obj.rotation % (Math.PI * 2) === Math.degtorad(180)) return obj.dir === Game_Lemming.DIR_LEFT;
+        return obj.dir === Game_Lemming.DIR_RIGHT;
+    });
+    arr = arr.filter(function(obj) { return obj.interactive; } );
+    // Action filters
+    switch(this.actionSelected.toUpperCase()) {
+        case "CLIMBER":
+            arr = arr.filter(function(lemming) { return (!lemming.hasProperty("CLIMBER")); });
+            break;
+        case "FLOATER":
+            arr = arr.filter(function(lemming) { return (!lemming.hasProperty("FLOATER")); });
+            break;
+        case "BOMBER":
+            arr = arr.filter(function(lemming) { return (lemming.bomber.count === -1); } );
+            break;
+        case "BLOCKER":
+            arr = arr.filter(function(lemming) { return (lemming.action !== Game_Lemming.ACTION_BLOCKER && lemming.onGround); } );
+            break;
+        case "BUILDER":
+            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_BUILDER || lemming.sprite.isAnimationPlaying('build-end')) && lemming.onGround); } );
+            break;
+        case "BASHER":
+            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_BASHER) && lemming.onGround); } );
+            break;
+        case "MINER":
+            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_MINER) && lemming.onGround); } );
+            break;
+        case "DIGGER":
+            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_DIGGER) && lemming.onGround); } );
+            break;
+    }
+    // Sort by priority
+    arr.sort(function(a, b) {
+        var baseActions = [Game_Lemming.ACTION_WALK, Game_Lemming.ACTION_FALL];
+        if(baseActions.indexOf(a.action.current) !== -1 && baseActions.indexOf(b.action.current) === -1) return 1;
+        if(baseActions.indexOf(a.action.current) === -1 && baseActions.indexOf(b.action.current) !== -1) return -1;
+        return 0;
+    });
+    // Select
+    for(var a = 0;a < arr.length;a++) {
+        var lem = arr[a];
+        if(lem.mouseOver()) return lem;
+    }
+    return null;
 }
 
 Scene_Game.prototype.updateActionPreview = function() {
-  // Update all action preview tiles
-  this.actionPreview.alpha.value = Math.max(this.actionPreview.alpha.min, Math.min(this.actionPreview.alpha.max, this.actionPreview.alpha.value + this.actionPreview.alpha.speed));
-  if(this.actionPreview.alpha.value === this.actionPreview.alpha.min) this.actionPreview.alpha.speed = -this.actionPreview.alpha.speed;
-  else if(this.actionPreview.alpha.value === this.actionPreview.alpha.max) this.actionPreview.alpha.speed = -this.actionPreview.alpha.speed;
-  for(var a = 0;a < this.actionPreview.tiles.length;a++) {
-    var spr = this.actionPreview.tiles[a];
-    spr.alpha = this.actionPreview.alpha.value;
-    spr.visible = false;
-  }
-  if(this.lemmingSelect !== null) {
-    switch(this.actionSelected) {
-      case "blocker":
-      case "bomber":
-        var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y) >> 4) << 4;
-        spr.visible = true;
-        break;
-      case "builder":
-        var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
-        spr.visible = true;
-        break;
-      case "basher":
-        var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
-        spr.visible = true;
-        break;
-      case "miner":
-        var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
-        spr.visible = true;
-        var spr = this.actionPreview.tiles[1];
-        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir) + (this.lemmingSelect.offsetPoint.down.x * 16)) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir) + (this.lemmingSelect.offsetPoint.down.y * 16)) >> 4) << 4;
-        spr.visible = true;
-        break;
-      case "digger":
-        var spr = this.actionPreview.tiles[0];
-        spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.down.x * 16)) >> 4) << 4;
-        spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.down.y * 16)) >> 4) << 4;
-        spr.visible = true;
-        break;
+    // Update all action preview tiles
+    this.actionPreview.alpha.value = Math.max(this.actionPreview.alpha.min, Math.min(this.actionPreview.alpha.max, this.actionPreview.alpha.value + this.actionPreview.alpha.speed));
+    if(this.actionPreview.alpha.value === this.actionPreview.alpha.min) this.actionPreview.alpha.speed = -this.actionPreview.alpha.speed;
+    else if(this.actionPreview.alpha.value === this.actionPreview.alpha.max) this.actionPreview.alpha.speed = -this.actionPreview.alpha.speed;
+    for(var a = 0;a < this.actionPreview.tiles.length;a++) {
+        var spr = this.actionPreview.tiles[a];
+        spr.alpha = this.actionPreview.alpha.value;
+        spr.visible = false;
     }
-  }
+    if(this.lemmingSelect !== null) {
+        switch(this.actionSelected) {
+            case "blocker":
+            case "bomber":
+                var spr = this.actionPreview.tiles[0];
+                spr.x = ((this.lemmingSelect.x) >> 4) << 4;
+                spr.y = ((this.lemmingSelect.y) >> 4) << 4;
+                spr.visible = true;
+                break;
+            case "builder":
+                var spr = this.actionPreview.tiles[0];
+                spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+                spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+                spr.visible = true;
+                break;
+            case "basher":
+                var spr = this.actionPreview.tiles[0];
+                spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+                spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+                spr.visible = true;
+                break;
+            case "miner":
+                var spr = this.actionPreview.tiles[0];
+                spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+                spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir)) >> 4) << 4;
+                spr.visible = true;
+                var spr = this.actionPreview.tiles[1];
+                spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.right.x * 16 * this.lemmingSelect.dir) + (this.lemmingSelect.offsetPoint.down.x * 16)) >> 4) << 4;
+                spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.right.y * 16 * this.lemmingSelect.dir) + (this.lemmingSelect.offsetPoint.down.y * 16)) >> 4) << 4;
+                spr.visible = true;
+                break;
+            case "digger":
+                var spr = this.actionPreview.tiles[0];
+                spr.x = ((this.lemmingSelect.x + (this.lemmingSelect.offsetPoint.down.x * 16)) >> 4) << 4;
+                spr.y = ((this.lemmingSelect.y + (this.lemmingSelect.offsetPoint.down.y * 16)) >> 4) << 4;
+                spr.visible = true;
+                break;
+        }
+    }
 }
 
 Scene_Game.prototype.endMap = function() {
-  this.fadeOut(function() {
-    AudioManager.stopBgm();
-    this.releaseControls();
-    SceneManager.push(new Scene_PostGame());
-  }.bind(this));
+    this.fadeOut(function() {
+        AudioManager.stopBgm();
+        this.releaseControls();
+        SceneManager.push(new Scene_PostGame());
+    }.bind(this));
 }
 
+Scene_Game.prototype.stopReplay = function() {
+    $gameMap.replay.stop();
+    if(this.replayIcon != null) {
+        this.replayIcon.sprite.alpha = 0;
+    }
+};
+
 function Scene_PostGame() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Scene_PostGame.prototype = Object.create(Scene_Base.prototype);
 Scene_PostGame.prototype.constructor = Scene_PostGame;
 
 Scene_PostGame.prototype.init = function() {
-  Scene_Base.prototype.init.call(this);
-  this.needed = $gameMap.needed;
-  this.saved = $gameMap.saved;
-  this.totalLemmings = $gameMap.totalLemmings;
-  this.success = this.saved >= this.needed;
-  // Save game
-  if($gameTemp.currentMap && this.success) {
-    SaveManager.addMapCompletion($gameTemp.currentMap.world, $gameTemp.currentMap.key, true);
-  }
+    Scene_Base.prototype.init.call(this);
+    this.needed = $gameMap.needed;
+    this.saved = $gameMap.saved;
+    this.totalLemmings = $gameMap.totalLemmings;
+    this.success = this.saved >= this.needed;
+    // Save game
+    if($gameTemp.currentMap && this.success) {
+        SaveManager.addMapCompletion($gameTemp.currentMap.world, $gameTemp.currentMap.key, true);
+    }
 }
 
 Scene_PostGame.prototype.create = function() {
-  // Stop Bgm
-  AudioManager.stopBgm();
-  // Add background
-  this.bg = new Background("bgMainMenu");
-  this.stage.addChild(this.bg);
-  // Add status text
-  var desc = "You totally stormed that level!\n\nLet's see if you can storm the next..."
-  if(this.saved < this.totalLemmings && this.saved === this.needed) desc = "SPOT ON!\n\nYou can't get much closer than that.";
-  else if(this.saved < this.needed && this.saved > 0) desc = "Total bummer!\n\nTry again.";
-  else if(this.saved === 0) desc = "ROCK BOTTOM!\n\nI hope for your sake you nuked that level.";
-  this.text = {
-    status: new Text(desc)
-  };
-  this.text.status.style.align = "center";
-  this.text.status.position.set(Core.resolution.x / 2, 40);
-  this.text.status.anchor.set(0.5, 0);
-  this.stage.addChild(this.text.status);
-  // Fade in
-  this.fadeIn();
-  // Add interactivity
-  Input.mouse.button.LEFT.onPress.add(this.continueGame, this);
+    // Stop Bgm
+    AudioManager.stopBgm();
+    // Add background
+    this.bg = new Background("bgMainMenu");
+    this.stage.addChild(this.bg);
+    // Add status text
+    var desc = "You totally stormed that level!\n\nLet's see if you can storm the next..."
+    if(this.saved < this.totalLemmings && this.saved === this.needed) desc = "SPOT ON!\n\nYou can't get much closer than that.";
+    else if(this.saved < this.needed && this.saved > 0) desc = "Total bummer!\n\nTry again.";
+    else if(this.saved === 0) desc = "ROCK BOTTOM!\n\nI hope for your sake you nuked that level.";
+    this.text = {
+        status: new Text(desc)
+    };
+    this.text.status.style.align = "center";
+    this.text.status.position.set(Core.resolution.x / 2, 40);
+    this.text.status.anchor.set(0.5, 0);
+    this.stage.addChild(this.text.status);
+    // Fade in
+    this.fadeIn();
+    // Add interactivity
+    Input.mouse.button.LEFT.onPress.add(this.continueGame, this);
 }
 
 Scene_PostGame.prototype.continueGame = function() {
-  if(this.success) {
-    this.fadeOut(function() {
-      while(!(SceneManager.current() instanceof Scene_MainMenu) && !(SceneManager.current() instanceof Scene_WorldMap)) {
-        SceneManager.pop();
-      }
-    }.bind(this));
-  }
-  else {
-    this.fadeOut(function() {
-      while(!(SceneManager.current() instanceof Scene_PreGame) && !(SceneManager.current() instanceof Scene_MainMenu) && !(SceneManager.current() instanceof Scene_WorldMap)) {
-        SceneManager.pop();
-      }
-    }.bind(this));
-  }
+    if(this.success) {
+        this.fadeOut(function() {
+            while(!(SceneManager.current() instanceof Scene_MainMenu) && !(SceneManager.current() instanceof Scene_WorldMap)) {
+                SceneManager.pop();
+            }
+        }.bind(this));
+    }
+    else {
+        this.fadeOut(function() {
+            while(!(SceneManager.current() instanceof Scene_PreGame) && !(SceneManager.current() instanceof Scene_MainMenu) && !(SceneManager.current() instanceof Scene_WorldMap)) {
+                SceneManager.pop();
+            }
+        }.bind(this));
+    }
 }
 
 Scene_PostGame.prototype.end = function() {
-  Input.mouse.button.LEFT.onPress.remove(this.continueGame, this);
+    Input.mouse.button.LEFT.onPress.remove(this.continueGame, this);
 }
 
 function Scene_WorldMap() {
@@ -3199,49 +3256,49 @@ Scene_WorldMap.prototype.enterWorld = function(btn, type, key) {
 }
 
 function UI_Base() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Object.defineProperties(UI_Base.prototype, {
-  x: {
-    get: function() { return this.position.x; },
-    set: function(value) {
-      this.position.x = value;
-      if(this.sprite) this.sprite.x = value;
-      if(this.refresh) this.refresh();
+    x: {
+        get: function() { return this.position.x; },
+        set: function(value) {
+            this.position.x = value;
+            if(this.sprite) this.sprite.x = value;
+            if(this.refresh) this.refresh();
+        }
+    },
+    y: {
+        get: function() { return this.position.y; },
+        set: function(value) {
+            this.position.y = value;
+            if(this.sprite) this.sprite.y = value;
+            if(this.refresh) this.refresh();
+        }
+    },
+    enabled: {
+        get: function() { return this._enabled; },
+        set: function(value) {
+            this._enabled = value;
+            if(this._enabled && this.sprite) this.sprite.tint = 0xFFFFFF;
+            else if(this._enabled && this.sprite) this.sprite.tint = 0x000000;
+        }
     }
-  },
-  y: {
-    get: function() { return this.position.y; },
-    set: function(value) {
-      this.position.y = value;
-      if(this.sprite) this.sprite.y = value;
-      if(this.refresh) this.refresh();
-    }
-  },
-  enabled: {
-    get: function() { return this._enabled; },
-    set: function(value) {
-      this._enabled = value;
-      if(this._enabled && this.sprite) this.sprite.tint = 0xFFFFFF;
-      else if(this._enabled && this.sprite) this.sprite.tint = 0x000000;
-    }
-  }
 });
 
 UI_Base.prototype.init = function(x, y, key) {
-  this.position = new Point();
-  this.sprite = new Sprite_UI();
-  this.x = x;
-  this.y = y;
-  this.enabled = true;
-  this.rect = null;
-  this.key = key;
-  this.z = 0;
+    this.position = new Point();
+    this.sprite = new Sprite_UI();
+    this.x = x;
+    this.y = y;
+    this.enabled = true;
+    this.rect = null;
+    this.key = key;
+    this.z = 0;
 }
 
 UI_Base.prototype.click = function() {
-  if(this.enabled && this.onClick) this.onClick.dispatch();
+    if(this.enabled && this.onClick) this.onClick.dispatch();
 }
 
 UI_Base.prototype.unclick = function() {}
@@ -3249,20 +3306,20 @@ UI_Base.prototype.unclick = function() {}
 UI_Base.prototype.release = function() {}
 
 UI_Base.prototype.over = function(x, y) {
-  var r = this.rect;
-  var anchor = new Point(0, 0);
-  if(this.sprite.anchor) anchor = this.sprite.anchor;
-  if(!r) r = new Rect(this.sprite.x - anchor.x * this.sprite.width, this.sprite.y - anchor.y * this.sprite.height, this.sprite.width, this.sprite.height);
-  return (x >= r.left && x < r.right && y >= r.top && y < r.bottom);
+    var r = this.rect;
+    var anchor = new Point(0, 0);
+    if(this.sprite.anchor) anchor = this.sprite.anchor;
+    if(!r) r = new Rect(this.sprite.x - anchor.x * this.sprite.width, this.sprite.y - anchor.y * this.sprite.height, this.sprite.width, this.sprite.height);
+    return (x >= r.left && x < r.right && y >= r.top && y < r.bottom);
 }
 
 UI_Base.prototype.addAnimation = function(name, atlasKey, animKeys) {
-  if(this.sprite) {
-    var anim = this.sprite.addAnimation(name);
-    for(var a = 0;a < animKeys.length;a++) {
-      anim.addFrame(atlasKey, animKeys[a]);
+    if(this.sprite) {
+        var anim = this.sprite.addAnimation(name);
+        for(var a = 0;a < animKeys.length;a++) {
+            anim.addFrame(atlasKey, animKeys[a]);
+        }
     }
-  }
 }
 
 UI_Base.prototype.addListeners = function() {}
@@ -3270,7 +3327,7 @@ UI_Base.prototype.addListeners = function() {}
 UI_Base.prototype.removeListeners = function() {}
 
 UI_Base.prototype.remove = function() {
-  this.removeListeners();
+    this.removeListeners();
 }
 
 function UI_Button() {
@@ -3794,7 +3851,7 @@ UI_Minimap.prototype.mouseUp = function() {
 }
 
 function Game_Map() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
@@ -3802,642 +3859,664 @@ Game_Map.TILE_FLIPPED_VERTICALLY_FLAG   = 0x40000000;
 Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG   = 0x20000000;
 
 Object.defineProperties(Game_Map.prototype, {
-  realWidth: {
-    get: function() { return this.width * this.tileWidth; }
-  },
-  realHeight: {
-    get: function() { return this.height * this.tileHeight; }
-  }
+    realWidth: {
+        get: function() { return this.width * this.tileWidth; }
+    },
+    realHeight: {
+        get: function() { return this.height * this.tileHeight; }
+    }
 });
 
 
 Game_Map.prototype.init = function(src, scene) {
-  this.grid               = new PIXI.Container();
-  this.camera             = new Game_Camera(this);
-  this.scene              = scene;
-  this.tilesets           = [];
-  this._expectedAssets    = [];
-  this._expectedTilesets  = [];
-  this._usedAssets        = [];
-  this.width              = 1;
-  this.height             = 1;
-  this.tileWidth          = 16;
-  this.tileHeight         = 16;
-  this.background         = null;
-  this.needed             = 1;
-  this.saved              = 0;
-  this.totalLemmings      = 0;
-  this.name               = "No Name";
-  this.pool               = {};
-  this.actions            = {};
-  this.maxFallDistance    = 10 * 16;
-  this.trackVictoryDefeat = true;
-  this.loaded             = false;
+    this.grid               = new PIXI.Container();
+    this.camera             = new Game_Camera(this);
+    this.scene              = scene;
+    this.tilesets           = [];
+    this._expectedAssets    = [];
+    this._expectedTilesets  = [];
+    this._usedAssets        = [];
+    this.width              = 1;
+    this.height             = 1;
+    this.tileWidth          = 16;
+    this.tileHeight         = 16;
+    this.background         = null;
+    this.needed             = 1;
+    this.saved              = 0;
+    this.totalLemmings      = 0;
+    this.name               = "No Name";
+    this.pool               = {};
+    this.actions            = {};
+    this.maxFallDistance    = 10 * 16;
+    this.replay             = null;
+    this.trackVictoryDefeat = true;
+    this.loaded             = false;
 
-  this.onLoad     = new Signal();
-  this.onCreate   = new Signal();
-  this.onEndOfMap = new Signal();
-  this.onLoad.addOnce(this.createLevel, this, [], 5);
+    this.onLoad     = new Signal();
+    this.onCreate   = new Signal();
+    this.onEndOfMap = new Signal();
+    this.onLoad.addOnce(this.createLevel, this, [], 5);
 
 
-  this.baseDir = src.split(/[\/\\]/).slice(0, -1).join("/") + "/";
-  var obj = Loader.loadJSON("map", src);
-  obj.onComplete.addOnce(this.parseTiledMap, this);
+    this.baseDir = src.split(/[\/\\]/).slice(0, -1).join("/") + "/";
+    var obj = Loader.loadJSON("map", src);
+    obj.onComplete.addOnce(this.parseTiledMap, this);
 }
 
 Game_Map.prototype.clear = function() {
-  this.world              = new Game_World();
-  this.tiles              = [];
-  this.objects            = [];
-  this.trackVictoryDefeat = true;
+    this.frame              = 0;
+    this.world              = new Game_World();
+    this.tiles              = [];
+    this.objects            = [];
+    this.trackVictoryDefeat = true;
 
-  this.grid.z = -1500;
-  this.grid.visible = false;
-  this.world.addChild(this.grid);
+    this.grid.z = -1500;
+    this.grid.visible = false;
+    this.world.addChild(this.grid);
 }
 
 Game_Map.prototype.updateCameraBounds = function() {
-  this.camera.bounds.x = 0;
-  this.camera.bounds.y = 0;
-  this.camera.bounds.width = this.realWidth;
-  this.camera.bounds.height = this.realHeight;
-  var scene = SceneManager.current();
-  if(scene && scene.panelHeight) this.camera.bounds.height += (scene.panelHeight() / this.world.scale.y);
+    this.camera.bounds.x = 0;
+    this.camera.bounds.y = 0;
+    this.camera.bounds.width = this.realWidth;
+    this.camera.bounds.height = this.realHeight;
+    var scene = SceneManager.current();
+    if(scene && scene.panelHeight) this.camera.bounds.height += (scene.panelHeight() / this.world.scale.y);
 }
 
 Game_Map.prototype.parseTiledMap = function() {
-  this.data = Cache.getJSON("map");
-  this.parseMapProperties(this.data.properties);
-  // Load Tilesets
-  for(var a = 0;a < this.data.tilesets.length;a++) {
-    var ts = this.data.tilesets[a];
-    var key = "tileset" + a.toString();
-    var tsBaseDir = this.baseDir + ts.source.split(/[\/\\]/).slice(0, -1).join("/") + "/";
-    var args = [key, ts.firstgid, tsBaseDir, true];
+    this.data = Cache.getJSON("map");
+    this.parseMapProperties(this.data.properties);
+    // Load Tilesets
+    for(var a = 0;a < this.data.tilesets.length;a++) {
+        var ts = this.data.tilesets[a];
+        var key = "tileset" + a.toString();
+        var tsBaseDir = this.baseDir + ts.source.split(/[\/\\]/).slice(0, -1).join("/") + "/";
+        var args = [key, ts.firstgid, tsBaseDir, true];
 
-    if(ts.source.split(/[\/\\]/).indexOf("objects") !== -1) args[3] = false;
-    this._expectedAssets.push(key);
-    var obj = Loader.loadJSON(key, this.baseDir + ts.source);
-    obj.onComplete.addOnce(this.parseTilesetData, this, args, 20);
-  }
+        if(ts.source.split(/[\/\\]/).indexOf("objects") !== -1) args[3] = false;
+        this._expectedAssets.push(key);
+        var obj = Loader.loadJSON(key, this.baseDir + ts.source);
+        obj.onComplete.addOnce(this.parseTilesetData, this, args, 20);
+    }
 }
 
 Game_Map.prototype.parseMapProperties = function(properties) {
-  // Apply Map Properties
-  if(properties.needed) this.needed = properties.needed;
-  if(properties.name) this.name = properties.name;
-  // Load Music
-  if(properties.music) {
-    var obj = Loader.loadAudio("music", AudioManager.baseDir("bgm") + properties.music + ".ogg");
-    this._expectedAssets.push("music");
-    obj.onComplete.addOnce(function() {
-      this.clearAsset("music");
-      this._usedAssets.push({ type: "audio", key: "music" });
-    }, this, [], 20);
-  }
-  // Load background
-  if(properties.bg) {
-    var obj = Loader.loadImage("background", "assets/graphics/backgrounds/" + properties.bg + ".jpg");
-    this._expectedAssets.push("background");
-    obj.onComplete.addOnce(function() {
-      this.clearAsset("background");
-      this._usedAssets.push({ type: "image", key: "background" });
-    }, this, [], 20);
-  }
+    // Apply Map Properties
+    if(properties.needed) this.needed = properties.needed;
+    if(properties.name) this.name = properties.name;
+    // Load Music
+    if(properties.music) {
+        var obj = Loader.loadAudio("music", AudioManager.baseDir("bgm") + properties.music + ".ogg");
+        this._expectedAssets.push("music");
+        obj.onComplete.addOnce(function() {
+            this.clearAsset("music");
+            this._usedAssets.push({ type: "audio", key: "music" });
+        }, this, [], 20);
+    }
+    // Load background
+    if(properties.bg) {
+        var obj = Loader.loadImage("background", "assets/graphics/backgrounds/" + properties.bg + ".jpg");
+        this._expectedAssets.push("background");
+        obj.onComplete.addOnce(function() {
+            this.clearAsset("background");
+            this._usedAssets.push({ type: "image", key: "background" });
+        }, this, [], 20);
+    }
 }
 
 Game_Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage) {
-  var tsData = Cache.getJSON(key);
-  var ts = new Game_Tileset();
-  ts.margin         = tsData.margin;
-  ts.spacing        = tsData.spacing;
-  ts.tileWidth      = tsData.tilewidth;
-  ts.tileHeight     = tsData.tileheight;
-  ts.firstGid       = firstGid;
-  ts.tileProperties = tsData.tileproperties ? tsData.tileproperties : null;
-  ts.tiles          = tsData.tiles ? tsData.tiles : null;
+    var tsData = Cache.getJSON(key);
+    var ts = new Game_Tileset();
+    ts.margin         = tsData.margin;
+    ts.spacing        = tsData.spacing;
+    ts.tileWidth      = tsData.tilewidth;
+    ts.tileHeight     = tsData.tileheight;
+    ts.firstGid       = firstGid;
+    ts.tileProperties = tsData.tileproperties ? tsData.tileproperties : null;
+    ts.tiles          = tsData.tiles ? tsData.tiles : null;
 
-  // Load tileset texture
-  if(loadImage) {
-    var imageKey = key + "_image";
-    this._expectedAssets.push(imageKey);
-    var src = baseDir + tsData.image;
-    var obj = Loader.loadImage(imageKey, src);
-    obj.onComplete.addOnce(this.parseTileset, this, [imageKey, ts], 20);
-  }
-  else {
-    this.tilesets.push(ts);
-  }
+    // Load tileset texture
+    if(loadImage) {
+        var imageKey = key + "_image";
+        this._expectedAssets.push(imageKey);
+        var src = baseDir + tsData.image;
+        var obj = Loader.loadImage(imageKey, src);
+        obj.onComplete.addOnce(this.parseTileset, this, [imageKey, ts], 20);
+    }
+    else {
+        this.tilesets.push(ts);
+    }
 
-  this._expectedTilesets.push(key);
-  this._usedAssets.push({ type: "json", key: key });
-  this.clearAsset(key);
+    this._expectedTilesets.push(key);
+    this._usedAssets.push({ type: "json", key: key });
+    this.clearAsset(key);
 }
 
 Game_Map.prototype.parseTileset = function(imageKey, tileset) {
-  tileset.texture = Cache.getImage(imageKey);
-  this.tilesets.push(tileset);
+    tileset.texture = Cache.getImage(imageKey);
+    this.tilesets.push(tileset);
 
-  this._usedAssets.push({ type: "image", key: imageKey });
-  this.clearAsset(imageKey);
+    this._usedAssets.push({ type: "image", key: imageKey });
+    this.clearAsset(imageKey);
 }
 
 Game_Map.prototype.loadUsedGameObjectAssets = function() {
-  var objects = this.getUsedGameObjects();
-  for(var a = 0;a < objects.length;a++) {
-    var obj = objects[a];
-    var props = this.getObjectProperties(obj);
-    if(props && props.type) {
-      switch(props.type) {
-        case "prop":
-          this.loadGameObjectAsset($dataProps[props.key]);
-          break;
-      }
+    var objects = this.getUsedGameObjects();
+    for(var a = 0;a < objects.length;a++) {
+        var obj = objects[a];
+        var props = this.getObjectProperties(obj);
+        if(props && props.type) {
+            switch(props.type) {
+                case "prop":
+                    this.loadGameObjectAsset($dataProps[props.key]);
+                    break;
+            }
+        }
     }
-  }
 }
 
 Game_Map.prototype.getUsedGameObjects = function() {
-  var result = [];
-  for(var a = 0;a < this.data.layers.length;a++) {
-    var layer = this.data.layers[a];
-    if(layer.type === "objectgroup") {
-      for(var b = 0;b < layer.objects.length;b++) {
-        var obj = layer.objects[b];
-        result.push(obj);
-      }
+    var result = [];
+    for(var a = 0;a < this.data.layers.length;a++) {
+        var layer = this.data.layers[a];
+        if(layer.type === "objectgroup") {
+            for(var b = 0;b < layer.objects.length;b++) {
+                var obj = layer.objects[b];
+                result.push(obj);
+            }
+        }
     }
-  }
-  return result;
+    return result;
 }
 
 Game_Map.prototype.loadGameObjectAsset = function(props) {
-  // Load files
-  for(var assetType in props.assets) {
-    for(var assetKey in props.assets[assetType]) {
-      var k = Loader.determineKey(props.assets[assetType][assetKey]);
-      var file = null;
-      switch(assetType) {
-        case "audio":
-          file = Loader.loadAudio(k, props.assets[assetType][assetKey]);
-          break;
-        case "textureAtlases":
-          file = Loader.loadTextureAtlas(k, props.assets[assetType][assetKey]);
-          break;
-      }
-      if(file !== null) {
-        file.onComplete.addOnce(function(file) {
-          this.clearAsset(file.key);
-          this._usedAssets.push({ type: file.type, key: file.key });
-        }, this, [file], 20);
-        this._expectedAssets.push(k);
-      }
+    // Load files
+    for(var assetType in props.assets) {
+        for(var assetKey in props.assets[assetType]) {
+            var k = Loader.determineKey(props.assets[assetType][assetKey]);
+            var file = null;
+            switch(assetType) {
+                case "audio":
+                    file = Loader.loadAudio(k, props.assets[assetType][assetKey]);
+                    break;
+                case "textureAtlases":
+                    file = Loader.loadTextureAtlas(k, props.assets[assetType][assetKey]);
+                    break;
+            }
+            if(file !== null) {
+                file.onComplete.addOnce(function(file) {
+                    this.clearAsset(file.key);
+                    this._usedAssets.push({ type: file.type, key: file.key });
+                }, this, [file], 20);
+                this._expectedAssets.push(k);
+            }
+        }
     }
-  }
 }
 
 Game_Map.prototype.clearAsset = function(key) {
-  // Clear tileset
-  this.clearTileset(key);
-  // Check if done loading, and if so, create level
-  var a = this._expectedAssets.indexOf(key);
-  if(a !== -1) {
-    this._expectedAssets.splice(a, 1);
-    if(this._expectedAssets.length === 0) {
-      this.tilesets.sort(function(a, b) {
-        if(a.firstGid < b.firstGid) return -1;
-        if(a.firstGid > b.firstGid) return 1;
-        return 0;
-      });
-      this.loaded = true;
-      this.onLoad.dispatch();
+    // Clear tileset
+    this.clearTileset(key);
+    // Check if done loading, and if so, create level
+    var a = this._expectedAssets.indexOf(key);
+    if(a !== -1) {
+        this._expectedAssets.splice(a, 1);
+        if(this._expectedAssets.length === 0) {
+            this.tilesets.sort(function(a, b) {
+                if(a.firstGid < b.firstGid) return -1;
+                if(a.firstGid > b.firstGid) return 1;
+                return 0;
+            });
+            this.loaded = true;
+            this.onLoad.dispatch();
+        }
     }
-  }
 }
 
 Game_Map.prototype.clearTileset = function(key) {
-  var a = this._expectedTilesets.indexOf(key);
-  if(a !== -1) {
-    this._expectedTilesets.splice(a, 1);
-    if(this._expectedTilesets.length === 0) {
-      this.loadUsedGameObjectAssets();
+    var a = this._expectedTilesets.indexOf(key);
+    if(a !== -1) {
+        this._expectedTilesets.splice(a, 1);
+        if(this._expectedTilesets.length === 0) {
+            this.loadUsedGameObjectAssets();
+        }
     }
-  }
 }
 
 Game_Map.prototype.getTileset = function(uid) {
-  for(var a = this.tilesets.length - 1;a >= 0;a--) {
-    var ts = this.tilesets[a];
-    if(uid >= ts.firstGid) return ts;
-  }
-  return null;
+    for(var a = this.tilesets.length - 1;a >= 0;a--) {
+        var ts = this.tilesets[a];
+        if(uid >= ts.firstGid) return ts;
+    }
+    return null;
 }
 
 Game_Map.prototype.createLevel = function() {
-  this.clear();
-  // Apply actions
-  for(var a in $dataActions) {
-    var action = $dataActions[a];
-    if(this.data.properties[action.key]) this.actions[a] = { amount: this.data.properties[action.key] };
-  }
-  // Apply basic map data
-  this.width = this.data.width;
-  this.height = this.data.height;
-  this.tileWidth = this.data.tilewidth;
-  this.tileHeight = this.data.tileheight;
-  this.updateCameraBounds();
-  this.addBackground();
-  // Set initial camera position
-  if(this.data.properties.initialCameraPos) {
-    if(this.data.properties.initialCameraPos.match(/([0-9]+)[,]([0-9]+)/)) {
-      this.camera.setPosition(new Point(
-        parseInt(RegExp.$1) * this.tileWidth,
-        parseInt(RegExp.$2) * this.tileHeight
-      ), new Point(0.5, 0.5));
+    this.clear();
+    // Apply actions
+    for(var a in $dataActions) {
+        var action = $dataActions[a];
+        if(this.data.properties[action.key]) this.actions[a] = { amount: this.data.properties[action.key] };
     }
-  }
-  // Resize
-  while(this.tiles.length < this.width * this.height) {
-    this.tiles.push(null);
-  }
-  // Parse Tile layer(s)
-  var arr = this.data.layers.filter(function(layer) { return (layer.name.toUpperCase() === "TILES"); });
-  for(var a = 0;a < arr.length;a++) {
-    var layer = arr[a];
-    this.parseTileLayer(layer, "tiles");
-  }
-  // Parse Tile Modifier layer(s)
-  var arr = this.data.layers.filter(function(layer) { return (layer.name.match(/modifier[s]?[0-9]?/i)); });
-  for(var a = 0;a < arr.length;a++) {
-    var layer = arr[a];
-    this.parseTileLayer(layer, "modifiers");
-  }
-  // Parse Object layer(s)
-  var arr = this.data.layers.filter(function(layer) { return (layer.name.match(/object[s]?/i)); });
-  for(var a = 0;a < arr.length;a++) {
-    var layer = arr[a];
-    this.parseObjectLayer(layer);
-  }
-  // Create lemming pool
-  this.pool.lemming = new Pool("Game_Lemming", this, [], this.totalLemmings);
-  // Add grid
-  this.addGrid();
+    // Apply basic map data
+    this.width = this.data.width;
+    this.height = this.data.height;
+    this.tileWidth = this.data.tilewidth;
+    this.tileHeight = this.data.tileheight;
+    this.updateCameraBounds();
+    this.addBackground();
+    // Set initial camera position
+    if(this.data.properties.initialCameraPos) {
+        if(this.data.properties.initialCameraPos.match(/([0-9]+)[,]([0-9]+)/)) {
+            this.camera.setPosition(new Point(
+                parseInt(RegExp.$1) * this.tileWidth,
+                parseInt(RegExp.$2) * this.tileHeight
+            ), new Point(0.5, 0.5));
+        }
+    }
+    // Resize
+    while(this.tiles.length < this.width * this.height) {
+        this.tiles.push(null);
+    }
+    // Parse Tile layer(s)
+    var arr = this.data.layers.filter(function(layer) { return (layer.name.toUpperCase() === "TILES"); });
+    for(var a = 0;a < arr.length;a++) {
+        var layer = arr[a];
+        this.parseTileLayer(layer, "tiles");
+    }
+    // Parse Tile Modifier layer(s)
+    var arr = this.data.layers.filter(function(layer) { return (layer.name.match(/modifier[s]?[0-9]?/i)); });
+    for(var a = 0;a < arr.length;a++) {
+        var layer = arr[a];
+        this.parseTileLayer(layer, "modifiers");
+    }
+    // Parse Object layer(s)
+    var arr = this.data.layers.filter(function(layer) { return (layer.name.match(/object[s]?/i)); });
+    for(var a = 0;a < arr.length;a++) {
+        var layer = arr[a];
+        this.parseObjectLayer(layer);
+    }
+    // Create lemming pool
+    this.pool.lemming = new Pool("Game_Lemming", this, [], this.totalLemmings);
+    // Add grid
+    this.addGrid();
 
-  // Dispatch event
-  this.onCreate.dispatch();
+    // Dispatch event
+    this.onCreate.dispatch();
 }
 
 Game_Map.prototype.parseTileLayer = function(layer, type) {
-  for(var a = 0;a < layer.data.length;a++) {
-    var uid = layer.data[a];
-    if(uid > 0) {
-      var pos = this.getTilePosition(a);
-      if(type === "tiles") this.addTile(pos.x, pos.y, uid, 0);
-      else if(type === "modifiers") this.addTileModifier(pos.x, pos.y, uid);
+    for(var a = 0;a < layer.data.length;a++) {
+        var uid = layer.data[a];
+        if(uid > 0) {
+            var pos = this.getTilePosition(a);
+            if(type === "tiles") this.addTile(pos.x, pos.y, uid, 0);
+            else if(type === "modifiers") this.addTileModifier(pos.x, pos.y, uid);
+        }
     }
-  }
 }
 
 Game_Map.prototype.parseObjectLayer = function(layer) {
-  for(var a = 0;a < layer.objects.length;a++) {
-    var objData = layer.objects[a];
-    // Determine flipping
-    objData.flip = {
-      horizontal: (objData.gid & Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG),
-      vertical: (objData.gid & Game_Map.TILE_FLIPPED_VERTICALLY_FLAG),
-      diagonal: (objData.gid & Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG)
-    };
-    objData.gid &= ~(
-      Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
-      Game_Map.TILE_FLIPPED_VERTICALLY_FLAG |
-      Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG
-    );
-    // Get data
-    var props = this.getObjectProperties(objData);
-    if(props) {
-      var obj;
-      if(props.type === "prop") {
-        obj = this.addProp(objData.x, objData.y, props.key, objData);
-      }
+    for(var a = 0;a < layer.objects.length;a++) {
+        var objData = layer.objects[a];
+        // Determine flipping
+        objData.flip = {
+            horizontal: (objData.gid & Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG),
+            vertical: (objData.gid & Game_Map.TILE_FLIPPED_VERTICALLY_FLAG),
+            diagonal: (objData.gid & Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG)
+        };
+        objData.gid &= ~(
+            Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
+            Game_Map.TILE_FLIPPED_VERTICALLY_FLAG |
+            Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG
+        );
+        // Get data
+        var props = this.getObjectProperties(objData);
+        if(props) {
+            var obj;
+            if(props.type === "prop") {
+                obj = this.addProp(objData.x, objData.y, props.key, objData);
+            }
+        }
     }
-  }
 }
 
 Game_Map.prototype.getObjectProperties = function(objectData) {
-  var gid = objectData.gid & ~(
-    Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
-    Game_Map.TILE_FLIPPED_VERTICALLY_FLAG |
-    Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG
-  );
-  var ts = this.getTileset(gid);
-  if(ts) {
-    var props = ts.getTileProperties(gid - ts.firstGid);
-    if(props) return props;
-  }
-  return null;
+    var gid = objectData.gid & ~(
+        Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
+        Game_Map.TILE_FLIPPED_VERTICALLY_FLAG |
+        Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG
+    );
+    var ts = this.getTileset(gid);
+    if(ts) {
+        var props = ts.getTileProperties(gid - ts.firstGid);
+        if(props) return props;
+    }
+    return null;
 }
 
 Game_Map.prototype.addGrid = function() {
-  for(var a = 0;a < this.width;a++) {
-    for(var b = 0;b < this.height;b++) {
-      var spr = new Sprite_Base();
-      var anim = spr.addAnimation("idle");
-      anim.addFrame("atlMisc", "gridTile.png");
-      spr.position.set(a * this.tileWidth, b * this.tileHeight);
-      spr.playAnimation("idle");
-      this.grid.addChild(spr);
+    for(var a = 0;a < this.width;a++) {
+        for(var b = 0;b < this.height;b++) {
+            var spr = new Sprite_Base();
+            var anim = spr.addAnimation("idle");
+            anim.addFrame("atlMisc", "gridTile.png");
+            spr.position.set(a * this.tileWidth, b * this.tileHeight);
+            spr.playAnimation("idle");
+            this.grid.addChild(spr);
+        }
     }
-  }
 }
 
 Game_Map.prototype.addProp = function(x, y, key, data) {
-  // Create object
-  var obj = new Game_Prop(key, this);
-  obj.map = this;
-  obj.x = x;
-  obj.y = y;
-  this.objects.push(obj);
-  // Rotate
-  var src = $dataProps[obj.key];
-  var origin = new Point(data.width * src.anchor.x, data.height * src.anchor.y);
-  var angle = Math.degtorad(data.rotation);
-  origin.rotate(angle);
-  obj.rotation = angle;
-  // Reposition
-  obj.x += origin.x;
-  obj.y += origin.y;
-  // Apply Properties
-  if(data.properties) {
-    obj.applyProperties(data.properties);
-  }
-  // Flip
-  if(data.flip.horizontal) {
-    obj.flipH();
-    obj.x += data.width;
-  }
-  // Add to world
-  this.world.addChild(obj.sprite);
+    // Create object
+    var obj = new Game_Prop(key, this);
+    obj.map = this;
+    obj.x = x;
+    obj.y = y;
+    this.objects.push(obj);
+    // Rotate
+    var src = $dataProps[obj.key];
+    var origin = new Point(data.width * src.anchor.x, data.height * src.anchor.y);
+    var angle = Math.degtorad(data.rotation);
+    origin.rotate(angle);
+    obj.rotation = angle;
+    // Reposition
+    obj.x += origin.x;
+    obj.y += origin.y;
+    // Apply Properties
+    if(data.properties) {
+        obj.applyProperties(data.properties);
+    }
+    // Flip
+    if(data.flip.horizontal) {
+        obj.flipH();
+        obj.x += data.width;
+    }
+    // Add to world
+    this.world.addChild(obj.sprite);
 }
 
 Game_Map.prototype.addTile = function(x, y, uid, flags, data) {
-  if(!data) data = {};
-  if(!flags) flags = 0;
-  var ts = this.getTileset(uid);
-  if(ts) {
-    var index = this.getTileIndex(x, y);
-    // Add new tile
-    var tile = new Game_Tile(ts.getTileTexture(uid - ts.firstGid));
-    tile.x = x * this.tileWidth;
-    tile.y = y * this.tileHeight;
-    this.world.addChild(tile.sprite);
-    // Add properties
-    var properties = ts.getTileProperties(uid - ts.firstGid);
-    if(properties) {
-      for(var a in properties) {
-        var property = properties[a];
-        // Tile Property
-        if(a.match(/PROPERTY_([a-zA-Z0-9]+)/i)) {
-          tile.assignProperty(RegExp.$1);
+    if(!data) data = {};
+    if(!flags) flags = 0;
+    var ts = this.getTileset(uid);
+    if(ts) {
+        var index = this.getTileIndex(x, y);
+        // Add new tile
+        var tile = new Game_Tile(ts.getTileTexture(uid - ts.firstGid));
+        tile.x = x * this.tileWidth;
+        tile.y = y * this.tileHeight;
+        this.world.addChild(tile.sprite);
+        // Add properties
+        var properties = ts.getTileProperties(uid - ts.firstGid);
+        if(properties) {
+            for(var a in properties) {
+                var property = properties[a];
+                // Tile Property
+                if(a.match(/PROPERTY_([a-zA-Z0-9]+)/i)) {
+                    tile.assignProperty(RegExp.$1);
+                }
+                // Tile Collision
+                if(a.match(/COLLISION_([a-zA-Z0-9]+)/i)) {
+                    tile.collisionFunction = Game_Tile["COLLISIONFUNC_" + RegExp.$1.toUpperCase()];
+                }
+            }
         }
-        // Tile Collision
-        if(a.match(/COLLISION_([a-zA-Z0-9]+)/i)) {
-          tile.collisionFunction = Game_Tile["COLLISIONFUNC_" + RegExp.$1.toUpperCase()];
+        // Add extra properties
+        var extraProperties = ts.getTileExtraProperties(uid - ts.firstGid);
+        if(extraProperties) {
+            // Add animation
+            if(extraProperties.animation) {
+                for(var a = 0;a < extraProperties.animation.length;a++) {
+                    tile.sprite.addAnimationFrame("idle", ts, extraProperties.animation[a].tileid);
+                }
+                tile.sprite.playAnimation("idle");
+            }
         }
-      }
+        // Remove old tile
+        var oldTile = this.tiles.splice(index, 1, tile)[0];
+        if(oldTile instanceof Game_Tile) oldTile.sprite.destroy(true);
     }
-    // Add extra properties
-    var extraProperties = ts.getTileExtraProperties(uid - ts.firstGid);
-    if(extraProperties) {
-      // Add animation
-      if(extraProperties.animation) {
-        for(var a = 0;a < extraProperties.animation.length;a++) {
-          tile.sprite.addAnimationFrame("idle", ts, extraProperties.animation[a].tileid);
-        }
-        tile.sprite.playAnimation("idle");
-      }
-    }
-    // Remove old tile
-    var oldTile = this.tiles.splice(index, 1, tile)[0];
-    if(oldTile instanceof Game_Tile) oldTile.sprite.destroy(true);
-  }
 }
 
 Game_Map.prototype.addTileModifier = function(x, y, uid) {
-  var ts = this.getTileset(uid);
-  if(ts) {
-    var modProperties = ts.getTileProperties(uid - ts.firstGid);
-    var extraProperties = ts.getTileExtraProperties(uid - ts.firstGid);
-    var index = this.getTileIndex(x, y);
-    var tile = this.tiles[index];
-    if(tile) {
-      // Add modifier property
-      if(modProperties.tile_property) tile.assignProperty(modProperties.tile_property);
-      // Add modifier sprite
-      var spr = new Sprite_Tile();
-      spr.z = -50;
-      if(extraProperties.animation) {
-        for(var a = 0;a < extraProperties.animation.length;a++) {
-          var animSrc = extraProperties.animation[a];
-          spr.addAnimationFrame("idle", ts, animSrc.tileid);
+    var ts = this.getTileset(uid);
+    if(ts) {
+        var modProperties = ts.getTileProperties(uid - ts.firstGid);
+        var extraProperties = ts.getTileExtraProperties(uid - ts.firstGid);
+        var index = this.getTileIndex(x, y);
+        var tile = this.tiles[index];
+        if(tile) {
+            // Add modifier property
+            if(modProperties.tile_property) tile.assignProperty(modProperties.tile_property);
+            // Add modifier sprite
+            var spr = new Sprite_Tile();
+            spr.z = -50;
+            if(extraProperties.animation) {
+                for(var a = 0;a < extraProperties.animation.length;a++) {
+                    var animSrc = extraProperties.animation[a];
+                    spr.addAnimationFrame("idle", ts, animSrc.tileid);
+                }
+            }
+            else spr.addAnimationFrame("idle", ts, uid - ts.firstGid);
+            spr.playAnimation("idle");
+            tile.sprite.addChild(spr);
         }
-      }
-      else spr.addAnimationFrame("idle", ts, uid - ts.firstGid);
-      spr.playAnimation("idle");
-      tile.sprite.addChild(spr);
     }
-  }
 }
 
 Game_Map.prototype.removeTile = function(x, y) {
-  var index = this.getTileIndex(x, y);
-  var oldTile = this.tiles.splice(index, 1, null)[0];
-  if(oldTile instanceof Game_Tile) {
-    this.world.removeChild(oldTile.sprite);
-    oldTile.sprite.destroy();
-    return true;
-  }
-  return false;
+    var index = this.getTileIndex(x, y);
+    var oldTile = this.tiles.splice(index, 1, null)[0];
+    if(oldTile instanceof Game_Tile) {
+        this.world.removeChild(oldTile.sprite);
+        oldTile.sprite.destroy();
+        return true;
+    }
+    return false;
 }
 
 Game_Map.prototype.getTileIndex = function(x, y) {
-  return x + (y * this.width);
+    return x + (y * this.width);
 }
 
 Game_Map.prototype.getTilePosition = function(index) {
-  return new Point(
-    Math.floor(index % this.width),
-    Math.floor(index / this.width)
-  );
+    return new Point(
+        Math.floor(index % this.width),
+        Math.floor(index / this.width)
+    );
 }
 
 Game_Map.prototype.getTile = function(realX, realY) {
-  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return null;
-  return this.tiles[this.getTileIndex(realX >> 4, realY >> 4)];
+    if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return null;
+    return this.tiles[this.getTileIndex(realX >> 4, realY >> 4)];
 }
 
 Game_Map.prototype.setStage = function(stage) {
-  stage.addChild(this.world);
+    stage.addChild(this.world);
 }
 
 Game_Map.prototype.update = function() {
-  // Update objects
-  var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
-  for(var a = 0;a < arr.length;a++) {
-    var o = arr[a];
-    o.update();
-  }
-  // Update tiles
-  for(var a = 0;a < this.tiles.length;a++) {
-    var tile = this.tiles[a];
-    if(tile) tile.update();
-  }
-  this.world.zOrder();
-  this.updateCameraBounds();
-  // Track victory/defeat
-  if(this.trackVictoryDefeat) {
-    var end = true;
-    if(this.getLemmings().length > 0) end = false;
-    var arr = this.getDoors();
-    for(var a = 0;a < arr.length && end;a++) {
-      var obj = arr[a];
-      if(obj.value > 0) end = false;
+    // Update frame
+    this.frame++;
+    if(!this.replay.hasActionsRemaining()) {
+        SceneManager.current().stopReplay();
     }
-    if(end) {
-      this.trackVictoryDefeat = false;
-      this.onEndOfMap.dispatch();
+    else {
+        this.replay.performActions();
     }
-  }
+    // Update objects
+    var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
+    for(var a = 0;a < arr.length;a++) {
+        var o = arr[a];
+        o.update();
+    }
+    // Update tiles
+    for(var a = 0;a < this.tiles.length;a++) {
+        var tile = this.tiles[a];
+        if(tile) tile.update();
+    }
+    this.world.zOrder();
+    this.updateCameraBounds();
+    // Track victory/defeat
+    if(this.trackVictoryDefeat) {
+        var end = true;
+        if(this.getLemmings().length > 0) end = false;
+        var arr = this.getDoors();
+        for(var a = 0;a < arr.length && end;a++) {
+            var obj = arr[a];
+            if(obj.value > 0) end = false;
+        }
+        if(end) {
+            this.trackVictoryDefeat = false;
+            this.onEndOfMap.dispatch();
+        }
+    }
 }
 
 Game_Map.prototype.updateCamera = function() {
-  this.camera.update();
-  // Update tiles
-  var arr = this.tiles.slice();
-  for(var a = 0;a < arr.length;a++) {
-    var t = arr[a];
-    if(t) {
-      if(this.camera.contains(t.sprite)) t.sprite.visible = true;
-      else t.sprite.visible = false;
+    this.camera.update();
+    // Update tiles
+    var arr = this.tiles.slice();
+    for(var a = 0;a < arr.length;a++) {
+        var t = arr[a];
+        if(t) {
+            if(this.camera.contains(t.sprite)) t.sprite.visible = true;
+            else t.sprite.visible = false;
+        }
     }
-  }
-  // Update objects
-  var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
-  for(var a = 0;a < arr.length;a++) {
-    var o = arr[a];
-    if(this.camera.contains(o.sprite) && o.exists) o.sprite.visible = true;
-    else o.sprite.visible = false;
-  }
+    // Update objects
+    var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
+    for(var a = 0;a < arr.length;a++) {
+        var o = arr[a];
+        if(this.camera.contains(o.sprite) && o.exists) o.sprite.visible = true;
+        else o.sprite.visible = false;
+    }
 }
 
 Game_Map.prototype.getLemmings = function() {
-  return this.objects.filter(function(obj) {
-    return (obj instanceof Game_Lemming && obj.exists);
-  });
+    return this.objects.filter(function(obj) {
+        return (obj instanceof Game_Lemming && obj.exists);
+    });
 }
 
 Game_Map.prototype.getDoors = function() {
-  return this.objects.filter(function(obj) {
-    return (obj instanceof Game_Prop && obj.type === "door" && obj.exists);
-  });
+    return this.objects.filter(function(obj) {
+        return (obj instanceof Game_Prop && obj.type === "door" && obj.exists);
+    });
 }
 
 Game_Map.prototype.getExits = function() {
-  return this.objects.filter(function(obj) {
-    return (obj instanceof Game_Prop && obj.type === "exit" && obj.exists);
-  });
+    return this.objects.filter(function(obj) {
+        return (obj instanceof Game_Prop && obj.type === "exit" && obj.exists);
+    });
 }
 
 Game_Map.prototype.startMusic = function() {
-  AudioManager.playBgm("music");
+    AudioManager.playBgm("music");
 }
 
 Game_Map.prototype.tileCollision = function(realX, realY, lem) {
-  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return Game_Tile.COLLISION_ENDOFMAP;
-  var tile = this.getTile(realX, realY);
-  if(tile) return tile.collisionFunction.call(lem, realX, realY);
-  return Game_Tile.COLLISIONFUNC_AIR.call(lem, realX, realY);
+    if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return Game_Tile.COLLISION_ENDOFMAP;
+    var tile = this.getTile(realX, realY);
+    if(tile) return tile.collisionFunction.call(lem, realX, realY);
+    return Game_Tile.COLLISIONFUNC_AIR.call(lem, realX, realY);
 }
 
 Game_Map.prototype.tileHasBlocker = function(realX, realY) {
-  if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return false;
-  var r = new Rect((realX >> 4) << 4, (realY >> 4) << 4, this.tileWidth, this.tileHeight);
-  var arr = this.getLemmings().slice().filter(function(lemming) { return lemming.action.current === Game_Lemming.ACTION_BLOCKER; } );
-  for(var a = 0;a < arr.length;a++) {
-    var lemming = arr[a];
-    if(r.contains(lemming.x, lemming.y)) return true;
-  }
-  return false;
+    if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return false;
+    var r = new Rect((realX >> 4) << 4, (realY >> 4) << 4, this.tileWidth, this.tileHeight);
+    var arr = this.getLemmings().slice().filter(function(lemming) { return lemming.action.current === Game_Lemming.ACTION_BLOCKER; } );
+    for(var a = 0;a < arr.length;a++) {
+        var lemming = arr[a];
+        if(r.contains(lemming.x, lemming.y)) return true;
+    }
+    return false;
 }
 
 Game_Map.prototype.toScreenSpace = function(mapX, mapY) {
-  return new Point(
-    (mapX - this.camera.rect.left) * this.world.scale.x,
-    (mapY - this.camera.rect.top) * this.world.scale.y
-  );
+    return new Point(
+        (mapX - this.camera.rect.left) * this.world.scale.x,
+        (mapY - this.camera.rect.top) * this.world.scale.y
+    );
 }
 
 Game_Map.prototype.replaceTile = function(x, y, tile) {
-  var index = this.getTileIndex(x, y);
-  if(index >= 0 && index < this.tiles.length) {
-    var oldTile = this.tiles.splice(index, 1, tile)[0];
-    if(oldTile) oldTile.sprite.destroy(true);
-    tile.x = x * this.tileWidth;
-    tile.y = y * this.tileHeight;
-    this.world.addChild(tile.sprite);
-  }
+    var index = this.getTileIndex(x, y);
+    if(index >= 0 && index < this.tiles.length) {
+        var oldTile = this.tiles.splice(index, 1, tile)[0];
+        if(oldTile) oldTile.sprite.destroy(true);
+        tile.x = x * this.tileWidth;
+        tile.y = y * this.tileHeight;
+        this.world.addChild(tile.sprite);
+    }
 }
 
 Game_Map.prototype.toWorldSpace = function(screenX, screenY) {
-  return new Point(
-    (screenX / this.world.scale.x) + this.camera.rect.left,
-    (screenY / this.world.scale.y) + this.camera.rect.top
-  );
+    return new Point(
+        (screenX / this.world.scale.x) + this.camera.rect.left,
+        (screenY / this.world.scale.y) + this.camera.rect.top
+    );
 }
 
 Game_Map.prototype.addBackground = function() {
-  if(Cache.hasImage("background")) {
-    // Get Parallax and Tile properties
-    var parallax = new Point(0.5, 0.5);
-    var tile = { x: true, y: true };
-    if(this.data.properties) {
-      parallax.x = typeof this.data.properties.parallaxX === "number" ? this.data.properties.parallaxX : 0.5;
-      parallax.y = typeof this.data.properties.parallaxY === "number" ? this.data.properties.parallaxY : 0.5;
-      tile.x = typeof this.data.properties.tileX === "boolean" ? this.data.properties.tileX : true;
-      tile.y = typeof this.data.properties.tileY === "boolean" ? this.data.properties.tileY : true;
+    if(Cache.hasImage("background")) {
+        // Get Parallax and Tile properties
+        var parallax = new Point(0.5, 0.5);
+        var tile = { x: true, y: true };
+        if(this.data.properties) {
+            parallax.x = typeof this.data.properties.parallaxX === "number" ? this.data.properties.parallaxX : 0.5;
+            parallax.y = typeof this.data.properties.parallaxY === "number" ? this.data.properties.parallaxY : 0.5;
+            tile.x = typeof this.data.properties.tileX === "boolean" ? this.data.properties.tileX : true;
+            tile.y = typeof this.data.properties.tileY === "boolean" ? this.data.properties.tileY : true;
+        }
+        // Create background
+        this.background = new Background("background", this.realWidth, this.realHeight, tile, parallax);
+        this.world.addChild(this.background);
     }
-    // Create background
-    this.background = new Background("background", this.realWidth, this.realHeight, tile, parallax);
-    this.world.addChild(this.background);
-  }
 }
 
 Game_Map.prototype.destroy = function() {
-  this.clearLevelAssets();
-  Cache.removeJSON("map");
+    this.clearLevelAssets();
+    Cache.removeJSON("map");
 }
 
 Game_Map.prototype.clearLevelAssets = function() {
-  while(this._usedAssets.length > 0) {
-    var asset = this._usedAssets.pop();
-    switch(asset.type) {
-      case "json":
-        Cache.removeJSON(asset.key);
-        break;
-      case "audio":
-        Cache.removeAudio(asset.key);
-        break;
-      case "image":
-        Cache.removeImage(asset.key);
-        break;
-      case "textureAtlas":
-        Cache.removeTextureAtlas(asset.key);
-        break;
-      default:
-        console.log("Failed to remove asset: " + asset.key);
-        break;
+    while(this._usedAssets.length > 0) {
+        var asset = this._usedAssets.pop();
+        switch(asset.type) {
+            case "json":
+                Cache.removeJSON(asset.key);
+                break;
+            case "audio":
+                Cache.removeAudio(asset.key);
+                break;
+            case "image":
+                Cache.removeImage(asset.key);
+                break;
+            case "textureAtlas":
+                Cache.removeTextureAtlas(asset.key);
+                break;
+            default:
+                console.log("Failed to remove asset: " + asset.key);
+                break;
+        }
     }
-  }
 }
+
+Game_Map.prototype.updateReplay = function() {
+    // Get replay
+    var preGameScene = SceneManager.getSceneByType(Scene_PreGame);
+    if(preGameScene != null) {
+        this.replay = preGameScene.replay;
+    }
+    if(this.replay == null) this.replay = new Replay(this);
+    preGameScene.replay = this.replay;
+    // Set replay map
+    this.replay._map = this;
+};
 
 function Game_Tileset() {
   this.init.apply(this, arguments);
@@ -4617,6 +4696,83 @@ Game_Camera.prototype.contains = function(spr) {
   var r = new Rect(spr.x - (spr.width * spr.anchor.x), spr.y - (spr.height * spr.anchor.y), spr.width, spr.height);
   return this.rect.overlap(r);
 }
+
+function Replay() {
+    this.initialize.apply(this, arguments);
+};
+
+Replay.prototype.initialize = function(map) {
+    this._map = map;
+    this._frames = {};
+    this._active = true;
+};
+
+Replay.prototype.addAction = function(frame) {
+    if(!this._frames[frame]) this._frames[frame] = [];
+    var action = new ReplayAction(this);
+    this._frames[frame].push(action);
+    return action;
+};
+
+Replay.prototype.performActions = function() {
+    var frameActions = this._frames[this._map.frame];
+    if(frameActions == null) return;
+    frameActionsCopy = frameActions.slice();
+    for(var a = 0;a < frameActionsCopy.length;a++) {
+        var frameAction = frameActionsCopy[a];
+        frameActions[a].performAction();
+        frameActions.splice(frameActions.indexOf(frameAction), 1);
+    }
+};
+
+Replay.prototype.stop = function() {
+    this._active = false;
+    this.cutFromFrame(this._map.frame);
+};
+
+Replay.prototype.isActive = function() {
+    return this._active;
+};
+
+Replay.prototype.cutFromFrame = function(frame) {
+    for(var frameIndex in this._frames) {
+        if(parseInt(frameIndex) > frame) delete this._frames[frameIndex];
+    }
+};
+
+Replay.prototype.getLastFrame = function() {
+    var highest = -1;
+    for(var frameIndex in this._frames) {
+        if(parseInt(frameIndex) > highest) highest = parseInt(frameIndex);
+    }
+    return highest;
+};
+
+Replay.prototype.hasActionsRemaining = function() {
+    var lastFrame = this.getLastFrame();
+    return (lastFrame >= this._map.frame);
+};
+
+function ReplayAction() {
+    this.initialize.apply(this, arguments);
+};
+
+ReplayAction.prototype.initialize = function(replay, query, action) {
+    this._replay = replay;
+    this.query = query || "";
+    this.action = action || "";
+};
+
+ReplayAction.prototype.getMap = function() {
+    return this._replay._map;
+};
+
+ReplayAction.prototype.performAction = function() {
+    var map = this.getMap();
+    var scene = SceneManager.current();
+    var object = eval(this.query);
+    eval(this.action);
+};
 
 function Game_Base() {
   this.init.apply(this, arguments);
@@ -5407,178 +5563,178 @@ Game_Lemming.prototype.disable = function() {
 }
 
 function Game_Prop() {
-  this.init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 Game_Prop.prototype = Object.create(Game_Base.prototype);
 Game_Prop.prototype.constructor = Game_Prop;
 
 Object.defineProperties(Game_Prop.prototype, {
-  rotation: {
-    get: function() { return Object.getOwnPropertyDescriptor(Game_Base.prototype, "rotation").get.call(this); },
-    set: function(value) {
-      var old = this._rotation;
-      Object.getOwnPropertyDescriptor(Game_Base.prototype, "rotation").set.call(this, value);
-      this._rotation = value;
-      for(var a in this.offsetPoint) {
-        this.offsetPoint[a].rotate(value - old);
-      }
-      for(var a in this.offsetRect) {
-        this.offsetRect[a].rotate(value - old);
-      }
-    },
-    configurable: true
-  }
+    rotation: {
+        get: function() { return Object.getOwnPropertyDescriptor(Game_Base.prototype, "rotation").get.call(this); },
+        set: function(value) {
+            var old = this._rotation;
+            Object.getOwnPropertyDescriptor(Game_Base.prototype, "rotation").set.call(this, value);
+            this._rotation = value;
+            for(var a in this.offsetPoint) {
+                this.offsetPoint[a].rotate(value - old);
+            }
+            for(var a in this.offsetRect) {
+                this.offsetRect[a].rotate(value - old);
+            }
+        },
+        configurable: true
+    }
 });
 
 Game_Prop.prototype.init = function(key, map) {
-  Game_Base.prototype.init.call(this);
-  this.key = key;
-  this.map = map;
-  this.src = null;
-  this.offsetPoint = {};
-  this.offsetRect = {};
-  this.sprite = new Sprite_Prop();
-  this.type = undefined;
-  this.applySource();
+    Game_Base.prototype.init.call(this);
+    this.key = key;
+    this.map = map;
+    this.src = null;
+    this.offsetPoint = {};
+    this.offsetRect = {};
+    this.sprite = new Sprite_Prop();
+    this.type = undefined;
+    this.applySource();
 }
 
 Game_Prop.prototype.applySource = function() {
-  this.src = $dataProps[this.key];
-  this.type = this.src.type;
-  // Initialize animations
-  var baseTextureKey = Loader.determineKey(this.src.assets.textureAtlases.base);
-  for(var a in this.src.animations) {
-    var animSrc = this.src.animations[a];
-    var anim = this.sprite.addAnimation(a);
-    for(var b = 0;b < animSrc.length;b++) {
-      anim.addFrame(baseTextureKey, animSrc[b]);
+    this.src = $dataProps[this.key];
+    this.type = this.src.type;
+    // Initialize animations
+    var baseTextureKey = Loader.determineKey(this.src.assets.textureAtlases.base);
+    for(var a in this.src.animations) {
+        var animSrc = this.src.animations[a];
+        var anim = this.sprite.addAnimation(a);
+        for(var b = 0;b < animSrc.length;b++) {
+            anim.addFrame(baseTextureKey, animSrc[b]);
+        }
     }
-  }
-  // Initialize sounds
-  this.sounds = {};
-  for(var a in this.src.assets.audio) {
-    this.sounds[a] = Loader.determineKey(this.src.assets.audio[a]);
-  }
+    // Initialize sounds
+    this.sounds = {};
+    for(var a in this.src.assets.audio) {
+        this.sounds[a] = Loader.determineKey(this.src.assets.audio[a]);
+    }
 
-  // TYPE: Door
-  if(this.type === "door") {
-    this.rate = 50;
-    this.value = 0;
-    this.sprite.playAnimation("closed");
-    this.alarms.door = new Alarm();
-    this.offsetPoint.drop = new Point(this.src.dropOffset.x, this.src.dropOffset.y);
-  }
-  // TYPE: Exit
-  else if(this.type === "exit") {
-    this.sprite.playAnimation("idle");
-    this.offsetRect.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
-  }
-  // TYPE: Trap
-  else if(this.type === "trap") {
-    this.sprite.playAnimation("idle");
-    this.offsetRect.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
-    if(this.sprite.hasAnimation("kill")) {
-      this.sprite.getAnimation("kill").onEnd.add(function() {
-        this.sprite.playAnimation("idle");
-      }, this);
+    // TYPE: Door
+    if(this.type === "door") {
+        this.rate = 50;
+        this.value = 0;
+        this.sprite.playAnimation("closed");
+        this.alarms.door = new Alarm();
+        this.offsetPoint.drop = new Point(this.src.dropOffset.x, this.src.dropOffset.y);
     }
-  }
+    // TYPE: Exit
+    else if(this.type === "exit") {
+        this.sprite.playAnimation("idle");
+        this.offsetRect.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
+    }
+    // TYPE: Trap
+    else if(this.type === "trap") {
+        this.sprite.playAnimation("idle");
+        this.offsetRect.hitArea = new Rect(this.src.hitArea.x, this.src.hitArea.y, this.src.hitArea.width, this.src.hitArea.height);
+        if(this.sprite.hasAnimation("kill")) {
+            this.sprite.getAnimation("kill").onEnd.add(function() {
+                this.sprite.playAnimation("idle");
+            }, this);
+        }
+    }
 }
 
 Game_Prop.prototype.applyProperties = function(props) {
-  // TYPE: Door
-  if(this.type === "door") {
-    if(props.value) {
-      this.map.totalLemmings += props.value;
-      this.value = props.value;
+    // TYPE: Door
+    if(this.type === "door") {
+        if(props.value) {
+            this.map.totalLemmings += props.value;
+            this.value = props.value;
+        }
+        if(props.rate) this.rate = props.rate;
     }
-    if(props.rate) this.rate = props.rate;
-  }
-  // TYPE: Exit
-  else if(this.type === "exit") {}
-  // TYPE: Trap
-  else if(this.type === "trap") {}
+    // TYPE: Exit
+    else if(this.type === "exit") {}
+    // TYPE: Trap
+    else if(this.type === "trap") {}
 }
 
 Game_Prop.prototype.update = function() {
-  Game_Base.prototype.update.call(this);
-  // TYPE: Exit
-  if(this.type === "exit") {
-    var arr = this.map.getLemmings();
-    for(var a = 0;a < arr.length;a++) {
-      var lemming = arr[a];
-      if(this.offsetRect.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && (lemming.rotation % (Math.PI * 2)) === (this.rotation % (Math.PI * 2)) && lemming.canExit()) {
-        // Lemming exit
-        if(this.sounds.exit) AudioManager.playSound(this.sounds.exit);
-        lemming.exit();
-      }
-    }
-  }
-  // TYPE: Trap
-  else if(this.type === "trap" && !this.sprite.isAnimationPlaying("kill")) {
-    var arr = this.map.getLemmings();
-    for(var a = 0;a < arr.length;a++) {
-      var lemming = arr[a];
-      if(this.offsetRect.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && !lemming.disabled) {
-        // Kill lemming
-        if(this.sounds.kill) AudioManager.playSound(this.sounds.kill);
-        // Animation
-        if(this.src.deathAnimation) {
-          lemming.disable();
-          lemming.requestAnimation = this.src.deathAnimation;
+    Game_Base.prototype.update.call(this);
+    // TYPE: Exit
+    if(this.type === "exit") {
+        var arr = this.map.getLemmings();
+        for(var a = 0;a < arr.length;a++) {
+            var lemming = arr[a];
+            if(this.offsetRect.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && (lemming.rotation % (Math.PI * 2)) === (this.rotation % (Math.PI * 2)) && lemming.canExit()) {
+                // Lemming exit
+                if(this.sounds.exit) AudioManager.playSound(this.sounds.exit);
+                lemming.exit();
+            }
         }
-        else if(this.sprite.hasAnimation("kill")) {
-          lemming.exists = false;
-          this.sprite.playAnimation("kill");
-        }
-      }
     }
-  }
+    // TYPE: Trap
+    else if(this.type === "trap" && !this.sprite.isAnimationPlaying("kill")) {
+        var arr = this.map.getLemmings();
+        for(var a = 0;a < arr.length;a++) {
+            var lemming = arr[a];
+            if(this.offsetRect.hitArea.contains(lemming.x - this.x, lemming.y - this.y) && !lemming.disabled) {
+                // Kill lemming
+                if(this.sounds.kill) AudioManager.playSound(this.sounds.kill);
+                // Animation
+                if(this.src.deathAnimation) {
+                    lemming.disable();
+                    lemming.requestAnimation = this.src.deathAnimation;
+                }
+                else if(this.sprite.hasAnimation("kill")) {
+                    lemming.exists = false;
+                    this.sprite.playAnimation("kill");
+                }
+            }
+        }
+    }
 }
 
 Game_Prop.prototype.flipH = function() {
-  this.sprite.scale.x = -this.sprite.scale.x;
-  if(this.offsetRect.hitArea) {
-    this.offsetRect.hitArea.x = -(this.offsetRect.hitArea.x + this.offsetRect.hitArea.width);
-  }
+    this.sprite.scale.x = -this.sprite.scale.x;
+    if(this.offsetRect.hitArea) {
+        this.offsetRect.hitArea.x = -(this.offsetRect.hitArea.x + this.offsetRect.hitArea.width);
+    }
 }
 
 Game_Prop.prototype.doorOpen = function() {
-  var anim = this.sprite.playAnimation("opening");
-  anim.onEnd.addOnce(this._doorOpened, this);
+    var anim = this.sprite.playAnimation("opening");
+    anim.onEnd.addOnce(this._doorOpened, this);
 }
 
 Game_Prop.prototype._doorOpened = function() {
-  this.sprite.playAnimation("open");
-  this.alarms.door.time = 30;
-  this.alarms.door.onExpire.addOnce(this._doorStart, this);
+    this.sprite.playAnimation("open");
+    this.alarms.door.time = 30;
+    this.alarms.door.onExpire.addOnce(this._doorStart, this);
 }
 
 Game_Prop.prototype._doorStart = function() {
-  this.alarms.door.onExpire.add(this._doorAct, this);
-  this.alarms.door.baseTime = this.rate;
-  this.alarms.door.time = 1;
-  this.map.startMusic();
+    this.alarms.door.onExpire.add(this._doorAct, this);
+    this.alarms.door.baseTime = this.rate;
+    this.alarms.door.time = 1;
+    this.map.startMusic();
 }
 
 Game_Prop.prototype._doorAct = function() {
-  if(this.value > 0) {
-    this.value--;
-    var lemming = this.map.pool.lemming.spawn(this.x + this.offsetPoint.drop.x, this.y + this.offsetPoint.drop.y);
-    lemming.rotation = this.rotation;
-    // Lemming colors
-    var colors = this.src.lemmingColor;
-    if(colors) {
-      lemming.setHairColor(eval("0x" + colors.hair[0]), eval("0x" + colors.hair[1]));
-      lemming.setBodyColor(eval("0x" + colors.body[0]), eval("0x" + colors.body[1]));
-    } else {
-      lemming.setHairColor_Default();
-      lemming.setBodyColor_Default();
+    if(this.value > 0) {
+        this.value--;
+        var lemming = this.map.pool.lemming.spawn(this.x + this.offsetPoint.drop.x, this.y + this.offsetPoint.drop.y);
+        lemming.rotation = this.rotation;
+        // Lemming colors
+        var colors = this.src.lemmingColor;
+        if(colors) {
+            lemming.setHairColor(eval("0x" + colors.hair[0]), eval("0x" + colors.hair[1]));
+            lemming.setBodyColor(eval("0x" + colors.body[0]), eval("0x" + colors.body[1]));
+        } else {
+            lemming.setHairColor_Default();
+            lemming.setBodyColor_Default();
+        }
+        // Stop spawning eventually
+        if(this.value === 0) this.alarms.door.stop();
     }
-    // Stop spawning eventually
-    if(this.value === 0) this.alarms.door.stop();
-  }
 }
 
 window.addEventListener("load", Core.start.bind(Core));

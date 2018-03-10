@@ -1,18 +1,32 @@
 {
 "frames": {
 	"gridTile.png": {
-		"frame": {"x":31, "y":17, "w":16, "h":16},
+		"frame": {"x":51, "y":50, "w":16, "h":16},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
 		"sourceSize": {"w":16,"h":16}
 	},
 	"previewTile.png": {
-		"frame": {"x":31, "y":0, "w":16, "h":16},
+		"frame": {"x":51, "y":33, "w":16, "h":16},
 		"rotated": false,
 		"trimmed": true,
 		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
 		"sourceSize": {"w":16,"h":16}
+	},
+	"replay_0.png": {
+		"frame": {"x":31, "y":0, "w":30, "h":32},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+		"sourceSize": {"w":32,"h":32}
+	},
+	"replay_1.png": {
+		"frame": {"x":31, "y":33, "w":19, "h":20},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":5,"y":6,"w":32,"h":32},
+		"sourceSize": {"w":32,"h":32}
 	},
 	"sprCursor_Idle.png": {
 		"frame": {"x":0, "y":31, "w":30, "h":30},
@@ -32,7 +46,7 @@
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 48, "h": 62},
+	"size": {"w": 68, "h": 67},
 	"scale": "1"
 }
 }

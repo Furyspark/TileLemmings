@@ -53,6 +53,8 @@ app:
     - "map/tile.js"
     - "map/world.js"
     - "map/camera.js"
+    - "map/replay.js"
+    - "map/replay-action.js"
     - "game/base.js"
     - "game/lemming.js"
     - "game/prop.js"
