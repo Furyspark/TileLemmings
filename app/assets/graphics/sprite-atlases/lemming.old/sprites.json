@@ -1,0 +1,1721 @@
+{
+	"meta": {
+		"image": "sprites.png",
+		"size": {"w":280,"h":270},
+		"scale": "1"
+	},
+	"frames": {
+		"sprLemming_FallDeath_7.png":
+		{
+			"frame": {"x":32,"y":0,"w":32,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":32,"h":20},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Explosion_0.png":
+		{
+			"frame": {"x":0,"y":0,"w":32,"h":32},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+			"sourceSize": {"w":32,"h":62}
+		},
+		"sprLemming_Float_0.png":
+		{
+			"frame": {"x":0,"y":32,"w":18,"h":32},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":32},
+			"sourceSize": {"w":20,"h":62}
+		},
+		"sprLemming_Mine_10.png":
+		{
+			"frame": {"x":18,"y":32,"w":30,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":30,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Float_2.png":
+		{
+			"frame": {"x":64,"y":0,"w":18,"h":30},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":30},
+			"sourceSize": {"w":20,"h":62}
+		},
+		"sprLemming_Float_1.png":
+		{
+			"frame": {"x":64,"y":30,"w":18,"h":30},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":30},
+			"sourceSize": {"w":20,"h":62}
+		},
+		"sprLemming_FallDeath_10.png":
+		{
+			"frame": {"x":0,"y":64,"w":30,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":4,"w":30,"h":16},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Dig_2.png":
+		{
+			"frame": {"x":82,"y":0,"w":22,"h":28},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":22,"h":28},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Mine_9.png":
+		{
+			"frame": {"x":0,"y":80,"w":28,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":28,"h":22},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_FallDeath_8.png":
+		{
+			"frame": {"x":28,"y":80,"w":28,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":28,"h":20},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Mine_11.png":
+		{
+			"frame": {"x":56,"y":80,"w":28,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":8,"w":28,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Float_3.png":
+		{
+			"frame": {"x":82,"y":28,"w":18,"h":28},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":28},
+			"sourceSize": {"w":20,"h":62}
+		},
+		"sprLemming_Float_Start_3.png":
+		{
+			"frame": {"x":104,"y":0,"w":18,"h":28},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":18,"h":28},
+			"sourceSize": {"w":20,"h":54}
+		},
+		"sprLemming_FallDeath_6.png":
+		{
+			"frame": {"x":0,"y":102,"w":28,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":28,"h":18},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_FallDeath_11.png":
+		{
+			"frame": {"x":30,"y":64,"w":28,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":28,"h":14},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Mine_7.png":
+		{
+			"frame": {"x":122,"y":0,"w":24,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":2,"w":24,"h":26},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Mine_8.png":
+		{
+			"frame": {"x":0,"y":120,"w":26,"h":24},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":4,"w":26,"h":24},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Dig_3.png":
+		{
+			"frame": {"x":122,"y":26,"w":22,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":22,"h":26},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Dig_1.png":
+		{
+			"frame": {"x":122,"y":52,"w":22,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":22,"h":26},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Mine_6.png":
+		{
+			"frame": {"x":122,"y":78,"w":22,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":10,"y":4,"w":22,"h":26},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_FallDeath_9.png":
+		{
+			"frame": {"x":26,"y":120,"w":26,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":26,"h":20},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Mine_23.png":
+		{
+			"frame": {"x":104,"y":28,"w":18,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":18,"h":26},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Mine_22.png":
+		{
+			"frame": {"x":104,"y":54,"w":18,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":18,"h":26},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Mine_21.png":
+		{
+			"frame": {"x":146,"y":0,"w":14,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":12,"y":0,"w":14,"h":26},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Build_7.png":
+		{
+			"frame": {"x":146,"y":26,"w":14,"h":26},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":14,"h":26},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_FallDeath_12.png":
+		{
+			"frame": {"x":32,"y":20,"w":26,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":12,"w":26,"h":8},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_FallDeath_13.png":
+		{
+			"frame": {"x":32,"y":28,"w":26,"h":4},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":16,"w":26,"h":4},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Dig_0.png":
+		{
+			"frame": {"x":82,"y":56,"w":22,"h":24},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":22,"h":24},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Mine_1.png":
+		{
+			"frame": {"x":160,"y":0,"w":18,"h":24},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":14,"y":2,"w":18,"h":24},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Mine_0.png":
+		{
+			"frame": {"x":160,"y":24,"w":18,"h":24},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":18,"h":24},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Burn_10.png":
+		{
+			"frame": {"x":160,"y":48,"w":16,"h":24},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":16,"h":24},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_FallDeath_5.png":
+		{
+			"frame": {"x":122,"y":104,"w":24,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":24,"h":16},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Bash_6.png":
+		{
+			"frame": {"x":58,"y":64,"w":24,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":24,"h":14},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_22.png":
+		{
+			"frame": {"x":28,"y":102,"w":24,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":24,"h":14},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Dig_7.png":
+		{
+			"frame": {"x":0,"y":144,"w":22,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":22,"h":22},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Mine_5.png":
+		{
+			"frame": {"x":22,"y":144,"w":20,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":12,"y":10,"w":20,"h":22},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Burn_11.png":
+		{
+			"frame": {"x":42,"y":144,"w":20,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":20,"h":22},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Dig_4.png":
+		{
+			"frame": {"x":160,"y":72,"w":18,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":2,"w":18,"h":22},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Bash_11.png":
+		{
+			"frame": {"x":52,"y":120,"w":22,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":22,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Dig_6.png":
+		{
+			"frame": {"x":74,"y":120,"w":22,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":22,"h":18},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Burn_9.png":
+		{
+			"frame": {"x":160,"y":94,"w":16,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":16,"h":22},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Bash_7.png":
+		{
+			"frame": {"x":96,"y":120,"w":22,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":22,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_20.png":
+		{
+			"frame": {"x":118,"y":120,"w":22,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":2,"w":22,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_4.png":
+		{
+			"frame": {"x":62,"y":144,"w":22,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":2,"w":22,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Mine_15.png":
+		{
+			"frame": {"x":160,"y":116,"w":14,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":16,"y":8,"w":14,"h":22},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Climb_3.png":
+		{
+			"frame": {"x":146,"y":52,"w":14,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":14,"h":22},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Bash_21.png":
+		{
+			"frame": {"x":52,"y":102,"w":22,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":22,"h":14},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_5.png":
+		{
+			"frame": {"x":74,"y":102,"w":22,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":4,"w":22,"h":14},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Exit_1.png":
+		{
+			"frame": {"x":146,"y":74,"w":10,"h":22},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":10,"h":22},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_Block_9.png":
+		{
+			"frame": {"x":84,"y":80,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_4.png":
+		{
+			"frame": {"x":178,"y":0,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_13.png":
+		{
+			"frame": {"x":178,"y":20,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_12.png":
+		{
+			"frame": {"x":178,"y":40,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_11.png":
+		{
+			"frame": {"x":178,"y":60,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_6.png":
+		{
+			"frame": {"x":178,"y":80,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_7.png":
+		{
+			"frame": {"x":178,"y":100,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_3.png":
+		{
+			"frame": {"x":178,"y":120,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_10.png":
+		{
+			"frame": {"x":178,"y":140,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_1.png":
+		{
+			"frame": {"x":0,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_2.png":
+		{
+			"frame": {"x":20,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Dig_5.png":
+		{
+			"frame": {"x":40,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":20,"h":20},
+			"sourceSize": {"w":28,"h":46}
+		},
+		"sprLemming_Block_15.png":
+		{
+			"frame": {"x":60,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_14.png":
+		{
+			"frame": {"x":80,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_5.png":
+		{
+			"frame": {"x":100,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Block_0.png":
+		{
+			"frame": {"x":120,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Burn_7.png":
+		{
+			"frame": {"x":140,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":20,"h":20},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Block_8.png":
+		{
+			"frame": {"x":160,"y":166,"w":20,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+			"sourceSize": {"w":20,"h":38}
+		},
+		"sprLemming_Mine_2.png":
+		{
+			"frame": {"x":198,"y":0,"w":20,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":16,"y":12,"w":20,"h":18},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Bash_9.png":
+		{
+			"frame": {"x":198,"y":18,"w":20,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_26.png":
+		{
+			"frame": {"x":198,"y":36,"w":20,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_25.png":
+		{
+			"frame": {"x":198,"y":54,"w":20,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_10.png":
+		{
+			"frame": {"x":198,"y":72,"w":20,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":20,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_BuildEnd_7.png":
+		{
+			"frame": {"x":198,"y":90,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_BuildEnd_8.png":
+		{
+			"frame": {"x":198,"y":110,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_BuildEnd_9.png":
+		{
+			"frame": {"x":198,"y":130,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_3.png":
+		{
+			"frame": {"x":198,"y":150,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Climb_4.png":
+		{
+			"frame": {"x":104,"y":80,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":16,"h":20},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Explode_4.png":
+		{
+			"frame": {"x":48,"y":32,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Burn_8.png":
+		{
+			"frame": {"x":180,"y":166,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":4,"w":16,"h":20},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Build_8.png":
+		{
+			"frame": {"x":0,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":16,"h":20},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Mine_20.png":
+		{
+			"frame": {"x":16,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":12,"y":6,"w":16,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Explode_5.png":
+		{
+			"frame": {"x":32,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Mine_12.png":
+		{
+			"frame": {"x":48,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":16,"y":8,"w":16,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_BuildEnd_4.png":
+		{
+			"frame": {"x":64,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_BuildEnd_5.png":
+		{
+			"frame": {"x":80,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Mine_13.png":
+		{
+			"frame": {"x":96,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":16,"y":8,"w":16,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Mine_14.png":
+		{
+			"frame": {"x":112,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":16,"y":8,"w":16,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_BuildEnd_6.png":
+		{
+			"frame": {"x":128,"y":186,"w":16,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Burn_6.png":
+		{
+			"frame": {"x":198,"y":170,"w":20,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Burn_5.png":
+		{
+			"frame": {"x":84,"y":144,"w":20,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Burn_4.png":
+		{
+			"frame": {"x":104,"y":144,"w":20,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Burn_3.png":
+		{
+			"frame": {"x":124,"y":144,"w":20,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":8,"w":20,"h":16},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Bash_19.png":
+		{
+			"frame": {"x":144,"y":144,"w":20,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":2,"w":20,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Mine_16.png":
+		{
+			"frame": {"x":146,"y":96,"w":14,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":14,"y":8,"w":14,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_BuildEnd_3.png":
+		{
+			"frame": {"x":146,"y":116,"w":14,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":14,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Build_14.png":
+		{
+			"frame": {"x":144,"y":186,"w":14,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":14,"h":20},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Mine_19.png":
+		{
+			"frame": {"x":158,"y":186,"w":14,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":14,"y":6,"w":14,"h":20},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Explode_2.png":
+		{
+			"frame": {"x":172,"y":186,"w":12,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":12,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_6.png":
+		{
+			"frame": {"x":184,"y":186,"w":12,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":12,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Climb_2.png":
+		{
+			"frame": {"x":196,"y":186,"w":12,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":2,"w":12,"h":20},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Build_15.png":
+		{
+			"frame": {"x":218,"y":0,"w":12,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":12,"h":20},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Climb_1.png":
+		{
+			"frame": {"x":218,"y":20,"w":12,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":2,"w":12,"h":20},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Fall_2.png":
+		{
+			"frame": {"x":218,"y":40,"w":12,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":12,"h":20},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_FallDeath_4.png":
+		{
+			"frame": {"x":18,"y":52,"w":20,"h":12},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":8,"w":20,"h":12},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Move_5.png":
+		{
+			"frame": {"x":218,"y":60,"w":10,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":10,"h":20},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Build_6.png":
+		{
+			"frame": {"x":218,"y":80,"w":10,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":10,"h":20},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Move_1.png":
+		{
+			"frame": {"x":218,"y":100,"w":10,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":10,"h":20},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_FallDeath_15.png":
+		{
+			"frame": {"x":278,"y":28,"w":2,"h":2},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":16,"y":18,"w":2,"h":2},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Explode_1.png":
+		{
+			"frame": {"x":218,"y":140,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Burn_0.png":
+		{
+			"frame": {"x":218,"y":160,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":4,"w":8,"h":20},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_BuildEnd_0.png":
+		{
+			"frame": {"x":218,"y":180,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Exit_0.png":
+		{
+			"frame": {"x":208,"y":186,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":8,"h":20},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_Explode_0.png":
+		{
+			"frame": {"x":0,"y":206,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Exit_2.png":
+		{
+			"frame": {"x":8,"y":206,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":8,"h":20},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_Move_8.png":
+		{
+			"frame": {"x":16,"y":206,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":8,"h":20},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Bash_28.png":
+		{
+			"frame": {"x":24,"y":206,"w":18,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":18,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Climb_5.png":
+		{
+			"frame": {"x":42,"y":206,"w":18,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":18,"h":18},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Burn_12.png":
+		{
+			"frame": {"x":60,"y":206,"w":18,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":1,"y":2,"w":18,"h":18},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Mine_3.png":
+		{
+			"frame": {"x":78,"y":206,"w":18,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":16,"y":12,"w":18,"h":18},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Mine_4.png":
+		{
+			"frame": {"x":96,"y":206,"w":18,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":14,"y":12,"w":18,"h":18},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Bash_12.png":
+		{
+			"frame": {"x":114,"y":206,"w":18,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":18,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Burn_2.png":
+		{
+			"frame": {"x":132,"y":206,"w":18,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":1,"y":6,"w":18,"h":18},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Bash_13.png":
+		{
+			"frame": {"x":150,"y":206,"w":16,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_14.png":
+		{
+			"frame": {"x":166,"y":206,"w":16,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_27.png":
+		{
+			"frame": {"x":182,"y":206,"w":16,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_30.png":
+		{
+			"frame": {"x":198,"y":206,"w":16,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_8.png":
+		{
+			"frame": {"x":214,"y":206,"w":16,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_29.png":
+		{
+			"frame": {"x":230,"y":0,"w":16,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_24.png":
+		{
+			"frame": {"x":230,"y":18,"w":16,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":16,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_3.png":
+		{
+			"frame": {"x":0,"y":226,"w":18,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":10,"y":2,"w":18,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_17.png":
+		{
+			"frame": {"x":230,"y":36,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":0,"w":14,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_1.png":
+		{
+			"frame": {"x":230,"y":54,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":0,"w":14,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Burn_1.png":
+		{
+			"frame": {"x":230,"y":72,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":3,"y":6,"w":14,"h":18},
+			"sourceSize": {"w":22,"h":46}
+		},
+		"sprLemming_Bash_0.png":
+		{
+			"frame": {"x":230,"y":90,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_15.png":
+		{
+			"frame": {"x":230,"y":108,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_16.png":
+		{
+			"frame": {"x":230,"y":126,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_31.png":
+		{
+			"frame": {"x":230,"y":144,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":14,"h":18},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Mine_18.png":
+		{
+			"frame": {"x":230,"y":162,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":14,"y":8,"w":14,"h":18},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Float_Start_2.png":
+		{
+			"frame": {"x":230,"y":180,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":10,"w":14,"h":18},
+			"sourceSize": {"w":20,"h":54}
+		},
+		"sprLemming_Float_Start_0.png":
+		{
+			"frame": {"x":230,"y":198,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":10,"w":14,"h":18},
+			"sourceSize": {"w":20,"h":54}
+		},
+		"sprLemming_Mine_17.png":
+		{
+			"frame": {"x":246,"y":0,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":14,"y":8,"w":14,"h":18},
+			"sourceSize": {"w":36,"h":50}
+		},
+		"sprLemming_Build_11.png":
+		{
+			"frame": {"x":246,"y":18,"w":14,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":14,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Build_9.png":
+		{
+			"frame": {"x":96,"y":102,"w":18,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":12,"w":18,"h":14},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Build_0.png":
+		{
+			"frame": {"x":246,"y":36,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Climb_End_0.png":
+		{
+			"frame": {"x":246,"y":54,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":12,"h":18},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Float_Start_1.png":
+		{
+			"frame": {"x":246,"y":72,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":10,"w":12,"h":18},
+			"sourceSize": {"w":20,"h":54}
+		},
+		"sprLemming_Move_2.png":
+		{
+			"frame": {"x":246,"y":90,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":12,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Climb_0.png":
+		{
+			"frame": {"x":246,"y":108,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":4,"w":12,"h":18},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Build_13.png":
+		{
+			"frame": {"x":246,"y":126,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Move_6.png":
+		{
+			"frame": {"x":246,"y":144,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":12,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Build_1.png":
+		{
+			"frame": {"x":246,"y":162,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Fall_3.png":
+		{
+			"frame": {"x":246,"y":180,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":12,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Build_12.png":
+		{
+			"frame": {"x":246,"y":198,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Build_2.png":
+		{
+			"frame": {"x":246,"y":216,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Build_3.png":
+		{
+			"frame": {"x":0,"y":242,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":12,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Fall_0.png":
+		{
+			"frame": {"x":12,"y":242,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":12,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Fall_1.png":
+		{
+			"frame": {"x":24,"y":242,"w":12,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":0,"w":12,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Build_4.png":
+		{
+			"frame": {"x":36,"y":242,"w":10,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":10,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Move_7.png":
+		{
+			"frame": {"x":46,"y":242,"w":10,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":10,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Climb_End_7.png":
+		{
+			"frame": {"x":56,"y":242,"w":10,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":10,"h":18},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Move_3.png":
+		{
+			"frame": {"x":66,"y":242,"w":10,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":2,"w":10,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Build_5.png":
+		{
+			"frame": {"x":76,"y":242,"w":10,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":8,"w":10,"h":18},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Move_9.png":
+		{
+			"frame": {"x":86,"y":242,"w":8,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":8,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_BuildEnd_1.png":
+		{
+			"frame": {"x":94,"y":242,"w":8,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":2,"w":8,"h":18},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Move_0.png":
+		{
+			"frame": {"x":102,"y":242,"w":8,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":8,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Climb_End_4.png":
+		{
+			"frame": {"x":110,"y":242,"w":8,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":8,"h":18},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Move_4.png":
+		{
+			"frame": {"x":118,"y":242,"w":8,"h":18},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":8,"h":18},
+			"sourceSize": {"w":12,"h":38}
+		},
+		"sprLemming_Climb_6.png":
+		{
+			"frame": {"x":18,"y":226,"w":16,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":16,"h":16},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Climb_7.png":
+		{
+			"frame": {"x":164,"y":144,"w":14,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":14,"h":16},
+			"sourceSize": {"w":32,"h":42}
+		},
+		"sprLemming_Bash_2.png":
+		{
+			"frame": {"x":34,"y":226,"w":14,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":10,"y":2,"w":14,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_23.png":
+		{
+			"frame": {"x":48,"y":226,"w":14,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":2,"w":14,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Bash_18.png":
+		{
+			"frame": {"x":62,"y":226,"w":14,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":10,"y":2,"w":14,"h":16},
+			"sourceSize": {"w":32,"h":34}
+		},
+		"sprLemming_Build_10.png":
+		{
+			"frame": {"x":76,"y":226,"w":16,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":12,"w":16,"h":14},
+			"sourceSize": {"w":20,"h":50}
+		},
+		"sprLemming_Explode_8.png":
+		{
+			"frame": {"x":126,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_9.png":
+		{
+			"frame": {"x":138,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_15.png":
+		{
+			"frame": {"x":150,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_13.png":
+		{
+			"frame": {"x":162,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_12.png":
+		{
+			"frame": {"x":174,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_14.png":
+		{
+			"frame": {"x":186,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_11.png":
+		{
+			"frame": {"x":198,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_10.png":
+		{
+			"frame": {"x":210,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_Explode_7.png":
+		{
+			"frame": {"x":222,"y":242,"w":12,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":4,"w":12,"h":16},
+			"sourceSize": {"w":16,"h":38}
+		},
+		"sprLemming_FallDeath_1.png":
+		{
+			"frame": {"x":38,"y":52,"w":16,"h":12},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":8,"w":16,"h":12},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Climb_End_1.png":
+		{
+			"frame": {"x":234,"y":242,"w":10,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":10,"h":16},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Drown_0.png":
+		{
+			"frame": {"x":244,"y":242,"w":10,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":0,"w":10,"h":16},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_FallDeath_2.png":
+		{
+			"frame": {"x":230,"y":216,"w":16,"h":10},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":10,"w":16,"h":10},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Exit_3.png":
+		{
+			"frame": {"x":260,"y":0,"w":8,"h":16},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":8,"h":16},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_FallDeath_3.png":
+		{
+			"frame": {"x":92,"y":226,"w":16,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":12,"w":16,"h":8},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_FallDeath_0.png":
+		{
+			"frame": {"x":268,"y":0,"w":12,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":10,"y":6,"w":12,"h":14},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Drown_1.png":
+		{
+			"frame": {"x":268,"y":14,"w":12,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":2,"w":12,"h":14},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Climb_End_2.png":
+		{
+			"frame": {"x":268,"y":28,"w":10,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":10,"h":14},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Climb_End_5.png":
+		{
+			"frame": {"x":268,"y":42,"w":10,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":10,"h":14},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Climb_End_6.png":
+		{
+			"frame": {"x":268,"y":56,"w":10,"h":14},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":10,"h":14},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Drown_7.png":
+		{
+			"frame": {"x":0,"y":260,"w":14,"h":10},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":14,"h":10},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_6.png":
+		{
+			"frame": {"x":14,"y":260,"w":14,"h":10},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":14,"h":10},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_5.png":
+		{
+			"frame": {"x":246,"y":234,"w":14,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":8,"w":14,"h":8},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_8.png":
+		{
+			"frame": {"x":146,"y":136,"w":14,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":8,"w":14,"h":8},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_10.png":
+		{
+			"frame": {"x":178,"y":160,"w":14,"h":6},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":10,"y":10,"w":14,"h":6},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_FallDeath_14.png":
+		{
+			"frame": {"x":160,"y":138,"w":14,"h":4},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":16,"w":14,"h":4},
+			"sourceSize": {"w":32,"h":38}
+		},
+		"sprLemming_Drown_2.png":
+		{
+			"frame": {"x":268,"y":70,"w":12,"h":12},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":4,"w":12,"h":12},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Climb_End_3.png":
+		{
+			"frame": {"x":268,"y":82,"w":8,"h":12},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":6,"w":8,"h":12},
+			"sourceSize": {"w":18,"h":40}
+		},
+		"sprLemming_Exit_4.png":
+		{
+			"frame": {"x":268,"y":94,"w":8,"h":12},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":8,"h":12},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_Drown_3.png":
+		{
+			"frame": {"x":268,"y":106,"w":12,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":8,"w":12,"h":8},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_12.png":
+		{
+			"frame": {"x":268,"y":114,"w":12,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":8,"w":12,"h":8},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_11.png":
+		{
+			"frame": {"x":268,"y":122,"w":12,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":10,"y":8,"w":12,"h":8},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_4.png":
+		{
+			"frame": {"x":268,"y":130,"w":12,"h":6},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":10,"w":12,"h":6},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_13.png":
+		{
+			"frame": {"x":268,"y":136,"w":12,"h":6},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":10,"w":12,"h":6},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_9.png":
+		{
+			"frame": {"x":268,"y":142,"w":12,"h":6},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":8,"y":10,"w":12,"h":6},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Exit_5.png":
+		{
+			"frame": {"x":268,"y":148,"w":8,"h":10},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":0,"w":8,"h":10},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_Drown_15.png":
+		{
+			"frame": {"x":268,"y":158,"w":10,"h":6},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":10,"w":10,"h":6},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Drown_14.png":
+		{
+			"frame": {"x":268,"y":164,"w":10,"h":4},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":6,"y":12,"w":10,"h":4},
+			"sourceSize": {"w":28,"h":30}
+		},
+		"sprLemming_Exit_6.png":
+		{
+			"frame": {"x":268,"y":168,"w":8,"h":8},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":8,"h":8},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_Exit_7.png":
+		{
+			"frame": {"x":268,"y":176,"w":8,"h":4},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":6,"w":8,"h":4},
+			"sourceSize": {"w":12,"h":50}
+		},
+		"sprLemming_BuildEnd_2.png":
+		{
+			"frame": {"x":218,"y":120,"w":8,"h":20},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":4,"y":0,"w":8,"h":20},
+			"sourceSize": {"w":16,"h":38}
+		}
+	}
+}

@@ -1,80 +1,89 @@
 {
-"frames": {
-	"button_blue.png": {
-		"frame": {"x":0, "y":196, "w":192, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
-		"sourceSize": {"w":192,"h":48},
-		"rotated": false,
-		"trimmed": true
+	"meta": {
+		"image": "sprites.png",
+		"size": {"w":384,"h":192},
+		"scale": "1"
 	},
-	"button_blue_down.png": {
-		"frame": {"x":0, "y":98, "w":192, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
-		"sourceSize": {"w":192,"h":48},
-		"rotated": false,
-		"trimmed": true
-	},
-	"button_green.png": {
-		"frame": {"x":0, "y":245, "w":192, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
-		"sourceSize": {"w":192,"h":48},
-		"rotated": false,
-		"trimmed": true
-	},
-	"button_green_down.png": {
-		"frame": {"x":0, "y":147, "w":192, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
-		"sourceSize": {"w":192,"h":48},
-		"rotated": false,
-		"trimmed": true
-	},
-	"button_orange.png": {
-		"frame": {"x":0, "y":49, "w":192, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
-		"sourceSize": {"w":192,"h":48},
-		"rotated": false,
-		"trimmed": true
-	},
-	"button_orange_down.png": {
-		"frame": {"x":0, "y":0, "w":192, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
-		"sourceSize": {"w":192,"h":48},
-		"rotated": false,
-		"trimmed": true
-	},
-	"checkbox_marked.png": {
-		"frame": {"x":193, "y":0, "w":48, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
-		"sourceSize": {"w":48,"h":48},
-		"rotated": false,
-		"trimmed": true
-	},
-	"checkbox_unmarked.png": {
-		"frame": {"x":193, "y":49, "w":48, "h":48},
-		"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
-		"sourceSize": {"w":48,"h":48},
-		"rotated": false,
-		"trimmed": true
-	},
-	"slider.png": {
-		"frame": {"x":193, "y":98, "w":12, "h":24},
-		"spriteSourceSize": {"x":0,"y":0,"w":12,"h":24},
-		"sourceSize": {"w":12,"h":24},
-		"rotated": false,
-		"trimmed": true
-	},
-	"slider_bg.png": {
-		"frame": {"x":0, "y":294, "w":128, "h":4},
-		"spriteSourceSize": {"x":0,"y":0,"w":128,"h":4},
-		"sourceSize": {"w":128,"h":4},
-		"rotated": false,
-		"trimmed": true
+	"frames": {
+		"button_blue.png":
+		{
+			"frame": {"x":0,"y":0,"w":192,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+			"sourceSize": {"w":192,"h":48}
+		},
+		"button_blue_down.png":
+		{
+			"frame": {"x":0,"y":48,"w":192,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+			"sourceSize": {"w":192,"h":48}
+		},
+		"button_green.png":
+		{
+			"frame": {"x":0,"y":96,"w":192,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+			"sourceSize": {"w":192,"h":48}
+		},
+		"button_green_down.png":
+		{
+			"frame": {"x":0,"y":144,"w":192,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+			"sourceSize": {"w":192,"h":48}
+		},
+		"button_orange.png":
+		{
+			"frame": {"x":192,"y":0,"w":192,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+			"sourceSize": {"w":192,"h":48}
+		},
+		"button_orange_down.png":
+		{
+			"frame": {"x":192,"y":48,"w":192,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":48},
+			"sourceSize": {"w":192,"h":48}
+		},
+		"slider_bg.png":
+		{
+			"frame": {"x":192,"y":96,"w":128,"h":4},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":128,"h":4},
+			"sourceSize": {"w":128,"h":4}
+		},
+		"checkbox_marked.png":
+		{
+			"frame": {"x":192,"y":100,"w":48,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+			"sourceSize": {"w":48,"h":48}
+		},
+		"checkbox_unmarked.png":
+		{
+			"frame": {"x":240,"y":100,"w":48,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+			"sourceSize": {"w":48,"h":48}
+		},
+		"slider.png":
+		{
+			"frame": {"x":288,"y":100,"w":12,"h":24},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":12,"h":24},
+			"sourceSize": {"w":12,"h":24}
+		}
 	}
-
-},
-"meta": {
-	"image": "sprites.png",
-	"size": {"w": 242, "h": 299},
-	"scale": "1"
-}
 }

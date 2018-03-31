@@ -1,14 +1,16 @@
 {
-  "name": "tilelemmings",
-  "version": "0.0.5",
-  "main": "main.js",
-  "private": true,
-  "scripts": {
-    "test": "gulp && node test.js"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "js-yaml": "^3.10.0"
-  }
+    "name": "tilelemmings",
+    "version": "0.0.5",
+    "main": "main.js",
+    "private": true,
+    "scripts": {
+        "test": "gulp && node test.js",
+        "pack-sprites": "node pack-sprites.js"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-concat": "^2.6.1",
+        "js-yaml": "^3.10.0",
+        "spritesheet-js": "^1.2.6"
+    }
 }

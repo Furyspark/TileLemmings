@@ -1,115 +1,137 @@
 {
-"frames": {
-	"button-bg_level.png": {
-		"frame": {"x":133, "y":81, "w":128, "h":128},
-		"spriteSourceSize": {"x":2,"y":2,"w":132,"h":132},
-		"sourceSize": {"w":132,"h":132},
-		"rotated": false,
-		"trimmed": true
+	"meta": {
+		"image": "sprites.png",
+		"size": {"w":520,"h":500},
+		"scale": "1"
 	},
-	"button-bg_world.png": {
-		"frame": {"x":0, "y":266, "w":128, "h":128},
-		"spriteSourceSize": {"x":2,"y":2,"w":132,"h":132},
-		"sourceSize": {"w":132,"h":132},
-		"rotated": false,
-		"trimmed": true
-	},
-	"button-fg_level.png": {
-		"frame": {"x":0, "y":0, "w":132, "h":132},
-		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
-		"sourceSize": {"w":132,"h":132},
-		"rotated": false,
-		"trimmed": true
-	},
-	"button-fg_world.png": {
-		"frame": {"x":0, "y":133, "w":132, "h":132},
-		"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
-		"sourceSize": {"w":132,"h":132},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-bonus.png": {
-		"frame": {"x":262, "y":91, "w":84, "h":112},
-		"spriteSourceSize": {"x":22,"y":8,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-cave.png": {
-		"frame": {"x":129, "y":266, "w":128, "h":87},
-		"spriteSourceSize": {"x":0,"y":21,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-classic.png": {
-		"frame": {"x":258, "y":210, "w":128, "h":118},
-		"spriteSourceSize": {"x":0,"y":5,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-cyber.png": {
-		"frame": {"x":359, "y":0, "w":94, "h":128},
-		"spriteSourceSize": {"x":17,"y":0,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-egyptian.png": {
-		"frame": {"x":133, "y":0, "w":128, "h":80},
-		"spriteSourceSize": {"x":0,"y":24,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-jungle.png": {
-		"frame": {"x":258, "y":394, "w":123, "h":72},
-		"spriteSourceSize": {"x":2,"y":32,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-mountain.png": {
-		"frame": {"x":258, "y":329, "w":128, "h":64},
-		"spriteSourceSize": {"x":0,"y":32,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-sky.png": {
-		"frame": {"x":0, "y":395, "w":128, "h":72},
-		"spriteSourceSize": {"x":0,"y":28,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"icon-urban.png": {
-		"frame": {"x":129, "y":354, "w":128, "h":86},
-		"spriteSourceSize": {"x":0,"y":42,"w":128,"h":128},
-		"sourceSize": {"w":128,"h":128},
-		"rotated": false,
-		"trimmed": true
-	},
-	"world-completion.png": {
-		"frame": {"x":262, "y":0, "w":96, "h":90},
-		"spriteSourceSize": {"x":0,"y":6,"w":96,"h":96},
-		"sourceSize": {"w":96,"h":96},
-		"rotated": false,
-		"trimmed": true
-	},
-	"world-locked.png": {
-		"frame": {"x":387, "y":129, "w":66, "h":94},
-		"spriteSourceSize": {"x":1,"y":1,"w":68,"h":96},
-		"sourceSize": {"w":68,"h":96},
-		"rotated": false,
-		"trimmed": true
+	"frames": {
+		"button-fg_world.png":
+		{
+			"frame": {"x":132,"y":0,"w":132,"h":132},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
+			"sourceSize": {"w":132,"h":132}
+		},
+		"button-fg_level.png":
+		{
+			"frame": {"x":0,"y":0,"w":132,"h":132},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":132,"h":132},
+			"sourceSize": {"w":132,"h":132}
+		},
+		"button-bg_level.png":
+		{
+			"frame": {"x":0,"y":132,"w":128,"h":128},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
+			"sourceSize": {"w":132,"h":132}
+		},
+		"button-bg_world.png":
+		{
+			"frame": {"x":128,"y":132,"w":128,"h":128},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
+			"sourceSize": {"w":132,"h":132}
+		},
+		"icon-classic.png":
+		{
+			"frame": {"x":264,"y":0,"w":128,"h":118},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":5,"w":128,"h":118},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"circus.png":
+		{
+			"frame": {"x":264,"y":118,"w":128,"h":100},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":14,"w":128,"h":100},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"icon-cyber.png":
+		{
+			"frame": {"x":0,"y":260,"w":94,"h":128},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":17,"y":0,"w":94,"h":128},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"icon-cave.png":
+		{
+			"frame": {"x":94,"y":260,"w":128,"h":87},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":21,"w":128,"h":87},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"world-locked.png":
+		{
+			"frame": {"x":84,"y":388,"w":66,"h":94},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":1,"y":1,"w":66,"h":94},
+			"sourceSize": {"w":68,"h":96}
+		},
+		"icon-egyptian.png":
+		{
+			"frame": {"x":392,"y":0,"w":128,"h":80},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":24,"w":128,"h":80},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"icon-sky.png":
+		{
+			"frame": {"x":392,"y":80,"w":128,"h":72},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":28,"w":128,"h":72},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"icon-mountain.png":
+		{
+			"frame": {"x":392,"y":152,"w":128,"h":64},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":32,"w":128,"h":64},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"icon-jungle.png":
+		{
+			"frame": {"x":392,"y":216,"w":123,"h":72},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":2,"y":32,"w":123,"h":72},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"icon-bonus.png":
+		{
+			"frame": {"x":0,"y":388,"w":84,"h":112},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":22,"y":8,"w":84,"h":112},
+			"sourceSize": {"w":128,"h":128}
+		},
+		"world-completion.png":
+		{
+			"frame": {"x":392,"y":288,"w":96,"h":90},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":6,"w":96,"h":90},
+			"sourceSize": {"w":96,"h":96}
+		},
+		"icon-urban.png":
+		{
+			"frame": {"x":222,"y":260,"w":128,"h":86},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {"x":0,"y":42,"w":128,"h":86},
+			"sourceSize": {"w":128,"h":128}
+		}
 	}
-
-},
-"meta": {
-	"image": "sprites.png",
-	"size": {"w": 454, "h": 468},
-	"scale": "1"
-}
 }
