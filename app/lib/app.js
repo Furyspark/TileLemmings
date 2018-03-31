@@ -5725,13 +5725,13 @@ Game_Prop.prototype._doorAct = function() {
         lemming.rotation = this.rotation;
         // Lemming colors
         var colors = this.src.lemmingColor;
-        if(colors) {
-            lemming.setHairColor(eval("0x" + colors.hair[0]), eval("0x" + colors.hair[1]));
-            lemming.setBodyColor(eval("0x" + colors.body[0]), eval("0x" + colors.body[1]));
-        } else {
+        // if(colors) {
+            // lemming.setHairColor(eval("0x" + colors.hair[0]), eval("0x" + colors.hair[1]));
+            // lemming.setBodyColor(eval("0x" + colors.body[0]), eval("0x" + colors.body[1]));
+        // } else {
             lemming.setHairColor_Default();
             lemming.setBodyColor_Default();
-        }
+        // }
         // Stop spawning eventually
         if(this.value === 0) this.alarms.door.stop();
     }
