@@ -323,6 +323,9 @@ Scene_Game.prototype.createMinimap = function() {
 }
 
 Scene_Game.prototype.createReplayIcon = function() {
+    if(!$gameMap.replay.hasActionsRemaining()) {
+        return;
+    }
     if(this.replayIcon == null) {
         this.replayIcon = new UI_Base(16, 16, "replayIcon");
         this.replayIcon.addAnimation("idle", "atlMisc", ["replay_0.png", "replay_1.png"]);

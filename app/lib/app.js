@@ -2297,9 +2297,6 @@ Scene_Game.prototype.init = function() {
     };
     // Update replay
     $gameMap.updateReplay();
-    if(!$gameMap.replay.hasActionsRemaining()) {
-        this.stopReplay();
-    }
     // Set vars
     this.alarm.nuke.onExpire.add(this._nukeLemming, this);
     this.alarm.nuke.baseTime = 10;
@@ -2610,6 +2607,9 @@ Scene_Game.prototype.createMinimap = function() {
 }
 
 Scene_Game.prototype.createReplayIcon = function() {
+    if(!$gameMap.replay.hasActionsRemaining()) {
+        return;
+    }
     if(this.replayIcon == null) {
         this.replayIcon = new UI_Base(16, 16, "replayIcon");
         this.replayIcon.addAnimation("idle", "atlMisc", ["replay_0.png", "replay_1.png"]);
