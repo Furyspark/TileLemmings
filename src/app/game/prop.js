@@ -127,7 +127,13 @@ Game_Prop.prototype.update = function() {
             }
         }
     }
-}
+};
+
+Game_Prop.prototype.updateAnimation = function() {
+    if(this.type !== "trap") {
+        Game_Base.prototype.updateAnimation.call(this);
+    }
+};
 
 Game_Prop.prototype.flipH = function() {
     this.sprite.scale.x = -this.sprite.scale.x;

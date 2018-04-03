@@ -487,6 +487,36 @@ Game_Map.prototype.setStage = function(stage) {
 }
 
 Game_Map.prototype.update = function() {
+    // Update object animations
+    var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
+    for(var a = 0;a < arr.length;a++) {
+        var o = arr[a];
+        o.updateAnimation();
+    }
+    // Update tiles
+    for(var a = 0;a < this.tiles.length;a++) {
+        var tile = this.tiles[a];
+        if(tile) tile.updateAnimation();
+    }
+    this.world.zOrder();
+    this.updateCameraBounds();
+    // Track victory/defeat
+    if(this.trackVictoryDefeat) {
+        var end = true;
+        if(this.getLemmings().length > 0) end = false;
+        var arr = this.getDoors();
+        for(var a = 0;a < arr.length && end;a++) {
+            var obj = arr[a];
+            if(obj.value > 0) end = false;
+        }
+        if(end) {
+            this.trackVictoryDefeat = false;
+            this.onEndOfMap.dispatch();
+        }
+    }
+};
+
+Game_Map.prototype.updateGameLogic = function() {
     // Update frame
     this.frame++;
     if(!this.replay.hasActionsRemaining()) {
@@ -506,23 +536,7 @@ Game_Map.prototype.update = function() {
         var tile = this.tiles[a];
         if(tile) tile.update();
     }
-    this.world.zOrder();
-    this.updateCameraBounds();
-    // Track victory/defeat
-    if(this.trackVictoryDefeat) {
-        var end = true;
-        if(this.getLemmings().length > 0) end = false;
-        var arr = this.getDoors();
-        for(var a = 0;a < arr.length && end;a++) {
-            var obj = arr[a];
-            if(obj.value > 0) end = false;
-        }
-        if(end) {
-            this.trackVictoryDefeat = false;
-            this.onEndOfMap.dispatch();
-        }
-    }
-}
+};
 
 Game_Map.prototype.updateCamera = function() {
     this.camera.update();

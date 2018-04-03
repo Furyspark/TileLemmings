@@ -85,10 +85,11 @@ Scene_Game.prototype.update = function() {
         var updateCount = 1;
         if(this.fastForward) updateCount = 4;
         for(var a = 0;a < updateCount;a++) {
+            $gameMap.update();
             for(var b in this.alarm) {
                 this.alarm[b].update();
             }
-            if(this._mapStarted) $gameMap.update();
+            if(this._mapStarted) $gameMap.updateGameLogic();
         }
     }
     // Lemming control
