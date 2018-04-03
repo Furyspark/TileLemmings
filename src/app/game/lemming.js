@@ -582,10 +582,12 @@ Game_Lemming.prototype._bomberStartExplode = function() {
         this.alarms.bomber.stop();
         this.bomber.label.visible = false;
         this.interactive = false;
-        AudioManager.playSound("sndOhNo");
-        this.action.current = Game_Lemming.ACTION_BOMBER;
-        this.disable();
-        this.requestAnimation = "explode";
+        if(!this.dead) {
+            AudioManager.playSound("sndOhNo");
+            this.action.current = Game_Lemming.ACTION_BOMBER;
+            this.disable();
+            this.requestAnimation = "explode";
+        }
     }
 }
 
