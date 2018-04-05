@@ -2,7 +2,7 @@ function Scene_Base() {
     this.init.apply(this, arguments);
 }
 
-Scene_Base.FADEDURATION_DEFAULT = 500;
+Scene_Base.FADEDURATION_DEFAULT = 250;
 
 
 Scene_Base.prototype.init = function() {
