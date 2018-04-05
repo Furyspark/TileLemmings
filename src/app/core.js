@@ -101,10 +101,8 @@ Core.render = function() {
     var dt = 100 * ((nowTime - this.lastTime) / 1000);
     this.lastTime = nowTime;
     // Set new timeout
-    // setTimeout(function() {
-    requestAnimationFrame(this.render.bind(this));
-    // this.render();
-    // }.bind(this), Math.max(1, 1000 / this.frameRate));
+    // requestAnimationFrame(this.render.bind(this));
+    setTimeout(this.render.bind(this), Math.max(1, Math.floor(1000 / this.frameRate)));
     // Update scene
     Input.update();
     SceneManager.update(dt);

@@ -12,3 +12,4 @@ dist
 save.json
 .vimrc
 app/main-config.json
+app/lib/app.js
