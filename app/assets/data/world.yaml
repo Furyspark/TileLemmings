@@ -22,19 +22,26 @@ root:
       position:
         x: 2
         y: 1
+    # Circus World
+    - type: "world"
+      key: "circus"
+      icon: "icon-circus.png"
+      position:
+        x: 3
+        y: 1
     # Jungle World
     - type: "world"
       key: "jungle"
       icon: "icon-jungle.png"
       position:
-        x: 3
+        x: 4
         y: 1
     # Mountain World
     - type: "world"
       key: "mountain"
       icon: "icon-mountain.png"
       position:
-        x: 4
+        x: 5
         y: 1
     # Urban World
     - type: "world"
@@ -62,8 +69,8 @@ root:
       key: "bonus"
       icon: "icon-bonus.png"
       position:
-        x: 5
-        y: 1
+        x: 0
+        y: 3
 
 cave:
   previous: "root"
@@ -292,6 +299,17 @@ cloud:
         - type: "map-completion"
           dir: "cloud"
           key: "level3.json"
+
+circus:
+  previous: "root"
+  contents:
+    # Circus Level 1
+    - type: "map"
+      key: "level1.json"
+      icon: "icon-circus.png"
+      position:
+        x: 3
+        y: 0
 
 jungle:
   previous: "root"
