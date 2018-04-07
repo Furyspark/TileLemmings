@@ -19,16 +19,18 @@ Object.defineProperties(Sprite_Base.prototype, {
 Sprite_Base.prototype.init = function(texture) {
     if(!texture) texture = null;
     PIXI.Sprite.prototype.constructor.call(this, texture);
-    this.atlasData = null;
+    this.atlasData  = null;
     this.animations = {};
-    this.animation = null
-    this.animFrame = 0;
-    this.animSpeed = 1;
-    this.z = 0;
+    this.animation  = null
+    this.animFrame  = 0;
+    this.animSpeed  = 1;
+    this.z          = 0;
+    this.animKey    = "";
 }
 
 Sprite_Base.prototype.playAnimation = function(key) {
     if(this.animations[key] && !this.animation || (this.animation && this.animation.name !== key)) {
+        this.animKey = key;
         this.animation = this.animations[key];
         this.animFrame = 0;
         this.texture = this.animation.frames[Math.floor(this.animFrame)];

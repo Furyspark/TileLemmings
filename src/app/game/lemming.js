@@ -241,7 +241,10 @@ Game_Lemming.prototype.updateAnimation = function() {
     // Mirror bomber label
     this.bomber.label.scale.x = 1 / this.sprite.scale.x;
     // Play animation
-    this.sprite.playAnimation(this.requestAnimation);
+    if(this.requestAnimation !== "") {
+        this.sprite.playAnimation(this.requestAnimation);
+    }
+    this.requestAnimation = "";
 };
 
 Game_Lemming.prototype.preMove = function() {
@@ -358,12 +361,14 @@ Game_Lemming.prototype.postMove = function() {
 
 Game_Lemming.prototype.fall = function() {
     var defaultAction = true;
+    var animKey = this.sprite.animKey;
     // Evals
     if(this.hasProperty("FLOATER")) {
         defaultAction = false;
         this.action.current = Game_Lemming.ACTION_FLOATER;
-        this.requestAnimation = "float-start";
-        if(this.sprite.isAnimationPlaying("float")) this.requestAnimation = "float";
+        if(animKey !== "float-start" && animKey !== "float") {
+            this.sprite.playAnimation("float-start");
+        }
         this.velocity.x = this.offsetPoint.floatSpeed.x;
         this.velocity.y = this.offsetPoint.floatSpeed.y;
     }
