@@ -612,19 +612,19 @@ Scene_Game.prototype.getLemmingUnderCursor = function() {
             arr = arr.filter(function(lemming) { return (lemming.bomber.count === -1); } );
             break;
         case "BLOCKER":
-            arr = arr.filter(function(lemming) { return (lemming.action !== Game_Lemming.ACTION_BLOCKER && lemming.onGround); } );
+            arr = arr.filter(function(lemming) { return (lemming.action.current !== Game_Lemming.ACTION_BLOCKER && lemming.onGround); } );
             break;
         case "BUILDER":
-            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_BUILDER || lemming.sprite.isAnimationPlaying('build-end')) && lemming.onGround); } );
+            arr = arr.filter(function(lemming) { return ((lemming.action.current !== Game_Lemming.ACTION_BUILDER || lemming.sprite.isAnimationPlaying('build-end')) && lemming.onGround); } );
             break;
         case "BASHER":
-            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_BASHER) && lemming.onGround); } );
+            arr = arr.filter(function(lemming) { return ((lemming.action.current !== Game_Lemming.ACTION_BASHER) && lemming.onGround); } );
             break;
         case "MINER":
-            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_MINER) && lemming.onGround); } );
+            arr = arr.filter(function(lemming) { return ((lemming.action.current !== Game_Lemming.ACTION_MINER) && lemming.onGround); } );
             break;
         case "DIGGER":
-            arr = arr.filter(function(lemming) { return ((lemming.action !== Game_Lemming.ACTION_DIGGER) && lemming.onGround); } );
+            arr = arr.filter(function(lemming) { return ((lemming.action.current !== Game_Lemming.ACTION_DIGGER) && lemming.onGround); } );
             break;
     }
     // Sort by priority
