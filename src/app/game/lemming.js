@@ -609,8 +609,8 @@ Game_Lemming.prototype._actionTimer = function() {
 }
 
 Game_Lemming.prototype._buildUpdate = function() {
-    var blockedRight = (this.map.tileCollision(this.x + (16 * this.dir), this.y, this) === Game_Tile.COLLISION_IMPASSABLE);
-    var blockedTopRight = (this.map.tileCollision(this.x + (16 * this.dir), this.y - 16, this) === Game_Tile.COLLISION_IMPASSABLE);
+    var blockedRight = (this.map.tileCollision(this.x + (this.offsetPoint.right.x * 16 * this.dir), this.y + (this.offsetPoint.right.y * 16 * this.dir), this) === Game_Tile.COLLISION_IMPASSABLE);
+    var blockedTopRight = (this.map.tileCollision(this.x + (this.offsetPoint.right.x * 16 * this.dir) - (this.offsetPoint.down.x * 16), this.y + (this.offsetPoint.right.y * 16 * this.dir) - (this.offsetPoint.down.y * 16), this) === Game_Tile.COLLISION_IMPASSABLE);
     if(blockedRight || blockedTopRight) {
         this.changeDirection();
         this.alarms.action.stop();
@@ -623,7 +623,8 @@ Game_Lemming.prototype._buildUpdate = function() {
             this.changeDirection();
         }
         this.build((this.offsetPoint.right.x * 16 * this.dir), (this.offsetPoint.right.y * 16 * this.dir), true);
-        this.x = (Math.floor(this.x / 16) + this.dir) * 16 + 8;
+        // this.x = (Math.floor(this.x / 16) + this.dir) * 16 + 8;
+        this.x += (this.offsetPoint.right.x * 16 * this.dir) - (this.offsetPoint.down.x * 16);
         this.y += (this.offsetPoint.right.y * 16 * this.dir) - (this.offsetPoint.down.y * 16);
         this.action.builder.value--;
         if(this.action.builder.value < 2) {
