@@ -61,7 +61,7 @@ Scene_MainMenu.prototype.updateCheat = function() {
   // Complete all levels with Shift+F9
   if(Input.key.F9.pressed && Input.key.SHIFT.down) {
     if(Cache.hasJSON("world")) Cache.removeJSON("world");
-    var obj = Loader.loadJSON("world", "assets/data/world.json");
+    var obj = Loader.loadYAML("world", "assets/data/world.yaml");
     obj.onComplete.addOnce(function() {
       var world = Cache.getJSON("world");
       for(var worldName in world) {
