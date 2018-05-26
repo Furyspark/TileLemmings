@@ -45,7 +45,7 @@ Scene_WorldMap.prototype.clearData = function() {
   }
   // Function: Replace
   this.data.replace = function(x, y, obj) {
-    var index = (x * this.width) + y;
+    var index = (y * this.width) + x;
     return this.splice(index, 1, obj)[0];
   }
 }
