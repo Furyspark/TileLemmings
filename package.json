@@ -1,41 +1,48 @@
 {
-    "name": "tilelemmings",
-    "version": "0.0.6",
-    "license": "MIT",
-    "author": "Tijmen Bok",
-    "description": "A Lemmings clone with some alterations",
-    "main": "./out/main.js",
-    "private": true,
-    "scripts": {
-        "test": "gulp && electron . --debug",
-        "pack-sprites": "node pack-sprites.js",
-        "pack": "build --dir",
-        "dist": "build",
-        "postinstall": "install-app-deps",
-        "start": "npm install && electron ."
+  "name": "tilelemmings",
+  "version": "0.0.6",
+  "license": "MIT",
+  "author": "Tijmen Bok",
+  "description": "A Lemmings clone with some alterations",
+  "main": "./out/main.js",
+  "private": true,
+  "scripts": {
+    "test": "gulp && electron . --debug",
+    "pack-sprites": "node pack-sprites.js",
+    "pack": "build --dir",
+    "dist": "build",
+    "postinstall": "electron-builder install-app-deps",
+    "start": "npm install && electron ."
+  },
+  "devDependencies": {
+    "electron": "^2.0.2",
+    "electron-builder": "^20.15.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "spritesheet-js": "^1.2.6",
+    "js-yaml": "^3.11.0"
+  },
+  "build": {
+    "appId": "com.lemmings.app",
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game"
     },
-    "devDependencies": {
-        "electron": "^2.0.2",
-        "electron-builder": "^20.15.1",
-        "gulp": "^3.9.1",
-        "gulp-concat": "^2.6.1",
-        "spritesheet-js": "^1.2.6",
-        "js-yaml": "^3.11.0"
+    "win": {
+      "target": "nsis"
     },
-    "build": {
-        "appId": "com.lemmings.app",
-        "linux": {
-            "target": [
-                "AppImage"
-            ],
-            "category": "Game"
-        },
-        "win": {
-            "target": "NSIS"
-        },
-        "files": [
-            "**/*"
-        ]
+    "nsis": {
+      "uninstallDisplayName": "TileLemmings ${version}",
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": true,
+      "shortcutName": "TileLemmings",
+      "artifactName": "TileLemmings ${version} Setup.${ext}"
     },
-    "dependencies": {}
+    "files": [
+      "**/*"
+    ]
+  },
+  "dependencies": {}
 }
