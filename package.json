@@ -12,7 +12,8 @@
     "pack": "build --dir",
     "dist": "build",
     "postinstall": "electron-builder install-app-deps",
-    "start": "npm install && electron ."
+    "start": "npm install && electron .",
+    "release": "build"
   },
   "devDependencies": {
     "electron": "^2.0.2",
@@ -31,7 +32,8 @@
       "category": "Game"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "publish": ["github"]
     },
     "nsis": {
       "uninstallDisplayName": "TileLemmings ${version}",
