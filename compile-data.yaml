@@ -1,5 +1,5 @@
 app:
-  baseDir: "src/out/"
+  baseDir: "src/app/"
   sources:
     - "header.js"
     - "shaders/color-replace.js"
