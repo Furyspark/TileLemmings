@@ -2,7 +2,10 @@
   "name": "tilelemmings",
   "version": "0.0.6",
   "license": "MIT",
-  "author": "Tijmen Bok",
+  "author": {
+    "name": "Tijmen Bok",
+    "email": "tijmenbok@gmail.com"
+  },
   "description": "A Lemmings clone with some alterations",
   "main": "./out/main.js",
   "private": true,
