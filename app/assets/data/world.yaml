@@ -283,6 +283,20 @@ egyptian:
         - type: "map-completion"
           dir: "egyptian"
           key: "level8.json"
+    # Egyptian Level 10
+    - type: "map"
+      key: "level10.json"
+      icon: "icon-egyptian.png"
+      position:
+        x: 3
+        y: 0
+      require:
+        - type: "map-completion"
+          dir: "egyptian"
+          key: "level4.json"
+        - type: "map-completion"
+          dir: "egyptian"
+          key: "level9.json"
 
 cloud:
   previous: "root"
