@@ -1,5 +1,5 @@
 app:
-  baseDir: "src/app/"
+  baseDir: "src/out/"
   sources:
     - "header.js"
     - "shaders/color-replace.js"
@@ -60,5 +60,5 @@ app:
     - "game/prop.js"
     - "footer.js"
   target:
-    dir: "./app/lib/"
+    dir: "./out/lib/"
     fn: "app.js"

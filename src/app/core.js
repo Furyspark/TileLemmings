@@ -16,9 +16,13 @@ Object.defineProperties(Core, {
     }
 });
 
+Core.preStart = function() {
+    this.initElectron();
+    this.ipcRenderer.send("core", ["PRESTART"]);
+};
+
 Core.start = function() {
     this.initMembers();
-    this.initElectron();
     this.initPixi();
     this.fitToWindow();
     this.startDataObjects();
@@ -63,16 +67,27 @@ Core.initElectron = function() {
 }
 
 Core.initElectronProperties = function() {
+    // Send: Window resize
     window.addEventListener("resize", Core.onResize);
     this.ipcRenderer.on("core", function(ev, args) {
-        var cmd = args.splice(0, 1)[0];
+        let cmd = args.splice(0, 1)[0];
         switch(cmd.toUpperCase()) {
+            // Listen: Start
+            case "START":
+                Core.initMainVariables(args[0]);
+                Core.start();
+                break;
+            // Listen: Debug mode
             case "DEBUG":
                 Core.debugMode = true;
                 break;
         }
     });
-}
+};
+
+Core.initMainVariables = function(args) {
+    this._userDataDir = args.userDataDir;
+};
 
 Core.onResize = function(e) {
     Core.fitToWindow();
@@ -169,3 +184,7 @@ Core.setFullscreen = function(state) {
 Core.getFullscreen = function() {
     return this.isFullscreen;
 }
+
+Core.getUserDataDir = function() {
+    return this._userDataDir;
+};

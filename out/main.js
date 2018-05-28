@@ -9,10 +9,11 @@ for(var a = 0;a < args.length;a++) {
 }
 
 
-var electron      = require("electron");  // Module to control application life.
-var app           = electron.app;
-var BrowserWindow = electron.BrowserWindow;
-var ipcMain       = electron.ipcMain;
+// var electron      = require("electron");  // Module to control application life.
+let { app, BrowserWindow, ipcMain } = require("electron");
+// var app           = electron.app;
+// var BrowserWindow = electron.BrowserWindow;
+// var ipcMain       = electron.ipcMain;
 var fs            = require("fs");
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -40,6 +41,14 @@ ipcMain.on("window", function(event, args) {
     }
 });
 
+ipcMain.on("core", function(event, args) {
+    if(args[0].toUpperCase() === "PRESTART") {
+        mainWindow.send("core", ["START", {
+            userDataDir: app.getPath("userData")
+        }]);
+    }
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
@@ -54,7 +63,7 @@ app.on('ready', function() {
 
 function loadConfig() {
     return new Promise(function(resolve, reject) {
-        fs.readFile(__dirname + "/main-config.json", function(err, data) {
+        fs.readFile(app.getPath("userData") + "/main-config.json", function(err, data) {
             if(err && err.code === "ENOENT") {
                 createDefaultConfig();
                 resolve();
@@ -71,7 +80,8 @@ function loadConfig() {
 };
 
 function createDefaultConfig() {
-    let primaryDisplay = electron.screen.getPrimaryDisplay();
+    let { screen } = require("electron");
+    let primaryDisplay = screen.getPrimaryDisplay();
     let workArea       = primaryDisplay.workArea;
     let windowWidth    = 1280;
     let windowHeight   = 720;
@@ -119,7 +129,7 @@ function startApp() {
         config.window.x      = pos[0];
         config.window.y      = pos[1];
 
-        fs.writeFileSync(__dirname + "/main-config.json", JSON.stringify(config));
+        fs.writeFileSync(app.getPath("userData") + "/main-config.json", JSON.stringify(config));
 
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time

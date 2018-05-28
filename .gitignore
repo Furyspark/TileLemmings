@@ -3,13 +3,11 @@ node_modules
 *.sublime*
 .atom-build.json
 *.bak
-lib/game.js
-build/lib/game.js
-build/config.json
+**/lib/app.js
 config.json
 dist
 *.sublime-*
 save.json
 .vimrc
-app/main-config.json
-app/lib/app.js
+out/lib/app.js
+main-config.json

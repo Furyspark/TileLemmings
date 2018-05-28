@@ -1,1 +1,1 @@
-window.addEventListener("load", Core.start.bind(Core));
+window.addEventListener("load", Core.preStart.bind(Core));
