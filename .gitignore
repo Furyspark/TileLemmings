@@ -9,5 +9,4 @@ node_modules
 /.vimrc
 /out/lib/app.js
 /main-config.json
-/dist/*
-!/dist/TileLemmings*Setup.exe
+/dist
