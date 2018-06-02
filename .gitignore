@@ -10,3 +10,4 @@ node_modules
 /out/lib/app.js
 /main-config.json
 /dist
+*.log
