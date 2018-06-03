@@ -18,6 +18,7 @@ app:
     - "input/input.js"
     - "input/input-key.js"
     - "input/input-mouse.js"
+    - "managers/datamanager.js"
     - "managers/audiomanager.js"
     - "managers/scenemanager.js"
     - "managers/savemanager.js"
