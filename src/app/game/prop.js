@@ -29,7 +29,7 @@ Game_Prop.prototype.initialize = function(key, map) {
   this._rotation = 0;
   this._areas = {};
   this._points = {};
-  this._sprite = new Sprite_Prop();
+  this.sprite = new Sprite_Prop();
 
   this.runScript("onInitialize");
 };
