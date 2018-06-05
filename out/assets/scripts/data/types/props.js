@@ -6,11 +6,11 @@ DataManager.addDataDescriptor("props", {
 });
 
 // Generic Door
-DataManager.addDataDescriptor("props", "Generic", {
+DataManager.addDataDescriptor("props", Object.assign({}, DataManager.getDataDescriptor("props", "Generic"), {
   name: "GenericDoor"
-});
+}));
 
 // Generic Exit
-DataManager.addDataDescriptor("props", "Generic", {
+DataManager.addDataDescriptor("props", Object.assign({}, DataManager.getDataDescriptor("props", "Generic"), {
   name: "GenericExit"
-});
+}));

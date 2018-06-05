@@ -11,20 +11,9 @@ DataManager.addDataType = function(name) {
 };
 
 DataManager.addDataDescriptor = function(type, obj) {
-  let type = arguments[0];
-  let parentObj = {};
-  if(obj.parent != null) {
-    parentObj = this.getDataDescriptor(type, obj.parent);
-  }
-  this._data[type][obj.name] = Object.assign(parentObj, obj);
+  this._data[type][obj.name] = Object.assign({}, obj);
 };
 
 DataManager.getDataDescriptor = function(type, name) {
   return this._data[type][name];
-};
-
-DataManager.getParent = function(type, name) {
-  let parent = this._data[type][name].parent;
-  if(parent == null) return undefined;
-  return this._data[type][parent];
 };
