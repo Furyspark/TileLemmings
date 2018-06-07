@@ -21,15 +21,15 @@ Sprite_Minimap.prototype.init = function() {
 Sprite_Minimap.prototype.update = function() {
   if($gameMap) {
     // Clear and fill tiles array if necessary
-    if(this.tiles.length !== $gameMap.tiles.length) {
+    if(this.tiles.length !== $gameMap.tiles.getSize()) {
       this.tiles = [];
-      while(this.tiles.length < $gameMap.tiles.length) this.tiles.push(null);
+      while(this.tiles.length < $gameMap.tiles.getSize()) this.tiles.push(null);
     }
     // Replace tiles
     var minimapSprites = Cache.getTextureAtlas("atlMinimap");
-    for(var a = 0;a < $gameMap.tiles.length;a++) {
+    for(var a = 0;a < $gameMap.tiles.getSize();a++) {
       var myTile = this.tiles[a];
-      var mapTile = $gameMap.tiles[a];
+      var mapTile = $gameMap.tiles.getTileByIndex(a);
       var pos = $gameMap.getTilePosition(a);
       var realPos = new Point(pos.x * $gameMap.tileWidth, pos.y * $gameMap.tileHeight);
 

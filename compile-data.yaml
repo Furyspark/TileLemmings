@@ -50,6 +50,7 @@ app:
     - "ui/minimap.js"
     - "map/map.js"
     - "map/tileset.js"
+    - "map/layer_tile.js"
     - "map/tile.js"
     - "map/world.js"
     - "map/camera.js"
