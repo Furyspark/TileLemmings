@@ -11,7 +11,7 @@ Game_World.prototype.init = function() {
 }
 
 Game_World.prototype.zOrder = function() {
-  this.children.sort(function(a, b) {
-    return b.z - a.z;
-  });
+  // this.children.sort(function(a, b) {
+  //   return b.z - a.z;
+  // });
 }
