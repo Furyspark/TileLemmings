@@ -24,10 +24,7 @@ Scene_PostGame.prototype.create = function() {
     this.bg = new Background("bgMainMenu");
     this.stage.addChild(this.bg);
     // Add status text
-    var desc = "You totally stormed that level!\n\nLet's see if you can storm the next..."
-    if(this.saved < this.totalLemmings && this.saved === this.needed) desc = "SPOT ON!\n\nYou can't get much closer than that.";
-    else if(this.saved < this.needed && this.saved > 0) desc = "Total bummer!\n\nTry again.";
-    else if(this.saved === 0) desc = "ROCK BOTTOM!\n\nI hope for your sake you nuked that level.";
+    let desc = this.getResultText();
     this.text = {
         status: new Text(desc)
     };
@@ -40,6 +37,13 @@ Scene_PostGame.prototype.create = function() {
     // Add interactivity
     Input.mouse.button.LEFT.onPress.add(this.continueGame, this);
 }
+
+Scene_PostGame.prototype.getResultText = function() {
+  if(this.needed < this.totalLemmings && this.saved === this.needed) return "SPOT ON!\n\nYou can't get much closer than that.";
+  else if(this.saved < this.needed && this.saved > 0) return "Total bummer!\n\nTry again.";
+  else if(this.saved === 0) return "ROCK BOTTOM!\n\nFor your sake, I hope you nuked that level.";
+  return "You totally stormed that level!\n\nLet's see if you can storm the next...";
+};
 
 Scene_PostGame.prototype.continueGame = function() {
     if(this.success) {
