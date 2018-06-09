@@ -15,7 +15,9 @@ Object.defineProperties(Game_Map.prototype, {
   }
 });
 
-
+/**
+ * @constructor
+ */
 Game_Map.prototype.init = function(src, scene) {
   this.grid               = new PIXI.Container();
   this.camera             = new Game_Camera(this);
@@ -54,6 +56,9 @@ Game_Map.prototype.init = function(src, scene) {
   obj.onComplete.addOnce(this.parseTiledMap, this);
 }
 
+/**
+ * Clears the map data to defaults.
+ */
 Game_Map.prototype.clear = function() {
   this.frame              = 0;
   this.world              = new Game_World();
@@ -66,6 +71,9 @@ Game_Map.prototype.clear = function() {
   this.world.addChild(this.grid);
 }
 
+/**
+ * Updates the boundaries of the camera.
+ */
 Game_Map.prototype.updateCameraBounds = function() {
   this.camera.bounds.x = 0;
   this.camera.bounds.y = 0;
@@ -75,6 +83,9 @@ Game_Map.prototype.updateCameraBounds = function() {
   if(scene && scene.panelHeight) this.camera.bounds.height += (scene.panelHeight() / this.world.scale.y);
 }
 
+/**
+ * Setup map from tiled map data.
+ */
 Game_Map.prototype.parseTiledMap = function() {
   this.data = Cache.getJSON("map");
   // Parse map properties
@@ -88,11 +99,16 @@ Game_Map.prototype.parseTiledMap = function() {
 
     if(ts.source.split(/[\/\\]/).indexOf("objects") !== -1) args[3] = false;
     this._expectedAssets.push(key);
+    this._expectedTilesets.push(key);
     var obj = Loader.loadJSON(key, this.baseDir + ts.source);
     obj.onComplete.addOnce(this.parseTilesetData, this, args, 20);
   }
 }
 
+/**
+ * Setup from tiled map properties.
+ * @param {object} properties - The tiled map properties.
+ */
 Game_Map.prototype.parseMapProperties = function(properties) {
   // Apply Map Properties
   if(properties.needed) this.needed = properties.needed;
@@ -117,6 +133,13 @@ Game_Map.prototype.parseMapProperties = function(properties) {
   }
 }
 
+/**
+ * Parse a tileset from a tiled map (data only)
+ * @param {string} key - The key of the tileset's JSON data (as in the cache).
+ * @param {number} firstGid - The first GID of the tileset.
+ * @param {string} baseDir - The base directory in which the tileset resides.
+ * @param {boolean} loadImage - Whether to load the tileset's image.
+ */
 Game_Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage) {
   var tsData = Cache.getJSON(key);
   var ts = new Game_Tileset();
@@ -134,18 +157,22 @@ Game_Map.prototype.parseTilesetData = function(key, firstGid, baseDir, loadImage
     this._expectedAssets.push(imageKey);
     var src = baseDir + tsData.image;
     var obj = Loader.loadImage(imageKey, src);
-    obj.onComplete.addOnce(this.parseTileset, this, [imageKey, ts], 20);
+    obj.onComplete.addOnce(this.parseTilesetImage, this, [imageKey, ts], 20);
   }
   else {
     this.tilesets.push(ts);
   }
 
-  this._expectedTilesets.push(key);
   this._usedAssets.push({ type: "json", key: key });
   this.clearAsset(key);
 }
 
-Game_Map.prototype.parseTileset = function(imageKey, tileset) {
+/**
+ * Parse a tileset image.
+ * @param {string} imageKey - The key of the image (as in the cache)
+ * @param {Tileset} tileset - The tileset this image belongs to.
+ */
+Game_Map.prototype.parseTilesetImage = function(imageKey, tileset) {
   tileset.texture = Cache.getImage(imageKey);
   this.tilesets.push(tileset);
 
@@ -153,6 +180,9 @@ Game_Map.prototype.parseTileset = function(imageKey, tileset) {
   this.clearAsset(imageKey);
 }
 
+/**
+ * Loads all used map assets.
+ */
 Game_Map.prototype.loadUsedGameObjectAssets = function() {
   var objects = this.getUsedGameObjects();
   for(var a = 0;a < objects.length;a++) {
@@ -168,6 +198,10 @@ Game_Map.prototype.loadUsedGameObjectAssets = function() {
   }
 }
 
+/**
+ * Lists all used game objects (props etc) in the map.
+ * @returns {object[]} All game objects as in a tiled map's JSON structure, from all layers.
+ */
 Game_Map.prototype.getUsedGameObjects = function() {
   var result = [];
   for(var a = 0;a < this.data.layers.length;a++) {
@@ -182,18 +216,22 @@ Game_Map.prototype.getUsedGameObjects = function() {
   return result;
 }
 
-Game_Map.prototype.loadGameObjectAsset = function(props) {
+/**
+ * Loads assets used by game objects which are used in this map.
+ * @param {object} data - The game object data (from e.g. $dataProps[key]).
+ */
+Game_Map.prototype.loadGameObjectAsset = function(data) {
   // Load files
-  for(var assetType in props.assets) {
-    for(var assetKey in props.assets[assetType]) {
-      var k = Loader.determineKey(props.assets[assetType][assetKey]);
+  for(var assetType in data.assets) {
+    for(var assetKey in data.assets[assetType]) {
+      var k = Loader.determineKey(data.assets[assetType][assetKey]);
       var file = null;
       switch(assetType) {
         case "audio":
-          file = Loader.loadAudio(k, props.assets[assetType][assetKey]);
+          file = Loader.loadAudio(k, data.assets[assetType][assetKey]);
           break;
         case "textureAtlases":
-          file = Loader.loadTextureAtlas(k, props.assets[assetType][assetKey]);
+          file = Loader.loadTextureAtlas(k, data.assets[assetType][assetKey]);
           break;
       }
       if(file !== null) {
@@ -207,6 +245,10 @@ Game_Map.prototype.loadGameObjectAsset = function(props) {
   }
 }
 
+/**
+ * Marks an asset as done loading.
+ * @param {string} key - The key of the asset.
+ */
 Game_Map.prototype.clearAsset = function(key) {
   // Clear tileset
   this.clearTileset(key);
@@ -226,6 +268,10 @@ Game_Map.prototype.clearAsset = function(key) {
   }
 }
 
+/**
+ * Marks a tileset as done loading.
+ * @param {string} key - The key of the tileset.
+ */
 Game_Map.prototype.clearTileset = function(key) {
   var a = this._expectedTilesets.indexOf(key);
   if(a !== -1) {
@@ -236,6 +282,11 @@ Game_Map.prototype.clearTileset = function(key) {
   }
 }
 
+/**
+ * Returns a tileset by a tile UID.
+ * @param {number} uid - The UID of the tile to find its tileset.
+ * @returns {Tileset} The tileset associated with the UID.
+ */
 Game_Map.prototype.getTileset = function(uid) {
   for(var a = this.tilesets.length - 1;a >= 0;a--) {
     var ts = this.tilesets[a];
@@ -244,6 +295,9 @@ Game_Map.prototype.getTileset = function(uid) {
   return null;
 }
 
+/**
+ * Sets up the level after all assets have been loaded.
+ */
 Game_Map.prototype.createLevel = function() {
   this.clear();
   // Apply actions
@@ -295,6 +349,11 @@ Game_Map.prototype.createLevel = function() {
   this.onCreate.dispatch();
 }
 
+/**
+ * Creates a tile layer from a tiled map layer.
+ * @param {object} layerSrc - The tiled map layer data.
+ * @param {string} type - The type of tileset to parse. Either 'tiles', 'modifiers' or 'background'.
+ */
 Game_Map.prototype.parseTileLayer = function(layerSrc, type) {
   // Add layer
   let layer = new Layer_Tile(this);
@@ -306,18 +365,24 @@ Game_Map.prototype.parseTileLayer = function(layerSrc, type) {
   // Add tiles
   for(var a = 0;a < layerSrc.data.length;a++) {
     var uid = layerSrc.data[a];
+    let z = 0;
+    if(layerSrc.properties && layerSrc.properties.z) z = layerSrc.properties.z;
     if(uid > 0) {
       var pos = this.getTilePosition(a);
-      if(type === "tiles") this.addTile(layer, pos, uid, 0);
+      if(type === "tiles") this.addTile(layer, pos, uid, z);
       else if(type === "modifiers") this.addTileModifier(layer, pos, uid);
-      else if(type === "background") this.addBackgroundTile(layer, pos, uid);
+      else if(type === "background") this.addBackgroundTile(layer, pos, uid, z);
     }
   }
 }
 
-Game_Map.prototype.parseObjectLayer = function(layer) {
-  for(var a = 0;a < layer.objects.length;a++) {
-    var objData = layer.objects[a];
+/**
+ * Creates objects from a tiled map object layer.
+ * @param {object} layerSrc - The tiled map layer data.
+ */
+Game_Map.prototype.parseObjectLayer = function(layerSrc) {
+  for(var a = 0;a < layerSrc.objects.length;a++) {
+    var objData = layerSrc.objects[a];
     // Determine flipping
     objData.flip = {
       horizontal: (objData.gid & Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG),
@@ -340,6 +405,11 @@ Game_Map.prototype.parseObjectLayer = function(layer) {
   }
 }
 
+/**
+ * Lists tileset properties of an object.
+ * @param {object} objectData - The object as in a tiled map object layer's object.
+ * @returns {object} The object properties as in its tileset.
+ */
 Game_Map.prototype.getObjectProperties = function(objectData) {
   var gid = objectData.gid & ~(
     Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
@@ -354,6 +424,9 @@ Game_Map.prototype.getObjectProperties = function(objectData) {
   return null;
 }
 
+/**
+ * Adds grid to the map.
+ */
 Game_Map.prototype.addGrid = function() {
   for(var a = 0;a < this.width;a++) {
     for(var b = 0;b < this.height;b++) {
@@ -367,6 +440,13 @@ Game_Map.prototype.addGrid = function() {
   }
 }
 
+/**
+ * Adds a prop to the map.
+ * @param {number} x - The x-position of the prop.
+ * @param {number} y - The y-position of the prop.
+ * @param {string} key - The key of the prop, as in $dataProps.
+ * @param {object} data - The object's data as in a tiled map object layer's object.
+ */
 Game_Map.prototype.addProp = function(x, y, key, data) {
   // Create object
   var obj = new Game_Prop(key, this);
@@ -396,14 +476,20 @@ Game_Map.prototype.addProp = function(x, y, key, data) {
   this.world.addChild(obj.sprite);
 }
 
-Game_Map.prototype.addTile = function(layer, pos, uid, flags, data) {
-  if(!data) data = {};
-  if(!flags) flags = 0;
+/**
+ * Adds a tile to the map.
+ * @param {Layer_Tile} layer - The tile layer to add a tile to.
+ * @param {Point} pos - The position (in tile space) to add the tile to.
+ * @param {number} uid - The UID of the tile.
+ * @param {number} z - The z-index of the tile.
+ */
+Game_Map.prototype.addTile = function(layer, pos, uid, z) {
   var ts = this.getTileset(uid);
   if(ts) {
     var index = this.getTileIndex(pos.x, pos.y);
     // Add new tile
     var tile = new Game_Tile(ts.getTileTexture(uid - ts.firstGid));
+    tile.sprite.z = z;
     layer.addTile(tile, layer.getIndex(pos));
     // Add properties
     var properties = ts.getTileProperties(uid - ts.firstGid);
@@ -434,16 +520,30 @@ Game_Map.prototype.addTile = function(layer, pos, uid, flags, data) {
   }
 }
 
-Game_Map.prototype.addBackgroundTile = function(layer, pos, uid) {
+/**
+ * Adds a background tile to a tile layer.
+ * @param {Layer_Tile} layer - The tile layer to add a background tile to.
+ * @param {Point} pos - The position (in tile space) to add the tile to.
+ * @param {number} uid - The UID of the tile to add.
+ * @param {number} z - The z-index of the tile.
+ */
+Game_Map.prototype.addBackgroundTile = function(layer, pos, uid, z) {
   let ts = this.getTileset(uid);
   if(ts != null) {
     let index = this.getTileIndex(pos.x, pos.y);
     // Add new tile
     let tile = new Game_Tile(ts.getTileTexture(uid - ts.firstGid));
+    tile.sprite.z = z;
     layer.addTile(tile, layer.getIndex(pos));
   }
 };
 
+/**
+ * Adds a tile modifier.
+ * @param {number} x - The x-position (in tile space) to add the modifier to.
+ * @param {number} y - The y-position (in tile space) to add the modifier to.
+ * @param {number} uid - The UID of the tile modifier to add.
+ */
 Game_Map.prototype.addTileModifier = function(x, y, uid) {
   var ts = this.getTileset(uid);
   if(ts) {
@@ -470,14 +570,30 @@ Game_Map.prototype.addTileModifier = function(x, y, uid) {
   }
 }
 
+/**
+ * Removes a tile from the main tile layer.
+ * @param {number} x - The x-position (in tile space) to remove a tile from.
+ * @param {number} y - The y-position (in tile space) to remove a tile from.
+ */
 Game_Map.prototype.removeTile = function(x, y) {
   return this.tiles.removeTile(this.tiles.getIndex(new Point(x, y)));
 }
 
+/**
+ * Calculates an index from a position.
+ * @param {number} x - The x-position (in tile space) of the tile.
+ * @param {number} y - The y-position (in tile space) of the tile.
+ * @returns {number} The calculated index for the position.
+ */
 Game_Map.prototype.getTileIndex = function(x, y) {
   return x + (y * this.width);
 }
 
+/**
+ * Calculates a position from a tile index.
+ * @param {number} index - The index in tile space to calculate a position for.
+ * @returns {Point} The calculated position for the given index.
+ */
 Game_Map.prototype.getTilePosition = function(index) {
   return new Point(
     Math.floor(index % this.width),
@@ -485,6 +601,12 @@ Game_Map.prototype.getTilePosition = function(index) {
   );
 }
 
+/**
+ * Finds a tile from the main tile layer at the given position.
+ * @param {number} realX - The x-position (in world space).
+ * @param {number} realY - The y-position (in world space).
+ * @returns {Tile} The tile at the position.
+ */
 Game_Map.prototype.getTile = function(realX, realY) {
   let pos = new Point(
     Math.floor(realX / this.tileWidth),
@@ -494,10 +616,17 @@ Game_Map.prototype.getTile = function(realX, realY) {
   return this.tiles.getTileByIndex(index);
 }
 
+/**
+ * Sets the world stage.
+ * @param {PIXI.Group} stage - The scene's stage to add this map's world to.
+ */
 Game_Map.prototype.setStage = function(stage) {
   stage.addChild(this.world);
 }
 
+/**
+ * Updates map animations.
+ */
 Game_Map.prototype.update = function() {
   // Update object animations
   var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
@@ -515,22 +644,11 @@ Game_Map.prototype.update = function() {
   }
   this.world.zOrder();
   this.updateCameraBounds();
-  // Track victory/defeat
-  if(this.trackVictoryDefeat) {
-    var end = true;
-    if(this.getLemmings().length > 0) end = false;
-    var arr = this.getDoors();
-    for(var a = 0;a < arr.length && end;a++) {
-      var obj = arr[a];
-      if(obj.value > 0) end = false;
-    }
-    if(end) {
-      this.trackVictoryDefeat = false;
-      this.onEndOfMap.dispatch();
-    }
-  }
 };
 
+/**
+ * Updates map logic.
+ */
 Game_Map.prototype.updateGameLogic = function() {
   // Update frame
   this.frame++;
@@ -554,8 +672,25 @@ Game_Map.prototype.updateGameLogic = function() {
       if(tile) tile.update();
     }
   }
+  // Track victory/defeat
+  if(this.trackVictoryDefeat) {
+    var end = true;
+    if(this.getLemmings().length > 0) end = false;
+    var arr = this.getDoors();
+    for(var a = 0;a < arr.length && end;a++) {
+      var obj = arr[a];
+      if(obj.value > 0) end = false;
+    }
+    if(end) {
+      this.trackVictoryDefeat = false;
+      this.onEndOfMap.dispatch();
+    }
+  }
 };
 
+/**
+ * Updates the camera.
+ */
 Game_Map.prototype.updateCamera = function() {
   this.camera.update();
   // Update tile visibility
@@ -578,28 +713,49 @@ Game_Map.prototype.updateCamera = function() {
   }
 }
 
+/**
+ * Lists all active lemmings.
+ * @returns {Lemming[]} An array of lemmings.
+ */
 Game_Map.prototype.getLemmings = function() {
   return this.objects.filter(function(obj) {
     return (obj instanceof Game_Lemming && obj.exists);
   });
 }
 
+/**
+ * Lists all doors.
+ * @returns {Prop[]} An array of door props.
+ */
 Game_Map.prototype.getDoors = function() {
   return this.objects.filter(function(obj) {
     return (obj instanceof Game_Prop && obj.type === "door" && obj.exists);
   });
 }
 
+/**
+ * Lists all exits.
+ * @returns {Prop[]} An array of exit props.
+ */
 Game_Map.prototype.getExits = function() {
   return this.objects.filter(function(obj) {
     return (obj instanceof Game_Prop && obj.type === "exit" && obj.exists);
   });
 }
 
+/**
+ * Starts the map's music.
+ */
 Game_Map.prototype.startMusic = function() {
   AudioManager.playBgm("music");
 }
 
+/**
+ * @param {number} realX - The x-position (in world space) to find a tile collision at.
+ * @param {number} realY - The y-position (in world space) to find a tile collision at.
+ * @param {Lemming} lem - The lemming to find a tile collision for.
+ * @returns {boolean} Whether a collision happens.
+ */
 Game_Map.prototype.tileCollision = function(realX, realY, lem) {
   if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return Game_Tile.COLLISION_ENDOFMAP;
   var tile = this.getTile(realX, realY);
@@ -607,6 +763,11 @@ Game_Map.prototype.tileCollision = function(realX, realY, lem) {
   return Game_Tile.COLLISIONFUNC_AIR.call(lem, realX, realY);
 }
 
+/**
+ * @param {number} realX - The x-position (in world space) to find a blocker at.
+ * @param {number} realY - The y-position (in world space) to find a blocker at.
+ * @returns {boolean} Whether the tile-space at the given position has a blocker present.
+ */
 Game_Map.prototype.tileHasBlocker = function(realX, realY) {
   if(realX < 0 || realX >= this.realWidth || realY < 0 || realY >= this.realHeight) return false;
   var r = new Rect((realX >> 4) << 4, (realY >> 4) << 4, this.tileWidth, this.tileHeight);
@@ -618,6 +779,12 @@ Game_Map.prototype.tileHasBlocker = function(realX, realY) {
   return false;
 }
 
+/**
+ * Finds a position relative to the camera.
+ * @param {number} mapX - The x-position in the map (world space).
+ * @param {number} mapY - The y-position in the map (world space).
+ * @returns {Point} The given position relative to the camera's top-left.
+ */
 Game_Map.prototype.toScreenSpace = function(mapX, mapY) {
   return new Point(
     (mapX - this.camera.rect.left) * this.world.scale.x,
@@ -625,6 +792,12 @@ Game_Map.prototype.toScreenSpace = function(mapX, mapY) {
   );
 }
 
+/**
+ * Replaces a tile with another tile.
+ * @param {number} x - The x-position (in tile space).
+ * @param {number} y - The y-position (in tile space).
+ * @param {Tile} tile - The new tile.
+ */
 Game_Map.prototype.replaceTile = function(x, y, tile) {
   var index = this.getTileIndex(x, y);
   if(index >= 0 && index < this.tiles.getSize()) {
@@ -633,6 +806,12 @@ Game_Map.prototype.replaceTile = function(x, y, tile) {
   }
 }
 
+/**
+ * Finds a position in world space.
+ * @param {number} screenX - The x-position on the screen.
+ * @param {number} screenY - The y-position on the screen.
+ * @returns {Point} The given position on the map.
+ */
 Game_Map.prototype.toWorldSpace = function(screenX, screenY) {
   return new Point(
     (screenX / this.world.scale.x) + this.camera.rect.left,
@@ -640,6 +819,9 @@ Game_Map.prototype.toWorldSpace = function(screenX, screenY) {
   );
 }
 
+/**
+ * Adds the map's given background.
+ */
 Game_Map.prototype.addBackground = function() {
   if(Cache.hasImage("background")) {
     // Get Parallax and Tile properties
@@ -657,11 +839,17 @@ Game_Map.prototype.addBackground = function() {
   }
 }
 
+/**
+ * Destroys the map and frees the assets used within.
+ */
 Game_Map.prototype.destroy = function() {
   this.clearLevelAssets();
   Cache.removeJSON("map");
 }
 
+/**
+ * Frees all map assets.
+ */
 Game_Map.prototype.clearLevelAssets = function() {
   while(this._usedAssets.length > 0) {
     var asset = this._usedAssets.pop();
@@ -685,6 +873,9 @@ Game_Map.prototype.clearLevelAssets = function() {
   }
 }
 
+/**
+ * Updates the replay from the last time (from an instance of Scene_PreGame).
+ */
 Game_Map.prototype.updateReplay = function() {
   // Get replay
   var preGameScene = SceneManager.getSceneByType(Scene_PreGame);
