@@ -352,6 +352,17 @@ cloud:
         - type: "map-completion"
           dir: "cloud"
           key: "level4.json"
+    # Cloud Level 6
+    - type: "map"
+      key: "level6.json"
+      icon: "icon-sky.png"
+      position:
+        x: 1
+        y: 0
+      require:
+        - type: "map-completion"
+          dir: "cloud"
+          key: "level5.json"
 
 circus:
   previous: "root"
