@@ -374,6 +374,39 @@ cloud:
         - type: "map-completion"
           dir: "cloud"
           key: "level5.json"
+    # Cloud Level 8
+    - type: "map"
+      key: "level8.json"
+      icon: "icon-sky.png"
+      position:
+        x: 4
+        y: 0
+      require:
+        - type: "map-completion"
+          dir: "cloud"
+          key: "level7.json"
+    # Cloud Level 9
+    - type: "map"
+      key: "level9.json"
+      icon: "icon-sky.png"
+      position:
+        x: 0
+        y: 1
+      require:
+        - type: "map-completion"
+          dir: "cloud"
+          key: "level6.json"
+    # Cloud Level 10
+    - type: "map"
+      key: "level10.json"
+      icon: "icon-sky.png"
+      position:
+        x: 5
+        y: 1
+      require:
+        - type: "map-completion"
+          dir: "cloud"
+          key: "level8.json"
 
 circus:
   previous: "root"
