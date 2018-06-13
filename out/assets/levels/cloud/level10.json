@@ -65,7 +65,7 @@
      "action_climber":1,
      "action_miner":1,
      "bg":"sky",
-     "music":"cloud_early",
+     "music":"cloud_late",
      "name":"Air Walking",
      "needed":19
     },
