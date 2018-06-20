@@ -66,6 +66,7 @@ Game_Map.prototype.clear = function() {
   this.objects            = [];
   this.trackVictoryDefeat = true;
 
+  if(this.grid != null) this.world.removeChild(this.grid);
   this.grid.z = -1500;
   this.grid.visible = false;
   this.world.addChild(this.grid);
