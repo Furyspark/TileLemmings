@@ -1,0 +1,12 @@
+{ "columns":5,
+ "image":"..\/graphics\/tilesets\/circus.png",
+ "imageheight":100,
+ "imagewidth":100,
+ "margin":2,
+ "name":"circus",
+ "spacing":4,
+ "tilecount":25,
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset"
+}
