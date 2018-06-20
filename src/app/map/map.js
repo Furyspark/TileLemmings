@@ -389,11 +389,6 @@ Game_Map.prototype.parseObjectLayer = function(layerSrc) {
       vertical: (objData.gid & Game_Map.TILE_FLIPPED_VERTICALLY_FLAG),
       diagonal: (objData.gid & Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG)
     };
-    objData.gid &= ~(
-      Game_Map.TILE_FLIPPED_HORIZONTALLY_FLAG |
-      Game_Map.TILE_FLIPPED_VERTICALLY_FLAG |
-      Game_Map.TILE_FLIPPED_DIAGONALLY_FLAG
-    );
     // Get data
     var props = this.getObjectProperties(objData);
     if(props) {
