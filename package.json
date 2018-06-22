@@ -36,7 +36,9 @@
     },
     "win": {
       "target": "nsis",
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     },
     "nsis": {
       "uninstallDisplayName": "TileLemmings ${version}",
