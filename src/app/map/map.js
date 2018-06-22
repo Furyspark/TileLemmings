@@ -839,7 +839,7 @@ Game_Map.prototype.addBackground = function() {
  * Destroys the map and frees the assets used within.
  */
 Game_Map.prototype.destroy = function() {
-  this.clearLevelAssets();
+  // this.clearLevelAssets();
   Cache.removeJSON("map");
 }
 
