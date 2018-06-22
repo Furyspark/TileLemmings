@@ -145,8 +145,10 @@ Input.initListeners = function() {
   Core.renderer.view.addEventListener("wheel", this._wheel.bind(this));
   // Misc events
   this.key.F4.onPress.add(function() {
-    this.setFullscreen(!this.getFullscreen());
-  }, Core);
+    if(!this.key.ALT.down) {
+      Core.setFullscreen(!Core.getFullscreen());
+    }
+  }, this);
   this.key.ENTER.onPress.add(function() {
     if(Input.key.Alt.down) {
       this.setFullscreen(!this.getFullscreen());
