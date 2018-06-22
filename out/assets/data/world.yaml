@@ -432,11 +432,25 @@ circus:
 
 jungle:
   previous: "root"
-  contents: []
+  contents:
+    # Jungle Level 3
+    - type: "map"
+      key: "level3.json"
+      icon: "icon-jungle.png"
+      position:
+        x: 2
+        y: 2
 
 mountain:
   previous: "root"
-  contents: []
+  contents:
+    # Mountain Level 9
+    - type: "map"
+      key: "level9.json"
+      icon: "icon-mountain.png"
+      position:
+        x: 3
+        y: 2
 
 urban:
   previous: "root"
