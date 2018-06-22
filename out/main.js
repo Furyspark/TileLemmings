@@ -9,11 +9,7 @@ for(var a = 0;a < args.length;a++) {
 }
 
 
-// var electron      = require("electron");  // Module to control application life.
 let { app, BrowserWindow, ipcMain } = require("electron");
-// var app           = electron.app;
-// var BrowserWindow = electron.BrowserWindow;
-// var ipcMain       = electron.ipcMain;
 var fs            = require("fs");
 
 // Keep a global reference of the window object, if you don't, the window will
