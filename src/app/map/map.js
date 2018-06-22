@@ -839,7 +839,7 @@ Game_Map.prototype.addBackground = function() {
  * Destroys the map and frees the assets used within.
  */
 Game_Map.prototype.destroy = function() {
-  // this.clearLevelAssets();
+  this.clearLevelAssets();
   Cache.removeJSON("map");
 }
 
@@ -848,7 +848,7 @@ Game_Map.prototype.destroy = function() {
  */
 Game_Map.prototype.clearLevelAssets = function() {
   while(this._usedAssets.length > 0) {
-    var asset = this._usedAssets.pop();
+    let asset = this._usedAssets.pop();
     switch(asset.type) {
       case "json":
         Cache.removeJSON(asset.key);
@@ -863,7 +863,7 @@ Game_Map.prototype.clearLevelAssets = function() {
         Cache.removeTextureAtlas(asset.key);
         break;
       default:
-        console.log("Failed to remove asset: " + asset.key);
+        console.warn("No such asset type '" + asset.type + "' for key '" + asset.key + "'");
         break;
     }
   }
