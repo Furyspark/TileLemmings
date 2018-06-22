@@ -1,0 +1,12 @@
+{ "columns":11,
+ "image":"..\/graphics\/tilesets\/snow.png",
+ "imageheight":80,
+ "imagewidth":220,
+ "margin":2,
+ "name":"snow",
+ "spacing":4,
+ "tilecount":44,
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset"
+}

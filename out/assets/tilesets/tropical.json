@@ -1,0 +1,26 @@
+{ "columns":10,
+ "image":"..\/graphics\/tilesets\/tropical.png",
+ "imageheight":240,
+ "imagewidth":200,
+ "margin":2,
+ "name":"tropical",
+ "spacing":4,
+ "tilecount":120,
+ "tileheight":16,
+ "tileproperties":
+    {
+     "34":
+        {
+         "property_steel":true
+        }
+    },
+ "tilepropertytypes":
+    {
+     "34":
+        {
+         "property_steel":"bool"
+        }
+    },
+ "tilewidth":16,
+ "type":"tileset"
+}

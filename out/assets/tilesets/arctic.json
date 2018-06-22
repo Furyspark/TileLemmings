@@ -1,0 +1,12 @@
+{ "columns":8,
+ "image":"..\/graphics\/tilesets\/arctic.png",
+ "imageheight":120,
+ "imagewidth":160,
+ "margin":2,
+ "name":"arctic",
+ "spacing":4,
+ "tilecount":48,
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset"
+}
