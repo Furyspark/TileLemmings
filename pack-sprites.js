@@ -3,7 +3,7 @@ var fs = require("fs");
 
 var config = {
     workspacePath: "workspace/sprites",
-    outputPath: "app/assets/graphics/sprite-atlases"
+    outputPath: "out/assets/graphics/sprite-atlases"
 };
 
 function Core() {};
