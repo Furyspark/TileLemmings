@@ -79,10 +79,9 @@
  "orientation":"orthogonal",
  "properties":
     {
-     "action_basher":2,
+     "action_basher":1,
      "action_builder":5,
      "action_climber":2,
-     "action_digge":1,
      "action_digger":1,
      "action_miner":1,
      "bg":"sky",
@@ -95,7 +94,6 @@
      "action_basher":"int",
      "action_builder":"int",
      "action_climber":"int",
-     "action_digge":"int",
      "action_digger":"int",
      "action_miner":"int",
      "bg":"string",
