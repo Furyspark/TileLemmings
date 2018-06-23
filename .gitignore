@@ -11,3 +11,4 @@ node_modules
 /main-config.json
 /dist
 *.log
+/.vscode
