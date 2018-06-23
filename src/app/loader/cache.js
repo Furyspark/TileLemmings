@@ -65,29 +65,33 @@ Cache.getTextureAtlas = function(key) {
   return null;
 }
 
-Cache.addTextureAtlas = function(key, dataObj) {
-  var obj = {};
-  for(var a in dataObj.data.frames) {
-    var tex = PIXI.utils.TextureCache[a];
+Cache.addTextureAtlas = function(key, file) {
+  let obj = {};
+  let dataObj = file.getData();
+  for(let a in dataObj.data.frames) {
+    let tex = PIXI.utils.TextureCache[a];
     obj[a] = tex;
   }
-  this._textureAtlases[key] = { resources: dataObj, cache: obj };
+  this._textureAtlases[key] = { resources: dataObj, cache: obj, file: file };
 }
 
 Cache.removeTextureAtlas = function(key) {
   // Gather info
-  var obj = this._textureAtlases[key];
-  var arr = [];
-  for(var a in obj.resources.textures) {
+  let obj = this._textureAtlases[key];
+  let arr = [];
+  for(let a in obj.resources.textures) {
     arr.push(obj.resources.textures[a]);
   }
   // Delete textures
   while(arr.length > 0) {
-    var obj = arr.shift();
-    var destroyBase = false;
+    let obj = arr.shift();
+    let destroyBase = false;
     if(arr.length === 0) destroyBase = true;
+    obj.baseTexture.destroy(destroyBase);
     obj.destroy(destroyBase);
   }
+  obj.file.loader.reset();
+  PIXI.Texture.removeFromCache(obj.file.key + "_image");
   // Delete reference
   delete this._textureAtlases[key];
 }

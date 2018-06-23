@@ -192,7 +192,7 @@ Loader._finishImage = function(file) {
 
 Loader._finishTextureAtlas = function(file) {
   if(file.key != null) {
-    Cache.addTextureAtlas(file.key, file.getData());
+    Cache.addTextureAtlas(file.key, file);
   }
   this._finishFile(file);
 }
