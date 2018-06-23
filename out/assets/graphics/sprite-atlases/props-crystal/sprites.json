@@ -1,137 +1,106 @@
 {
-	"meta": {
-		"image": "sprites.png",
-		"size": {"w":246,"h":230},
-		"scale": "1"
+"frames": {
+	"crystal_door0.png": {
+		"frame": {"x":0, "y":100, "w":82, "h":24},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
 	},
-	"frames": {
-		"door9.png":
-		{
-			"frame": {"x":82,"y":0,"w":82,"h":50},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":50},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"door8.png":
-		{
-			"frame": {"x":0,"y":0,"w":82,"h":50},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":50},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"door7.png":
-		{
-			"frame": {"x":0,"y":50,"w":82,"h":48},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":48},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"door6.png":
-		{
-			"frame": {"x":82,"y":50,"w":82,"h":46},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":46},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"door5.png":
-		{
-			"frame": {"x":0,"y":98,"w":82,"h":44},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":44},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"door4.png":
-		{
-			"frame": {"x":82,"y":98,"w":82,"h":42},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":42},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"door3.png":
-		{
-			"frame": {"x":164,"y":0,"w":82,"h":40},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":40},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"door2.png":
-		{
-			"frame": {"x":164,"y":40,"w":82,"h":32},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":32},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"exit5.png":
-		{
-			"frame": {"x":152,"y":186,"w":76,"h":44},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":0,"w":76,"h":44},
-			"sourceSize": {"w":76,"h":86}
-		},
-		"door0.png":
-		{
-			"frame": {"x":164,"y":100,"w":82,"h":24},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":24},
-			"sourceSize": {"w":82,"h":100}
-		},
-		"exit0.png":
-		{
-			"frame": {"x":0,"y":142,"w":76,"h":44},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":0,"w":76,"h":44},
-			"sourceSize": {"w":76,"h":86}
-		},
-		"exit1.png":
-		{
-			"frame": {"x":76,"y":142,"w":76,"h":44},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":0,"w":76,"h":44},
-			"sourceSize": {"w":76,"h":86}
-		},
-		"exit2.png":
-		{
-			"frame": {"x":152,"y":142,"w":76,"h":44},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":0,"w":76,"h":44},
-			"sourceSize": {"w":76,"h":86}
-		},
-		"exit3.png":
-		{
-			"frame": {"x":0,"y":186,"w":76,"h":44},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":0,"w":76,"h":44},
-			"sourceSize": {"w":76,"h":86}
-		},
-		"exit4.png":
-		{
-			"frame": {"x":76,"y":186,"w":76,"h":44},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":0,"w":76,"h":44},
-			"sourceSize": {"w":76,"h":86}
-		},
-		"door1.png":
-		{
-			"frame": {"x":164,"y":72,"w":82,"h":28},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":50,"w":82,"h":28},
-			"sourceSize": {"w":82,"h":100}
-		}
+	"crystal_door1.png": {
+		"frame": {"x":0, "y":125, "w":82, "h":28},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door2.png": {
+		"frame": {"x":0, "y":154, "w":82, "h":32},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door3.png": {
+		"frame": {"x":0, "y":187, "w":82, "h":40},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door4.png": {
+		"frame": {"x":83, "y":143, "w":82, "h":42},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door5.png": {
+		"frame": {"x":83, "y":98, "w":82, "h":44},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door6.png": {
+		"frame": {"x":83, "y":51, "w":82, "h":46},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door7.png": {
+		"frame": {"x":0, "y":51, "w":82, "h":48},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door8.png": {
+		"frame": {"x":0, "y":0, "w":82, "h":50},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_door9.png": {
+		"frame": {"x":83, "y":0, "w":82, "h":50},
+		"spriteSourceSize": {"x":0,"y":50,"w":82,"h":100},
+		"sourceSize": {"w":82,"h":100},
+		"trimmed": true
+	},
+	"crystal_exit0.png": {
+		"frame": {"x":83, "y":186, "w":76, "h":44},
+		"spriteSourceSize": {"x":0,"y":0,"w":76,"h":86},
+		"sourceSize": {"w":76,"h":86},
+		"trimmed": true
+	},
+	"crystal_exit1.png": {
+		"frame": {"x":160, "y":186, "w":76, "h":44},
+		"spriteSourceSize": {"x":0,"y":0,"w":76,"h":86},
+		"sourceSize": {"w":76,"h":86},
+		"trimmed": true
+	},
+	"crystal_exit2.png": {
+		"frame": {"x":166, "y":0, "w":76, "h":44},
+		"spriteSourceSize": {"x":0,"y":0,"w":76,"h":86},
+		"sourceSize": {"w":76,"h":86},
+		"trimmed": true
+	},
+	"crystal_exit3.png": {
+		"frame": {"x":166, "y":45, "w":76, "h":44},
+		"spriteSourceSize": {"x":0,"y":0,"w":76,"h":86},
+		"sourceSize": {"w":76,"h":86},
+		"trimmed": true
+	},
+	"crystal_exit4.png": {
+		"frame": {"x":166, "y":90, "w":76, "h":44},
+		"spriteSourceSize": {"x":0,"y":0,"w":76,"h":86},
+		"sourceSize": {"w":76,"h":86},
+		"trimmed": true
+	},
+	"crystal_exit5.png": {
+		"frame": {"x":166, "y":135, "w":76, "h":44},
+		"spriteSourceSize": {"x":0,"y":0,"w":76,"h":86},
+		"sourceSize": {"w":76,"h":86},
+		"trimmed": true
 	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 243, "h": 231},
+	"scale": "1"
+}
 }

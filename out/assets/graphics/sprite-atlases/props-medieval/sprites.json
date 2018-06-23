@@ -1,89 +1,70 @@
 {
-	"meta": {
-		"image": "sprites.png",
-		"size": {"w":304,"h":174},
-		"scale": "1"
+"frames": {
+	"medieval_door0.png": {
+		"frame": {"x":0, "y":183, "w":80, "h":50},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
 	},
-	"frames": {
-		"door6.png":
-		{
-			"frame": {"x":0,"y":0,"w":80,"h":62},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":62},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door7.png":
-		{
-			"frame": {"x":80,"y":0,"w":80,"h":62},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":62},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door8.png":
-		{
-			"frame": {"x":0,"y":62,"w":80,"h":62},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":62},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door5.png":
-		{
-			"frame": {"x":80,"y":62,"w":80,"h":56},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":56},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door4.png":
-		{
-			"frame": {"x":160,"y":0,"w":80,"h":52},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":52},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door0.png":
-		{
-			"frame": {"x":160,"y":52,"w":80,"h":50},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":50},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door1.png":
-		{
-			"frame": {"x":0,"y":124,"w":80,"h":50},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":50},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door2.png":
-		{
-			"frame": {"x":80,"y":124,"w":80,"h":50},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":50},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"door3.png":
-		{
-			"frame": {"x":160,"y":124,"w":80,"h":50},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":40,"w":80,"h":50},
-			"sourceSize": {"w":84,"h":102}
-		},
-		"exit0.png":
-		{
-			"frame": {"x":240,"y":0,"w":64,"h":70},
-			"rotated": false,
-			"trimmed": true,
-			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":70},
-			"sourceSize": {"w":64,"h":138}
-		}
+	"medieval_door1.png": {
+		"frame": {"x":162, "y":0, "w":80, "h":50},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_door2.png": {
+		"frame": {"x":81, "y":167, "w":80, "h":50},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_door3.png": {
+		"frame": {"x":81, "y":116, "w":80, "h":50},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_door4.png": {
+		"frame": {"x":81, "y":63, "w":80, "h":52},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_door5.png": {
+		"frame": {"x":0, "y":0, "w":80, "h":56},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_door6.png": {
+		"frame": {"x":81, "y":0, "w":80, "h":62},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_door7.png": {
+		"frame": {"x":0, "y":120, "w":80, "h":62},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_door8.png": {
+		"frame": {"x":0, "y":57, "w":80, "h":62},
+		"spriteSourceSize": {"x":0,"y":40,"w":84,"h":102},
+		"sourceSize": {"w":84,"h":102},
+		"trimmed": true
+	},
+	"medieval_exit0.png": {
+		"frame": {"x":162, "y":51, "w":64, "h":70},
+		"spriteSourceSize": {"x":0,"y":0,"w":64,"h":138},
+		"sourceSize": {"w":64,"h":138},
+		"trimmed": true
 	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 243, "h": 234},
+	"scale": "1"
+}
 }

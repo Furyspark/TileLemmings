@@ -13,18 +13,18 @@ doorCave:
       base: "assets/graphics/sprite-atlases/props-cave/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "cave_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
-      - "door8.png"
+      - "cave_door1.png"
+      - "cave_door2.png"
+      - "cave_door3.png"
+      - "cave_door4.png"
+      - "cave_door5.png"
+      - "cave_door6.png"
+      - "cave_door7.png"
+      - "cave_door8.png"
     open:
-      - "door8.png"
+      - "cave_door8.png"
   lemmingColor:
     hair:
       - "5E5E5E"
@@ -48,17 +48,17 @@ doorCircus:
       base: "assets/graphics/sprite-atlases/props-circus/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "circus_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
+      - "circus_door1.png"
+      - "circus_door2.png"
+      - "circus_door3.png"
+      - "circus_door4.png"
+      - "circus_door5.png"
+      - "circus_door6.png"
+      - "circus_door7.png"
     open:
-      - "door8.png"
+      - "circus_door8.png"
   lemmingColor:
     hair:
       - "DD2626"
@@ -82,18 +82,18 @@ doorClassic:
       base: "assets/graphics/sprite-atlases/props-classic/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "classic_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
-      - "door8.png"
+      - "classic_door1.png"
+      - "classic_door2.png"
+      - "classic_door3.png"
+      - "classic_door4.png"
+      - "classic_door5.png"
+      - "classic_door6.png"
+      - "classic_door7.png"
+      - "classic_door8.png"
     open:
-      - "door9.png"
+      - "classic_door9.png"
 
 doorCrystal:
   type: "door"
@@ -110,18 +110,18 @@ doorCrystal:
       base: "assets/graphics/sprite-atlases/props-crystal/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "crystal_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
-      - "door8.png"
+      - "crystal_door1.png"
+      - "crystal_door2.png"
+      - "crystal_door3.png"
+      - "crystal_door4.png"
+      - "crystal_door5.png"
+      - "crystal_door6.png"
+      - "crystal_door7.png"
+      - "crystal_door8.png"
     open:
-      - "door9.png"
+      - "crystal_door9.png"
 
 doorEgyptian:
   type: "door"
@@ -138,17 +138,17 @@ doorEgyptian:
       base: "assets/graphics/sprite-atlases/props-egyptian/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "egyptian_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
+      - "egyptian_door1.png"
+      - "egyptian_door2.png"
+      - "egyptian_door3.png"
+      - "egyptian_door4.png"
+      - "egyptian_door5.png"
+      - "egyptian_door6.png"
+      - "egyptian_door7.png"
     open:
-      - "door8.png"
+      - "egyptian_door8.png"
   lemmingColor:
     hair:
       - "5E5E5E"
@@ -172,17 +172,17 @@ doorMedieval:
       base: "assets/graphics/sprite-atlases/props-medieval/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "medieval_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
+      - "medieval_door1.png"
+      - "medieval_door2.png"
+      - "medieval_door3.png"
+      - "medieval_door4.png"
+      - "medieval_door5.png"
+      - "medieval_door6.png"
+      - "medieval_door7.png"
     open:
-      - "door8.png"
+      - "medieval_door8.png"
 
 doorPolar:
   type: "door"
@@ -199,17 +199,17 @@ doorPolar:
       base: "assets/graphics/sprite-atlases/props-polar/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "polar_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
+      - "polar_door1.png"
+      - "polar_door2.png"
+      - "polar_door3.png"
+      - "polar_door4.png"
+      - "polar_door5.png"
+      - "polar_door6.png"
+      - "polar_door7.png"
     open:
-      - "door8.png"
+      - "polar_door8.png"
 
 doorSpace:
   type: "door"
@@ -226,17 +226,17 @@ doorSpace:
       base: "assets/graphics/sprite-atlases/props-space/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "space_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
+      - "space_door1.png"
+      - "space_door2.png"
+      - "space_door3.png"
+      - "space_door4.png"
+      - "space_door5.png"
+      - "space_door6.png"
+      - "space_door7.png"
     open:
-      - "door8.png"
+      - "space_door8.png"
 
 doorSports:
   type: "door"
@@ -253,17 +253,17 @@ doorSports:
       base: "assets/graphics/sprite-atlases/props-sports/sprites.json"
   animations:
     closed:
-      - "door0.png"
+      - "sports_door0.png"
     opening:
-      - "door1.png"
-      - "door2.png"
-      - "door3.png"
-      - "door4.png"
-      - "door5.png"
-      - "door6.png"
-      - "door7.png"
+      - "sports_door1.png"
+      - "sports_door2.png"
+      - "sports_door3.png"
+      - "sports_door4.png"
+      - "sports_door5.png"
+      - "sports_door6.png"
+      - "sports_door7.png"
     open:
-      - "door8.png"
+      - "sports_door8.png"
   lemmingColor:
     hair:
       - "D1B7EE"
@@ -289,7 +289,7 @@ exitCave:
       base: "assets/graphics/sprite-atlases/props-cave/sprites.json"
   animations:
     idle:
-      - "exit0.png"
+      - "cave_exit0.png"
 
 exitCircus:
   type: "exit"
@@ -308,12 +308,12 @@ exitCircus:
       base: "assets/graphics/sprite-atlases/props-circus/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
+      - "circus_exit0.png"
+      - "circus_exit1.png"
+      - "circus_exit2.png"
+      - "circus_exit3.png"
+      - "circus_exit4.png"
+      - "circus_exit5.png"
 
 exitClassic:
   type: "exit"
@@ -332,11 +332,11 @@ exitClassic:
       base: "assets/graphics/sprite-atlases/props-classic/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
+      - "classic_exit0.png"
+      - "classic_exit1.png"
+      - "classic_exit2.png"
+      - "classic_exit3.png"
+      - "classic_exit4.png"
 
 exitCrystal:
   type: "exit"
@@ -355,12 +355,12 @@ exitCrystal:
       base: "assets/graphics/sprite-atlases/props-crystal/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
+      - "crystal_exit0.png"
+      - "crystal_exit1.png"
+      - "crystal_exit2.png"
+      - "crystal_exit3.png"
+      - "crystal_exit4.png"
+      - "crystal_exit5.png"
 
 exitEgyptian:
   type: "exit"
@@ -379,12 +379,12 @@ exitEgyptian:
       base: "assets/graphics/sprite-atlases/props-egyptian/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
+      - "egyptian_exit0.png"
+      - "egyptian_exit1.png"
+      - "egyptian_exit2.png"
+      - "egyptian_exit3.png"
+      - "egyptian_exit4.png"
+      - "egyptian_exit5.png"
 
 exitFire:
   type: "exit"
@@ -403,12 +403,12 @@ exitFire:
       base: "assets/graphics/sprite-atlases/props-fire/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
+      - "fire_exit0.png"
+      - "fire_exit1.png"
+      - "fire_exit2.png"
+      - "fire_exit3.png"
+      - "fire_exit4.png"
+      - "fire_exit5.png"
 
 exitMedieval:
   type: "exit"
@@ -427,7 +427,7 @@ exitMedieval:
       base: "assets/graphics/sprite-atlases/props-medieval/sprites.json"
   animations:
     idle:
-      - "exit0.png"
+      - "medieval_exit0.png"
 
 exitPink:
   type: "exit"
@@ -446,12 +446,12 @@ exitPink:
       base: "assets/graphics/sprite-atlases/props-pink/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
+      - "pink_exit0.png"
+      - "pink_exit1.png"
+      - "pink_exit2.png"
+      - "pink_exit3.png"
+      - "pink_exit4.png"
+      - "pink_exit5.png"
 
 exitPolar:
   type: "exit"
@@ -470,12 +470,12 @@ exitPolar:
       base: "assets/graphics/sprite-atlases/props-polar/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
+      - "polar_exit0.png"
+      - "polar_exit1.png"
+      - "polar_exit2.png"
+      - "polar_exit3.png"
+      - "polar_exit4.png"
+      - "polar_exit5.png"
 
 exitSpace:
   type: "exit"
@@ -494,14 +494,14 @@ exitSpace:
       base: "assets/graphics/sprite-atlases/props-space/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
-      - "exit6.png"
-      - "exit7.png"
+      - "space_exit0.png"
+      - "space_exit1.png"
+      - "space_exit2.png"
+      - "space_exit3.png"
+      - "space_exit4.png"
+      - "space_exit5.png"
+      - "space_exit6.png"
+      - "space_exit7.png"
 
 exitSports:
   type: "exit"
@@ -520,12 +520,12 @@ exitSports:
       base: "assets/graphics/sprite-atlases/props-sports/sprites.json"
   animations:
     idle:
-      - "exit0.png"
-      - "exit1.png"
-      - "exit2.png"
-      - "exit3.png"
-      - "exit4.png"
-      - "exit5.png"
+      - "sports_exit0.png"
+      - "sports_exit1.png"
+      - "sports_exit2.png"
+      - "sports_exit3.png"
+      - "sports_exit4.png"
+      - "sports_exit5.png"
 
 trapFlamethrower:
   type: "trap"
@@ -544,16 +544,16 @@ trapFlamethrower:
       base: "assets/graphics/sprite-atlases/props-traps/sprites.json"
   animations:
     idle:
-      - "flamethrower0.png"
-      - "flamethrower1.png"
-      - "flamethrower2.png"
-      - "flamethrower3.png"
-      - "flamethrower4.png"
-      - "flamethrower5.png"
-      - "flamethrower6.png"
-      - "flamethrower7.png"
-      - "flamethrower8.png"
-      - "flamethrower9.png"
+      - "traps_flamethrower0.png"
+      - "traps_flamethrower1.png"
+      - "traps_flamethrower2.png"
+      - "traps_flamethrower3.png"
+      - "traps_flamethrower4.png"
+      - "traps_flamethrower5.png"
+      - "traps_flamethrower6.png"
+      - "traps_flamethrower7.png"
+      - "traps_flamethrower8.png"
+      - "traps_flamethrower9.png"
   deathAnimation: "burn"
 
 trapFlameTurret:
@@ -573,22 +573,22 @@ trapFlameTurret:
       base: "assets/graphics/sprite-atlases/props-traps/sprites.json"
   animations:
     idle:
-      - "flameturret0.png"
-      - "flameturret1.png"
-      - "flameturret2.png"
-      - "flameturret3.png"
-      - "flameturret4.png"
-      - "flameturret5.png"
-      - "flameturret6.png"
-      - "flameturret7.png"
-      - "flameturret8.png"
-      - "flameturret9.png"
-      - "flameturret10.png"
-      - "flameturret11.png"
-      - "flameturret12.png"
-      - "flameturret13.png"
-      - "flameturret14.png"
-      - "flameturret15.png"
+      - "traps_flameturret0.png"
+      - "traps_flameturret1.png"
+      - "traps_flameturret2.png"
+      - "traps_flameturret3.png"
+      - "traps_flameturret4.png"
+      - "traps_flameturret5.png"
+      - "traps_flameturret6.png"
+      - "traps_flameturret7.png"
+      - "traps_flameturret8.png"
+      - "traps_flameturret9.png"
+      - "traps_flameturret10.png"
+      - "traps_flameturret11.png"
+      - "traps_flameturret12.png"
+      - "traps_flameturret13.png"
+      - "traps_flameturret14.png"
+      - "traps_flameturret15.png"
   deathAnimation: "burn"
 
 trapPinkPounder:
@@ -608,20 +608,20 @@ trapPinkPounder:
       base: "assets/graphics/sprite-atlases/props-traps/sprites.json"
   animations:
     idle:
-      - "pounder_idle0.png"
+      - "traps_pounder_idle0.png"
     kill:
-      - "pounder_kill0.png"
-      - "pounder_kill1.png"
-      - "pounder_kill2.png"
-      - "pounder_kill3.png"
-      - "pounder_kill4.png"
-      - "pounder_kill5.png"
-      - "pounder_kill6.png"
-      - "pounder_kill7.png"
-      - "pounder_kill8.png"
-      - "pounder_kill9.png"
-      - "pounder_kill10.png"
-      - "pounder_kill11.png"
-      - "pounder_kill12.png"
-      - "pounder_kill13.png"
-      - "pounder_kill14.png"
+      - "traps_pounder_kill0.png"
+      - "traps_pounder_kill1.png"
+      - "traps_pounder_kill2.png"
+      - "traps_pounder_kill3.png"
+      - "traps_pounder_kill4.png"
+      - "traps_pounder_kill5.png"
+      - "traps_pounder_kill6.png"
+      - "traps_pounder_kill7.png"
+      - "traps_pounder_kill8.png"
+      - "traps_pounder_kill9.png"
+      - "traps_pounder_kill10.png"
+      - "traps_pounder_kill11.png"
+      - "traps_pounder_kill12.png"
+      - "traps_pounder_kill13.png"
+      - "traps_pounder_kill14.png"
