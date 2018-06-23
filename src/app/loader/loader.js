@@ -2,7 +2,6 @@ function Loader() {}
 
 Loader._loading = [];
 Loader._textureAtlasQueue = [];
-Loader._loadingTextureAtlases = false;
 Loader.onComplete = new Signal();
 
 Loader.loadJSON = function(key, src) {
@@ -158,7 +157,7 @@ Loader.loadTextureAtlas = function(key, src) {
 
   // Add to queue
   this._textureAtlasQueue.push(file);
-  this.startLoadingTextureAtlas();
+  file.loader.load();
 
   return file;
 }
@@ -202,23 +201,6 @@ Loader._finishFile = function(file) {
   var a = this._loading.indexOf(file);
   if(a !== -1) Loader._loading.splice(a, 1);
   this.checkLoadCompletion();
-}
-
-Loader.startLoadingTextureAtlas = function() {
-  if(this._loadingTextureAtlases) return;
-  this._loadingTextureAtlases = true;
-  let continueFunc = function() {
-    if(this._textureAtlasQueue.length === 0) {
-      this._loadingTextureAtlases = false;
-      return;
-    }
-    let file = this._textureAtlasQueue.splice(0, 1)[0];
-    file.onComplete.addOnce(() => {
-      continueFunc.call(this);
-    }, this);
-    file.loader.load();
-  };
-  continueFunc.call(this);
 }
 
 Loader.checkLoadCompletion = function() {
