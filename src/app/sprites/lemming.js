@@ -8,7 +8,7 @@ Sprite_Lemming.prototype.constructor = Sprite_Lemming;
 Sprite_Lemming.prototype.init = function() {
   Sprite_Base.prototype.init.call(this);
   this.z = -100;
-  this.animSpeed = 1 / 4;
+  this.animSpeed = 1 / 2;
   this.anchor.set(0.5);
   this.initAnimations();
   this.initFilters();

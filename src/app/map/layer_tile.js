@@ -55,7 +55,7 @@ Layer_Tile.prototype.clear = function() {
   }
 };
 
-Layer_Tile.prototype.addTile = function(tile, index) {
+Layer_Tile.prototype.addTile = function(index, tile) {
   // Remove old tile (if any)
   this.removeTile(index);
   // Add tile
@@ -65,6 +65,13 @@ Layer_Tile.prototype.addTile = function(tile, index) {
   let pos = this.getPos(index);
   tile.x = pos.x * this.getMap().tileHeight;
   tile.y = pos.y * this.getMap().tileHeight;
+};
+
+Layer_Tile.prototype.replaceTile = function(index, tile) {
+  if(index >= 0 && index < this.getSize()) {
+    this.removeTile(index);
+    if(tile != null) this.addTile(index, tile);
+  }
 };
 
 Layer_Tile.prototype.getTileByIndex = function(index) {

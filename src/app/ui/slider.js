@@ -8,8 +8,10 @@ UI_Slider.prototype.constructor = UI_Slider;
 Object.defineProperties(UI_Slider.prototype, {
   value: {
     get: function() { return this._value; },
-    set: function(value) {
-      var newValue = Math.floor((value - this.valueMin) / this.valueInterval) * this.valueInterval + this.valueMin;
+    set: function(rate) {
+      let valueRange = this.valueMax - this.valueMin;
+      let newValue = Math.floor((rate * valueRange) / this.valueInterval) * this.valueInterval + this.valueMin;
+      // let newValue = Math.floor((value - this.valueMin) / this.valueInterval) * this.valueInterval + this.valueMin;
       this._value = Math.min(this.valueMax, Math.max(this.valueMin, newValue));
       this.refresh();
       this.onChange.dispatch([this._value]);
@@ -36,7 +38,7 @@ UI_Slider.prototype.init = function(position, label, length, value) {
   this.valueMin = 0;
   this.valueMax = 1;
   this.valueInterval = 0.01;
-  this.value = value;
+  this._value = value;
 
   this.x = position.x;
   this.y = position.y;
@@ -105,8 +107,10 @@ UI_Slider.prototype.refresh = function() {
     this.rect.width = this.length;
     this.rect.height = 32;
   }
+  let valueRange = this.valueMax - this.valueMin;
+  let valueRate = (this.value - this.valueMin) / valueRange;
   if(this.label) this.label.position.set(this.rect.width / 2, -(this.rect.height / 2));
-  if(this.subSprites) this.subSprites.handle.position.x = this.value * this.length;
+  if(this.subSprites) this.subSprites.handle.position.x = valueRate * this.length;
 }
 
 UI_Slider.prototype.playSound_Click = function() {

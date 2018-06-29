@@ -26,6 +26,7 @@ Game_Map.prototype.init = function(src, scene) {
   this._expectedAssets    = [];
   this._expectedTilesets  = [];
   this._usedAssets        = [];
+  this.snapshots          = [];
   this.width              = 1;
   this.height             = 1;
   this.tileWidth          = 16;
@@ -41,9 +42,18 @@ Game_Map.prototype.init = function(src, scene) {
   this.replay             = null;
   this.trackVictoryDefeat = true;
   this.loaded             = false;
+  this._mapStarted        = false;
+  this.nuked              = false;
   this.layers = {
     tile: []
   };
+  // Set alarms
+  this.alarms = {
+    start: new Alarm(),
+    nuke: new Alarm()
+  };
+  this.alarms.nuke.onExpire.add(this.nukeLemming, this);
+  this.alarms.nuke._baseTime = 5;
 
   this.onLoad     = new Signal();
   this.onCreate   = new Signal();
@@ -65,12 +75,49 @@ Game_Map.prototype.clear = function() {
   this.tiles              = null;
   this.objects            = [];
   this.trackVictoryDefeat = true;
+  this._mapStarted        = false;
+  this.nuked              = false;
+  this.snapshots          = [];
 
   if(this.grid != null) this.world.removeChild(this.grid);
   this.grid.z = -1500;
   this.grid.visible = false;
   this.world.addChild(this.grid);
+  
+  // Stop alarms
+  for(let a in this.alarms) {
+    let alarm = this.alarms[a];
+    alarm.stop();
+  }
 }
+
+Game_Map.prototype.start = function(stage) {
+  if(stage === 0) {
+    this.alarms.start.onExpire.addOnce(this.start, this, [stage+1]);
+    this.alarms.start.time = 30;
+  }
+  else if(stage === 1) {
+    AudioManager.playSound("sndLetsGo");
+    this.alarms.start.onExpire.addOnce(this.start, this, [stage+1]);
+    this.alarms.start.time = 45;
+  }
+  else if(stage === 2) {
+    this.openDoors();
+  }
+};
+
+Game_Map.prototype.openDoors = function() {
+  let arr = this.getDoors();
+  let playedSound = false;
+  for(let a = 0;a < arr.length;a++) {
+    let obj = arr[a];
+    if(!playedSound && obj.sounds && obj.sounds.open) {
+      AudioManager.playSound(obj.sounds.open);
+      playedSound = true;
+    }
+    obj.doorOpen();
+  }
+};
 
 /**
  * Updates the boundaries of the camera.
@@ -486,7 +533,7 @@ Game_Map.prototype.addTile = function(layer, pos, uid, z) {
     // Add new tile
     var tile = new Game_Tile(ts.getTileTexture(uid - ts.firstGid));
     tile.sprite.z = z;
-    layer.addTile(tile, layer.getIndex(pos));
+    layer.addTile(layer.getIndex(pos), tile);
     // Add properties
     var properties = ts.getTileProperties(uid - ts.firstGid);
     if(properties) {
@@ -530,7 +577,7 @@ Game_Map.prototype.addBackgroundTile = function(layer, pos, uid, z) {
     // Add new tile
     let tile = new Game_Tile(ts.getTileTexture(uid - ts.firstGid));
     tile.sprite.z = z;
-    layer.addTile(tile, layer.getIndex(pos));
+    layer.addTile(layer.getIndex(pos), tile);
   }
 };
 
@@ -621,9 +668,28 @@ Game_Map.prototype.setStage = function(stage) {
 }
 
 /**
+ * Updates everything about the map.
+ * @param {boolean} [recordSnapShot=true] - Whether to record a snapshot.
+ */
+Game_Map.prototype.update = function(recordSnapShot) {
+  if(recordSnapShot == null) recordSnapShot = true;
+  // Update the map
+  if(this._mapStarted) {
+    if(recordSnapShot) this.recordSnapShot();
+  }
+  this.updateGameLogic();
+  this.updateAnimations();
+  // Update alarms
+  for(let a in this.alarms) {
+    let alarm = this.alarms[a];
+    alarm.update();
+  }
+};
+
+/**
  * Updates map animations.
  */
-Game_Map.prototype.update = function() {
+Game_Map.prototype.updateAnimations = function() {
   // Update object animations
   var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
   for(var a = 0;a < arr.length;a++) {
@@ -638,7 +704,6 @@ Game_Map.prototype.update = function() {
       if(tile) tile.updateAnimation();
     }
   }
-  this.world.zOrder();
   this.updateCameraBounds();
 };
 
@@ -684,6 +749,24 @@ Game_Map.prototype.updateGameLogic = function() {
   }
 };
 
+Game_Map.prototype.reverseUpdate = function() {
+  if(this.snapshots.length === 0) return;
+  let snapshot = this.snapshots.splice(-1, 1)[0];
+  snapshot.apply();
+};
+
+Game_Map.prototype.recordSnapShot = function() {
+  let maxSnapShots = Options.data.gameplay.maxRememberedFrames;
+  if(maxSnapShots === 0) return;
+  // Remove an old snapshot
+  if(this.snapshots.length >= maxSnapShots) {
+    this.snapshots.splice(0, 1);
+  }
+  // Add snapshot
+  let snapshot = new Game_Map_SnapShot(this);
+  this.snapshots.push(snapshot);
+};
+
 /**
  * Updates the camera.
  */
@@ -720,7 +803,17 @@ Game_Map.prototype.getLemmings = function() {
 }
 
 /**
- * Lists all doors.
+ * Lists all lemmings.
+ * @returns {Lemming[]} An array of lemmings.
+ */
+Game_Map.prototype.getAllLemmings = function() {
+  return this.objects.filter(function(obj) {
+    return (obj instanceof Game_Lemming);
+  });
+};
+
+/**
+ * Lists all existing doors.
  * @returns {Prop[]} An array of door props.
  */
 Game_Map.prototype.getDoors = function() {
@@ -730,7 +823,17 @@ Game_Map.prototype.getDoors = function() {
 }
 
 /**
- * Lists all exits.
+ * Lists all doors.
+ * @returns {Prop[]} An array of door props.
+ */
+Game_Map.prototype.getAllDoors = function() {
+  return this.objects.filter(function(obj) {
+    return (obj instanceof Game_Prop && obj.type === "door");
+  });
+}
+
+/**
+ * Lists all existing exits.
  * @returns {Prop[]} An array of exit props.
  */
 Game_Map.prototype.getExits = function() {
@@ -738,6 +841,22 @@ Game_Map.prototype.getExits = function() {
     return (obj instanceof Game_Prop && obj.type === "exit" && obj.exists);
   });
 }
+
+/**
+ * Lists all exits.
+ * @returns {Prop[]} An array of exit props.
+ */
+Game_Map.prototype.getAllExits = function() {
+  return this.objects.filter(function(obj) {
+    return (obj instanceof Game_Prop && obj.type === "exit");
+  });
+}
+
+Game_Map.prototype.getAllProps = function() {
+  return this.objects.filter(function(obj) {
+    return (obj instanceof Game_Prop);
+  });
+};
 
 /**
  * Starts the map's music.
@@ -796,10 +915,7 @@ Game_Map.prototype.toScreenSpace = function(mapX, mapY) {
  */
 Game_Map.prototype.replaceTile = function(x, y, tile) {
   var index = this.getTileIndex(x, y);
-  if(index >= 0 && index < this.tiles.getSize()) {
-    this.tiles.removeTile(index);
-    this.tiles.addTile(tile, index);
-  }
+  this.tiles.replaceTile(index, tile);
 }
 
 /**
@@ -883,3 +999,31 @@ Game_Map.prototype.updateReplay = function() {
   // Set replay map
   this.replay._map = this;
 };
+
+Game_Map.prototype.nuke = function() {
+  // Track for replay
+  var replayAction = $gameMap.replay.addAction($gameMap.frame);
+  replayAction.query = "null";
+  replayAction.action = "$gameMap.nuke();";
+  // Stop replay
+  SceneManager.current().stopReplay();
+  // Nuke
+  this.nuked = true;
+  var elem = SceneManager.current().getUI_Element("nuke");
+  elem.sprite.playAnimation("down");
+  AudioManager.playSound("sndUI_Click");
+  this.alarms.nuke.start();
+  // Prevent lemmings from spawning
+  var arr = this.getDoors();
+  for(var a = 0;a < arr.length;a++) {
+    var obj = arr[a];
+    obj.value = 0;
+  }
+};
+
+Game_Map.prototype.nukeLemming = function() {
+  let arr = this.getLemmings().filter(function(lemming) {
+    return (lemming.bomber.count === -1);
+  });
+  if(arr.length > 0) arr[0].nuke();
+}

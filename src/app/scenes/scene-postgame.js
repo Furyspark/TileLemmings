@@ -86,7 +86,6 @@ Scene_PostGame.prototype.addReplayButton = function() {
   elem.x = x;
   elem.y = y;
   // Add event
-  console.log(elem);
   elem.onClick.add(function() {
     this.doRetry();
   }.bind(this));

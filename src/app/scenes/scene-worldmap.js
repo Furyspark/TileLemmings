@@ -31,6 +31,7 @@ Scene_WorldMap.prototype.start = function() {
 
 Scene_WorldMap.prototype.continue = function() {
   Scene_MenuBase.prototype.continue.call(this);
+  $gameMap = null;
   AudioManager.playBgm("bgmTitle");
   this.generateContent(this.current);
   this.fadeIn();

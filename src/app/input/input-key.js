@@ -9,4 +9,5 @@ Input_Key.prototype.init = function(key) {
   this.released = false;
   this.onPress = new Signal();
   this.onRelease = new Signal();
+  this.onRepeat = new Signal();
 }

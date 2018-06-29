@@ -147,7 +147,7 @@ Game_Prop.prototype.doorOpen = function() {
 
 Game_Prop.prototype._doorOpened = function() {
   this.sprite.playAnimation("open");
-  this.alarms.door.time = 30;
+  this.alarms.door.time = 15;
   this.alarms.door.onExpire.addOnce(this._doorStart, this);
 }
 
@@ -156,10 +156,11 @@ Game_Prop.prototype._doorStart = function() {
   this.alarms.door.baseTime = this.getFrameByRate(this.rate);
   this.alarms.door.time = 1;
   this.map.startMusic();
+  this.map._mapStarted = true;
 }
 
 Game_Prop.prototype.getFrameByRate = function(rate) {
-  return Math.floor((99 - rate) * 2) + 16;
+  return Math.floor(99 - rate) + 8;
 };
 
 Game_Prop.prototype._doorAct = function() {

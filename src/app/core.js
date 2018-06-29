@@ -40,7 +40,7 @@ Core.start = function() {
 Core.initMembers = function() {
   this.lastTime = new Date;
   this.fps = 0;
-  this.frameRate = 60;
+  this.frameRate = 30;
   this.debugMode = false;
   // Full screen
   this.isFullscreen = false;

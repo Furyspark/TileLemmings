@@ -69,4 +69,14 @@ Scene_Options.prototype.createUI = function() {
     Options.data.gameplay.startWithGrid = value;
   }, this);
   this.addUI(elem);
+  // Slider: Max Remembered Frames
+  elem = new UI_Slider(new Point(480, 240), "Max Remembered Frames", 240, Options.data.gameplay.maxRememberedFrames);
+  elem.onChange.add(function(value) {
+    Options.data.gameplay.maxRememberedFrames = value;
+    console.log(value);
+  });
+  elem.valueInterval = 10;
+  elem.valueMax = 3000;
+  elem.refresh();
+  this.addUI(elem);
 }

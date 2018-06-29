@@ -63,7 +63,7 @@ Game_Lemming.prototype.init = function() {
   this.rotation         = 0;
   this.dir              = Game_Lemming.DIR_RIGHT;
   this.property         = 0;
-  this.action           = { current: Game_Lemming.ACTION_FALL };
+  this.action           = { current: Game_Lemming.ACTION_FALL, value: 0 };
   this.requestAnimation = "fall";
   this.fallDistance     = 0;
   this.onGround         = false;
@@ -73,15 +73,15 @@ Game_Lemming.prototype.init = function() {
   this.disabled         = false;
 
   this.offsetPoint = {
-    floor: new Point(0, 1),
+    floor: new Point(0, 2),
     ceiling: new Point(0, -17),
-    moveOutOfGround: new Point(0, -1),
+    moveOutOfGround: new Point(0, -2),
     slopeCheck: new Point(0, -16),
     downSlopeCheck: new Point(0, 17),
-    fallSpeed: new Point(0, 1),
-    walkSpeed: new Point(0.5, 0),
-    climbSpeed: new Point(0, -0.25),
-    floatSpeed: new Point(0, 0.5),
+    fallSpeed: new Point(0, 2),
+    walkSpeed: new Point(1, 0),
+    climbSpeed: new Point(0, -0.5),
+    floatSpeed: new Point(0, 1),
     right: new Point(1, 0),
     down: new Point(0, 1)
   };
@@ -98,13 +98,12 @@ Game_Lemming.prototype.init = function() {
   this.bomber.label.anchor.set(0.5, 1);
   this.bomber.label.visible = false;
   this.alarms.bomber = new Alarm();
-  this.alarms.bomber.baseTime = 60;
+  this.alarms.bomber.baseTime = 30;
   this.alarms.bomber.onExpire.add(this._bomberTimer, this);
 
   this.alarms.action = new Alarm();
   this.alarms.action.onExpire.add(this._actionTimer, this);
-  this.alarms.action.baseTime = 90;
-  this.action.builder = { value: 0 };
+  this.alarms.action.baseTime = 45;
   this.initTriggers();
   this.initFilters();
 }
@@ -495,29 +494,29 @@ Game_Lemming.prototype.assignAction = function(actionName) {
   else if(actionName === "BUILDER") {
     this.action.current = Game_Lemming.ACTION_BUILDER;
     this.requestAnimation = "build";
-    this.alarms.action.baseTime = 150;
+    this.alarms.action.baseTime = 75;
     this.alarms.action.start();
-    this.action.builder.value = 5;
+    this.action.value = 5;
     return true;
   }
   else if(actionName === "BASHER") {
     this.action.current = Game_Lemming.ACTION_BASHER;
     this.requestAnimation = "bash";
-    this.alarms.action.baseTime = 90;
+    this.alarms.action.baseTime = 45;
     this.alarms.action.start();
     return true;
   }
   else if(actionName === "MINER") {
     this.action.current = Game_Lemming.ACTION_MINER;
     this.requestAnimation = "mine";
-    this.alarms.action.baseTime = 150;
+    this.alarms.action.baseTime = 75;
     this.alarms.action.start();
     return true;
   }
   else if(actionName === "DIGGER") {
     this.action.current = Game_Lemming.ACTION_DIGGER;
     this.requestAnimation = "dig";
-    this.alarms.action.baseTime = 90;
+    this.alarms.action.baseTime = 45;
     this.alarms.action.start();
     return true;
   }
@@ -644,10 +643,10 @@ Game_Lemming.prototype._buildUpdate = function() {
     // this.x = (Math.floor(this.x / 16) + this.dir) * 16 + 8;
     this.x += (this.offsetPoint.right.x * 16 * this.dir) - (this.offsetPoint.down.x * 16);
     this.y += (this.offsetPoint.right.y * 16 * this.dir) - (this.offsetPoint.down.y * 16);
-    this.action.builder.value--;
-    if(this.action.builder.value < 2) {
+    this.action.value--;
+    if(this.action.value < 2) {
       AudioManager.playSound('sndBuildEnding');
-      if(this.action.builder.value === 0) {
+      if(this.action.value === 0) {
         this.alarms.action.stop();
         this.requestAnimation = 'build-end';
       }
@@ -723,7 +722,7 @@ Game_Lemming.prototype.dig = function(targetPoints, adjustMovement, dirs) {
     }
   }
   if(airTiles === targetPoints.length && success === Game_Lemming.DIGSUCCESS_NORMAL) success = false;
-  // Move in place
+  // Reposition
   if(success !== Game_Lemming.DIGSUCCESS_STEEL) {
     this.x += adjustMovement.x;
     this.y += adjustMovement.y;

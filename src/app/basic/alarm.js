@@ -18,7 +18,7 @@ Object.defineProperties(Alarm.prototype, {
 
 Alarm.prototype.init = function() {
   this._time = -1;
-  this._basetime = -1;
+  this._baseTime = -1;
   this.onExpire = new Signal();
 }
 

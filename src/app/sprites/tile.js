@@ -7,6 +7,7 @@ Sprite_Tile.prototype.constructor = Sprite_Tile;
 
 Sprite_Tile.prototype.init = function(texture) {
   Sprite_Base.prototype.init.call(this, texture);
+  this.z = 0;
   this.animSpeed = 0.25;
 }
 
