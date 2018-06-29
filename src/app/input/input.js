@@ -151,7 +151,7 @@ Input.initListeners = function() {
     }
   }, this);
   this.key.ENTER.onPress.add(function() {
-    if(Input.key.Alt.down) {
+    if(Input.key.ALT.down) {
       this.setFullscreen(!this.getFullscreen());
     }
   }, Core);
