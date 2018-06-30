@@ -43,7 +43,6 @@ Game_Map_SnapShot_Prop.prototype.apply = function() {
     this.prop.rate              = this.rate;
     this.prop.value             = this.value;
     this.prop.alarms.door._time = this.alarms.door;
-    if(this.alarms.door >= 0) this.prop.alarms.door.start();
   }
   // Sprite manipulation
   this.prop.sprite.playAnimation(this.sprite.animKey);

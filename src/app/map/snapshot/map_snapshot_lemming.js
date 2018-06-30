@@ -98,6 +98,5 @@ Game_Map_SnapShot_Lemming.prototype.apply = function() {
   // Alarms
   for(let a in this.alarms) {
     this.lemming.alarms[a]._time = this.alarms[a];
-    if(this.lemming.alarms[a]._time >= 0) this.lemming.alarms[a].start();
   }
 };

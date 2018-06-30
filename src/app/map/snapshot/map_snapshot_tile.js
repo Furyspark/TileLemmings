@@ -19,8 +19,8 @@ Game_Map_SnapShot_Tile.prototype.clear = function() {
 Game_Map_SnapShot_Tile.prototype.recordSnapShot = function(tile, index) {
   this.clear();
   this.index = index;
+  this.tile  = tile;
   if(tile == null) return;
-  this.tile             = tile;
   this.sprite.animFrame = tile.sprite.animFrame;
   this.sprite.animSpeed = tile.sprite.animSpeed;
   this.sprite.animKey   = tile.sprite.animKey;

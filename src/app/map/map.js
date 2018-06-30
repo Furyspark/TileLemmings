@@ -44,6 +44,9 @@ Game_Map.prototype.init = function(src, scene) {
   this.loaded             = false;
   this._mapStarted        = false;
   this.nuked              = false;
+  this.paused             = false;
+  this.fastForward        = false;
+  this._tempTiles = [];
   this.layers = {
     tile: []
   };
@@ -78,6 +81,9 @@ Game_Map.prototype.clear = function() {
   this._mapStarted        = false;
   this.nuked              = false;
   this.snapshots          = [];
+  this._tempTiles         = [];
+  this.paused             = false;
+  this.fastForward        = false;
 
   if(this.grid != null) this.world.removeChild(this.grid);
   this.grid.z = -1500;
@@ -369,8 +375,11 @@ Game_Map.prototype.createLevel = function() {
       ), new Point(0.5, 0.5));
     }
   }
-  for(let a = 0;a < this.data.layers.length;a++) {
-    let layerSrc = this.data.layers[a];
+  // Sort layers
+  let layers = this.sortLayers(this.data.layers.slice());
+  // Create layers
+  for(let a = 0;a < layers.length;a++) {
+    let layerSrc = layers[a];
     // Background layer
     if(layerSrc.name.match(/BACKGROUND[S]?[0-9]?/i)) {
       this.parseTileLayer(layerSrc, "background");
@@ -395,7 +404,34 @@ Game_Map.prototype.createLevel = function() {
 
   // Dispatch event
   this.onCreate.dispatch();
-}
+};
+
+Game_Map.prototype.getLayerType = function(layerSrc) {
+  if(layerSrc.name.match(/BACKGROUND[S]?[0-9]?/i)) return "background";
+  else if(layerSrc.name.toUpperCase() === "TILES") return "tiles";
+  else if(layerSrc.name.match(/MODIFIER[S]?[0-9]?/i)) return "modifiers";
+  else if(layerSrc.name.match(/OBJECT[S]?/i)) return "objects";
+  return "";
+};
+
+Game_Map.prototype.sortLayers = function(layerArr) {
+  return layerArr.sort(function(a, b) {
+    let layerTypeA = this.getLayerType(a);
+    let layerTypeB = this.getLayerType(b);
+    let valueA = this.getLayerSortPriority(layerTypeA);
+    let valueB = this.getLayerSortPriority(layerTypeB);
+    if(valueA < valueB) return 1;
+    if(valueA > valueB) return -1;
+    return 0;
+  }.bind(this));
+};
+
+Game_Map.prototype.getLayerSortPriority = function(type) {
+  if(type === "background") return 1;
+  if(type === "modifiers") return 2;
+  if(type === "tiles") return 3;
+  if(type === "objects") return 4;
+};
 
 /**
  * Creates a tile layer from a tiled map layer.
@@ -583,16 +619,16 @@ Game_Map.prototype.addBackgroundTile = function(layer, pos, uid, z) {
 
 /**
  * Adds a tile modifier.
- * @param {number} x - The x-position (in tile space) to add the modifier to.
- * @param {number} y - The y-position (in tile space) to add the modifier to.
+ * @param {Object} layer - The layer source.
+ * @param {Point} pos - The position of the tile (in tile coordinates).
  * @param {number} uid - The UID of the tile modifier to add.
  */
-Game_Map.prototype.addTileModifier = function(x, y, uid) {
+Game_Map.prototype.addTileModifier = function(layer, pos, uid) {
   var ts = this.getTileset(uid);
   if(ts) {
     var modProperties = ts.getTileProperties(uid - ts.firstGid);
     var extraProperties = ts.getTileExtraProperties(uid - ts.firstGid);
-    var index = this.getTileIndex(x, y);
+    var index = this.getTileIndex(pos.x, pos.y);
     var tile = this.tiles.getTileByIndex(index);
     if(tile) {
       // Add modifier property
@@ -674,38 +710,55 @@ Game_Map.prototype.setStage = function(stage) {
 Game_Map.prototype.update = function(recordSnapShot) {
   if(recordSnapShot == null) recordSnapShot = true;
   // Update the map
-  if(this._mapStarted) {
-    if(recordSnapShot) this.recordSnapShot();
+  if(this._mapStarted && !this.paused && recordSnapShot) {
+    this.recordSnapShot();
   }
-  this.updateGameLogic();
-  this.updateAnimations();
+  if(!this.paused) {
+    this.updateGameLogic();
+    this.updateObjectAnimations();
+  }
+  this.updateTileAnimations();
   // Update alarms
-  for(let a in this.alarms) {
-    let alarm = this.alarms[a];
-    alarm.update();
+  if(!this.paused) {
+    for(let a in this.alarms) {
+      let alarm = this.alarms[a];
+      alarm.update();
+    }
   }
+  // Update camera bounds
+  this.updateCameraBounds();
 };
 
 /**
- * Updates map animations.
+ * Updates object animations.
  */
-Game_Map.prototype.updateAnimations = function() {
-  // Update object animations
+Game_Map.prototype.updateObjectAnimations = function() {
   var arr = this.objects.slice().filter(function(obj) { return obj.exists; } );
   for(var a = 0;a < arr.length;a++) {
     var o = arr[a];
     o.updateAnimation();
   }
-  // Update tiles
+};
+
+/**
+ * Updates tile animations.
+ */
+Game_Map.prototype.updateTileAnimations = function() {
+  // Gather tiles
+  let tiles = [];
   for(let a = 0;a < this.layers.tile.length;a++) {
     let layer = this.layers.tile[a];
-    for(let b = 0;b < layer.getSize();b++) {
-      let tile = layer.getTileByIndex(b);
-      if(tile) tile.updateAnimation();
+    tiles = tiles.concat(layer._data);
+  }
+  tiles = tiles.concat(this._tempTiles);
+  // Update tiles
+  for(let a = 0;a < tiles.length;a++) {
+    let tile = tiles[a];
+    if(tile) {
+      tile.updateAnimation();
     }
   }
-  this.updateCameraBounds();
-};
+}
 
 /**
  * Updates map logic.
@@ -753,6 +806,21 @@ Game_Map.prototype.reverseUpdate = function() {
   if(this.snapshots.length === 0) return;
   let snapshot = this.snapshots.splice(-1, 1)[0];
   snapshot.apply();
+};
+
+Game_Map.prototype.frameNext = function(recordSnapShot) {
+  if(recordSnapShot == null) recordSnapShot = true;
+  // Update the map
+  if(this._mapStarted && recordSnapShot) {
+    this.recordSnapShot();
+  }
+  this.updateGameLogic();
+  this.updateObjectAnimations();
+  // Update alarms
+  for(let a in this.alarms) {
+    let alarm = this.alarms[a];
+    alarm.update();
+  }
 };
 
 Game_Map.prototype.recordSnapShot = function() {

@@ -73,13 +73,11 @@ Scene_Game.prototype.update = function() {
   this.controlCamera();
   if(this.minimap) this.minimap.update();
   $gameMap.world.zOrder();
-  if(!this.paused) {
-    // Update map
-    var updateCount = 1;
-    if(this.fastForward) updateCount = 4;
-    for(var a = 0;a < updateCount;a++) {
-      $gameMap.update();
-    }
+  // Update map
+  var updateCount = 1;
+  if($gameMap.fastForward) updateCount = 4;
+  for(var a = 0;a < updateCount;a++) {
+    $gameMap.update();
   }
   // Lemming control
   this.lemmingSelect = this.getLemmingUnderCursor();
@@ -477,10 +475,10 @@ Scene_Game.prototype.getActionButton = function(actionName) {
 }
 
 Scene_Game.prototype.pauseGame = function(playSound) {
-  this.paused = !this.paused;
+  $gameMap.paused = !$gameMap.paused;
   var elem = this.getUI_Element("pause");
   // Now paused
-  if(this.paused) {
+  if($gameMap.paused) {
     elem.sprite.playAnimation("down");
     if(Options.data.audio.toggleDuringPause) AudioManager.pauseBgm();
   }
@@ -493,9 +491,9 @@ Scene_Game.prototype.pauseGame = function(playSound) {
 }
 
 Scene_Game.prototype.toggleFastForward = function(playSound) {
-  this.fastForward = !this.fastForward;
+  $gameMap.fastForward = !$gameMap.fastForward;
   var elem = this.getUI_Element("fastforward");
-  if(this.fastForward) elem.sprite.playAnimation("down");
+  if($gameMap.fastForward) elem.sprite.playAnimation("down");
   else elem.sprite.playAnimation("up");
   if(playSound) AudioManager.playSound("sndUI_Click");
 }
@@ -651,13 +649,13 @@ Scene_Game.prototype.updateReplayIcon = function() {
 };
 
 Scene_Game.prototype.framePrevious = function() {
-  if(!this.paused) this.pauseGame(false);
+  if(!$gameMap.paused) this.pauseGame(false);
   $gameMap.reverseUpdate();
   this.updateReplayIcon();
 };
 
 Scene_Game.prototype.frameNext = function() {
-  if(!this.paused) this.pauseGame(false);
-  $gameMap.update();
+  if(!$gameMap.paused) this.pauseGame(false);
+  $gameMap.frameNext();
   this.updateReplayIcon();
 };
