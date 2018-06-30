@@ -73,7 +73,6 @@ Scene_Options.prototype.createUI = function() {
   elem = new UI_Slider(new Point(480, 240), "Max Remembered Frames", 240, Options.data.gameplay.maxRememberedFrames);
   elem.onChange.add(function(value) {
     Options.data.gameplay.maxRememberedFrames = value;
-    console.log(value);
   });
   elem.valueInterval = 10;
   elem.valueMax = 3000;
