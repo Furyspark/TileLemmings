@@ -826,13 +826,18 @@ Game_Map.prototype.frameNext = function(recordSnapShot) {
 Game_Map.prototype.recordSnapShot = function() {
   let maxSnapShots = Options.data.gameplay.maxRememberedFrames;
   if(maxSnapShots === 0) return;
+  let snapshot;
   // Remove an old snapshot
   if(this.snapshots.length >= maxSnapShots) {
-    this.snapshots.splice(0, 1);
+    snapshot = this.snapshots.splice(0, 1)[0];
+    snapshot.recordSnapShot(this);
+    this.snapshots.push(snapshot);
   }
   // Add snapshot
-  let snapshot = new Game_Map_SnapShot(this);
-  this.snapshots.push(snapshot);
+  else {
+    let snapshot = new Game_Map_SnapShot(this);
+    this.snapshots.push(snapshot);
+  }
 };
 
 /**
