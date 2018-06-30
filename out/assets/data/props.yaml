@@ -459,7 +459,7 @@ exitPolar:
     x: 0.5
     y: 0
   hitArea:
-    x: -2
+    x: -14
     y: -4
     width: 4
     height: 4
