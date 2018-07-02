@@ -11,7 +11,6 @@ Object.defineProperties(UI_Slider.prototype, {
     set: function(rate) {
       let valueRange = this.valueMax - this.valueMin;
       let newValue = Math.floor((rate * valueRange) / this.valueInterval) * this.valueInterval + this.valueMin;
-      // let newValue = Math.floor((value - this.valueMin) / this.valueInterval) * this.valueInterval + this.valueMin;
       this._value = Math.min(this.valueMax, Math.max(this.valueMin, newValue));
       this.refresh();
       this.onChange.dispatch([this._value]);

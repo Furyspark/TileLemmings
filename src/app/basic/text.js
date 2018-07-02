@@ -17,7 +17,3 @@ Text.prototype.init = function(text, style) {
   PIXI.Text.prototype.constructor.call(this, text, style);
   this.z = 0;
 }
-
-function Meow() {
-  this.init.apply(this, arguments);
-}
