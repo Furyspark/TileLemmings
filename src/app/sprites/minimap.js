@@ -1,66 +1,32 @@
 function Sprite_Minimap() {
-  this.init.apply(this, arguments);
-}
+  this.initialize.apply(this, arguments);
+};
 
 Sprite_Minimap.prototype = Object.create(PIXI.Container.prototype);
 Sprite_Minimap.prototype.constructor = Sprite_Minimap;
 
-Sprite_Minimap.prototype.init = function() {
-  PIXI.Container.prototype.constructor.call(this);
+Sprite_Minimap.prototype.initialize = function() {
+  PIXI.Container.call(this);
   this.interactive = false;
-  this.tiles = [];
+  this.addBackground();
+  this.addMainSprite();
+};
 
+Sprite_Minimap.prototype.addBackground = function() {
   this.background = new PIXI.Graphics();
   this.background.beginFill(0x0);
   this.background.drawRect(0, 0, $gameMap.width * 16, $gameMap.height * 16);
   this.background.endFill();
-  this.background.z = 100;
+  this.background.z = 2000;
   this.addChild(this.background);
-}
+};
 
-Sprite_Minimap.prototype.update = function() {
-  if($gameMap) {
-    // Clear and fill tiles array if necessary
-    if(this.tiles.length !== $gameMap.tiles.getSize()) {
-      this.tiles = [];
-      while(this.tiles.length < $gameMap.tiles.getSize()) this.tiles.push(null);
-    }
-    // Replace tiles
-    var minimapSprites = Cache.getTextureAtlas("atlMinimap");
-    for(var a = 0;a < $gameMap.tiles.getSize();a++) {
-      var myTile = this.tiles[a];
-      var mapTile = $gameMap.tiles.getTileByIndex(a);
-      var pos = $gameMap.getTilePosition(a);
-      var realPos = new Point(pos.x * $gameMap.tileWidth, pos.y * $gameMap.tileHeight);
+Sprite_Minimap.prototype.updateMainTexture = function() {
+  Core.renderer.render($gameMap.containers.map, this.mainTexture);
+};
 
-      // Remove tile
-      if(mapTile === null && myTile !== null) {
-        var spr = this.tiles.splice(a, 1, null)[0];
-        this.removeChild(spr);
-      }
-      // Add tile
-      else if(mapTile !== null && myTile === null) {
-        var spr = new Sprite_MinimapTile();
-        spr.position.set(realPos.x, realPos.y);
-        this.updateTile(mapTile, spr);
-        this.tiles.splice(a, 1, spr);
-        this.addChild(spr);
-      }
-      else if(mapTile !== null && myTile !== null) {
-        this.updateTile(mapTile, myTile);
-      }
-    }
-  }
-  // Apply Z-Ordering
-  this.children.sort(function(a, b) {
-    if(a.z > b.z) return -1;
-    if(a.z < b.z) return 1;
-    return 0;
-  });
-}
-
-Sprite_Minimap.prototype.updateTile = function(mapTile, myTile) {
-  myTile.playAnimation("ground");
-  if(mapTile.hasProperty("STEEL")) myTile.playAnimation("steel");
-  if(mapTile.collisionFunction === Game_Tile.COLLISIONFUNC_LIQUID) myTile.playAnimation("liquid");
-}
+Sprite_Minimap.prototype.addMainSprite = function() {
+  this.mainTexture = PIXI.RenderTexture.create($gameMap.width * 16, $gameMap.height * 16);
+  this.mainSprite = new PIXI.Sprite(this.mainTexture);
+  this.addChild(this.mainSprite);
+};

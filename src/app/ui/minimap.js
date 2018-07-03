@@ -3,7 +3,7 @@ function UI_Minimap() {
 }
 
 UI_Minimap.prototype = Object.create(UI_Base.prototype);
-UI_Minimap.prototype.constructor = UI_Base;
+UI_Minimap.prototype.constructor = UI_Minimap;
 
 UI_Minimap.prototype.init = function(options) {
   UI_Base.prototype.init.call(this);
@@ -29,7 +29,7 @@ UI_Minimap.prototype.update = function() {
     );
     $gameMap.camera.setPosition(pos, new Point(0.5, 0.5));
   }
-  this.sprite.update();
+  // this.sprite.update();
   this.updateCameraView();
 }
 

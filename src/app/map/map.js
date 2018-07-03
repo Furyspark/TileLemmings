@@ -85,10 +85,23 @@ Game_Map.prototype.clear = function() {
   this.paused             = false;
   this.fastForward        = false;
 
-  if(this.grid != null) this.world.removeChild(this.grid);
+  // Add containers
+  this.containers = {
+    map: new PIXI.Container(),
+    background: new PIXI.Container(),
+    grid: new PIXI.Container()
+  };
+  this.world.addChild(this.containers.background);
+  this.world.addChild(this.containers.map);
+  this.world.addChild(this.containers.grid);
+
+  this.world.setMainContainer(this.containers.map);
+
+  // Clear grid
+  if(this.grid != null) this.containers.grid.removeChild(this.grid);
   this.grid.z = -1500;
   this.grid.visible = false;
-  this.world.addChild(this.grid);
+  this.containers.grid.addChild(this.grid);
   
   // Stop alarms
   for(let a in this.alarms) {
@@ -552,7 +565,7 @@ Game_Map.prototype.addProp = function(x, y, key, data) {
     obj.x += data.width;
   }
   // Add to world
-  this.world.addChild(obj.sprite);
+  this.containers.map.addChild(obj.sprite);
 }
 
 /**
@@ -863,7 +876,31 @@ Game_Map.prototype.updateCamera = function() {
     if(this.camera.contains(o.sprite) && o.exists) o.sprite.visible = true;
     else o.sprite.visible = false;
   }
-}
+};
+
+/**
+ * Makes all main sprites visible.
+ * @param {boolean} value - Whether to make sprites visible (`true`) or invisible (`false`).
+ */
+Game_Map.prototype.setMainSpriteVisibility = function(value) {
+  // Set tile visibility
+  for(let a = 0;a < this.layers.tile.length;a++) {
+    let layer = this.layers.tile[a];
+    for(let b = 0;b < layer.getSize();b++) {
+      let tile = layer.getTileByIndex(b);
+      if(tile) {
+        tile.sprite.visible = value;
+      }
+    }
+  }
+  // Set object visibility
+  let arr = this.objects.filter(function(obj) { return obj.exists; } );
+  for(let a = 0;a < arr.length;a++) {
+    let obj = arr[a];
+    if(obj.exists) obj.sprite.visible = value;
+  }
+};
+
 
 /**
  * Lists all active lemmings.
@@ -1020,7 +1057,7 @@ Game_Map.prototype.addBackground = function() {
     }
     // Create background
     this.background = new Background("background", this.realWidth, this.realHeight, tile, parallax);
-    this.world.addChild(this.background);
+    this.containers.background.addChild(this.background);
   }
 }
 

@@ -7,11 +7,16 @@ Game_World.prototype.constructor = Game_World;
 
 Game_World.prototype.init = function() {
   PIXI.Container.prototype.constructor.call(this);
+  this.mainContainer = null;
   this.z = 150;
 }
 
 Game_World.prototype.zOrder = function() {
-  this.children.stableSort(function(a, b) {
+  this.mainContainer.children.stableSort(function(a, b) {
     return b.z - a.z;
   });
 }
+
+Game_World.prototype.setMainContainer = function(container) {
+  this.mainContainer = container;
+};

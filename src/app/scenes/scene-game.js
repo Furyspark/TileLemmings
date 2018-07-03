@@ -69,6 +69,11 @@ Scene_Game.prototype.create = function() {
 
 Scene_Game.prototype.update = function() {
   Scene_Base.prototype.update.call(this);
+  // Render the minimap
+  if(this.minimap) {
+    $gameMap.setMainSpriteVisibility(true);
+    this.minimap.sprite.updateMainTexture();
+  }
   // Move camera
   this.controlCamera();
   if(this.minimap) this.minimap.update();

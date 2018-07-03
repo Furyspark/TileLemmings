@@ -22,7 +22,7 @@ Scene_Base.prototype.update = function(dt) {
 
 Scene_Base.prototype.render = function(dt) {
     // Depth sorting
-    this.stage.children.sort(function(a, b) {
+    this.stage.children.stableSort(function(a, b) {
         return b.z - a.z;
     });
     // Render stage

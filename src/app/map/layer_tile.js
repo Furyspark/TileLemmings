@@ -40,7 +40,7 @@ Layer_Tile.prototype.removeTile = function(index) {
   if(tile == null) return false;
   this._data.splice(index, 1, null);
   $gameMap._tempTiles.push(tile);
-  this.getMap().world.removeChild(tile.sprite);
+  this.getMap().containers.map.removeChild(tile.sprite);
   return true;
 };
 
@@ -68,7 +68,7 @@ Layer_Tile.prototype.addTile = function(index, tile) {
       $gameMap._tempTiles.splice(tempIndex, 1);
     }
     // Add tile's sprite
-    this.getMap().world.addChild(tile.sprite);
+    this.getMap().containers.map.addChild(tile.sprite);
     // Reposition tile
     let pos = this.getPos(index);
     tile.x = pos.x * this.getMap().tileHeight;

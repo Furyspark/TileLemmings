@@ -30,7 +30,7 @@ Pool.prototype.create = function() {
   obj.exists = false;
   obj.map = this.map;
   this.map.objects.push(obj);
-  if(obj.sprite) this.map.world.addChild(obj.sprite);
+  if(obj.sprite) this.map.containers.map.addChild(obj.sprite);
   return obj;
 }
 
