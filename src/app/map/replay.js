@@ -21,7 +21,7 @@ Replay.prototype.performActions = function() {
   frameActionsCopy = frameActions.slice();
   while(frameActionsCopy.length > 0) {
     let frameAction = frameActionsCopy.splice(0, 1)[0];
-    frameActions[a].performAction();
+    frameAction.performAction();
   }
 };
 
