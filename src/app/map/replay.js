@@ -1,55 +1,54 @@
 function Replay() {
-    this.initialize.apply(this, arguments);
+  this.initialize.apply(this, arguments);
 };
 
 Replay.prototype.initialize = function(map) {
-    this._map = map;
-    this._frames = {};
-    this._active = true;
+  this._map = map;
+  this._frames = {};
+  this._active = true;
 };
 
 Replay.prototype.addAction = function(frame) {
-    if(!this._frames[frame]) this._frames[frame] = [];
-    var action = new ReplayAction(this);
-    this._frames[frame].push(action);
-    return action;
+  if(!this._frames[frame]) this._frames[frame] = [];
+  let action = new ReplayAction(this);
+  this._frames[frame].push(action);
+  return action;
 };
 
 Replay.prototype.performActions = function() {
-    var frameActions = this._frames[this._map.frame];
-    if(frameActions == null) return;
-    frameActionsCopy = frameActions.slice();
-    for(var a = 0;a < frameActionsCopy.length;a++) {
-        var frameAction = frameActionsCopy[a];
-        frameActions[a].performAction();
-        frameActions.splice(frameActions.indexOf(frameAction), 1);
-    }
+  let frameActions = this._frames[this._map.frame];
+  if(frameActions == null) return;
+  frameActionsCopy = frameActions.slice();
+  while(frameActionsCopy.length > 0) {
+    let frameAction = frameActionsCopy.splice(0, 1)[0];
+    frameActions[a].performAction();
+  }
 };
 
 Replay.prototype.stop = function() {
-    this._active = false;
-    this.cutFromFrame(this._map.frame);
+  this._active = false;
+  this.cutFromFrame(this._map.frame);
 };
 
 Replay.prototype.isActive = function() {
-    return this._active;
+  return this._active;
 };
 
 Replay.prototype.cutFromFrame = function(frame) {
-    for(var frameIndex in this._frames) {
-        if(parseInt(frameIndex) > frame) delete this._frames[frameIndex];
-    }
+  for(let frameIndex in this._frames) {
+    if(parseInt(frameIndex) > frame) delete this._frames[frameIndex];
+  }
 };
 
 Replay.prototype.getLastFrame = function() {
-    var highest = -1;
-    for(var frameIndex in this._frames) {
-        if(parseInt(frameIndex) > highest) highest = parseInt(frameIndex);
-    }
-    return highest;
+  let highest = -1;
+  for(let frameIndex in this._frames) {
+    if(parseInt(frameIndex) > highest) highest = parseInt(frameIndex);
+  }
+  return highest;
 };
 
 Replay.prototype.hasActionsRemaining = function() {
-    var lastFrame = this.getLastFrame();
-    return (lastFrame >= this._map.frame);
+  let lastFrame = this.getLastFrame();
+  return (lastFrame >= this._map.frame);
 };
