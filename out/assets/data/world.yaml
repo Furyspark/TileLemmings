@@ -462,6 +462,17 @@ circus:
         - type: "map-completion"
           dir: "circus"
           key: "level3.json"
+    # Circus Level 6
+    - type: "map"
+      key: "level6.json"
+      icon: "icon-circus.png"
+      position:
+        x: 3
+        y: 2
+      require:
+        - type: "map-completion"
+          dir: "circus"
+          key: "level4.json"
 
 jungle:
   previous: "root"
