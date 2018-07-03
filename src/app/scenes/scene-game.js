@@ -289,10 +289,12 @@ Scene_Game.prototype.createReplayIcon = function() {
 
 Scene_Game.prototype.updateMinimap = function() {
   this.minimap.update();
-  var maxWidth = 240;
-  var maxHeight = this.panel.height - 1;
-  this.minimap.sprite.height = (this.minimap.sprite.height / this.minimap.sprite.width) * maxWidth;
+  let maxWidth = 240;
+  let maxHeight = this.panel.sprite.height - 1;
   this.minimap.sprite.width = maxWidth;
+  this.minimap.sprite.height = maxHeight;
+  // this.minimap.sprite.height = (this.minimap.sprite.height / this.minimap.sprite.width) * maxWidth;
+  // this.minimap.sprite.width = maxWidth;
   this.minimap.sprite.position.set(Core.resolution.x - this.minimap.sprite.width, Core.resolution.y - this.minimap.sprite.height);
 }
 
