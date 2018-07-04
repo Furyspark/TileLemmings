@@ -75,8 +75,8 @@ Scene_Game.prototype.update = function() {
     this.minimap.sprite.updateMainTexture();
   }
   // Move camera
-  this.controlCamera();
   if(this.minimap) this.minimap.update();
+  this.controlCamera();
   $gameMap.world.zOrder();
   // Update map
   var updateCount = 1;
