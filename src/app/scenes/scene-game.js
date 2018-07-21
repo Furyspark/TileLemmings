@@ -113,6 +113,7 @@ Scene_Game.prototype.controlCamera = function() {
   // Mouse scrolling
   if(this._mouseScrolling) {
     var spdFactor = 0.5;
+    if(!Options.data.gameplay.invertMouseScrolling) spdFactor = -spdFactor;
     var hspd = (Input.mouse.position.screenPrev.x - Input.mouse.position.screen.x) * spdFactor;
     var vspd = (Input.mouse.position.screenPrev.y - Input.mouse.position.screen.y) * spdFactor;
     $gameMap.camera.move(hspd, vspd);

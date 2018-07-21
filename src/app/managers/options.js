@@ -15,7 +15,8 @@ Options.generate = function() {
   };
   this.data.gameplay = {
     startWithGrid: false,
-    maxRememberedFrames: 600
+    maxRememberedFrames: 600,
+    invertMouseScrolling: false
   };
 };
 

@@ -69,8 +69,14 @@ Scene_Options.prototype.createUI = function() {
     Options.data.gameplay.startWithGrid = value;
   }, this);
   this.addUI(elem);
+  // Checkbox: Invert scrolling
+  elem = new UI_CheckBox(new Point(480, 192), "Invert mouse scrolling", Options.data.gameplay.invertMouseScrolling);
+  elem.onToggle.add(function(value) {
+    Options.data.gameplay.invertMouseScrolling = value;
+  }, this);
+  this.addUI(elem);
   // Slider: Max Remembered Frames
-  elem = new UI_Slider(new Point(480, 240), "Max Remembered Frames", 240, Options.data.gameplay.maxRememberedFrames);
+  elem = new UI_Slider(new Point(480, 296), "Max Remembered Frames", 240, Options.data.gameplay.maxRememberedFrames);
   elem.onChange.add(function(value) {
     Options.data.gameplay.maxRememberedFrames = value;
   });
