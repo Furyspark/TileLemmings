@@ -521,13 +521,24 @@ circus:
 jungle:
   previous: "root"
   contents:
+    # Jungle Level 1
+    - type: "map"
+      key: "level1.json"
+      icon: "icon-jungle.png"
+      position:
+        x: 1
+        y: 3
     # Jungle Level 2
     - type: "map"
       key: "level2.json"
       icon: "icon-jungle.png"
       position:
-        x: 1
-        y: 1
+        x: 2
+        y: 3
+      require:
+        - type: "map-completion"
+          dir: "jungle"
+          key: "level1.json"
     # Jungle Level 3
     - type: "map"
       key: "level3.json"
@@ -538,7 +549,7 @@ jungle:
       require:
         - type: "map-completion"
           dir: "jungle"
-          key: "level2.json"
+          key: "level1.json"
 
 mountain:
   previous: "root"
