@@ -1,0 +1,12 @@
+{ "columns":10,
+ "image":"..\/graphics\/tilesets\/jungle.png",
+ "imageheight":120,
+ "imagewidth":200,
+ "margin":2,
+ "name":"jungle",
+ "spacing":4,
+ "tilecount":60,
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset"
+}

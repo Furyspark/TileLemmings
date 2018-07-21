@@ -550,6 +550,17 @@ jungle:
         - type: "map-completion"
           dir: "jungle"
           key: "level1.json"
+    # Jungle Level 4
+    - type: "map"
+      key: "level4.json"
+      icon: "icon-jungle.png"
+      position:
+        x: 3
+        y: 2
+      require:
+        - type: "map-completion"
+          dir: "jungle"
+          key: "level2.json"
 
 mountain:
   previous: "root"
