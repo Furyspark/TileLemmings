@@ -1,6 +1,6 @@
 {
   "name": "tilelemmings",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "author": {
     "name": "Tijmen Bok",
@@ -19,16 +19,18 @@
     "release": "build"
   },
   "devDependencies": {
-    "electron": "^2.0.2",
-    "electron-builder": "^20.15.1",
+    "electron": "^2.0.5",
+    "electron-builder": "^20.24.4",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "spritesheet-js": "^1.2.6",
-    "js-yaml": "^3.11.0"
+    "js-yaml": "^3.12.0",
+    "spritesheet-js": "^1.2.6"
   },
   "build": {
     "appId": "com.lemmings.app",
+    "productName": "TileLemmings",
     "linux": {
+      "icon": "out/icon/icon.icns",
       "target": [
         "AppImage"
       ],
@@ -46,6 +48,11 @@
       "createStartMenuShortcut": true,
       "shortcutName": "TileLemmings",
       "artifactName": "TileLemmings ${version} Setup.${ext}"
+    },
+    "appImage": {
+      "synopsis": "Clone of a classic puzzle game",
+      "category": "Game",
+      "artifactName": "TileLemmings_${version}.${ext}"
     },
     "files": [
       "**/*"

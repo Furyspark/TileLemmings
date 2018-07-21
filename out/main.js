@@ -103,7 +103,13 @@ function createDefaultConfig() {
 
 function startApp() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: config.window.width, height: config.window.height, x: config.window.x, y: config.window.y });
+  mainWindow = new BrowserWindow({
+    width: config.window.width,
+    height: config.window.height,
+    x: config.window.x,
+    y: config.window.y,
+    icon: __dirname + "/icon/icon.png"
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
