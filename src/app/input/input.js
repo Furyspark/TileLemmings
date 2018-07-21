@@ -140,10 +140,10 @@ Input.initListeners = function() {
   // Core events
   window.addEventListener("keydown", this._onKeyDown.bind(this));
   window.addEventListener("keyup", this._onKeyUp.bind(this));
-  Core.renderer.view.addEventListener("mousemove", this._onMouseMove.bind(this));
-  Core.renderer.view.addEventListener("mousedown", this._onMouseDown.bind(this));
-  Core.renderer.view.addEventListener("mouseup", this._onMouseUp.bind(this));
-  Core.renderer.view.addEventListener("wheel", this._wheel.bind(this));
+  window.addEventListener("mousemove", this._onMouseMove.bind(this));
+  window.addEventListener("mousedown", this._onMouseDown.bind(this));
+  window.addEventListener("mouseup", this._onMouseUp.bind(this));
+  window.addEventListener("wheel", this._wheel.bind(this));
   // Misc events
   this.key.F4.onPress.add(function() {
     if(!this.key.ALT.down) {
