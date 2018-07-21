@@ -82,8 +82,8 @@ Input._onKeyDown = function(e) {
     key.down = true;
     key.pressed = true;
     key.onPress.dispatch();
-    key.onRepeat.dispatch();
   }
+  key.onRepeat.dispatch();
 }
 
 Input._onKeyUp = function(e) {
