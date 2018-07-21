@@ -49,6 +49,9 @@ ipcMain.on("core", function(event, args) {
       userDataDir: app.getPath("userData")
     },
     config]);
+    if(cliOptions.debug) {
+      mainWindow.webContents.send("core", ["debug"]);
+    }
   }
 });
 
@@ -123,9 +126,6 @@ function startApp() {
   });
   if(cliOptions.debug) {
     mainWindow.webContents.openDevTools({ mode: "detach" });
-    mainWindow.webContents.on("dom-ready", function() {
-      mainWindow.webContents.send("core", ["debug"]);
-    });
   }
 
   // Emitted when the window is closed.

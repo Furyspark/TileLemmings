@@ -75,6 +75,9 @@ Loader.loadAudio = function(key, src) {
     src: [src],
     onload: function() {
       file.onComplete.dispatch();
+    },
+    onend: function(id) {
+      AudioManager._onSoundEnd(id);
     }
   });
 

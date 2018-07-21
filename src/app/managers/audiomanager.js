@@ -20,6 +20,7 @@ AudioManager.playBgm = function(key) {
 
 AudioManager.stopBgm = function() {
   if(this._bgm) this._bgm.audio.stop(this._bgm.id);
+  this.clearAudio(this._bgm);
   this._bgm = null;
 }
 
@@ -43,7 +44,6 @@ AudioManager.playSound = function(key) {
     var sndObj = { audio: snd, id: snd.play(), channel: "snd", key: key };
     snd.volume(Options.data.audio.volume.snd, sndObj.id);
     this._sounds.push(sndObj);
-    sndObj.audio.once("end", this._onSoundEnd.bind(this, sndObj));
     return sndObj;
   }
   return null;
@@ -63,7 +63,16 @@ AudioManager.setVolume = function(channel, volume) {
   }
 }
 
-AudioManager._onSoundEnd = function(snd) {
-  var a = this._sounds.indexOf(snd);
-  if(a !== -1) this._sounds.splice(a, 1);
+AudioManager._onSoundEnd = function(id) {
+  let sndObj = this._sounds.filter((obj) => { return obj.id === id; })[0];
+  if(sndObj == null) return;
+  this.clearAudio(sndObj);
 }
+
+AudioManager.clearAudio = function(sndObj) {
+  let a = this._sounds.indexOf(sndObj);
+  if(a !== -1) {
+    if(sndObj.audio.playing(sndObj.id)) snd.audio.stop(sndObj.id);
+    this._sounds.splice(a, 1);
+  }
+};
