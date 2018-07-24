@@ -9,47 +9,65 @@
      "0":
         {
          "key":"doorCave",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "1":
         {
          "key":"doorCircus",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "2":
         {
          "key":"doorClassic",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "3":
         {
          "key":"doorCrystal",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "4":
         {
          "key":"doorEgyptian",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "5":
         {
          "key":"doorMedieval",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "6":
         {
          "key":"doorPolar",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "7":
         {
          "key":"doorSpace",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         },
      "8":
         {
          "key":"doorSports",
-         "type":"prop"
+         "rate":50,
+         "type":"prop",
+         "value":40
         }
     },
  "tilepropertytypes":
@@ -57,87 +75,124 @@
      "0":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "1":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "2":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "3":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "4":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "5":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "6":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "7":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         },
      "8":
         {
          "key":"string",
-         "type":"string"
+         "rate":"int",
+         "type":"string",
+         "value":"int"
         }
     },
  "tiles":
     {
      "0":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_cave.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_cave.png",
+         "imageheight":32,
+         "imagewidth":96
         },
      "1":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_circus.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_circus.png",
+         "imageheight":32,
+         "imagewidth":96
         },
      "2":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_classic.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_classic.png",
+         "imageheight":32,
+         "imagewidth":96
         },
      "3":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_crystal.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_crystal.png",
+         "imageheight":32,
+         "imagewidth":96
         },
      "4":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_egypt.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_egypt.png",
+         "imageheight":32,
+         "imagewidth":96
         },
      "5":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_medieval.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_medieval.png",
+         "imageheight":64,
+         "imagewidth":80
         },
      "6":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_polar.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_polar.png",
+         "imageheight":32,
+         "imagewidth":96
         },
      "7":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_space.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_space.png",
+         "imageheight":32,
+         "imagewidth":96
         },
      "8":
         {
-         "image":"..\/..\/graphics\/editor\/doors\/door_sports.png"
+         "image":"..\/..\/graphics\/editor\/doors\/door_sports.png",
+         "imageheight":32,
+         "imagewidth":96
         }
     },
- "tilewidth":96
+ "tilewidth":96,
+ "type":"tileset"
 }
