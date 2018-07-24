@@ -78,12 +78,14 @@ Input._refreshButtonStates = function() {
 
 Input._onKeyDown = function(e) {
   var key = this.key[e.key.toUpperCase()];
-  if(key && !key.down) {
-    key.down = true;
-    key.pressed = true;
-    key.onPress.dispatch();
+  if(key) {
+    if(!key.down) {
+      key.down = true;
+      key.pressed = true;
+      key.onPress.dispatch();
+    }
+    key.onRepeat.dispatch();
   }
-  key.onRepeat.dispatch();
 }
 
 Input._onKeyUp = function(e) {
