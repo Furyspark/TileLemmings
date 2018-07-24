@@ -7,6 +7,7 @@ Scene_Base.FADEDURATION_DEFAULT = 250;
 
 Scene_Base.prototype.init = function() {
   this.stage = new PIXI.Container();
+  this.stage.scale.set(Core.scale);
   this.initFadeScreen();
   this.active = false;
   if(Core.debugMode) {

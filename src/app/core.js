@@ -9,10 +9,10 @@ Core.tileset = {};
 
 Object.defineProperties(Core, {
   hRes: {
-    get: function() { return Core.resolution.x / parseInt(Core.renderer.view.style.width.slice(0, -2)); }
+    get: function() { return Core.resolution.x / Core.renderer.width; }
   },
   vRes: {
-    get: function() { return Core.resolution.y / parseInt(Core.renderer.view.style.height.slice(0, -2)); }
+    get: function() { return Core.resolution.y / Core.renderer.height; }
   }
 });
 
@@ -52,6 +52,7 @@ Core.initMembers = function() {
   else if(document.onmozfullscreenchange !== undefined) document.addEventListener("mozfullscreenchange", func.bind(this));
   // Resolution
   this.resolution = new Point(1280, 720);
+  this.scale = 1;
   this.aspectRatio = this.resolution.x / this.resolution.y;
   // View
   this.rendererLeft = 0;
@@ -156,17 +157,29 @@ Core.fitToWindow = function() {
   var nh = wh;
   if(ww / wh >= Core.aspectRatio) {
     nw = Math.floor(nh * Core.aspectRatio);
+    Core.setScale(nh / Core.resolution.y);
   } else {
     nh = Math.floor(nw / Core.aspectRatio);
+    Core.setScale(nw / Core.resolution.x);
   }
   Core.renderer.view.style.position = "absolute";
-  Core.renderer.view.style.width = nw.toString() + "px";
-  Core.renderer.view.style.height = nh.toString() + "px";
+  // Core.renderer.view.style.width = nw.toString() + "px";
+  // Core.renderer.view.style.height = nh.toString() + "px";
+  Core.renderer.resize(nw, nh);
   Core.rendererLeft = Math.floor(ww / 2 - nw / 2);
   Core.rendererTop = Math.floor(wh / 2 - nh / 2);
   Core.renderer.view.style.left = Core.rendererLeft.toString() + "px";
   Core.renderer.view.style.top = Core.rendererTop.toString() + "px";
 }
+
+Core.setScale = function(value) {
+  if(this.scale === value) return;
+  this.scale = value;
+  for(let a = 0;a < SceneManager._stack.length;a++) {
+    let scene = SceneManager._stack[a];
+    scene.stage.scale.set(this.scale);
+  }
+};
 
 Core.resizeWindow = function(w, h) {
   if(Core.usingElectron) {
