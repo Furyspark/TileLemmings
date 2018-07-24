@@ -23,7 +23,7 @@ Object.defineProperties(Game_Base.prototype, {
     get: function() { return this._y; },
     set: function(value) {
       this._y = value;
-      if(this.sprite) this.sprite.y = value;
+      if(this.sprite) this.sprite.y = value + 1;
     },
     configurable: true
   },

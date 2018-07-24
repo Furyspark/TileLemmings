@@ -16,7 +16,7 @@
     },
     {
       "key": "atlLemming",
-      "src": "assets/graphics/sprite-atlases/lemming/sprites.json"
+      "src": "assets/graphics/sprite-atlases/lemming.old/sprites.json"
     },
     {
       "key": "atlGUI",

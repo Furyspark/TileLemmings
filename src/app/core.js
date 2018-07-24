@@ -114,9 +114,9 @@ Core.initExternalLibs = function() {
 
 Core.initPixi = function() {
   if(PIXI.utils.isWebGLSupported()) {
-    this.renderer = new PIXI.WebGLRenderer(this.resolution.x, this.resolution.y);
+    this.renderer = new PIXI.WebGLRenderer({ width: this.resolution.x, height: this.resolution.y });
   } else {
-    this.renderer = new PIXI.CanvasRenderer(this.resolution.x, this.resolution.y);
+    this.renderer = new PIXI.CanvasRenderer({ width: this.resolution.x, height: this.resolution.y });
   }
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   document.body.appendChild(this.renderer.view);
