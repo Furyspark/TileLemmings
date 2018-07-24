@@ -125,3 +125,11 @@ Scene_MenuBase.prototype.getUI_Element = function(key) {
     }
     return null;
 }
+
+Scene_MenuBase.prototype.update = function(dt) {
+  Scene_Base.prototype.update.call(this, dt);
+  for(let a = 0;a < this.ui.length;a++) {
+    let elem = this.ui[a];
+    if(typeof elem.update === "function") elem.update(dt);
+  }
+};

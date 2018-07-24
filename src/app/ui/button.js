@@ -11,8 +11,8 @@ UI_Button.prototype.init = function(x, y, key) {
   this.label = new Text("", {
     fill: "white",
     stroke: "black",
-    strokeThickness: 4,
-    fontSize: 10
+    strokeThickness: 2,
+    fontSize: 14
   });
   this.label.anchor.x = 0.5;
   this.sprite.addChild(this.label);

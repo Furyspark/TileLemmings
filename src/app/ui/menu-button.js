@@ -5,9 +5,10 @@ function UI_MenuButton() {
 UI_MenuButton.prototype = Object.create(UI_Button.prototype);
 UI_MenuButton.prototype.constructor = UI_MenuButton;
 
-UI_MenuButton.prototype.init = function(position, label, frames, downFrames) {
-  if(!frames) frames = ["button_blue.png"];
-  if(!downFrames) downFrames = ["button_blue_down.png"];
+UI_MenuButton.prototype.init = function(position, label, frames, downFrames, hoverFrames) {
+  if(!frames) frames = ["button.png"];
+  if(!downFrames) downFrames = ["button_down.png"];
+  if(!hoverFrames) hoverFrames = ["button_hover.png"];
   UI_Button.prototype.init.call(this);
   this.actOnPress = false;
   this.label.text = label;
@@ -17,6 +18,7 @@ UI_MenuButton.prototype.init = function(position, label, frames, downFrames) {
   this.addAnimation("idle", "atlMainMenu", frames);
   this.sprite.playAnimation("idle");
   this.addAnimation("down", "atlMainMenu", downFrames);
+  this.addAnimation("hover", "atlMainMenu", hoverFrames);
   this.x = position.x;
   this.y = position.y;
 
@@ -37,9 +39,28 @@ UI_MenuButton.prototype.click = function() {
 
 UI_MenuButton.prototype.release = function() {
   UI_Button.prototype.release.call(this);
-  this.sprite.playAnimation("idle");
+  if(this.mouseOver()) {
+    this.sprite.playAnimation("hover");
+  }
+  else {
+    this.sprite.playAnimation("idle");
+  }
 }
 
 UI_MenuButton.prototype.playSound_Click = function() {
   AudioManager.playSound("sndUI_Click");
 }
+
+UI_MenuButton.prototype.update = function(dt) {
+  if(this.mouseOver() && this.sprite.getCurrentAnimation().name === "idle") {
+    this.sprite.playAnimation("hover");
+  }
+  else if(!this.mouseOver() && this.sprite.getCurrentAnimation().name === "hover") {
+    this.sprite.playAnimation("idle");
+  }
+};
+
+UI_MenuButton.prototype.mouseOver = function() {
+  let mousePos = Input.mouse.position.screen;
+  return this.over(mousePos.x, mousePos.y);
+};
