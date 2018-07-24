@@ -67,7 +67,9 @@
      "bg":"pyramid",
      "music":"egyptian_late",
      "name":"Lemcraft",
-     "needed":15
+     "needed":15,
+     "tileX":false,
+     "tileY":false
     },
  "propertytypes":
     {
@@ -78,10 +80,12 @@
      "bg":"string",
      "music":"string",
      "name":"string",
-     "needed":"int"
+     "needed":"int",
+     "tileX":"bool",
+     "tileY":"bool"
     },
  "renderorder":"right-down",
- "tiledversion":"1.1.5",
+ "tiledversion":"1.1.6",
  "tileheight":16,
  "tilesets":[
         {

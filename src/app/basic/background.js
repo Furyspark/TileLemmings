@@ -16,7 +16,13 @@ Background.prototype.init = function(imageKey, w, h, tile, parallax) {
   this.z = 1000;
   this.parallax = parallax;
   this.tile = tile;
-}
+};
+
+Background.prototype.setAsMapBackground = function() {
+  // let colorMatrix = new PIXI.filters.ColorMatrixFilter();
+  // this.filters = [colorMatrix];
+  // colorMatrix.brightness(0.2, false);
+};
 
 Background.prototype.refreshTiling = function() {
   if(!this.tile.x && !this.tile.y) {
@@ -34,9 +40,9 @@ Background.prototype.refreshTiling = function() {
     var factor = $gameMap.camera.rect.height / this.texture.height;
     this.tileScale.set(factor);
   }
-}
+};
 
-Background.prototype.update = function() {}
+Background.prototype.update = function() {};
 
 Background.prototype.refresh = function() {
   this.refreshTiling();
@@ -44,4 +50,4 @@ Background.prototype.refresh = function() {
   else this.tilePosition.x = $gameMap.camera.rect.x;
   if(this.tile.y) this.tilePosition.y = $gameMap.camera.rect.y * this.parallax.y;
   else this.tilePosition.y = $gameMap.camera.rect.y;
-}
+};

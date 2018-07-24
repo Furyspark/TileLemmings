@@ -191,7 +191,7 @@ Game_Map.prototype.parseMapProperties = function(properties) {
   }
   // Load background
   if(properties.bg) {
-    var obj = Loader.loadImage("background", "assets/graphics/backgrounds/" + properties.bg + ".jpg");
+    var obj = Loader.loadImage("background", "assets/graphics/backgrounds/" + properties.bg + ".png");
     this._expectedAssets.push("background");
     obj.onComplete.addOnce(function() {
       this.clearAsset("background");
@@ -1057,6 +1057,7 @@ Game_Map.prototype.addBackground = function() {
     }
     // Create background
     this.background = new Background("background", this.realWidth, this.realHeight, tile, parallax);
+    this.background.setAsMapBackground();
     this.containers.background.addChild(this.background);
   }
 }

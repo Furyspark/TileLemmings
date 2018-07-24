@@ -65,7 +65,7 @@
      "action_climber":1,
      "action_floater":1,
      "action_miner":2,
-     "bg":"wacky",
+     "bg":"circus",
      "music":"circus_early",
      "name":"Around the Tent",
      "needed":19,
@@ -87,7 +87,7 @@
      "tileY":"bool"
     },
  "renderorder":"right-down",
- "tiledversion":"1.1.5",
+ "tiledversion":"1.1.6",
  "tileheight":16,
  "tilesets":[
         {

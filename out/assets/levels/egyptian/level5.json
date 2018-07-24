@@ -102,7 +102,9 @@
      "bg":"pyramid",
      "music":"egyptian_mid",
      "name":"Selfless Lemmings",
-     "needed":20
+     "needed":20,
+     "tileX":false,
+     "tileY":false
     },
  "propertytypes":
     {
@@ -115,10 +117,12 @@
      "bg":"string",
      "music":"string",
      "name":"string",
-     "needed":"int"
+     "needed":"int",
+     "tileX":"bool",
+     "tileY":"bool"
     },
  "renderorder":"right-down",
- "tiledversion":"1.1.5",
+ "tiledversion":"1.1.6",
  "tileheight":16,
  "tilesets":[
         {

@@ -80,10 +80,12 @@
      "action_digger":10,
      "action_floater":10,
      "action_miner":10,
-     "bg":"wacky",
+     "bg":"circus",
      "music":"circus_early",
      "name":"Winky Face",
-     "needed":5
+     "needed":5,
+     "tileX":false,
+     "tileY":false
     },
  "propertytypes":
     {
@@ -98,10 +100,12 @@
      "bg":"string",
      "music":"string",
      "name":"string",
-     "needed":"int"
+     "needed":"int",
+     "tileX":"bool",
+     "tileY":"bool"
     },
  "renderorder":"right-down",
- "tiledversion":"1.1.5",
+ "tiledversion":"1.1.6",
  "tileheight":16,
  "tilesets":[
         {
