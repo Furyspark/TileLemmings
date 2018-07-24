@@ -2,7 +2,7 @@
   "images": [
     {
       "key": "bgMainMenu",
-      "src": "assets/graphics/backgrounds/mainmenu.jpg"
+      "src": "assets/graphics/backgrounds/title.png"
     },
     {
       "key": "tsGeneric",
