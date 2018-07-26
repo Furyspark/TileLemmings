@@ -1066,9 +1066,18 @@ Game_Map.prototype.addBackground = function() {
  * Destroys the map and frees the assets used within.
  */
 Game_Map.prototype.destroy = function() {
+  this.freeGraphics();
   this.clearLevelAssets();
   Cache.removeJSON("map");
 }
+
+/**
+ * Frees graphics not freed by clearLevelAssets
+ */
+Game_Map.prototype.freeGraphics = function() {
+  // Free certain Lemming textures
+  this.pool.lemming.destroy();
+};
 
 /**
  * Frees all map assets.

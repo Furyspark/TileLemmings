@@ -48,3 +48,10 @@ Pool.prototype.getFirstNotExisting = function() {
   if(list.length > 0) return list.slice(0, 1)[0];
   return null;
 }
+
+Pool.prototype.destroy = function() {
+  for(let a = 0;a < this._objects.length;a++) {
+    let obj = this._objects[a];
+    obj.destroy();
+  }
+};

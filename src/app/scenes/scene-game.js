@@ -667,3 +667,7 @@ Scene_Game.prototype.frameNext = function() {
   $gameMap.frameNext();
   this.updateReplayIcon();
 };
+
+Scene_Game.prototype.removeListeners = function() {
+  this.minimap.removeInteractivity();
+};

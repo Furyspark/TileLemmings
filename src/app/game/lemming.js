@@ -750,3 +750,7 @@ Game_Lemming.prototype.disable = function() {
   this.interactive = false;
   this.physicsEnabled = false;
 }
+
+Game_Lemming.prototype.destroy = function() {
+  this.bomber.label.destroy();
+};
