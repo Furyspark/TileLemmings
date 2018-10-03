@@ -13,3 +13,4 @@ node_modules
 *.log
 /.vscode
 /tokens.txt
+/tilelemmings.code-workspace
